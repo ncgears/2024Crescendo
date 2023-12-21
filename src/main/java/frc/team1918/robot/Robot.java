@@ -9,6 +9,9 @@ package frc.team1918.robot;
 
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoMode.PixelFormat;
+
+import java.util.Optional;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
@@ -34,7 +37,7 @@ import frc.team1918.robot.Helpers.Debug;
  * project.
  */
 public class Robot extends TimedRobot {
-  public Alliance m_alliance;
+  public Optional<Alliance> m_alliance;
   private Command m_autonomousCommand;
   private Command m_disableCommand;
   public static UsbCamera camera;
@@ -66,9 +69,9 @@ public class Robot extends TimedRobot {
 
     //Create forwarder for photonvision
     //pi4
-    PortForwarder.add(5800,"photonvision.local",5800);
-    PortForwarder.add(1181,"photonvision.local",1181);
-    PortForwarder.add(1182,"photonvision.local",1182);
+    // PortForwarder.add(5800,"photonvision.local",5800);
+    // PortForwarder.add(1181,"photonvision.local",1181);
+    // PortForwarder.add(1182,"photonvision.local",1182);
     //limelight
     // PortForwarder.add(5800,"gloworm.local",5800);
     // PortForwarder.add(1181,"gloworm.local",1181);
