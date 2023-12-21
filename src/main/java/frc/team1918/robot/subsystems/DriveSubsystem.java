@@ -60,7 +60,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public DriveSubsystem() { //initialize the class
-		m_gyro.calibrate();
+		//Deprecated in 2024? // m_gyro.calibrate();
 		driveStraightPID.enableContinuousInput(0,360);
 		m_2dField = new Field2d();
 		for (SwerveModule module: modules) {

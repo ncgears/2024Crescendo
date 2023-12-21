@@ -1,6 +1,6 @@
 - Build and implement pid Heading controller
 - Implement finite state machine (in its own class)
-- Cleanup drive base code (and convert to Pheonix 6)
+- Cleanup drive base code (and convert to Pheonix 6) - https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/main/java/SwerveWithPathPlanner/src/main/java/frc/robot
 - Overhaul code to remove unused modules and subsystems
 - Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
 - Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava

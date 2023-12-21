@@ -78,7 +78,8 @@ public class SwerveModule {
         //     Constants.Swerve.kTurnCurrentThresholdAmps,
         //     Constants.Swerve.kTurnCurrentThresholdSecs));
 
-        drive.configFactoryDefault();
+        drive.configFactoryDefault(); //v5
+        // drive.getConfigurator().apply(new TalonFXConfiguration()); //v6
         drive.set(ControlMode.PercentOutput, 0);
         drive.setNeutralMode(NeutralMode.Brake);
         drive.setInverted(moduleConstants.driveIsInverted);
