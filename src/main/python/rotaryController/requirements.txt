@@ -1,0 +1,4 @@
+##install latest of these packages
+PySerial
+PyNetworkTables
+Keyboard
