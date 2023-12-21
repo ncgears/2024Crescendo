@@ -18,6 +18,7 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
+import frc.team1918.robot.subsystems.GyroSubsystem;
 import frc.team1918.robot.subsystems.StoveSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 import frc.team1918.robot.commandgroups.autoncommands.*;
@@ -25,12 +26,14 @@ import frc.team1918.robot.commandgroups.autoncommands.*;
 @SuppressWarnings("unused")
 public class cg_autonRedOverBump extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;
+  private final GyroSubsystem m_gyro;
   private final StoveSubsystem m_stove;
   private final FiveSecondRuleSubsystem m_fsr;
   private final VisionSubsystem m_vision;
 
-  public cg_autonRedOverBump(DriveSubsystem drive, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
+  public cg_autonRedOverBump(DriveSubsystem drive, GyroSubsystem gyro, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
     m_drive = drive;
+    m_gyro = gyro;
     m_stove = stove;
     m_fsr = fsr;
     m_vision = vision;
@@ -43,7 +46,7 @@ public class cg_autonRedOverBump extends SequentialCommandGroup {
         new helpers_debugMessage("Auton: Red Over Bump"),
         new cg_SetOdom180(m_drive, m_vision),
         new cg_Wait(0.5),
-        new cg_OverBump(m_drive, m_vision, true), 
+        new cg_OverBump(m_drive, m_gyro, m_vision, true), 
         new helpers_debugMessage("Auton: Done with auton")
     );
   }

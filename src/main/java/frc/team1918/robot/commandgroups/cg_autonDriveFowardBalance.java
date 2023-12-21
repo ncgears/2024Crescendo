@@ -23,6 +23,7 @@ import frc.team1918.robot.commands.drive.drive_resetOdometry;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
+import frc.team1918.robot.subsystems.GyroSubsystem;
 import frc.team1918.robot.subsystems.StoveSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 import frc.team1918.robot.commandgroups.autoncommands.*;
@@ -30,16 +31,18 @@ import frc.team1918.robot.commandgroups.autoncommands.*;
 @SuppressWarnings("unused")
 public class cg_autonDriveFowardBalance extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;
+  private final GyroSubsystem m_gyro;
   private final StoveSubsystem m_stove;
   private final FiveSecondRuleSubsystem m_fsr;
   private final VisionSubsystem m_vision;
 
-  public cg_autonDriveFowardBalance(DriveSubsystem drive, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
+  public cg_autonDriveFowardBalance(DriveSubsystem drive, GyroSubsystem gyro, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
     m_drive = drive;
+    m_gyro = gyro;
     m_stove = stove;
     m_fsr = fsr;
     m_vision = vision;
-    addRequirements(m_drive, m_stove, m_fsr, m_vision);
+    addRequirements(m_drive, m_gyro, m_stove, m_fsr, m_vision);
 
     addCommands(
         //this is a comma separated list of commands, thus, the last one should not have a comma
@@ -48,8 +51,8 @@ public class cg_autonDriveFowardBalance extends SequentialCommandGroup {
         new helpers_debugMessage("Auton: Drive Forward And Balance"),
         new cg_SetOdom180(m_drive, m_vision),
         new cg_Wait(0.5),
-        new cg_DriveForward3p6m(m_drive, m_vision), 
-        new cg_AutoBalance(m_drive),
+        new cg_DriveForward3p6m(m_drive, m_gyro, m_vision), 
+        new cg_AutoBalance(m_drive, m_gyro),
         new helpers_debugMessage("Auton: Done with auton")
     );
   }

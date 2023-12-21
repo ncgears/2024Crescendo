@@ -1,0 +1,13 @@
+{
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Driver/Auton Burner Temp": "String Chooser",
+      "/Shuffleboard/Driver/Auton Part Type": "String Chooser",
+      "/Shuffleboard/Driver/Autonomous Chooser": "String Chooser",
+      "/Shuffleboard/Driver/Gyro": "Gyro",
+      "/Shuffleboard/Maintenance/Reset Robot": "Command",
+      "/Shuffleboard/Maintenance/Zero Robot": "Command"
+    }
+  }
+}

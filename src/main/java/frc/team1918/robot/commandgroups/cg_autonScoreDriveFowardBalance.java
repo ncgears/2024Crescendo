@@ -25,6 +25,7 @@ import frc.team1918.robot.commands.stove.stove_moveBurnerHome;
 import frc.team1918.robot.commands.stove.stove_moveHotPlateHome;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
+import frc.team1918.robot.subsystems.GyroSubsystem;
 import frc.team1918.robot.subsystems.StoveSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 import frc.team1918.robot.commandgroups.autoncommands.*;
@@ -32,16 +33,18 @@ import frc.team1918.robot.commandgroups.autoncommands.*;
 @SuppressWarnings("unused")
 public class cg_autonScoreDriveFowardBalance extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;
+  private final GyroSubsystem m_gyro;
   private final StoveSubsystem m_stove;
   private final FiveSecondRuleSubsystem m_fsr;
   private final VisionSubsystem m_vision;
 
-  public cg_autonScoreDriveFowardBalance(DriveSubsystem drive, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
+  public cg_autonScoreDriveFowardBalance(DriveSubsystem drive, GyroSubsystem gyro, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
     m_drive = drive;
+    m_gyro = gyro;
     m_stove = stove;
     m_fsr = fsr;
     m_vision = vision;
-    addRequirements(m_drive, m_stove, m_fsr, m_vision);
+    addRequirements(m_drive, m_gyro, m_stove, m_fsr, m_vision);
 
     addCommands(
         //this is a comma separated list of commands, thus, the last one should not have a comma
@@ -50,8 +53,8 @@ public class cg_autonScoreDriveFowardBalance extends SequentialCommandGroup {
         new helpers_debugMessage("Auton: ### Score, Drive Forward, Balance ###"),
         new cg_SetOdom180(m_drive, m_vision),
         new cg_ScoreConditional(m_drive, m_stove, m_fsr, m_vision),
-        new cg_DriveForward3p6m(m_drive, m_vision), 
-        new cg_AutoBalance(m_drive),
+        new cg_DriveForward3p6m(m_drive, m_gyro, m_vision), 
+        new cg_AutoBalance(m_drive, m_gyro),
         new helpers_debugMessage("Auton: Done with auton")
     );
   }

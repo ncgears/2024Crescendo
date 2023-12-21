@@ -26,6 +26,7 @@ import frc.team1918.robot.commands.stove.stove_moveBurnerHome;
 import frc.team1918.robot.commands.stove.stove_moveHotPlateHome;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
+import frc.team1918.robot.subsystems.GyroSubsystem;
 import frc.team1918.robot.subsystems.StoveSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 import frc.team1918.robot.commandgroups.autoncommands.*;
@@ -33,12 +34,14 @@ import frc.team1918.robot.commandgroups.autoncommands.*;
 @SuppressWarnings("unused")
 public class cg_autonScoreDriveForward extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;
+  private final GyroSubsystem m_gyro;
   private final StoveSubsystem m_stove;
   private final FiveSecondRuleSubsystem m_fsr;
   private final VisionSubsystem m_vision;
 
-  public cg_autonScoreDriveForward(DriveSubsystem drive, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
+  public cg_autonScoreDriveForward(DriveSubsystem drive, GyroSubsystem gyro, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
     m_drive = drive;
+    m_gyro = gyro;
     m_stove = stove;
     m_fsr = fsr;
     m_vision = vision;
@@ -54,7 +57,7 @@ public class cg_autonScoreDriveForward extends SequentialCommandGroup {
         new stove_moveHotPlateHome(m_stove),
         new stove_moveBurnerHome(m_stove, m_fsr),
         new cg_Wait(0.5),
-        new cg_DriveForward3p6m(m_drive, m_vision),
+        new cg_DriveForward3p6m(m_drive, m_gyro, m_vision),
         new ParallelDeadlineGroup(
           new WaitCommand(1),
           new drive_defLock(m_drive)

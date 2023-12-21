@@ -13,6 +13,7 @@ import frc.team1918.lib.control.SwerveTrajectory.State;
 import frc.team1918.paths.Path;
 //import subsystem
 import frc.team1918.robot.subsystems.DriveSubsystem;
+import frc.team1918.robot.subsystems.GyroSubsystem;
 
 /**
  * A command to stop the calibration mode.
@@ -21,6 +22,7 @@ import frc.team1918.robot.subsystems.DriveSubsystem;
  */
 public class drive_followTrajectory extends Command {
   private DriveSubsystem m_drive;
+  private GyroSubsystem m_gyro;
   private SwerveTrajectory m_trajectory;
   private PIDController m_xController, m_yController, m_thetaController;
   // private Rotation2d m_offset;
@@ -30,9 +32,10 @@ public class drive_followTrajectory extends Command {
   /**
    * @param subsystem The drive subsystem this command will run on.
    */
-  public drive_followTrajectory(DriveSubsystem subsystem, Path path) {
-    m_drive = subsystem;
-    addRequirements(m_drive);
+  public drive_followTrajectory(DriveSubsystem drive, GyroSubsystem gyro, Path path) {
+    m_drive = drive;
+    m_gyro = gyro; 
+    addRequirements(m_drive, m_gyro);
     m_trajectory = path.getPath();
   }
 
@@ -69,7 +72,7 @@ public class drive_followTrajectory extends Command {
     double omega = -m_thetaController.calculate(currentPose.getRotation().getRadians(), dt) - refState.velocity.z;
 
     // m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, m_drive.getHeading().minus(m_offset)), true);
-    m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, m_drive.getHeading()), true);
+    m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, m_gyro.getHeading()), true);
     m_lastTime = time;
   }
 

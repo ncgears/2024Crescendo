@@ -43,7 +43,7 @@ public class vision_aimAndSelectShot extends Command {
 
   public void initialize() {
     Helpers.Debug.debug("Vision: Start Target and Shot Assist");
-    m_drive.setVisionTargeting(true);
+    // m_drive.setVisionTargeting(true);
     m_vision.setRinglight(Constants.Vision.stateLightOn);
     m_vision.setVisionTracking(true);
   }
@@ -53,7 +53,7 @@ public class vision_aimAndSelectShot extends Command {
     m_pitch = m_vision.getVisionPitch();
     m_rotation = m_vision.getVisionTurn();
     SmartDashboard.putNumber("Vision/TurnValue", m_rotation);
-    if(m_rotation != 0) m_drive.unlockAngle(); //unlock angle if rotating
+    // if(m_rotation != 0) m_drive.unlockAngle(); //unlock angle if rotating
     m_drive.drive(m_forward, m_strafe, m_rotation, Constants.DriveTrain.useFieldCentric);
   }
 
@@ -63,7 +63,7 @@ public class vision_aimAndSelectShot extends Command {
     Helpers.Debug.debug("Vision: Stop Target and Shot Assist");
     Helpers.Debug.debug("current pitch"+m_pitch);
     m_drive.brake(false);
-    m_drive.setVisionTargeting(false);
+    // m_drive.setVisionTargeting(false);
     m_vision.setRinglight(false);
   }
 

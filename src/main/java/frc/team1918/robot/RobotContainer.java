@@ -35,13 +35,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 //Subsystems imports
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
+import frc.team1918.robot.subsystems.GyroSubsystem;
 import frc.team1918.robot.subsystems.StoveSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem.spatulas;
 //Commands imports
 // import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.commands.fivesecondrule.*;
+import frc.team1918.robot.commands.gyro.gyro_resetGyro;
 import frc.team1918.robot.commands.drive.*;
+import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.commands.stove.*;
 import frc.team1918.robot.commands.vision.*;
 import frc.team1918.robot.modules.Burner.BurnerPositions;
@@ -66,6 +69,7 @@ public class RobotContainer {
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
     private final FiveSecondRuleSubsystem m_fsr = new FiveSecondRuleSubsystem();
     private final StoveSubsystem m_stove = new StoveSubsystem();
+    private final GyroSubsystem m_gyro = new GyroSubsystem();
     private final DriveSubsystem m_drive = new DriveSubsystem();
     private final VisionSubsystem m_vision = new VisionSubsystem();
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
@@ -216,20 +220,20 @@ public class RobotContainer {
     // btn_DLSpatDown.onTrue(new cg_spatulaGriddleToFloor(m_stove, m_fsr, spatulas.LEFT));
 
     //Burner
-    btn_BurnerHot.onTrue(new drive_setCommunity(m_drive, m_stove, m_fsr, true).andThen(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.HOT).alongWith(new stove_moveHotPlateTo(m_stove, HotPlatePositions.LEVEL))));
-    btn_BurnerCold.onTrue(new drive_setCommunity(m_drive, m_stove, m_fsr, true).andThen(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.COLD).alongWith(new stove_moveHotPlateTo(m_stove, HotPlatePositions.LEVEL))));
+    // btn_BurnerHot.onTrue(new drive_setCommunity(m_drive, m_stove, m_fsr, true).andThen(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.HOT).alongWith(new stove_moveHotPlateTo(m_stove, HotPlatePositions.LEVEL))));
+    // btn_BurnerCold.onTrue(new drive_setCommunity(m_drive, m_stove, m_fsr, true).andThen(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.COLD).alongWith(new stove_moveHotPlateTo(m_stove, HotPlatePositions.LEVEL))));
     btn_BurnerHome.onTrue(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.HOME).alongWith(new stove_moveHotPlateTo(m_stove, HotPlatePositions.HOME)));
     // btn_DBurnerHot.onTrue(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.HOT));
     // btn_DBurnerCold.onTrue(new stove_moveBurnerTo(m_stove, m_fsr, BurnerPositions.COLD));
     
-    btn_AutoBalance.whileTrue(new cg_AutoBalance(m_drive));
+    btn_AutoBalance.whileTrue(new cg_AutoBalance(m_drive, m_gyro));
     // btn_AutoBalance.whileTrue(new cg_AutoBalance(m_drive));
 
     //Drive Buttons
     btn_DefLock.whileTrue(new drive_defLock(m_drive));
 
     //Maintenance buttons
-    btn_ResetGyro.onTrue(new drive_resetGyro(m_drive).andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
+    btn_ResetGyro.onTrue(new gyro_resetGyro(m_gyro).andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
     btn_MoveTowardHome.whileTrue(new cg_zeroMovingParts(m_stove, m_fsr)); 
     btn_ResetRobot.onTrue(new cg_resetRobot(m_stove, m_fsr, m_vision));
     btn_ZeroGriddleParts.whileTrue(new cg_zeroGriddleParts(m_stove));
@@ -330,13 +334,13 @@ public class RobotContainer {
       m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive, m_stove, m_fsr, m_vision));
       // m_auto_chooser.addOption("[Test] Get Cone Selector Value", new cg_reportCone());
       m_auto_chooser.addOption("Score and Wait", new cg_autonScoreOnly(m_drive, m_stove, m_fsr, m_vision));
-      m_auto_chooser.addOption("Score, Drive Fwd, Side of CS", new cg_autonScoreDriveForwardSide(m_drive, m_stove, m_fsr, m_vision));
-      m_auto_chooser.addOption("Score, Drive Fwd, Bal", new cg_autonScoreDriveFowardBalance(m_drive, m_stove, m_fsr, m_vision));
-      m_auto_chooser.addOption("Score, Drive Fwd, 2Pt, Bal", new cg_autonScoreDriveFowardExitBalance(m_drive, m_stove, m_fsr, m_vision));
+      m_auto_chooser.addOption("Score, Drive Fwd, Side of CS", new cg_autonScoreDriveForwardSide(m_drive, m_gyro, m_stove, m_fsr, m_vision));
+      m_auto_chooser.addOption("Score, Drive Fwd, Bal", new cg_autonScoreDriveFowardBalance(m_drive, m_gyro, m_stove, m_fsr, m_vision));
+      m_auto_chooser.addOption("Score, Drive Fwd, 2Pt, Bal", new cg_autonScoreDriveFowardExitBalance(m_drive, m_gyro, m_stove, m_fsr, m_vision));
 
       //Testing Autons
-      m_auto_chooser.addOption("[Test] RedOverBump", new cg_autonRedOverBump(m_drive, m_stove, m_fsr, m_vision));
-      m_auto_chooser.addOption("[Test] BlueOverBump", new cg_autonBlueOverBump(m_drive, m_stove, m_fsr, m_vision));
+      m_auto_chooser.addOption("[Test] RedOverBump", new cg_autonRedOverBump(m_drive, m_gyro, m_stove, m_fsr, m_vision));
+      m_auto_chooser.addOption("[Test] BlueOverBump", new cg_autonBlueOverBump(m_drive, m_gyro, m_stove, m_fsr, m_vision));
     }
     //SmartDashboard.putData(m_auto_chooser); //put in the smartdash
   }
@@ -370,7 +374,7 @@ public class RobotContainer {
     .withWidget(BuiltInWidgets.kSplitButtonChooser);
 
     // Gyro
-    driveTab.add("Gyro", m_drive.getGyro())
+    driveTab.add("Gyro", m_gyro.getGyro())
         .withPosition(7, 0)
         .withSize(2,2)
         .withWidget(BuiltInWidgets.kGyro);

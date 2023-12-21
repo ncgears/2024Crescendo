@@ -517,6 +517,7 @@ public class Constants {
         }
         public static final boolean useFieldCentric = true; //use field-centric drive. This should always be true except for testing?
         public static final boolean useDefensiveLock = false; //use defensiveLock strategy when braking putting swerve into X pattern
+        public static final boolean useBrakeWhenStopped = false; //set the brake mode when drive speed is 0
         public static final double kDriveStraight_P = 0.0075; //kP for driveStraight correction
         public static final double kMaxMetersPerSecond = 4.115; //limit full stick speed meters to 13.5fps
         public static final double kMaxRotationRadiansPerSecond = 3.4; //Multiplier for omega of turning the robot
