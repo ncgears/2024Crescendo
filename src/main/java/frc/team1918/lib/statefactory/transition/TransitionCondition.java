@@ -1,6 +1,6 @@
 package frc.team1918.lib.statefactory.transition;
 
-import frc.team1918.lib.statefactory.callbacks.CallbackBase;
+// import frc.team1918.lib.statefactory.callbacks.CallbackBase;
 
 /**
  * Holds the boolean condition that determines if a state should transition or not.

@@ -1,6 +1,6 @@
 package frc.team1918.lib.statefactory.transition;
 
-import frc.team1918.lib.statefactory.transition.TransitionCondition;
+// import frc.team1918.lib.statefactory.transition.TransitionCondition;
 
 /**
  * Timed transition class for simple usage of time based transitions

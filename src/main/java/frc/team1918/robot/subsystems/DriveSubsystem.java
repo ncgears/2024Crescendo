@@ -21,6 +21,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 //import edu.wpi.first.math.geometry.Translation2d;
 
+@SuppressWarnings("deprecation")
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
 	private static GyroSubsystem m_gyro;

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Represents each state and all of its properties
  */
-
+@SuppressWarnings("rawtypes")
 public class State {
     private Enum name; // taking in the enum constant
     private CallbackBase enterActions;

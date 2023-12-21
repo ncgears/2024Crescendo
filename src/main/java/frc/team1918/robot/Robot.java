@@ -15,7 +15,7 @@ import java.util.Optional;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
-import edu.wpi.first.net.PortForwarder;
+// import edu.wpi.first.net.PortForwarder;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;

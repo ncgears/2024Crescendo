@@ -4,7 +4,6 @@ package frc.team1918.robot.commands.gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team1918.robot.Helpers;
 //import subsystem
-import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.GyroSubsystem;
 
 /**

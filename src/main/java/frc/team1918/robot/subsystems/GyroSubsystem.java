@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Dashboard;
 import frc.team1918.robot.Robot;
-import frc.team1918.robot.modules.SwerveModule;
 
 public class GyroSubsystem extends SubsystemBase {
 	private static GyroSubsystem instance;

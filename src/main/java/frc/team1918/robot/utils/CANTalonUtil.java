@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /** Add your docs here. */
+@Deprecated(since="2024")
 public class CANTalonUtil {
     public enum Usage { kAll, kOpenLoop, kPrimaryPidOnly, kMinimal; }
     //see https://docs.ctre-phoenix.com/en/latest/ch18_CommonAPI.html

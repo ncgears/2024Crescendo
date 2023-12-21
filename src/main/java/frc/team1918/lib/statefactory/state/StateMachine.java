@@ -24,6 +24,7 @@ class InvalidStateException extends StateMachineBuilderException { public Invali
 /**
  * Manages all states and transitions between them.
  */
+@SuppressWarnings("rawtypes")
 public class StateMachine {
     // linear list and fallback list logic
     public List<State> linearList = new ArrayList<>();
@@ -143,6 +144,7 @@ public class StateMachine {
      * Starting the state machine at the indicated state
      * @param state Prematurely setting the statemachine to the indicated state
      */
+    @SuppressWarnings("all")
     public void setState(Enum state) {
         try { // try grabbing target state from either linear or failsafes
             currentState = linearList.get(linearList.indexOf(state));

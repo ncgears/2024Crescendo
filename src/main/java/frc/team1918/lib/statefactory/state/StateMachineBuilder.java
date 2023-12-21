@@ -11,6 +11,7 @@ import java.util.List;
 /**
  * Builds each state for the StateMachine.
  */
+@SuppressWarnings("rawtypes")
 public class StateMachineBuilder { // takes in the enum of states
     private List<State> stateList = new ArrayList<>();
     private CallbackBase update;

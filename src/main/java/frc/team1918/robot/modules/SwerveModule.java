@@ -1,5 +1,5 @@
-
 package frc.team1918.robot.modules;
+
 //Talon SRX/Talon FX
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -18,6 +18,7 @@ import frc.team1918.robot.Dashboard;
 import frc.team1918.robot.Helpers;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
+@Deprecated(since="2024")
 public class SwerveModule {
     private WPI_TalonSRX turn;
     private WPI_TalonFX drive;
