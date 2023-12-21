@@ -5,11 +5,12 @@
 /*----------------------------------------------------------------------------*/
 package frc.team1918.robot.utils;
 
-import edu.wpi.first.wpilibj2.command.button.Button;
+// import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 @Deprecated(since = "2023")
-public class OrPOVButton extends Button {
+public class OrPOVButton extends Trigger {
     private final POVButton button1;
     private final POVButton button2;
     private final POVButton button3;
