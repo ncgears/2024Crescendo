@@ -4,6 +4,10 @@ import frc.team1918.robot.utils.PIDGains;
 import frc.team1918.robot.modules.SwerveModuleConstants;
 import frc.team1918.robot.modules.SpatulaNamedPositions;
 import frc.team1918.robot.utils.TalonConstants;
+
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -396,23 +400,40 @@ public class Constants {
         public static final int DEFAULT_TURN_IZONE = 0; //PID IZone
         public static final int DEFAULT_TURN_ALLOWED_ERROR = 3; //PID Allowed Error
         public static final double DEFAULT_WHEEL_DIAM_MM = 101.6; //Wheel Diameter of 3in colson
+        public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
+        
         // current limits
         // Swerve current limiting //TODO: Needs tuning, this was borrowed from Team364 example
         // See {@link https://github.com/Team364/BaseFalconSwerve/blob/main/src/main/java/frc/robot/CTREConfigs.java}
-        public static final boolean isTurnCurrentLimitEnabled = false;
-        public static final int kTurnCurrentLimitAmps = 25;
-        public static final int kTurnCurrentThresholdAmps = 40;
-        public static final double kTurnCurrentThresholdSecs = 0.1;
-        public static final boolean isDriveCurrentLimitEnabled = false;
-        public static final int kDriveCurrentLimitAmps = 35;
-        public static final int kDriveCurrentThresholdAmps = 60;
-        public static final double kDriveCurrentThresholdSecs = 0.3;
+                public static final boolean kTurnEnableCurrentLimit = true;
+        public static final int kTurnContinuousCurrentLimit = 40;
+        public static final int kTurnPeakCurrentLimit = 70;
+        public static final double kTurnPeakCurrentDuration = 0.3;
+
+        public static final boolean kDriveEnableCurrentLimit = true;
+        public static final int kDriveContinuousCurrentLimit = 40;
+        public static final int kDrivePeakCurrentLimit = 70;
+        public static final double kDrivePeakCurrentDuration = 0.3;
+        
+        /*
+		 * These values are used by the drive falcon to ramp in open loop and closed
+		 * loop driving.
+		 * We found a small open loop ramp (0.25) helps with tread wear, tipping, etc
+		 */
+		public static final double kOpenLoopRamp = 0.25;
+		public static final double kClosedLoopRamp = 0.0;
+
         // swerve control definitions
         public static final double kHomeOffsetRadians = 0.0; //3 * (Math.PI/4); //135 - radians to offset the zero point of the wheels
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
         public static final double kMaxSpeedMetersPerSecond = 4.115; //13.5fps calculated;
         public static final boolean kGyroReversed = false;
+        public static final double kDriveKP = 0.05;
+        public static final double kDriveKI = 0.0;
+        public static final double kDriveKD = 0.0;
+        public static final double kDriveKF = 0.0;
         // Drive Motor Characterization
         // See {@link https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/controller/SimpleMotorFeedforward.html}
         // How do we determine these numbers? Need to find out. These falcon numbers are from Team364 example

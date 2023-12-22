@@ -29,9 +29,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //Util imports
-// import frc.team1918.robot.utils.AndButton;
-// import frc.team1918.robot.utils.OrPOVButton;
-
+import frc.team1918.robot.utils.CommandStadiaController;
+import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 //Subsystems imports
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
@@ -56,6 +55,11 @@ import frc.team1918.robot.modules.Spatula.SpatulaPositions;
 import frc.team1918.robot.commandgroups.*;
 import frc.team1918.robot.commandgroups.autoncommands.cg_AutoBalance;
 
+//Phoenix6
+import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -75,6 +79,16 @@ public class RobotContainer {
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
     private static SendableChooser<String> m_auto_cone = new SendableChooser<>();
     private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
+   
+    //CommandSwerve stuff
+    // private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+      .withDeadband(Constants.DriveTrain.kMaxMetersPerSecond * 0.1)
+      .withRotationalDeadband(Constants.DriveTrain.kMaxRotationRadiansPerSecond)
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+
 
    /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -118,6 +132,8 @@ public class RobotContainer {
   }
 
   //button definitions
+      private CommandStadiaController driver = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
+
     //Driver Controller
       private Joystick dj = new Joystick(Constants.OI.OI_JOY_DRIVER);
 
@@ -178,6 +194,8 @@ public class RobotContainer {
   // }
     
   private void configureButtonBindings() {
+    driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    
     //The buttons here are named based on their functional purpose. This abstracts the purpose from which controller it is attached to.
     //New for 2023: 
     //onTrue (replaces whenPressed and whenActive): schedule on rising edge
