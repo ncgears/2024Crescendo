@@ -21,7 +21,7 @@ import frc.team1918.robot.commands.stove.stove_moveGreaseTrapHome;
 import frc.team1918.robot.commands.stove.stove_moveHotPlateHome;
 import frc.team1918.robot.commands.stove.stove_stopConvectionFan;
 import frc.team1918.robot.commands.stove.stove_stopGriddle;
-import frc.team1918.robot.commands.vision.vision_setRinglight;
+import frc.team1918.robot.commands.vision.vision_setLight;
 
 public class cg_resetRobot extends SequentialCommandGroup {
   private final FiveSecondRuleSubsystem m_fsr;
@@ -53,7 +53,7 @@ public class cg_resetRobot extends SequentialCommandGroup {
         //this is a comma separated list of commands, thus, the last one should not have a comma
         new helpers_debugMessage("Start robot reset sequence"),
         new stove_stopGriddle(m_stove),
-        new vision_setRinglight(m_vision, false),
+        new vision_setLight(m_vision, false),
         new SequentialCommandGroup(
           new fsr_moveSpatulaHome(m_fsr, m_stove, spatulas.BOTH),
           new WaitCommand(1),

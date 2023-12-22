@@ -544,6 +544,7 @@ public class Constants {
     }
     
     public static final class Vision {
+        public static final String limelightName = "limelight"; //name of the limelight
         public static final boolean isDisabled = false;
         public static final boolean stateLightOn = true;
         public static final int id_RingLight = ID.Relay.ringlight; //Relay ID of Ringlight SS Relay

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 
-public class vision_setRinglight extends Command {
+public class vision_setLight extends Command {
   // @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"}) //Dont add "unused" under normal operation
   private final VisionSubsystem m_vision;
   private final boolean m_enabled;
@@ -12,7 +12,7 @@ public class vision_setRinglight extends Command {
   /**
    * @param subsystem The subsystem used by this command.
    */
-  public vision_setRinglight(VisionSubsystem subsystem, boolean enabled) {
+  public vision_setLight(VisionSubsystem subsystem, boolean enabled) {
     m_vision = subsystem;
     m_enabled = enabled;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,7 +30,7 @@ public class vision_setRinglight extends Command {
   public void initialize() {
     String status = (m_enabled)?"On":"Off";
     Helpers.Debug.debug("Vision: LEDs " + status);
-    m_vision.setRinglight(m_enabled);
+    m_vision.setlight(m_enabled);
   }
 
   // Called once the command ends or is interrupted.

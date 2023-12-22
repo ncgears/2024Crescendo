@@ -10,6 +10,8 @@ import frc.team1918.robot.Dashboard;
 // import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
 import frc.team1918.robot.modules.SwerveModule;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // import edu.wpi.first.math.controller.PIDController;
 //kinematics and odometry
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,12 +21,15 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 //import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 @SuppressWarnings("deprecation")
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
 	private static GyroSubsystem m_gyro;
+	private static VisionSubsystem m_vision;
 
 	//initialize 4 swerve modules
 	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
@@ -33,6 +38,9 @@ public class DriveSubsystem extends SubsystemBase {
 	private static SwerveModule m_rearRight = new SwerveModule("RR", Constants.Swerve.RR.constants); // Rear Right
 	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_rearLeft, m_rearRight};
 	private SwerveModulePosition[] swervePositions;
+
+	private SwerveDrivePoseEstimator poseEstimator;
+	private Field2d fieldSim;
 
 	//robot theta Controller
 	// private PIDController driveStraightPID = new PIDController(Constants.DriveTrain.DriveStraight.kP, Constants.DriveTrain.DriveStraight.kI, Constants.DriveTrain.DriveStraight.kD);
@@ -66,6 +74,21 @@ public class DriveSubsystem extends SubsystemBase {
 		//Initialize the odometry object
 		m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);
 
+		//Initialize the vision object
+		m_vision = new VisionSubsystem();
+
+		//Initialize the pose estimator
+		poseEstimator = new SwerveDrivePoseEstimator(
+			Constants.Swerve.kDriveKinematics,
+			m_gyro.getHeading(),
+			getSwerveModulePositions(),
+			getPose(),
+			//stateStdDevs Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust your state estimate less.
+			VecBuilder.fill(.05, .05, Units.degreesToRadians(5)), //.1,.1,.1
+			//visionMeasurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust the vision pose measurement less.
+			VecBuilder.fill(.5, .5, Units.degreesToRadians(30)) //.9,.9,.9
+		);
+		
 		// m_targetPose = m_odometry.getPoseMeters();
 		// m_thetaController.reset();
 		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -108,6 +131,26 @@ public class DriveSubsystem extends SubsystemBase {
 		return m_odometry.getPoseMeters();
 	}
 
+	public Pose2d getEstimatedPose() {
+		return poseEstimator.getEstimatedPosition();
+	}
+
+	public void resetEstimatedPose(Pose2d pose) {
+		poseEstimator.resetPosition(m_gyro.getHeading(), swervePositions, pose);
+		fieldSim.setRobotPose(getEstimatedPose());
+	}
+
+	public void addVisionPose() {
+		Pose2d visionPose = m_vision.getPose();
+		double visionTimestamp = m_vision.getTimestamp();
+		if ((m_vision.getNumTags() == 1 && m_vision.getDistance() < 75.00) ||
+			(m_vision.getNumTags() == 2 && m_vision.getDistance() < 120.00) ||
+			(m_vision.getNumTags() == 3 && m_vision.getDistance() < 185.00)
+		) {
+			poseEstimator.addVisionMeasurement(visionPose, visionTimestamp);
+		}
+	}
+
 	/**
 	 * Resets the odometry to the specified pose. Requires the current heading to account for starting position other than 0.
 	 * 
@@ -142,6 +185,8 @@ public class DriveSubsystem extends SubsystemBase {
 		// 	);
 		// }
 	}
+
+
 
 	/**
 	 * Method to drive the robot using percentages of max speeds (from -1.0 to 1.0)
