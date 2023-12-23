@@ -194,8 +194,8 @@ public class RobotContainer {
   // }
     
   private void configureButtonBindings() {
-    driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
-    
+    // driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
+
     //The buttons here are named based on their functional purpose. This abstracts the purpose from which controller it is attached to.
     //New for 2023: 
     //onTrue (replaces whenPressed and whenActive): schedule on rising edge
