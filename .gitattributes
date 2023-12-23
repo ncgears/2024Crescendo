@@ -5,6 +5,7 @@
 *.scala         text diff=java
 *.gradle        text diff=java
 *.gradle.kts    text diff=kotlin
+*.toc           text diff=python linguist-detectable=false
 
 # These files are text and should be normalized (Convert crlf => lf)
 *.css           text diff=css
