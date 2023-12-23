@@ -17,3 +17,5 @@
 
 - Change dashboard from Shuffleboard to Elastic - https://www.chiefdelphi.com/t/introducing-elastic-a-simple-and-modern-alternative-to-shuffleboard/440750/28
 - Elastic - See also - https://github.com/Gold872/elastic-dashboard
+
+- Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by Jim)
