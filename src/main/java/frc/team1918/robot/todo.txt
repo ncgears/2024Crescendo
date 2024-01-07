@@ -1,0 +1,21 @@
+- Build and implement pid Heading controller (thetaController)
+- Implement finite state machine (in its own class)
+
+- Cleanup drive base code (and convert to Pheonix 6) - https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/main/java/SwerveWithPathPlanner/src/main/java/frc/robot
+- Implement cleaner drivetrain system using odometry and kinematics
+- Odometry updates track robot pose and apply "other" measurements
+- See https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervedriveposeestimator/Drivetrain.java
+
+- Overhaul code to remove unused modules and subsystems
+
+- Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
+
+- Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava
+
+- Rework getAlliance stuff - https://docs.wpilib.org/en/latest/docs/software/basic-programming/alliancecolor.html
+- Review breaking changes - https://docs.wpilib.org/en/latest/docs/yearly-overview/yearly-changelog.html
+
+- Change dashboard from Shuffleboard to Elastic - https://www.chiefdelphi.com/t/introducing-elastic-a-simple-and-modern-alternative-to-shuffleboard/440750/28
+- Elastic - See also - https://github.com/Gold872/elastic-dashboard
+
+- Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by Jim)

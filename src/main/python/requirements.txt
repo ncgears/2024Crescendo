@@ -1,0 +1,18 @@
+# # PyQt5==5.15.4
+# PyQT6==6.2.3
+# # casadi~=3.5.5
+# casadi~=3.5.6rc2
+# matplotlib~=3.3.3
+# # numpy~=1.19.3
+# numpy~=1.22.3
+# # pillow~=8.2.0
+# pillow~=9.0.1
+# qtmodern~=0.2.0
+
+##install latest of these packages
+PyQT6
+casadi
+matplotlib
+numpy
+pillow
+qtmodern
