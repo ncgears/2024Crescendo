@@ -28,7 +28,7 @@ public class VisionSubsystem extends SubsystemBase {
   }
 
   public void updateResults() {
-    llresults = LimelightHelpers.getLatestResults(Constants.Vision.limelightName).targetingResults;
+    // llresults = LimelightHelpers.getLatestResults(Constants.Vision.limelightName).targetingResults;
   }
 
   /**

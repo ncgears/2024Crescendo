@@ -59,6 +59,9 @@ public class Robot extends TimedRobot {
     //Disable LiveWindow
     LiveWindow.disableAllTelemetry();
 
+    //Silence Joystick Warnings
+    DriverStation.silenceJoystickConnectionWarning(true);
+
     //Setup camera
     camera = CameraServer.startAutomaticCapture();
     // camera.setResolution(640, 480);

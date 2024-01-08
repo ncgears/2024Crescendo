@@ -24,8 +24,6 @@ public class cg_resetRobot extends SequentialCommandGroup {
    * <li>retract intake</li>
    * </ol>
    * <br>
-   * @param stove Stove Subsystem
-   * @param fsr FiveSecondRule Subsystem
    * @param vision Vision Subsystem
   */
   public cg_resetRobot(VisionSubsystem vision) {

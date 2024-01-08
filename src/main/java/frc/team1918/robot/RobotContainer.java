@@ -21,6 +21,7 @@ import java.util.Map;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 // import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -228,41 +229,26 @@ public class RobotContainer {
 
   private void buildDriverTab(){
     ShuffleboardTab driveTab = Shuffleboard.getTab("Driver");
-    // .withProperties(Map.of("Show grid",false,"Widget titles","Minimal"));  //doesn't work...
+      // .withProperties(Map.of("Show grid",false,"Widget titles","Minimal"));  //doesn't work...
 
-    // The drive tab is roughly 9 x 5 (columns x rows)
-    // Camera can be 4 x 4, gyro 
-    // driveTab.add("Cargo Cam", new HttpCamera("Cargo Photon", "http://10.50.24.11:5800"))
-    //                                         .withWidget(BuiltInWidgets.kCameraStream).withPosition(0, 0)
-    //                                         .withSize(4, 4);
-    // Add heading and outputs to the driver views
-    // Auton Chooser
-    driveTab.add("Autonomous Chooser", m_auto_chooser)
-      .withPosition(0, 0)
-      .withSize(6, 2)
-      .withWidget("ComboBox Chooser");
-
-    // // Cone Indicator
-    // driveTab.add("Auton Part Type", m_auto_cone)
-    //   .withPosition(0, 2)
-    //   .withSize(5, 2)
-    //   .withWidget(BuiltInWidgets.kSplitButtonChooser);
-
-    // // Cone Indicator
-    // driveTab.add("Auton Burner Temp", m_auto_burner)
-    //   .withPosition(0, 4)
-    //   .withSize(5, 2)
-    //   .withWidget(BuiltInWidgets.kSplitButtonChooser);
-
-    driveTab.add("Match Time", "0:00")
-      .withPosition(0,2)
-      .withSize(6,2)
-      .withWidget("Match Time");
-
-    driveTab.add("FMS Info", "blah")
-      .withPosition(0,4)
+    // FMS Info - Cannot be programmatically placed
+      driveTab.add("FMS Info", "")
+      .withPosition(0,0)
       .withSize(6,2)
       .withWidget("FMSInfo");
+
+    // Match Time
+    driveTab.add("Match Time", "")
+      .withPosition(0,2)
+      .withSize(6,2)
+      .withProperties(Map.of("time_display_mode","Minutes and Seconds","red_start_time",15,"yellow_start_time",30)) //mode: "Seconds Only" or "Minutes and Seconds"
+      .withWidget("Match Time");
+
+      // Auton Chooser
+    driveTab.add("Autonomous Chooser", m_auto_chooser)
+      .withPosition(0, 4)
+      .withSize(6, 2)
+      .withWidget("ComboBox Chooser");
 
     // Gyro
     driveTab.add("Gyro", m_gyro.getGyro())
@@ -459,7 +445,7 @@ public class RobotContainer {
 
     // visionTab.add("LED on", new LEDon(m_vision))  .withPosition(0, 0);
     // visionTab.add("LED off", new LEDoff(m_vision)).withPosition(0, 1);
-    // visionTab.add("Condigure Vision Drive", new configureVisionDrivePID(m_drive)).withPosition(0, 2);
+    // visionTab.add("Configure Vision Drive", new configureVisionDrivePID(m_drive)).withPosition(0, 2);
     // visionTab.add("Configure Turn Turn", new configureVisionTurnPID(m_drive))    .withPosition(0, 3);
     // visionTab.add("Configure Cargo controllre", new configureVisionCargoPID(m_drive)).withPosition(0, 4);
 
