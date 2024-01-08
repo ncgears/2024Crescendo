@@ -59,8 +59,6 @@ public class SwerveModule {
                                             Constants.Global.kTimeoutMs);				// Configuration Timeout
         turn.configFeedbackNotContinuous(Constants.Global.SWERVE_SENSOR_NONCONTINUOUS, 0); //Disable continuous feedback tracking (so 0 and 1024 are effectively one and the same)
 
-//TODO 2023-02-07: Self-test encoder and see if quadrature encoder values are 0-4096 or only analog values returning
-
         // turn.setSelectedSensorPosition(0); //reset the talon encoder counter to 0 so we dont carry over a large error from a previous testing
         // turn.set(ControlMode.Position, 1024); //set this to some fixed value for testing
         turn.setSensorPhase(moduleConstants.turnSensorPhase); //set the sensor phase based on the constants setting for this module
@@ -172,28 +170,6 @@ public class SwerveModule {
         }
         debug_ticks1++;
 
-        // double wheelDiam = Constants.DriveTrain.DT_WHEEL_DIAM_MM - this.wheelOffsetMM;
-        // SwerveModuleState state = (Constants.Swerve.USE_OPTIMIZATION) ? optimize(desiredState) : desiredState;
-        // if (Constants.Swerve.USE_DRIVE_PID) {
-        //     // TODO: Send speed to closed loop control rather than percent output. Enable USE_DRIVE_PID and test.
-        //     double motorRpm = (Helpers.General.metersPerSecondToRPM(state.speedMetersPerSecond, wheelDiam) / Constants.DriveTrain.DT_DRIVE_CONVERSION_FACTOR);
-        //     // Helpers.Debug.debug(moduleName+" desired mps: "+state.speedMetersPerSecond+" motorRpm: "+motorRpm);
-        //     drive.set(ControlMode.Velocity, motorRpm, DemandType.ArbitraryFeedForward, feedforward.calculate(state.speedMetersPerSecond));
-        // } else {
-        //     double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond;
-        //     drive.set(ControlMode.PercentOutput, percentOutput);
-        // }
-        
-        // //Determine which direction we should turn to get to the desired setpoint
-        // int cur_ticks = getTurnPosition();
-        // int min_ticks = minTurnTicks(Helpers.General.radiansToTicks(state.angle.getRadians()), cur_ticks);
-        // int turn_ticks = min_ticks + cur_ticks;
-        // if(Helpers.Debug.debugThrottleMet(debug_ticks1)) {
-        //     Helpers.Debug.debug(moduleName+" Speed (metersPerSecond)="+Helpers.General.roundDouble(state.speedMetersPerSecond,3)+" Turn Setpoint="+turn_ticks);
-        // }
-        // debug_ticks1++;
-
-        // turn.set(ControlMode.Position, turn_ticks); //Set the turn setpoint
     }
 
     /**
@@ -231,19 +207,6 @@ public class SwerveModule {
             drive.set(ControlMode.PercentOutput,power);
         }
     }
-
-    // /**
-    //  * Returns the raw units of the current location of the turn sensor
-    //  * @return (integer) Raw units (typically encoder ticks) of turn location
-    //  */
-    // public int getTurnPosition(){
-    //     //TODO: Change to non-normalized?
-    //     // return ((int) turn.getSelectedSensorPosition(0) & 0x3FF); //normalize to a single rotation
-    //     return ((int) turn.getSelectedSensorPosition(0)); //do not normalize
-    //     //return (turn.getSensorCollection().getAnalogIn()); //This gets an ADC value for the analog sensor
-    //     //We may want to use a bitwise "AND" with 0x3FF (1023), 0x7FF (2047), 0xFFF (4095) to get just the most significant bits that we are interested in.
-    //     //Explanation: & is a bitwise "AND" operator, and 0xFFF is 4095 in Hex, consider "0101010101 AND 1111 = 0101"
-    // }
 
     public int getZeroPositionTicks() {
         int total = (int) turn.getSelectedSensorPosition(0);

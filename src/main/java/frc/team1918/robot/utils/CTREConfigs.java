@@ -37,7 +37,7 @@ public final class CTREConfigs {
         swerveDriveFXConfig.MotorOutput.NeutralMode = Constants.Swerve.kDriveNeutralMode;
 
         CurrentLimitsConfigs driveCurrentLimitsConfigs = new CurrentLimitsConfigs();
-        driveCurrentLimitsConfigs.SupplyCurrentLimit = Constants.Swerve.kDriveContinuousCurrentLimit;
+        driveCurrentLimitsConfigs.SupplyCurrentLimit = Constants.Swerve.kDriveCurrentLimitAmps;
         swerveDriveFXConfig.CurrentLimits = driveCurrentLimitsConfigs;
 
         // TODO: check whether it is duty cycle or smtg else

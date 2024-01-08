@@ -1,8 +1,5 @@
 package frc.team1918.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-
 public class Helpers {
     //Helpers for Debugging
     public static final class Debug {
@@ -139,88 +136,6 @@ public class Helpers {
          */
         public final static double ticksPer100msToRPS(double ticks, int fullRotationTicks, double factor) {
             return ((ticks / fullRotationTicks) * 10 * factor);
-        }
-    }
-    //Helpers for the Operator Interface
-    public static final class OI {
-        private static Joystick dj = new Joystick(Constants.OI.OI_JOY_DRIVER);
-        private static Joystick oj = new Joystick(Constants.OI.OI_JOY_OPER);
-        //DRIVER CONTROLS
-        /**
-         * @param useDeadband Boolean value indicating whether to apply deadband to output
-         * @return double precision -1 to 1 of the strafe axis
-         */
-        public final static double getAxisStrafeValue(boolean useDeadband) {
-            return (useDeadband) ? applyDeadband(dj.getRawAxis(Constants.OI.Driver.AXIS_STRAFE)) : dj.getRawAxis(Constants.OI.Driver.AXIS_STRAFE);
-        }
-
-        /**
-         * @param useDeadband Boolean value indicating whether to apply deadband to output
-         * @return double precision -1 to 1 of the fwd axis
-         */
-        public final static double getAxisFwdValue(boolean useDeadband) {
-            return (useDeadband) ? applyDeadband(dj.getRawAxis(Constants.OI.Driver.AXIS_FWD)*-1) : dj.getRawAxis(Constants.OI.Driver.AXIS_FWD)*-1;
-        }
-
-        /**
-         * @param useDeadband Boolean value indicating whether to apply deadband to output
-         * @return double precision -1 to 1 of the turn axis
-         */
-        public final static double getAxisTurnValue(boolean useDeadband) {
-            return (useDeadband) ? applyDeadband(dj.getRawAxis(Constants.OI.Driver.AXIS_TURN)) : dj.getRawAxis(Constants.OI.Driver.AXIS_TURN);
-        }
-
-        public final static double getAimerValue(boolean useDeadband) {
-            return (useDeadband) ? applyDeadband(oj.getRawAxis(Constants.OI.Operator.AXIS_AIMER)) : oj.getRawAxis(Constants.OI.Operator.AXIS_AIMER);
-        }
-
-        public static void rumble(boolean rumble, String stick) {
-            Joystick joy = (stick=="oj") ? oj : dj;
-            joy.setRumble(RumbleType.kLeftRumble, (rumble)?1.0:0.0);
-            joy.setRumble(RumbleType.kRightRumble, (rumble)?1.0:0.0);
-        }
-
-        //OPERATOR CONTROLS
-        /**
-         * @param useDeadband Boolean value indicating whether to apply deadband to output
-         * @return double precision -1 to 1 of the fwd axis
-         */
-        // public double getClimbAxisValue(boolean useDeadband) {
-        //     return (useDeadband) ? applyDeadband(oj.getRawAxis(Constants.OI.Operator.AXIS_CLIMB)) : oj.getRawAxis(Constants.OI.Operator.AXIS_CLIMB);
-        // }
-
-        //HELPERS
-        /**
-         * @param inVal double precision input value to apply deadband
-         * @return double precision -1 to 1 after applying deadband calculation
-         */
-        public static final double applyDeadband(double inVal) {
-            // return (Math.abs(inVal) < Constants.OI.OI_JOY_MIN_DEADBAND ) ? 0.0 : inVal * Math.signum(inVal);
-            double outVal = (Math.abs(inVal) < Constants.OI.OI_JOY_MIN_DEADBAND ) ? 0.0 : inVal * Math.signum(inVal);
-            outVal = (Math.abs(inVal) > Constants.OI.OI_JOY_MAX_DEADBAND ) ? 1.0 * Math.signum(inVal) : inVal;
-            // outVal = (outVal > Constants.OI.OI_JOY_MAX_DEADBAND) ? 1.0 : outVal; //positive
-            // outVal = (outVal < -Constants.OI.OI_JOY_MAX_DEADBAND) ? -1.0 : outVal; //negative
-            return outVal;
-        }
-
-        /**
-         * This function zeros the joystick below the deadband. After the deadband, the value is normalized
-         * from zero to 1
-         * @param inVal double precision input value to apply deadband
-         * @return double precision -1 to 1 after applying deadband calculation
-         */
-        public static final double applyRampingDeadband(double inVal) {
-            double ramped = inVal;
-            return ( Math.abs(inVal) < Constants.OI.OI_JOY_MIN_DEADBAND ) ? 0.0 : ramped;
-            //TODO: Figure out math for transformation
-            /**
-             * The following math is from 2767 Stryke Force ExpoScale Utility
-             * https://github.com/strykeforce/thirdcoast/blob/master/src/main/java/org/strykeforce/thirdcoast/util/ExpoScale.java
-             */
-            // var scale = 1;
-            // var deadband = 0.15;
-            // var offset = 1.0 / (scale * Math.pow(1 - deadband, 3) + (1 - scale) * (1 - deadband));
-            // return (scale * Math.pow(inVal, 3) + (1 - scale) * inVal) * offset;
         }
     }
 }

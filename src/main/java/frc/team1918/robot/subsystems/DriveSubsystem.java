@@ -59,6 +59,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public DriveSubsystem() { //initialize the class
+		fieldSim = new Field2d();
 		//Perform init function on each module, not needed?
 		// for (SwerveModule module: modules) {
 		// 	module.resetDistance();
@@ -94,7 +95,7 @@ public class DriveSubsystem extends SubsystemBase {
 		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
 	}
 
-	@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	@Override
 	public void periodic() {
 		updateOdometry();
@@ -133,6 +134,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public Pose2d getEstimatedPose() {
 		return poseEstimator.getEstimatedPosition();
+	}
+
+	public Field2d getField2d() {
+		return fieldSim;
 	}
 
 	public void resetEstimatedPose(Pose2d pose) {
@@ -176,6 +181,7 @@ public class DriveSubsystem extends SubsystemBase {
             	m_rearRight.getPosition()
 			}
 		);
+		fieldSim.setRobotPose(m_odometry.getPoseMeters());
 		//TODO: See https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervedriveposeestimator/Drivetrain.java
 		//TODO: Using a pose estimator will allow us to fuse multiple data into the odometry
 		// if(Constants.Vision.useForOdometry) {
@@ -209,7 +215,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param rot Angular rate of the robot.
 	 * @param fieldRelative Whether the provided x and y speeds are relative to the field.
 	 */
-	@SuppressWarnings("unused")
+	// @SuppressWarnings("unused")
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 		ChassisSpeeds speeds = ChassisSpeeds.discretize(
 			(fieldRelative) 

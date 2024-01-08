@@ -1,0 +1,23 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "Talon FX[31]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Driver/Auton Burner Temp": "String Chooser",
+      "/Shuffleboard/Driver/Auton Part Type": "String Chooser",
+      "/Shuffleboard/Driver/Autonomous Chooser": "String Chooser",
+      "/Shuffleboard/Driver/Gyro": "Gyro"
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
+  }
+}

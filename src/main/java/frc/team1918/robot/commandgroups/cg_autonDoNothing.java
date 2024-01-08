@@ -20,24 +20,18 @@ import frc.team1918.paths.*;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.subsystems.DriveSubsystem;
-import frc.team1918.robot.subsystems.FiveSecondRuleSubsystem;
-import frc.team1918.robot.subsystems.StoveSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
 import frc.team1918.robot.commandgroups.autoncommands.*;
 
 @SuppressWarnings("unused")
 public class cg_autonDoNothing extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;
-  private final StoveSubsystem m_stove;
-  private final FiveSecondRuleSubsystem m_fsr;
   private final VisionSubsystem m_vision;
 
-  public cg_autonDoNothing(DriveSubsystem drive, StoveSubsystem stove, FiveSecondRuleSubsystem fsr, VisionSubsystem vision) {
+  public cg_autonDoNothing(DriveSubsystem drive, VisionSubsystem vision) {
     m_drive = drive;
-    m_stove = stove;
-    m_fsr = fsr;
     m_vision = vision;
-    addRequirements(m_drive, m_stove, m_fsr, m_vision);
+    addRequirements(m_drive, m_vision);
 
     addCommands(
         //this is a comma separated list of commands, thus, the last one should not have a comma

@@ -101,7 +101,7 @@ public class DriveSubsystemOld extends SubsystemBase {
 			// module.updateDashboard();
 		}
 		if(Robot.isSimulation()) {
-			//TODO: not working, but if simulated, lets pretend to go somewhere
+			//not working, but if simulated, lets pretend to go somewhere
 			//drive(0.2,0,0.0,true); //drive somewhere for simulation
 		}
 	}
