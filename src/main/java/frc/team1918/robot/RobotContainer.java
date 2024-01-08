@@ -42,6 +42,7 @@ import frc.team1918.robot.commands.gyro.gyro_resetGyro;
 import frc.team1918.robot.commands.drive.*;
 import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.commands.vision.*;
+import frc.team1918.robot.generated.TunerConstants;
 //CommandGroup imports
 import frc.team1918.robot.commandgroups.*;
 
@@ -70,12 +71,12 @@ public class RobotContainer {
    
     //CommandSwerve stuff
     // private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-      .withDeadband(Constants.DriveTrain.kMaxMetersPerSecond * 0.1)
-      .withRotationalDeadband(Constants.DriveTrain.kMaxRotationRadiansPerSecond)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    // private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+    //   .withDeadband(Constants.DriveTrain.kMaxMetersPerSecond * 0.1)
+    //   .withRotationalDeadband(Constants.DriveTrain.kMaxRotationRadiansPerSecond)
+    //   .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+    // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     //init joysticks
     private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
@@ -106,26 +107,44 @@ public class RobotContainer {
       m_drive.setDefaultCommand(
         new drive_defaultDrive(
           m_drive,
-          () -> dj.getLeftY(),
+          () -> -dj.getLeftY(),
           () -> dj.getLeftX(),
           () -> dj.getRightX()
         )
-        // new drive_defaultDrive2(m_drive, dj)
       );
     }
   }
     
   private void configureButtonBindings() {
-    // driver.a().whileTrue(drivetrain.applyRequest(() -> brake));
+    /** New for 2023:
+    * onTrue (replaces whenPressed and whenActive): schedule on rising edge 
+    * onFalse (replaces whenReleased and whenInactive): schedule on falling edge
+    * whileTrue (replaces whileActiveOnce): schedule on rising edge, cancel on falling edge
+    * toggleOnTrue (replaces toggleWhenActive): on rising edge, schedule if unscheduled and cancel if scheduled
+    */
 
-    //New for 2023: 
-    //onTrue (replaces whenPressed and whenActive): schedule on rising edge
-    //onFalse (replaces whenReleased and whenInactive): schedule on falling edge
-    //whileTrue (replaces whileActiveOnce): schedule on rising edge, cancel on falling edge
-    //toggleOnTrue (replaces toggleWhenActive): on rising edge, schedule if unscheduled and cancel if scheduled
+    /** New for 2024:
+    * Since we now have a StadiaController class with a Command wrapper, we can now bind commands directly to the buttons.
+    * This should make it much easier to find the appropriate functions
+    */
 
+    if(!Constants.DriveTrain.isDisabled) {
+      //Uses CTRE SwerveDrive, which requires TalonFX drive+steer and Pigeon2
+      // drivetrain.setDefaultCommand( //Drivetrain will execute this command periodically
+      //   drivetrain.applyRequest(() -> drive
+      //     .withVelocityX(-dj.getLeftY() * Constants.DriveTrain.kMaxMetersPerSecond)
+      //     .withVelocityY(dj.getLeftX() * Constants.DriveTrain.kMaxMetersPerSecond)
+      //     .withRotationalRate(dj.getRightX() * Constants.DriveTrain.kMaxRotationRadiansPerSecond)
+      //   ).ignoringDisable(true));
+    }
+
+    /** DRIVER JOYSTICK (dj) */
+    // Reset Gyro
     dj.hamburger().onTrue(new gyro_resetGyro(m_gyro).andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
+    // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
+
+    /** OPERATOR JOYSTICK (oj) */
 
   }
 
@@ -154,21 +173,6 @@ public class RobotContainer {
    * and handle requests for commands that don't exist rather than crashing
    * @return command
    */
-  // public Command getRobotCommand(String name) {
-  //   //This selects a command (or command group) to return
-  //   switch (name) {
-  //     case "test":
-  //       return null;
-  //     default:
-  //       return null;
-  //   }
-  // }
-
-  /**
-   * This function returns the robot commands used in Robot.java. The purpose is to make it easier to build the possible commands
-   * and handle requests for commands that don't exist rather than crashing
-   * @return command
-   */
   public Command getRobotCommand(String name) {
     //This selects a command (or command group) to return
     switch (name) {
@@ -178,7 +182,6 @@ public class RobotContainer {
         return null;
     }
   }
-
 
   //From here down is all used for building the shuffleboard
 
