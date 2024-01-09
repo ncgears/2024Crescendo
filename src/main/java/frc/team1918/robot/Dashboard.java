@@ -10,50 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * This class reads and writes values to/from the SmartDashboard
  */
 public class Dashboard {
-    public static final class Spatula {
-        public static final void setPositionName(String module, String value) { SmartDashboard.putString("Spatula/"+module+"/PosName", value); }
-        public static final void setPosition(String module, double value) { SmartDashboard.putNumber("Spatula/"+module+"/Position", value); }
-        public static final void setTarget(String module, double value) { SmartDashboard.putNumber("Spatula/"+module+"/Target",value); }
-        public static final void setSpeed(String module, double value) { SmartDashboard.putNumber("Spatula/"+module+"/Speed",value); }
-    }
-    public static final class Aimer {
-        public static final void setPosition(double value) { SmartDashboard.putNumber("Aimer/Position",value); }
-        public static final void setTarget(double value) { SmartDashboard.putNumber("Aimer/Target",value); }
-        public static final void setError(double value) { SmartDashboard.putNumber("Aimer/Error", value); }
-        public static final void setSpeed(double value) { SmartDashboard.putNumber("Aimer/Speed",value); }
-    }
-    public static final class Griddle {
-        public static final void setSpeed(double value) { SmartDashboard.putNumber("Griddle/Speed", value); }
-        public static final void setDirection(String value) { SmartDashboard.putString("Griddle/Direction", value); }
-    }
-    public static final class ConvectionFan {
-        public static final void setEnabled(boolean value) { SmartDashboard.putBoolean("Convection Fan", value); }
-    }
-    public static final class Burner {
-        public static final void setPositionName(String value) { SmartDashboard.putString("Burner/PosName", value); }
-        public static final void setPosition(double value) { SmartDashboard.putNumber("Burner/Position",value); }
-        public static final void setTarget(double value) { SmartDashboard.putNumber("Burner/Target",value); }
-        public static final void setError(double value) { SmartDashboard.putNumber("Burner/Error", value); }
-        public static final void setSpeed(double value) { SmartDashboard.putNumber("Burner/Speed",value); }
-        public static final void setFLimit(boolean value) { SmartDashboard.putBoolean("Burner/FLimit", value); }
-        public static final void setRLimit(boolean value) { SmartDashboard.putBoolean("Burner/RLimit", value); }
-    }
-    public static final class GreaseTrap {
-        public static final void setPositionName(String value) { SmartDashboard.putString("GreaseTrap/PosName", value); }
-        public static final void setPosition(double value) { SmartDashboard.putNumber("GreaseTrap/Position",value); }
-        public static final void setTarget(double value) { SmartDashboard.putNumber("GreaseTrap/Target",value); }
-        public static final void setError(double value) { SmartDashboard.putNumber("GreaseTrap/Error", value); }
-        public static final void setSpeed(double value) { SmartDashboard.putNumber("GreaseTrap/Speed",value); }
-        public static final void setLimit(boolean value) { SmartDashboard.putBoolean("GreaseTrap/Limit", value); }
-    }
-    public static final class HotPlate {
-        public static final void setPositionName(String value) { SmartDashboard.putString("HotPlate/PosName", value); }
-        public static final void setPosition(double value) { SmartDashboard.putNumber("HotPlate/Position",value); }
-        public static final void setTarget(double value) { SmartDashboard.putNumber("HotPlate/Target",value); }
-        public static final void setError(double value) { SmartDashboard.putNumber("HotPlate/Error", value); }
-        public static final void setSpeed(double value) { SmartDashboard.putNumber("HotPlate/Speed",value); }
-        public static final void setLimit(boolean value) { SmartDashboard.putBoolean("HotPlate/Limit", value); }
-    }
     public static final class Vision {
         public static final void setVisionRinglight(boolean value) { SmartDashboard.putBoolean("Vision/Ring Light", value); }
     }
@@ -78,8 +34,6 @@ public class Dashboard {
         public static final void setRotationPidOut(double value) { SmartDashboard.putNumber("Rotation PID Out", value); }
         public static final void setDesiredAngle(double value) { SmartDashboard.putNumber("Desired Angle", value); }
         public static final void setCorrectionAngle(double value) { SmartDashboard.putNumber("Correction Omega", value); }
-        // public static final void setCommunity(boolean value) { SmartDashboard.putBoolean("In Community", value); }
-        public static final void setCommunity(boolean value) { SmartDashboard.putBoolean("In Community", value); driver_CommunityEntry.setBoolean(value); }
     }
 
     // Define on-the-fly tabs

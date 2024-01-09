@@ -1,15 +1,18 @@
+### TODO List ###
 - Build and implement pid Heading controller (thetaController)
 - Implement finite state machine (in its own class)
-
 - Cleanup drive base code (and convert to Pheonix 6) - https://github.com/CrossTheRoadElec/Phoenix6-Examples/tree/main/java/SwerveWithPathPlanner/src/main/java/frc/robot
-- Implement cleaner drivetrain system using odometry and kinematics
-- Odometry updates track robot pose and apply "other" measurements
-- See https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervedriveposeestimator/Drivetrain.java
+  - Implement cleaner drivetrain system using odometry and kinematics
+  - Odometry updates track robot pose and apply "other" measurements
+  - See https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervedriveposeestimator/Drivetrain.java
+
+- Build prototyping systems to control 2x falcons (shooter), 2x brushed (intake, feeder) with adjustable throttle controls (PID in dashboard?)
+  - See https://github.com/Team-6615-Bellevillains/ChargedUp2023/blob/main/src/main/java/frc/robot/utils/TunablePIDController.java
+  - Implement TunableNumber class to use dashboard widgets for tuning mode
 
 DONE - Overhaul code to remove unused modules and subsystems
 
 - Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
-
 - Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava
 
 DONE - Rework getAlliance stuff - https://docs.wpilib.org/en/latest/docs/software/basic-programming/alliancecolor.html
@@ -30,7 +33,7 @@ DONE - Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by
   - PathPlannerLib Online Installer for vendordep: https://3015rangerrobotics.github.io/pathplannerlib/PathplannerLib.json
 
 
-##Other VendorDeps
+### Other VendorDeps ###
 PhotonVision: https://docs.photonvision.org/en/latest/docs/programming/photonlib/adding-vendordep.html
 PV Lib: https://maven.photonvision.org/repository/internal/org/photonvision/photonlib-json/1.0/photonlib-json-1.0.json
 

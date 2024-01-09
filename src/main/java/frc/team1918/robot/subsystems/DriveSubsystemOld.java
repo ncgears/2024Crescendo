@@ -35,7 +35,6 @@ public class DriveSubsystemOld extends SubsystemBase {
 	//private double lastTime;
 	//private final Timer timer;
 	private static double yawOffset = 0.0; //offset to account for different starting positions
-	public boolean inCommunity = false;
 	public boolean visionTargeting = false;
 	private PIDController driveStraightPID = new PIDController(Constants.DriveTrain.DriveStraight.kP, Constants.DriveTrain.DriveStraight.kI, Constants.DriveTrain.DriveStraight.kD);
 
@@ -121,7 +120,6 @@ public class DriveSubsystemOld extends SubsystemBase {
 		Dashboard.DriveTrain.setY(getPose().getY());
 		Dashboard.DriveTrain.setCurrentAngle(getPose().getRotation().getDegrees());
 		Dashboard.DriveTrain.setDesiredAngle(desiredAngle);
-		Dashboard.DriveTrain.setCommunity(inCommunity);
 		Dashboard.Gyro.setGyroPitch(getGyroPitch());
 		// Dashboard.DriveTrain.setTargetAngle(m_targetPose.getRotation().getRadians());
 	}
@@ -352,10 +350,6 @@ public class DriveSubsystemOld extends SubsystemBase {
 		double correction = errorAngle * kP;
 		// if (Math.abs(correction) > .5) return Math.signum(correction) * 0.01;
 		return correction;
-	}
-
-	public boolean getCommunity() {
-		return inCommunity;
 	}
 
 	public Field2d getField() {
