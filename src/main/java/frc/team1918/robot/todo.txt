@@ -6,16 +6,36 @@
 - Odometry updates track robot pose and apply "other" measurements
 - See https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervedriveposeestimator/Drivetrain.java
 
-- Overhaul code to remove unused modules and subsystems
+DONE - Overhaul code to remove unused modules and subsystems
 
 - Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
 
 - Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava
 
-- Rework getAlliance stuff - https://docs.wpilib.org/en/latest/docs/software/basic-programming/alliancecolor.html
-- Review breaking changes - https://docs.wpilib.org/en/latest/docs/yearly-overview/yearly-changelog.html
+DONE - Rework getAlliance stuff - https://docs.wpilib.org/en/latest/docs/software/basic-programming/alliancecolor.html
+DONE - Review breaking changes - https://docs.wpilib.org/en/latest/docs/yearly-overview/yearly-changelog.html
 
-- Change dashboard from Shuffleboard to Elastic - https://www.chiefdelphi.com/t/introducing-elastic-a-simple-and-modern-alternative-to-shuffleboard/440750/28
+DONE - Change dashboard from Shuffleboard to Elastic - https://www.chiefdelphi.com/t/introducing-elastic-a-simple-and-modern-alternative-to-shuffleboard/440750/28
 - Elastic - See also - https://github.com/Gold872/elastic-dashboard
 
-- Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by Jim)
+DONE - Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by Jim)
+
+- Implement ChoreoLib and Choreo trajectory library
+  - Choreo: https://sleipnirgroup.github.io/Choreo/
+  - ChoreoLib: https://sleipnirgroup.github.io/Choreo/choreolib/installation/
+  - ChoreoLib Online Installer for vendordep: https://sleipnirgroup.github.io/ChoreoLib/dep/ChoreoLib.json
+
+- PathPlanner (Alternative to Choreo)
+  - PathPlanner: https://pathplanner.dev/home.html
+  - PathPlannerLib Online Installer for vendordep: https://3015rangerrobotics.github.io/pathplannerlib/PathplannerLib.json
+
+
+##Other VendorDeps
+PhotonVision: https://docs.photonvision.org/en/latest/docs/programming/photonlib/adding-vendordep.html
+PV Lib: https://maven.photonvision.org/repository/internal/org/photonvision/photonlib-json/1.0/photonlib-json-1.0.json
+
+REV Robotics: https://docs.revrobotics.com/brushless/spark-flex/revlib
+RevLib: https://software-metadata.revrobotics.com/REVLib-2024.json
+
+Redux Robotics ReduxLib: https://docs.reduxrobotics.com/reduxlib.html
+ReduxLib: not yet available
