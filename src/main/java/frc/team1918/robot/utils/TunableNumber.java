@@ -26,6 +26,15 @@ public class TunableNumber {
   }
 
   /**
+   * Get the network tables key for this object
+   * 
+   * @return The NT key of this entry
+   */
+  public String getKey() {
+    return this.key;
+  }
+
+  /**
    * Get the default value for the number that has been set
    * 
    * @return The default value

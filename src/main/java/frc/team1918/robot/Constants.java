@@ -56,7 +56,15 @@ public class Constants {
             public static int swerve_fr_drive = 32;
             public static int swerve_rr_drive = 34;
             public static int swerve_rl_drive = 33;
+            public static int shooter_top = 41;
+            public static int shooter_bottom = 42;
         }
+        /**
+         * IDs of Krakens
+         */
+        public static final class Kraken {
+        }
+
     }
 
     /**
@@ -71,10 +79,10 @@ public class Constants {
         public static final int kPidProfileSlotIndex = 0; //PID Profile gains slot
         public static final int ROBOT_WIDTH = 21; //Width of the robot frame (from the pivot of the wheels)
         public static final int ROBOT_LENGTH = 28; //Length of the robot frame (from the pivot of the wheels)
-        public static final boolean DEBUG_ENABLED_DEFAULT = false; //Default starting state of debug mode
+        public static final boolean DEBUG_ENABLED_DEFAULT = true; //Default starting state of debug mode
         public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recurring debug messages
         public static final int DASH_RECURRING_TICKS = 50; //Periodic cycles for dashboard updates
-        public final static boolean tuningMode = false; //Enable tunable numbers
+        public final static boolean tuningMode = true; //Enable tunable numbers
     }
 
     /**
@@ -105,6 +113,62 @@ public class Constants {
         }
     }
 
+    /**
+     * Constants for the Template Subsystem
+     */
+    public static final class Template {
+    }
+
+    /**
+     * Constants for the Shooter Subsystem
+     */
+    public static final class Shooter {
+        //Controller Setup
+        public static final String canBus = "rio";
+        public static final class Top {
+            public static final int kMotorID = ID.Falcon.shooter_top;; //TalonSRX Motor Controller ID
+            public static final boolean kSensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
+            public static final int kSensorTicks = 4096;
+            public static final boolean kSensorNotContinuous = false;
+            public static final boolean kIsInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
+            public static final int kAllowedError = 5; //PID Allowed error
+            public static final TalonConstants constants = new TalonConstants(kMotorID, kSensorPhase, kSensorTicks, kSensorNotContinuous, kIsInverted, kAllowedError);
+            //PID Setup
+            public static final double kP = 0.5; //PID P 
+            public static final double kI = 0.0; //PID I
+            public static final double kD = 0.0; //PID D
+            public static final double kF = 0.25; //PID F
+            public static final int kIZone = 0; //PID IZONE
+            public static final double kPeakOutput = 1.0;
+            public static final double kNeutralDeadband = 0.001; //0.04 default
+            public static final double kCruise = 4000; //MotionMagic Cruise
+            public static final double kAccel = 5000; //MotionMagic Acceleration
+            public static final int kSCurve = 0; //MotionMagic SCurve
+            public static final PIDGains gains = new PIDGains(kP,kI,kD,kF,kIZone,kPeakOutput,kNeutralDeadband,kCruise,kAccel,kSCurve);
+        }
+        public static final class Bottom {
+            public static final int kMotorID = ID.Falcon.shooter_top;; //TalonSRX Motor Controller ID
+            public static final boolean kSensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
+            public static final int kSensorTicks = 4096;
+            public static final boolean kSensorNotContinuous = false;
+            public static final boolean kIsInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
+            public static final int kAllowedError = 5; //PID Allowed error
+            public static final TalonConstants constants = new TalonConstants(kMotorID, kSensorPhase, kSensorTicks, kSensorNotContinuous, kIsInverted, kAllowedError);
+            //PID Setup
+            public static final double kP = 0.5; //PID P 
+            public static final double kI = 0.0; //PID I
+            public static final double kD = 0.0; //PID D
+            public static final double kF = 0.25; //PID F
+            public static final int kIZone = 0; //PID IZONE
+            public static final double kPeakOutput = 1.0;
+            public static final double kNeutralDeadband = 0.001; //0.04 default
+            public static final double kCruise = 4000; //MotionMagic Cruise
+            public static final double kAccel = 5000; //MotionMagic Acceleration
+            public static final int kSCurve = 0; //MotionMagic SCurve
+            public static final PIDGains gains = new PIDGains(kP,kI,kD,kF,kIZone,kPeakOutput,kNeutralDeadband,kCruise,kAccel,kSCurve);
+        }
+    }
+    
     /**
      * Constants for the Swerve Modules
      */

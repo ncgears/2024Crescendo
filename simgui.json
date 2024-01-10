@@ -14,7 +14,9 @@
       "/Shuffleboard/Driver/Auton Burner Temp": "String Chooser",
       "/Shuffleboard/Driver/Auton Part Type": "String Chooser",
       "/Shuffleboard/Driver/Autonomous Chooser": "String Chooser",
-      "/Shuffleboard/Driver/Gyro": "Gyro"
+      "/Shuffleboard/Driver/Field": "Field2d",
+      "/Shuffleboard/Driver/Gyro": "Gyro",
+      "/Shuffleboard/Tuning/Stop Shooter": "Command"
     }
   },
   "NetworkTables Info": {

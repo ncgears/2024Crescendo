@@ -33,9 +33,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 //Subsystems imports
+import frc.team1918.robot.subsystems.DashboardSubsystem;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.GyroSubsystem;
+import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
+import frc.team1918.robot.utils.TunableNumber;
 //Commands imports
 // import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.commands.gyro.gyro_resetGyro;
@@ -65,6 +68,8 @@ public class RobotContainer {
     private final GyroSubsystem m_gyro = new GyroSubsystem();
     private final DriveSubsystem m_drive = new DriveSubsystem();
     private final VisionSubsystem m_vision = new VisionSubsystem();
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    public final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
     private static SendableChooser<String> m_auto_cone = new SendableChooser<>();
     private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
@@ -197,6 +202,7 @@ public class RobotContainer {
     // buildClimberTestTab();
     // buildVisionTab();
     // Shuffleboard.selectTab("Driver"); //select the driver tab
+    // buildTuningTab(); //if(Constants.Global.tuningMode) buildTuningTab();
 
     // Shuffleboard.getTab("Combined Test").add(new TestIntakeIndexerAndShooter(m_indexer, m_intake, m_shooter)).withPosition(0, 1).withSize(2, 1);
     // Shuffleboard.getTab("Combined Test").add(new SetForwardLimit(m_intake)).withPosition(0, 3).withSize(2, 1);
@@ -228,6 +234,20 @@ public class RobotContainer {
       m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive, m_vision));
     }
     //SmartDashboard.putData(m_auto_chooser); //put in the smartdash
+  }
+
+  private void buildTuningTab(){
+    ShuffleboardTab tuningTab = Shuffleboard.getTab("TuningRobot");
+    tuningTab.add("Target Speed", m_shooter.target_speed)
+      .withSize(3,2)
+      .withPosition(0,0)
+      .withWidget("Number Slider")
+      .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5));
+    tuningTab.add("Current Speed", m_shooter.getCurrentSpeed())
+      .withSize(3,2)
+      .withPosition(0,2)
+      .withWidget("Number Bar")
+      .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5));
   }
 
   private void buildDriverTab(){
