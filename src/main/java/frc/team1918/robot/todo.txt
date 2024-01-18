@@ -1,3 +1,15 @@
+### PRIORITIES LIST ###
+1. dashboard-integrated shooter speed tuner functional (slider for speed tuning, button to stop/set0, button to start/set100)
+2. basic swerve drivetrain functioning on 2024 roborio
+3. Intake functional code (dashboard start/stop toggle)
+4. limelight testing/apriltag validation
+5. odometry validation, pose-estimator for vision input/apriltags addition
+6. pathplanner functioning (and Choreo?)
+7. collect underpants
+8. ???
+9. profit
+
+
 ### TODO List ###
 - Build and implement pid Heading controller (thetaController)
 - Implement finite state machine (in its own class)
