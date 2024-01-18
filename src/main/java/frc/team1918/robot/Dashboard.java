@@ -35,6 +35,9 @@ public class Dashboard {
         public static final void setDesiredAngle(double value) { SmartDashboard.putNumber("Desired Angle", value); }
         public static final void setCorrectionAngle(double value) { SmartDashboard.putNumber("Correction Omega", value); }
     }
+    public static final class Shooter {
+        public static final void setShooterSpeed(double value) { SmartDashboard.putNumber("Shooter Speed", value); }
+    }
 
     // Define on-the-fly tabs
     private static ShuffleboardTab tabDriver = Shuffleboard.getTab("Driver");

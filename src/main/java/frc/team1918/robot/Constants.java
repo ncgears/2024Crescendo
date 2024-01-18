@@ -56,8 +56,7 @@ public class Constants {
             public static int swerve_fr_drive = 32;
             public static int swerve_rr_drive = 34;
             public static int swerve_rl_drive = 33;
-            public static int shooter_top = 41;
-            public static int shooter_bottom = 42;
+            public static int shooter = 41;
         }
         /**
          * IDs of Krakens
@@ -77,7 +76,8 @@ public class Constants {
         public static final int kTimeoutMs = 30; //Timeout for reporting in DS if action fails, set to 0 to skip confirmation
         public static final int kPidIndex = 0;  //Talon PID index for primary loop
         public static final int kPidProfileSlotIndex = 0; //PID Profile gains slot
-        public static final int ROBOT_WIDTH = 21; //Width of the robot frame (from the pivot of the wheels)
+        //2024 robot is 28x31 (frame perim)
+        public static final int ROBOT_WIDTH = 28; //Width of the robot frame (from the pivot of the wheels)
         public static final int ROBOT_LENGTH = 28; //Length of the robot frame (from the pivot of the wheels)
         public static final boolean DEBUG_ENABLED_DEFAULT = true; //Default starting state of debug mode
         public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recurring debug messages
@@ -125,29 +125,28 @@ public class Constants {
     public static final class Shooter {
         //Controller Setup
         public static final String canBus = "rio";
-        public static final class Top {
-            public static final int kMotorID = ID.Falcon.shooter_top;; //TalonSRX Motor Controller ID
-            public static final boolean kSensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
-            public static final int kSensorTicks = 4096;
-            public static final boolean kSensorNotContinuous = false;
-            public static final boolean kIsInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
-            public static final int kAllowedError = 5; //PID Allowed error
-            public static final TalonConstants constants = new TalonConstants(kMotorID, kSensorPhase, kSensorTicks, kSensorNotContinuous, kIsInverted, kAllowedError);
-            //PID Setup
-            public static final double kP = 0.5; //PID P 
-            public static final double kI = 0.0; //PID I
-            public static final double kD = 0.0; //PID D
-            public static final double kF = 0.25; //PID F
-            public static final int kIZone = 0; //PID IZONE
-            public static final double kPeakOutput = 1.0;
-            public static final double kNeutralDeadband = 0.001; //0.04 default
-            public static final double kCruise = 4000; //MotionMagic Cruise
-            public static final double kAccel = 5000; //MotionMagic Acceleration
-            public static final int kSCurve = 0; //MotionMagic SCurve
-            public static final PIDGains gains = new PIDGains(kP,kI,kD,kF,kIZone,kPeakOutput,kNeutralDeadband,kCruise,kAccel,kSCurve);
-        }
-        public static final class Bottom {
-            public static final int kMotorID = ID.Falcon.shooter_top;; //TalonSRX Motor Controller ID
+        public static final int kMotorID = ID.Falcon.shooter;
+        public static final boolean neutralIsBrake = false; 
+        public static final boolean isInverted = false;
+        public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
+        public static final double kMaxRPS = 6000 * kGearRatio / 60; //The Maximum free speed of the shooter
+        public static final double kP = 0.11; //PID P // error of 1 rotation per second result in 2V output
+        public static final double kI = 0.0; //PID I // error of 1 rotation per second increases output by 0.5V every second
+        public static final double kD = 0.0; //PID D // change of 1 rotation per second squared results in 0.01V output
+        public static final double kF = 0.12; //PID F // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
+        public static final double kPeakFwdVoltage = 8.0;
+        public static final double kPeakRevVoltage = -8.0;
+        //Current Limiting
+        public static final boolean kCurrentLimitEnable = false;
+        public static final double kCurrentLimitAmps = 30.0;
+        public static final double kCurrentLimitThresholdAmps = 60.0;
+        public static final double kCurrentLimitThresholdSecs = 0.3;
+        //Ramping (0.0 by default)
+        public static final double kOpenLoopRamp = 0.0;
+		public static final double kClosedLoopRamp = 0.0;
+
+        public static final class Top { //This would be used for Talon based conroller
+            public static final int kMotorID = ID.Falcon.shooter; //TalonSRX Motor Controller ID
             public static final boolean kSensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final int kSensorTicks = 4096;
             public static final boolean kSensorNotContinuous = false;

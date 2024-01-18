@@ -16,6 +16,7 @@ public class DashboardSubsystem extends SubsystemBase {
 	private static DashboardSubsystem instance;
     //gettable values must be configured as NetworkTableEntry
     public GenericEntry shooter_target = null;
+    public GenericEntry shooter_speed = null;
     //tuning tab
     private ShuffleboardTab tuning = Shuffleboard.getTab("Tuning");
     
@@ -51,12 +52,12 @@ public class DashboardSubsystem extends SubsystemBase {
                 tuning.add("Stop Shooter", new shooter_stopShooter(ShooterSubsystem.getInstance()))
                     .withSize(2, 2)
                     .withPosition(3, 0);
-               // shooter_speed = tuning.add("Current Speed", 0)
-                //     .withSize(3,2)
-                //     .withPosition(0,2)
-                //     .withWidget("Number Bar")
-                //     .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
-                //     .getEntry();
+                tuning.add("Current Speed", 0)
+                    .withSize(3,2)
+                    .withPosition(0,2)
+                    .withWidget("Number Bar")
+                    .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
+                    .getEntry();
                 break;
             default:
                 Helpers.Debug.debug("Unable to build dashboard tab");

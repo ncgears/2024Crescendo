@@ -38,6 +38,7 @@ import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.GyroSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
+import frc.team1918.robot.utils.CTREConfigs;
 import frc.team1918.robot.utils.TunableNumber;
 //Commands imports
 // import frc.team1918.robot.commands.helpers.helpers_debugMessage;
@@ -62,6 +63,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
  */
 @SuppressWarnings("unused")
 public class RobotContainer {
+    public static final CTREConfigs ctreConfigs = new CTREConfigs();
+    public static final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
+
   //subsystems definitions
     //private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
@@ -69,7 +73,6 @@ public class RobotContainer {
     private final DriveSubsystem m_drive = new DriveSubsystem();
     private final VisionSubsystem m_vision = new VisionSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
-    public final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
     private static SendableChooser<String> m_auto_cone = new SendableChooser<>();
     private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
