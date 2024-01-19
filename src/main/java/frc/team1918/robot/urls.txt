@@ -5,3 +5,4 @@
 ## Limelight
 http://limelight.local:5800
 http://10.19.18.11:5800
+#info: https://docs.limelightvision.io/docs/docs-limelight/pipeline-apriltag/apriltags
