@@ -9,6 +9,7 @@ package frc.team1918.robot;
 
 //Global imports
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
@@ -36,8 +37,10 @@ import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 import frc.team1918.robot.subsystems.DashboardSubsystem;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.GyroSubsystem;
+import frc.team1918.robot.subsystems.LightingSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
+import frc.team1918.robot.subsystems.LightingSubsystem.Colors;
 import frc.team1918.robot.utils.CTREConfigs;
 import frc.team1918.robot.utils.TunableNumber;
 //Commands imports
@@ -65,6 +68,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     public static final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
+    public static final LightingSubsystem lighting = LightingSubsystem.getInstance();
 
   //subsystems definitions
     //private final PowerDistribution m_pdp = new PowerDistribution();
@@ -148,10 +152,16 @@ public class RobotContainer {
 
     /** DRIVER JOYSTICK (dj) */
     // Reset Gyro
-    dj.hamburger().onTrue(new gyro_resetGyro(m_gyro).andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
+    dj.hamburger()
+      .onTrue(new gyro_resetGyro(m_gyro).andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
-
+    dj.a()
+      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+      .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
+    dj.b()
+      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+      .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
     /** OPERATOR JOYSTICK (oj) */
 
   }

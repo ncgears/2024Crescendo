@@ -63,6 +63,12 @@ public class Constants {
          */
         public static final class Kraken {
         }
+        /**
+         * IDs of CANdles
+         */
+        public static final class CANdle {
+            public static int candle1 = 1;
+        }
 
     }
 

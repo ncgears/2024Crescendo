@@ -6,6 +6,7 @@ import java.util.Map;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.commands.shooter.shooter_stopShooter;
@@ -17,6 +18,7 @@ public class DashboardSubsystem extends SubsystemBase {
     //gettable values must be configured as NetworkTableEntry
     public GenericEntry shooter_target = null;
     public GenericEntry shooter_speed = null;
+    public GenericEntry led_color = null;
     //tuning tab
     private ShuffleboardTab tuning = Shuffleboard.getTab("Tuning");
     
@@ -52,11 +54,16 @@ public class DashboardSubsystem extends SubsystemBase {
                 tuning.add("Stop Shooter", new shooter_stopShooter(ShooterSubsystem.getInstance()))
                     .withSize(2, 2)
                     .withPosition(3, 0);
-                tuning.add("Current Speed", 0)
+                shooter_speed = tuning.add("Current Speed", 0)
                     .withSize(3,2)
                     .withPosition(0,2)
                     .withWidget("Number Bar")
                     .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
+                    .getEntry();
+                led_color = tuning.add("LED Color", new Color(0,0,0).toHexString())
+                    .withSize(1,1)
+                    .withPosition(5,0)
+                    .withWidget("Single Color View")
                     .getEntry();
                 break;
             default:
