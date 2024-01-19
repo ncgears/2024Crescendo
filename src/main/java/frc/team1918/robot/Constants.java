@@ -76,9 +76,15 @@ public class Constants {
         public static final int kTimeoutMs = 30; //Timeout for reporting in DS if action fails, set to 0 to skip confirmation
         public static final int kPidIndex = 0;  //Talon PID index for primary loop
         public static final int kPidProfileSlotIndex = 0; //PID Profile gains slot
-        //2024 robot is 28x31 (frame perim)
-        public static final int ROBOT_WIDTH = 28; //Width of the robot frame (from the pivot of the wheels)
-        public static final int ROBOT_LENGTH = 28; //Length of the robot frame (from the pivot of the wheels)
+        //2024 robot is 28x31 (frame perim), wheelbase
+        // public static final int ROBOT_WIDTH = 28; //Width of the robot frame (from the pivot of the wheels)
+        // public static final int ROBOT_LENGTH = 28; //Length of the robot frame (from the pivot of the wheels)
+        public static final int kWheelbaseWidth = 24; //from pivot to pivot of swerve module side to side
+        public static final int kWheelbaseLength = 24; //from pivot to pivot of the swerve module front to back
+        public static final int kFrameWidth = 28; //outside frame perimeter side to side
+        public static final int kFrameLength = 31; //outside frame perimeter front to back
+        public static final int kBumperWidth = kFrameWidth + 5; //outside of bumpers side to side
+        public static final int kBumperLength = kFrameLength + 5; //outside of bumpers front to back
         public static final boolean DEBUG_ENABLED_DEFAULT = true; //Default starting state of debug mode
         public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recurring debug messages
         public static final int DASH_RECURRING_TICKS = 50; //Periodic cycles for dashboard updates
@@ -225,10 +231,10 @@ public class Constants {
         //Forward Positive, Left Positive, Up Positive (NWU Convention)
         public static final SwerveDriveKinematics kDriveKinematics =
         new SwerveDriveKinematics(
-            new Translation2d(Units.inchesToMeters(Global.ROBOT_LENGTH / 2), Units.inchesToMeters(-Global.ROBOT_WIDTH / 2)),
-            new Translation2d(Units.inchesToMeters(Global.ROBOT_LENGTH / 2), Units.inchesToMeters(Global.ROBOT_WIDTH / 2)),
-            new Translation2d(Units.inchesToMeters(-Global.ROBOT_LENGTH / 2), Units.inchesToMeters(-Global.ROBOT_WIDTH / 2)),
-            new Translation2d(Units.inchesToMeters(-Global.ROBOT_LENGTH / 2), Units.inchesToMeters(Global.ROBOT_WIDTH / 2))
+            new Translation2d(Units.inchesToMeters(Global.kWheelbaseLength / 2), Units.inchesToMeters(-Global.kWheelbaseWidth / 2)),
+            new Translation2d(Units.inchesToMeters(Global.kWheelbaseLength / 2), Units.inchesToMeters(Global.kWheelbaseWidth / 2)),
+            new Translation2d(Units.inchesToMeters(-Global.kWheelbaseLength / 2), Units.inchesToMeters(-Global.kWheelbaseWidth / 2)),
+            new Translation2d(Units.inchesToMeters(-Global.kWheelbaseLength / 2), Units.inchesToMeters(Global.kWheelbaseWidth / 2))
         );
         /**
          * Constants for Front Left Swerve Module
