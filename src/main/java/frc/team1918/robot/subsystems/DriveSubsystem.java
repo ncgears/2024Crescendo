@@ -23,8 +23,10 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.SendableBuilder;
 //import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @SuppressWarnings("deprecation")
 public class DriveSubsystem extends SubsystemBase {
@@ -94,6 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
 		// m_targetPose = m_odometry.getPoseMeters();
 		// m_thetaController.reset();
 		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
+		SmartDashboard.putData("Swerve Drive", this);
 	}
 
 	// @SuppressWarnings("unused")
@@ -104,6 +107,26 @@ public class DriveSubsystem extends SubsystemBase {
 		if(Robot.isSimulation()) {
             //This is for updating simulated data
 		}
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		builder.setSmartDashboardType("SwerveDrive");
+		builder.setActuator(true);
+		//builder.setSafeState(this::disable); //function for safe state to  make sure things dont move
+		builder.addDoubleProperty("Front Left Angle", () -> m_frontLeft.getPosition().angle.getDegrees(), null);
+		builder.addDoubleProperty("Front Left Velocity", () -> m_frontLeft.getState().speedMetersPerSecond, null);
+
+		builder.addDoubleProperty("Front Right Angle", () -> m_frontRight.getPosition().angle.getDegrees(), null);
+		builder.addDoubleProperty("Front Right Velocity", () -> m_frontRight.getState().speedMetersPerSecond, null);
+
+		builder.addDoubleProperty("Rear Left Angle", () -> m_rearLeft.getPosition().angle.getDegrees(), null);
+		builder.addDoubleProperty("Rear Left Velocity", () -> m_rearLeft.getState().speedMetersPerSecond, null);
+
+		builder.addDoubleProperty("Rear Right Angle", () -> m_rearRight.getPosition().angle.getDegrees(), null);
+		builder.addDoubleProperty("Rear Right Velocity", () -> m_rearRight.getState().speedMetersPerSecond, null);
+
+		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getHeading().getDegrees(), null);
 	}
 
 	public SwerveModulePosition[] getSwerveModulePositions() {
