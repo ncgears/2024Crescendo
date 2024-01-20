@@ -4,8 +4,11 @@ package frc.team1918.robot.subsystems;
 import com.ctre.phoenix.led.CANdle;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.RobotContainer;
@@ -48,7 +51,7 @@ public class LightingSubsystem extends SubsystemBase {
     public int G() { return this.g; }
     public int B() { return this.b; }
   }
-
+  private final ShuffleboardTab lighting = Shuffleboard.getTab("Lighting");
   /**
 	 * Returns the instance of the LightingSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -65,7 +68,11 @@ public class LightingSubsystem extends SubsystemBase {
     m_currentColor = Colors.OFF;
 
 		//Add this sendable to the Dashboard
-		SmartDashboard.putData("Lighting", this);
+		// SmartDashboard.putData("Lighting", this);
+    lighting.add(this)
+      .withSize(2, 2)
+      // .withWidget("Single Color View")
+      .withPosition(0, 0);    
   }
   
   @Override

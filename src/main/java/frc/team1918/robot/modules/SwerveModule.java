@@ -2,7 +2,10 @@ package frc.team1918.robot.modules;
 
 //Talon SRX/Talon FX
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
@@ -16,12 +19,13 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Dashboard;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 @Deprecated(since="2024")
 public class SwerveModule {
     private WPI_TalonSRX turn;
-    private WPI_TalonFX drive;
+    private TalonFX drive;
     //private final double FULL_ROTATION = Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION;
     private final double TURN_P, TURN_I, TURN_D;
     private final int TURN_IZONE;
@@ -30,6 +34,7 @@ public class SwerveModule {
     private String moduleName;
     private double driveWheelDiam = Constants.Swerve.DEFAULT_WHEEL_DIAM_MM;
     private int debug_ticks1;
+    private NeutralOut m_brake = new NeutralOut();
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
@@ -41,7 +46,7 @@ public class SwerveModule {
 	 */
     public SwerveModule(String name, SwerveModuleConstants moduleConstants){
         moduleName = name;
-        drive = new WPI_TalonFX(moduleConstants.idDriveMotor, Constants.Swerve.canBus);
+        drive = new TalonFX(moduleConstants.idDriveMotor, Constants.Swerve.canBus);
         turn = new WPI_TalonSRX(moduleConstants.idTurnMotor);
         isDrivePowerInverted = false;
         TURN_P = moduleConstants.turnP;
@@ -77,15 +82,24 @@ public class SwerveModule {
         //     Constants.Swerve.kTurnCurrentThresholdAmps,
         //     Constants.Swerve.kTurnCurrentThresholdSecs));
 
-        drive.configFactoryDefault(); //v5
-        // drive.getConfigurator().apply(new TalonFXConfiguration()); //v6
-        drive.set(ControlMode.PercentOutput, 0);
-        drive.setNeutralMode(NeutralMode.Brake);
-        drive.setInverted(moduleConstants.driveIsInverted);
-        drive.config_kP(Constants.Global.kPidProfileSlotIndex, 0.0005);
-        drive.config_kI(Constants.Global.kPidProfileSlotIndex, 0.0);
-        drive.config_kD(Constants.Global.kPidProfileSlotIndex, 0.00005);
-        drive.config_IntegralZone(Constants.Global.kPidProfileSlotIndex, 4740);
+        StatusCode status = StatusCode.StatusCodeNotInitialized;
+        for (int i = 0; i < 5; ++i) {
+            status = drive.getConfigurator().apply(RobotContainer.ctreConfigs.swerveDriveFXConfig);
+            if (status.isOK()) break;
+        }
+        if(!status.isOK()) {
+            Helpers.Debug.debug("Could not initialize swerve module " + name + ", error: " + status.toString());
+        }
+
+        // drive.configFactoryDefault(); //v5
+        // // drive.getConfigurator().apply(new TalonFXConfiguration()); //v6
+        // drive.set(ControlMode.PercentOutput, 0);
+        // drive.setNeutralMode(NeutralMode.Brake);
+        // drive.setInverted(moduleConstants.driveIsInverted);
+        // drive.config_kP(Constants.Global.kPidProfileSlotIndex, 0.0005);
+        // drive.config_kI(Constants.Global.kPidProfileSlotIndex, 0.0);
+        // drive.config_kD(Constants.Global.kPidProfileSlotIndex, 0.00005);
+        // drive.config_IntegralZone(Constants.Global.kPidProfileSlotIndex, 4740);
         // SupplyCurrentLimitConfiguration(enabled,peak,trigger threshold current,trigger threshold time(s))
         // drive.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true,60.0,45.0,1.0));
         // drive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
@@ -202,9 +216,11 @@ public class SwerveModule {
     */
     public void setDrivePower(double power){
         if (this.isDrivePowerInverted) {
-            drive.set(ControlMode.PercentOutput,-power);
+            drive.setControl(new DutyCycleOut(-power, true, false, false, false));
+            // drive.set(ControlMode.PercentOutput,-power);
         } else {
-            drive.set(ControlMode.PercentOutput,power);
+            drive.setControl(new DutyCycleOut(power, true, false, false, false));
+            // drive.set(ControlMode.PercentOutput,power);
         }
     }
 
@@ -277,9 +293,7 @@ public class SwerveModule {
                 break;
             case "drive": //drive is a TalonFX
                 if (brake) {
-                    drive.setNeutralMode(NeutralMode.Brake);
-                } else {
-                    drive.setNeutralMode(NeutralMode.Coast);
+                    drive.setControl(m_brake);
                 }
                 break;
         }
@@ -300,11 +314,11 @@ public class SwerveModule {
     }
 
     public double getDriveDistanceMeters() {
-        return Helpers.General.encoderToMeters(drive.getSelectedSensorPosition(), this.driveWheelDiam);
+        return Helpers.General.encoderToMeters(drive.getPosition().getValueAsDouble(), this.driveWheelDiam);
     }
 
     public void resetDistance() {
-        drive.setSelectedSensorPosition(0.0);
+        drive.setPosition(0.0);
     }
 
     public void resetEncoders() {
@@ -326,7 +340,7 @@ public class SwerveModule {
         Dashboard.DriveTrain.setTurnVelocity(moduleName, turn.getSelectedSensorVelocity(0));
         Dashboard.DriveTrain.setTurnZeroPosition(moduleName, getZeroPositionTicks()); 
         // Dashboard.DriveTrain.setTurnPositionErrorChange(moduleName, turn.getErrorDerivative(0));
-        Dashboard.DriveTrain.setDriveVelocity(moduleName, drive.getSelectedSensorVelocity(0));
+        // Dashboard.DriveTrain.setDriveVelocity(moduleName, drive.getVelocity());
         Dashboard.DriveTrain.setDriveDistance(moduleName, getDriveDistanceMeters());
     }
 }

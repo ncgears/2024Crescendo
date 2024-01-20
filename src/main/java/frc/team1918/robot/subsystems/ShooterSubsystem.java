@@ -1,19 +1,26 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Dashboard;
 import frc.team1918.robot.Helpers;
 // import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.RobotContainer;
+import frc.team1918.robot.commands.shooter.shooter_stopShooter;
+import frc.team1918.robot.subsystems.LightingSubsystem.Colors;
 
 /**
  * The Template Subsystem handles getting and managing the Template.
@@ -27,6 +34,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1;
+  private final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
   
   /**
 	 * Returns the instance of the ShooterSubsystem subsystem.
@@ -53,6 +61,14 @@ public class ShooterSubsystem extends SubsystemBase {
 
 		//Add this sendable to the Dashboard
 		SmartDashboard.putData("Shooter", this);
+    shooter.add("Target Speed", this)
+      .withSize(3,2)
+      .withPosition(0,0)
+      .withWidget("Number Slider")
+      .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5));
+    shooter.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
+      .withSize(2, 2)
+      .withPosition(3, 0);  
   }
   
   @Override
@@ -105,8 +121,12 @@ public class ShooterSubsystem extends SubsystemBase {
     return target_speed;
   }
 
+  /**
+   * Sets the speed of the shooter
+   * @param speed The speed of the shooter in percentage (-1.0 to 1.0)
+   */
   public void setSpeedPercent(double speed) {
-    //set the shooter motor speed by percent
+    //set the shooter motor speed by percent (-1 to 1)
     if(speed == 0.0) {
       // Helpers.Debug.debug("Stopping shooter");
       m_motor1.setControl(m_brake);

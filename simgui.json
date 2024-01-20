@@ -31,7 +31,9 @@
       "/Shuffleboard/Driver/Autonomous Chooser": "String Chooser",
       "/Shuffleboard/Driver/Field": "Field2d",
       "/Shuffleboard/Driver/Gyro": "Gyro",
-      "/Shuffleboard/Tuning/Stop Shooter": "Command"
+      "/Shuffleboard/Shooter/Shooter 100%": "Command",
+      "/Shuffleboard/Tuning/Stop Shooter": "Command",
+      "/SmartDashboard/Gyro": "Gyro"
     }
   },
   "NetworkTables Info": {
