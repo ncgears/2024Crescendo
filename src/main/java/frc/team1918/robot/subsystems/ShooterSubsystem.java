@@ -7,6 +7,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Dashboard;
@@ -49,6 +50,9 @@ public class ShooterSubsystem extends SubsystemBase {
     if(!status.isOK()) {
       Helpers.Debug.debug("Could not initialize shooter controller, error: " + status.toString());
     }
+
+		//Add this sendable to the Dashboard
+		SmartDashboard.putData("Shooter", this);
   }
   
   @Override
@@ -60,7 +64,10 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
-    builder.addDoubleProperty("speed", () -> getCurrentSpeed(), null);
+    builder.setSmartDashboardType("Number Slider");
+    builder.setActuator(true);
+    builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
+    builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
   }
 
   /**
@@ -78,7 +85,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public double getTunableSpeed() {
     if(!Constants.Global.tuningMode) return target_speed;
-    return RobotContainer.dashboard.shooter_target.getDouble(0);
+    return 0.0;
+    // return RobotContainer.dashboard.shooter_target.getDouble(0);
   }
 
   /**
@@ -89,6 +97,14 @@ public class ShooterSubsystem extends SubsystemBase {
     return m_motor1.getVelocity().getValueAsDouble();
   }
 
+  public double getSpeedPercent() {
+    return getCurrentSpeed() / Constants.Shooter.kMaxRPS;
+  }
+
+  public double getTargetSpeed() {
+    return target_speed;
+  }
+
   public void setSpeedPercent(double speed) {
     //set the shooter motor speed by percent
     if(speed == 0.0) {
@@ -96,14 +112,14 @@ public class ShooterSubsystem extends SubsystemBase {
       m_motor1.setControl(m_brake);
     } else {
       double rps = speed * Constants.Shooter.kMaxRPS;
-      // Helpers.Debug.debug("New requested velocity RPS is " + rps);
+      Helpers.Debug.debug("New requested velocity RPS is " + rps);
       m_motor1.setControl(m_voltageVelocity.withVelocity(rps));
     }
   }
 
   public void stopShooter() {
     // target_speed = 0.0;
-    if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
+    // if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
   }
 
   /**
@@ -111,7 +127,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * this subsystem to the Dashboard
    */
   public void updateDashboard() {
-    Dashboard.Shooter.setShooterSpeed(getCurrentSpeed());
+    // Dashboard.Shooter.setShooterSpeed(getCurrentSpeed());
   }
 
 }

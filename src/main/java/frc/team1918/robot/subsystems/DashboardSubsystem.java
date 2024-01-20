@@ -18,7 +18,6 @@ public class DashboardSubsystem extends SubsystemBase {
     //gettable values must be configured as NetworkTableEntry
     public GenericEntry shooter_target = null;
     public GenericEntry shooter_speed = null;
-    public GenericEntry led_color = null;
     //tuning tab
     private ShuffleboardTab tuning = Shuffleboard.getTab("Tuning");
     
@@ -43,7 +42,7 @@ public class DashboardSubsystem extends SubsystemBase {
 
     private void buildTab(String tabTitle) {
         switch (tabTitle) {
-            case "Tuning":
+            case "Tuning2":
                 Helpers.Debug.debug("Building dashboard tab \""+tabTitle+"\"");
                 shooter_target = tuning.add("Shooter Speed", 0)
                     .withSize(3,2)
@@ -59,11 +58,6 @@ public class DashboardSubsystem extends SubsystemBase {
                     .withPosition(0,2)
                     .withWidget("Number Bar")
                     .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
-                    .getEntry();
-                led_color = tuning.add("LED Color", new Color(0,0,0).toHexString())
-                    .withSize(1,1)
-                    .withPosition(5,0)
-                    .withWidget("Single Color View")
                     .getEntry();
                 break;
             default:

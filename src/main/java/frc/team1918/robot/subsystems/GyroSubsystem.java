@@ -3,7 +3,9 @@ package frc.team1918.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Dashboard;
@@ -31,6 +33,9 @@ public class GyroSubsystem extends SubsystemBase {
 	 */
     public GyroSubsystem() {
         // m_gyro.calibrate(); //Deprecated in 2024?
+
+		//Add this sendable to the Dashboard
+		SmartDashboard.putData("Gyro", this);
     }
 
 	@Override
@@ -39,6 +44,15 @@ public class GyroSubsystem extends SubsystemBase {
 		if(Robot.isSimulation()) {
             //This is for updating simulated data
 		}
+	}
+
+	@Override
+	public void initSendable(SendableBuilder builder) {
+		super.initSendable(builder);
+		builder.setSmartDashboardType("Gyro");
+		builder.setActuator(false);
+		builder.addDoubleProperty("Heading", () -> getHeading().getDegrees(), null);
+		builder.addDoubleProperty("Pitch", this::getPitch, null);
 	}
 
 	/**
@@ -96,7 +110,6 @@ public class GyroSubsystem extends SubsystemBase {
 	 * This handles updating the dashboard with data from this subsystem
 	 */
     public void updateDashboard() {
-        Dashboard.Gyro.setGyroPitch(getPitch());
     }
 
 }

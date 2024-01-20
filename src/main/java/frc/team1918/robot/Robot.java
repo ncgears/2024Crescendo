@@ -223,9 +223,9 @@ public class Robot extends TimedRobot {
     int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
     SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
-    // angle.set(angle.get()+0.05);
+    // angle.set(angle.get()+0.25);
     // angle.set(0.5);
-    // pitch.set(4.5);
+    // pitch.set(pitch.get()+0.25);
   }
 
 }

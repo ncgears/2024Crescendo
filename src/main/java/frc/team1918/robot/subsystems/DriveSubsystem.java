@@ -96,6 +96,8 @@ public class DriveSubsystem extends SubsystemBase {
 		// m_targetPose = m_odometry.getPoseMeters();
 		// m_thetaController.reset();
 		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
+
+		//Add this sendable to the Dashboard
 		SmartDashboard.putData("Swerve Drive", this);
 	}
 

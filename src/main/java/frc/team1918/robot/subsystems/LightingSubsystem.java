@@ -3,6 +3,8 @@ package frc.team1918.robot.subsystems;
 
 import com.ctre.phoenix.led.CANdle;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
@@ -61,11 +63,27 @@ public class LightingSubsystem extends SubsystemBase {
   public LightingSubsystem() {
     //initialize values for private and public variables, etc.
     m_currentColor = Colors.OFF;
+
+		//Add this sendable to the Dashboard
+		SmartDashboard.putData("Lighting", this);
   }
   
   @Override
   public void periodic() {
     updateDashboard();
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    super.initSendable(builder);
+    builder.setSmartDashboardType("Single Color View");
+    builder.setActuator(false);
+    builder.addStringProperty("LED Color", this::getColor, null);
+  }
+
+  public String getColor() {
+    if(m_currentColor == null) m_currentColor = Colors.OFF;
+    return new Color(m_currentColor.R(), m_currentColor.G(), m_currentColor.B()).toHexString();
   }
 
   public void setColor(Colors color) {
@@ -80,7 +98,6 @@ public class LightingSubsystem extends SubsystemBase {
    * this subsystem to the Dashboard
    */
   public void updateDashboard() {
-    RobotContainer.dashboard.led_color.setString(new Color(m_currentColor.R(), m_currentColor.G(), m_currentColor.B()).toHexString());
   }
 
 }
