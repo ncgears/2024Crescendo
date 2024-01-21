@@ -116,17 +116,17 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.setSmartDashboardType("SwerveDrive");
 		builder.setActuator(true);
 		//builder.setSafeState(this::disable); //function for safe state to  make sure things dont move
-		builder.addDoubleProperty("Front Left Angle", () -> m_frontLeft.getPosition().angle.getDegrees(), null);
-		builder.addDoubleProperty("Front Left Velocity", () -> m_frontLeft.getState().speedMetersPerSecond, null);
+		builder.addDoubleProperty("Front Left Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Front Left Velocity", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Front Right Angle", () -> m_frontRight.getPosition().angle.getDegrees(), null);
-		builder.addDoubleProperty("Front Right Velocity", () -> m_frontRight.getState().speedMetersPerSecond, null);
+		builder.addDoubleProperty("Front Right Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Front Right Velocity", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Rear Left Angle", () -> m_rearLeft.getPosition().angle.getDegrees(), null);
-		builder.addDoubleProperty("Rear Left Velocity", () -> m_rearLeft.getState().speedMetersPerSecond, null);
+		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(m_rearLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Left Velocity", () -> Helpers.General.roundDouble(m_rearLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Rear Right Angle", () -> m_rearRight.getPosition().angle.getDegrees(), null);
-		builder.addDoubleProperty("Rear Right Velocity", () -> m_rearRight.getState().speedMetersPerSecond, null);
+		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_rearRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_rearRight.getVelocity(),3), null);
 
 		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getHeading().getDegrees(), null);
 	}

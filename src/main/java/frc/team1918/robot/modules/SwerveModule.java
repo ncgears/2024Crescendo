@@ -16,6 +16,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Velocity;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Dashboard;
 import frc.team1918.robot.Helpers;
@@ -30,11 +31,11 @@ public class SwerveModule {
     private final double TURN_P, TURN_I, TURN_D;
     private final int TURN_IZONE;
     private final int TURN_ALLOWED_ERROR;
-    private boolean isDrivePowerInverted = false;
     private String moduleName;
     private double driveWheelDiam = Constants.Swerve.DEFAULT_WHEEL_DIAM_MM;
     private int debug_ticks1;
     private NeutralOut m_brake = new NeutralOut();
+    private SwerveModuleState state;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
@@ -48,7 +49,6 @@ public class SwerveModule {
         moduleName = name;
         drive = new TalonFX(moduleConstants.idDriveMotor, Constants.Swerve.canBus);
         turn = new WPI_TalonSRX(moduleConstants.idTurnMotor);
-        isDrivePowerInverted = false;
         TURN_P = moduleConstants.turnP;
         TURN_I = moduleConstants.turnI;
         TURN_D = moduleConstants.turnD;
@@ -123,16 +123,16 @@ public class SwerveModule {
      * @return The current state of the module.
      */
     public SwerveModuleState getState() {
-        //sensor velocity is NOT RPM, but in ticks per 100ms!
-        //double rawRpm = drive.getSelectedSensorVelocity();  //getEncoder().getVelocity();
-        double rps = drive.getVelocity().getValueAsDouble();
-        double wheelRps = Helpers.General.gearCalcDouble(rps,
-            Constants.DriveTrain.DT_DRIVE_FIRST_GEARONE,
-            Constants.DriveTrain.DT_DRIVE_FIRST_GEARTWO,
-            Constants.DriveTrain.DT_DRIVE_SECOND_GEARONE,
-            Constants.DriveTrain.DT_DRIVE_SECOND_GEARTWO
-        );
-        return new SwerveModuleState(Helpers.General.rpsToMetersPerSecond(rps, this.driveWheelDiam), getTurnPositionAsRotation2d());
+        // double rps = drive.getVelocity().getValueAsDouble();
+        // double wheelRps = Helpers.General.gearCalcDouble(rps,
+        //     Constants.DriveTrain.DT_DRIVE_FIRST_GEARONE,
+        //     Constants.DriveTrain.DT_DRIVE_FIRST_GEARTWO,
+        //     Constants.DriveTrain.DT_DRIVE_SECOND_GEARONE,
+        //     Constants.DriveTrain.DT_DRIVE_SECOND_GEARTWO
+        // );
+        // return new SwerveModuleState(Helpers.General.rpsToMetersPerSecond(wheelRps, this.driveWheelDiam), getTurnPositionAsRotation2d());
+        if (state != null) return state;
+        return new SwerveModuleState(0, getTurnPositionAsRotation2d());
     }
 
     /**
@@ -159,18 +159,19 @@ public class SwerveModule {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        SwerveModuleState state = (Constants.Swerve.useTurnOptimization) ? optimize(desiredState) : desiredState;
+        state = (Constants.Swerve.useTurnOptimization) ? optimize(desiredState) : desiredState;
         double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond; //Create a percentage from the theoretical max
-        drive.set(percentOutput);
+        // drive.set(percentOutput);
+        setDrivePower(percentOutput);
 
         int turn_ticks = Helpers.General.radiansToTicks(state.angle.getRadians() + Constants.Swerve.kHomeOffsetRadians);
         turn.set(ControlMode.Position, turn_ticks);
 
-        //Display output for debugging
-        if(Helpers.Debug.debugThrottleMet(debug_ticks1) && state.speedMetersPerSecond != 0.0) {
-            Helpers.Debug.debug(moduleName+" Speed (metersPerSecond)="+Helpers.General.roundDouble(state.speedMetersPerSecond,3)+" Turn Setpoint="+turn_ticks);
-        }
-        debug_ticks1++;
+        // //Display output for debugging
+        // if(Helpers.Debug.debugThrottleMet(debug_ticks1) && state.speedMetersPerSecond != 0.0) {
+        //     Helpers.Debug.debug(moduleName+" Speed (metersPerSecond)="+Helpers.General.roundDouble(state.speedMetersPerSecond,3)+" Turn Setpoint="+turn_ticks);
+        // }
+        // debug_ticks1++;
     }
 
     /**
@@ -202,13 +203,7 @@ public class SwerveModule {
 	 * @param power drive motor power from -1.0 to 1.0
     */
     public void setDrivePower(double power){
-        if (this.isDrivePowerInverted) {
-            drive.setControl(new DutyCycleOut(-power, true, false, false, false));
-            // drive.set(ControlMode.PercentOutput,-power);
-        } else {
-            drive.setControl(new DutyCycleOut(power, true, false, false, false));
-            // drive.set(ControlMode.PercentOutput,power);
-        }
+        drive.setControl(new DutyCycleOut(power, true, false, false, false));
     }
 
     public int getZeroPositionTicks() {
@@ -242,6 +237,13 @@ public class SwerveModule {
         int pos = (int) turn.getSelectedSensorPosition(0); //not normalized
         // int pos = getTurnPosition();
         return new Rotation2d(Helpers.General.ticksToRadians(pos));
+    }
+
+    public Rotation2d getAngle() {
+        return getState().angle.unaryMinus();
+    }
+    public double getVelocity() {
+        return getState().speedMetersPerSecond;
     }
 
     /**
