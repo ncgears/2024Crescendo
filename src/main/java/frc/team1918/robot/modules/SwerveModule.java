@@ -125,12 +125,14 @@ public class SwerveModule {
     public SwerveModuleState getState() {
         //sensor velocity is NOT RPM, but in ticks per 100ms!
         //double rawRpm = drive.getSelectedSensorVelocity();  //getEncoder().getVelocity();
-        double rawRpm = Helpers.General.ticksPer100msToRPS(drive.getSelectedSensorVelocity(), Constants.DriveTrain.DT_DRIVE_ENCODER_FULL_ROTATION, 1);
-        double wheelRpm = Helpers.General.gearCalcDouble(rawRpm,Constants.DriveTrain.DT_DRIVE_FIRST_GEARONE,
+        double rps = drive.getVelocity().getValueAsDouble();
+        double wheelRps = Helpers.General.gearCalcDouble(rps,
+            Constants.DriveTrain.DT_DRIVE_FIRST_GEARONE,
             Constants.DriveTrain.DT_DRIVE_FIRST_GEARTWO,
             Constants.DriveTrain.DT_DRIVE_SECOND_GEARONE,
-            Constants.DriveTrain.DT_DRIVE_SECOND_GEARTWO);
-            return new SwerveModuleState(Helpers.General.rpmToMetersPerSecond(wheelRpm, this.driveWheelDiam), getTurnPositionAsRotation2d());
+            Constants.DriveTrain.DT_DRIVE_SECOND_GEARTWO
+        );
+        return new SwerveModuleState(Helpers.General.rpsToMetersPerSecond(rps, this.driveWheelDiam), getTurnPositionAsRotation2d());
     }
 
     /**
@@ -150,13 +152,6 @@ public class SwerveModule {
         }
         Rotation2d adjustedAngle = Rotation2d.fromDegrees(delta + currentAngle.getDegrees());
         return new SwerveModuleState(driveOutput, adjustedAngle);
-        
-        // Rotation2d delta = desiredState.angle.minus(currentAngle);
-        // if (Math.abs(delta.getDegrees()) > 90.0 && Math.abs(delta.getDegrees()) < 270) { //new requested delta is between 90 and -90 (270) degrees, invert drive speed and rotate 180 degrees from desired
-        //     return new SwerveModuleState(-desiredState.speedMetersPerSecond, desiredState.angle.rotateBy(Rotation2d.fromDegrees(180.0)));
-        // } else { //no optimization necessary
-        //     return new SwerveModuleState(desiredState.speedMetersPerSecond, desiredState.angle);
-        // }
     }
 
     /**
@@ -164,26 +159,18 @@ public class SwerveModule {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        SwerveModuleState state = (Constants.Swerve.USE_OPTIMIZATION) ? optimize(desiredState) : desiredState;
-        if (Constants.Swerve.USE_DRIVE_PID) {
-            // TODO: Send speed to closed loop control rather than percent output. Enable USE_DRIVE_PID and test.
-            double motorRpm = (Helpers.General.metersPerSecondToRPM(state.speedMetersPerSecond, this.driveWheelDiam) / Constants.DriveTrain.DT_DRIVE_CONVERSION_FACTOR);
-            // Helpers.Debug.debug(moduleName+" desired mps: "+state.speedMetersPerSecond+" motorRpm: "+motorRpm);
-            drive.set(ControlMode.Velocity, Helpers.General.rpsToTicksPer100ms(motorRpm/60, Constants.DriveTrain.DT_DRIVE_ENCODER_FULL_ROTATION, 1), DemandType.ArbitraryFeedForward, feedforward.calculate(state.speedMetersPerSecond));
-        } else {
-            double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond;
-            drive.set(ControlMode.PercentOutput, percentOutput);
-        }
+        SwerveModuleState state = (Constants.Swerve.useTurnOptimization) ? optimize(desiredState) : desiredState;
+        double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond; //Create a percentage from the theoretical max
+        drive.set(percentOutput);
 
         int turn_ticks = Helpers.General.radiansToTicks(state.angle.getRadians() + Constants.Swerve.kHomeOffsetRadians);
-        turn.set(ControlMode.Position, turn_ticks); //TODO: Double-check this and test
+        turn.set(ControlMode.Position, turn_ticks);
 
         //Display output for debugging
         if(Helpers.Debug.debugThrottleMet(debug_ticks1) && state.speedMetersPerSecond != 0.0) {
             Helpers.Debug.debug(moduleName+" Speed (metersPerSecond)="+Helpers.General.roundDouble(state.speedMetersPerSecond,3)+" Turn Setpoint="+turn_ticks);
         }
         debug_ticks1++;
-
     }
 
     /**

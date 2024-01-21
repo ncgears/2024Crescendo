@@ -186,8 +186,7 @@ public class Constants {
     public static final class Swerve {
         public static final String canBus = "rio"; //name of canbus for swerve modules, if not "rio"
         public static final boolean homeOnInit = true; //true to go to zero position on init
-        public static final boolean USE_OPTIMIZATION = true; //false to disable shortest path optimization
-        public static final boolean USE_DRIVE_PID = false; //true to enable PID based drive control
+        public static final boolean useTurnOptimization = true; //This will reduce wear on wheels by only turning <180 and reversing the drive power if appropriate
         // turn pid defaults (used in module definitions)
         public static final double DEFAULT_TURN_P = 2.8; //PID P
         public static final double DEFAULT_TURN_I = 0.0; //PID I

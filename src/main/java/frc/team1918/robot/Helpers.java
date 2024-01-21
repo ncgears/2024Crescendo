@@ -104,16 +104,22 @@ public class Helpers {
         }
 
         /**
-         * This function takes a value in RPMs and converts it to meters Per Second.
-         * @param rpm double precision value of RPMs from the motor controller
-         * @return double precision value in meters per second based on wheel size and gear sets
+         * This function takes a value in rotations per second and converts it to meters per second based on the size of the wheel
+         * @param rps (double) Rotations Per Second
+         * @param wheelDiamMM (double) Diameter of the wheel in mm
+         * @return (double) meters per second based on the wheel size and rotations per second
          */
-        public final static double rpmToMetersPerSecond(double rpm, double wheelDiamMM) {
-            return ((rpm / 60) * (wheelDiamMM * Math.PI)) / 1000;
+        public final static double rpsToMetersPerSecond(double rps, double wheelDiamMM) {
+            return ((rps) * (wheelDiamMM * Math.PI)) / 1000;
         }
-
-        public final static double metersPerSecondToRPM(double mps, double wheelDiamMM) {
-            return ((mps * 1000) / (wheelDiamMM * Math.PI)) * 60;
+        /**
+         * This function takes a value in a speed in meters per second and converts to rotations per second based on the size of the wheel
+         * @param mps (double) Meters Per Second
+         * @param wheelDiamMM (double) Diameter of the wheel in mm
+         * @return (double) rotations per second based on wheel size and speed
+         */
+        public final static double metersPerSecondToRPS(double mps, double wheelDiamMM) {
+            return ((mps * 1000) / (wheelDiamMM * Math.PI));
         }
 
         /**
