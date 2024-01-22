@@ -1,6 +1,8 @@
 
 package frc.team1918.robot.subsystems;
 
+import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 
@@ -25,8 +27,18 @@ public class TemplateSubsystem extends SubsystemBase {
   
   public TemplateSubsystem() {
     //initialize values for private and public variables, etc.
+  	
+    //Add this sendable to the Dashboard
+		// SmartDashboard.putData("TemplateSubsystem", this);
   }
-  
+
+  // @Override
+  // public void initSendable(SendableBuilder builder) {
+  //   super.initSendable(builder);
+  //   builder.setActuator(false); //true if this subsystem can move something on the robot
+  //   builder.addStringProperty("String Value", null, null);
+  // }
+
   @Override
   public void periodic() {
     doStuff();

@@ -132,11 +132,21 @@ public class Constants {
     }
 
     /**
+     * Constants for the Lighting Subsystem
+     */
+    public static final class Lighting {
+        public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kCandleID = ID.CANdle.candle1;
+    }
+
+    /**
      * Constants for the Shooter Subsystem
      */
     public static final class Shooter {
         //Controller Setup
         public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Falcon.shooter;
         public static final boolean neutralIsBrake = false; 
         public static final boolean isInverted = false;
@@ -185,6 +195,7 @@ public class Constants {
      */
     public static final class Swerve {
         public static final String canBus = "rio"; //name of canbus for swerve modules, if not "rio"
+        public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final boolean homeOnInit = true; //true to go to zero position on init
         public static final boolean useTurnOptimization = true; //This will reduce wear on wheels by only turning <180 and reversing the drive power if appropriate
         // turn pid defaults (used in module definitions)

@@ -8,19 +8,18 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.Dashboard;
 import frc.team1918.robot.Helpers;
 // import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.RobotContainer;
-import frc.team1918.robot.commands.shooter.shooter_stopShooter;
-import frc.team1918.robot.subsystems.LightingSubsystem.Colors;
 
 /**
  * The Template Subsystem handles getting and managing the Template.
@@ -34,7 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
   private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1;
-  private final ShuffleboardTab shooter = Shuffleboard.getTab("Shooter");
+  private GenericEntry new_speed;
   
   /**
 	 * Returns the instance of the ShooterSubsystem subsystem.
@@ -60,49 +59,51 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
 		//Add this sendable to the Dashboard
-		SmartDashboard.putData("Shooter", this);
-    shooter.add("Target Speed", this)
-      .withSize(3,2)
-      .withPosition(0,0)
-      .withWidget("Number Slider")
-      .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5));
-    shooter.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
-      .withSize(2, 2)
-      .withPosition(3, 0);  
+		// SmartDashboard.putData("Shooter", this);
+    createDashboards();
   }
   
   @Override
   public void periodic() {
-    doStuff();
     updateDashboard();
   }
 
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    builder.setSmartDashboardType("Number Slider");
-    builder.setActuator(true);
-    builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
-    builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
-  }
+  // @Override
+  // public void initSendable(SendableBuilder builder) {
+  //   super.initSendable(builder);
+  //   builder.setSmartDashboardType("Number Slider");
+  //   builder.setActuator(true);
+  //   builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
+  //   builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
+  // }
 
-  /**
-   * doStuff is called periodically and is responsible for performing the actions for
-   * this subsystem. It is separate from the periodic method solely for code organization.
-   */
-  public void doStuff() {
-    // target_speed = getTunableSpeed();
-    if(getTunableSpeed() != target_speed) {
-      // Helpers.Debug.debug("Shooter: New Target Speed is "+getTunableSpeed());
-      target_speed = getTunableSpeed();
-      setSpeedPercent(target_speed);
+  public void createDashboards() {
+		if(Constants.Shooter.debugDashboard) {
+      ShuffleboardTab shooter = Shuffleboard.getTab("Debug: Shooter");
+      new_speed = shooter.add("Target Speed", 0)
+        .withSize(4,2)
+        .withPosition(0,0)
+        .withWidget("Number Slider")
+        .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
+        .getEntry();
+      shooter.add("Apply Target", new InstantCommand(() -> setSpeedPercent(getNewSpeed())).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(4, 0);  
+      shooter.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(0, 2);  
+      shooter.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(4, 2);  
     }
   }
 
-  public double getTunableSpeed() {
-    if(!Constants.Global.tuningMode) return target_speed;
-    return 0.0;
-    // return RobotContainer.dashboard.shooter_target.getDouble(0);
+  public double getNewSpeed() {
+    return new_speed.getDouble(0.0);
+  }
+
+  public double getTargetSpeed() {
+    return target_speed;
   }
 
   /**
@@ -117,22 +118,19 @@ public class ShooterSubsystem extends SubsystemBase {
     return getCurrentSpeed() / Constants.Shooter.kMaxRPS;
   }
 
-  public double getTargetSpeed() {
-    return target_speed;
-  }
-
   /**
    * Sets the speed of the shooter
    * @param speed The speed of the shooter in percentage (-1.0 to 1.0)
    */
   public void setSpeedPercent(double speed) {
+    target_speed = speed;
     //set the shooter motor speed by percent (-1 to 1)
     if(speed == 0.0) {
-      // Helpers.Debug.debug("Stopping shooter");
+      Helpers.Debug.debug("Shooter Target RPS: 0.0");
       m_motor1.setControl(m_brake);
     } else {
       double rps = speed * Constants.Shooter.kMaxRPS;
-      Helpers.Debug.debug("New requested velocity RPS is " + rps);
+      Helpers.Debug.debug("Shooter Target RPS: " + rps);
       m_motor1.setControl(m_voltageVelocity.withVelocity(rps));
     }
   }

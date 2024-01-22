@@ -1,6 +1,8 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.led.CANdle;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -19,7 +21,7 @@ import frc.team1918.robot.RobotContainer;
  */
 public class LightingSubsystem extends SubsystemBase {
 	private static LightingSubsystem instance;
-  private final CANdle m_candle = new CANdle(Constants.ID.CANdle.candle1, "rio");
+  private final CANdle m_candle = new CANdle(Constants.Lighting.kCandleID, Constants.Lighting.canBus);
   private Colors m_currentColor, m_oldColor = Colors.OFF;
   private boolean m_blinking, m_oldBlinking = false;
   private int m_intensity, m_oldIntensity = 100;
@@ -51,7 +53,6 @@ public class LightingSubsystem extends SubsystemBase {
     public int G() { return this.g; }
     public int B() { return this.b; }
   }
-  private final ShuffleboardTab lighting = Shuffleboard.getTab("Lighting");
   /**
 	 * Returns the instance of the LightingSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -69,23 +70,39 @@ public class LightingSubsystem extends SubsystemBase {
 
 		//Add this sendable to the Dashboard
 		// SmartDashboard.putData("Lighting", this);
-    lighting.add(this)
-      .withSize(2, 2)
-      // .withWidget("Single Color View")
-      .withPosition(0, 0);    
+    createDashboards();
   }
   
-  @Override
-  public void periodic() {
-    updateDashboard();
+  // @Override
+  // public void initSendable(SendableBuilder builder) {
+  //   super.initSendable(builder);
+  //   builder.setActuator(false);
+  //   builder.setSmartDashboardType("Single Color View");
+  //   builder.addStringProperty("LED Color", this::getColor, null);
+  // }
+
+  public void createDashboards() {
+    ShuffleboardTab driver = Shuffleboard.getTab("Driver");
+    driver.addString("LED Color", this::getColor)
+      .withSize(6, 4)
+      .withWidget("Single Color View")
+      .withPosition(0, 4);  
+		if(Constants.Lighting.debugDashboard) {
+      ShuffleboardTab lighting = Shuffleboard.getTab("Debug: Lighting");
+      lighting.addString("LED Color", this::getColor)
+        .withSize(6, 4)
+        .withWidget("Single Color View")
+        .withPosition(0, 0);  
+      lighting.addString("LED Color Hex", this::getColor)
+        .withSize(6, 2)
+        .withWidget("Text String")
+        .withPosition(0, 4);  
+    }
   }
 
   @Override
-  public void initSendable(SendableBuilder builder) {
-    super.initSendable(builder);
-    builder.setSmartDashboardType("Single Color View");
-    builder.setActuator(false);
-    builder.addStringProperty("LED Color", this::getColor, null);
+  public void periodic() {
+    updateDashboard();
   }
 
   public String getColor() {

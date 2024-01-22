@@ -24,6 +24,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -98,7 +100,8 @@ public class DriveSubsystem extends SubsystemBase {
 		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
 		//Add this sendable to the Dashboard
-		SmartDashboard.putData("Swerve Drive", this);
+		//SmartDashboard.putData("Swerve Drive", this);
+		createDashboards();
 	}
 
 	// @SuppressWarnings("unused")
@@ -131,6 +134,41 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getHeading().getDegrees(), null);
 	}
 
+	public void createDashboards() {
+		if(Constants.Swerve.debugDashboard) {
+			ShuffleboardTab debug = Shuffleboard.getTab("Debug: Swerve");
+			debug.add("Swerve Drive", this)
+				.withSize(5, 6)
+				.withPosition(0, 0);
+				// .getEntry();
+			debug.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
+				.withSize(2, 2)
+				.withPosition(5, 0);
+			debug.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
+				.withSize(2, 2)
+				.withPosition(11, 0);
+			debug.addNumber("RL Angle", () -> Helpers.General.roundDouble(m_rearLeft.getAngle().getDegrees(),2))
+				.withSize(2, 2)
+				.withPosition(5, 4);
+			debug.addNumber("RR Angle", () -> Helpers.General.roundDouble(m_rearRight.getAngle().getDegrees(),2))
+				.withSize(2, 2)
+				.withPosition(11, 4);
+			debug.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
+				.withSize(2, 2)
+				.withPosition(7, 1);
+			debug.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
+				.withSize(2, 2)
+				.withPosition(9, 1);
+			debug.addNumber("RL Speed", () -> Helpers.General.roundDouble(m_rearLeft.getVelocity(),3))
+				.withSize(2, 2)
+				.withPosition(7, 3);
+			debug.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_rearRight.getVelocity(),3))
+				.withSize(2, 2)
+				.withPosition(9, 3);
+
+		}
+	}
+
 	public SwerveModulePosition[] getSwerveModulePositions() {
 		return new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
@@ -141,10 +179,10 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void updateDashboard() {
-		Dashboard.DriveTrain.setHeading(m_gyro.getHeading().getDegrees());
-		Dashboard.DriveTrain.setX(getPose().getX());
-		Dashboard.DriveTrain.setY(getPose().getY());
-		Dashboard.DriveTrain.setCurrentAngle(getPose().getRotation().getDegrees());
+		// Dashboard.DriveTrain.setHeading(m_gyro.getHeading().getDegrees());
+		// Dashboard.DriveTrain.setX(getPose().getX());
+		// Dashboard.DriveTrain.setY(getPose().getY());
+		// Dashboard.DriveTrain.setCurrentAngle(getPose().getRotation().getDegrees());
 		// Dashboard.DriveTrain.setDesiredAngle(desiredAngle);
 		// Dashboard.DriveTrain.setCommunity(inCommunity);
 		// Dashboard.DriveTrain.setTargetAngle(m_targetPose.getRotation().getRadians());
