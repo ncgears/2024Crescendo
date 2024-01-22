@@ -130,7 +130,7 @@ public class ShooterSubsystem extends SubsystemBase {
       m_motor1.setControl(m_brake);
     } else {
       double rps = speed * Constants.Shooter.kMaxRPS;
-      Helpers.Debug.debug("Shooter Target RPS: " + rps);
+      Helpers.Debug.debug("Shooter Target RPS: " + Helpers.General.roundDouble(rps, 2));
       m_motor1.setControl(m_voltageVelocity.withVelocity(rps));
     }
   }
