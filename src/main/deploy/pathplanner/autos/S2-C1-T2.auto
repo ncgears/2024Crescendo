@@ -8,19 +8,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Speaker2 to Center1"
+            "pathName": "S2 thru A2 to C1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Center1 to Trap2"
+            "pathName": "C1 to T2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Trap2 to Chain2"
+            "pathName": "T2 to Ch2"
           }
         }
       ]
