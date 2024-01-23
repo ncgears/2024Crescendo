@@ -135,7 +135,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void createDashboards() {
-		ShuffleboardTab driverTab = Shuffleboard.getTab("driverTab");
+		ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
 		driverTab.add("Swerve Drive", this)
 			.withSize(5, 5)
 			.withPosition(19, 4);
