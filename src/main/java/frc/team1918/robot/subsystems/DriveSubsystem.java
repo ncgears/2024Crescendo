@@ -135,34 +135,37 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void createDashboards() {
+		ShuffleboardTab driverTab = Shuffleboard.getTab("driverTab");
+		driverTab.add("Swerve Drive", this)
+			.withSize(5, 5)
+			.withPosition(19, 4);
 		if(Constants.Swerve.debugDashboard) {
-			ShuffleboardTab debug = Shuffleboard.getTab("Debug: Swerve");
-			debug.add("Swerve Drive", this)
+			ShuffleboardTab debugTab = Shuffleboard.getTab("Debug: Swerve");
+			debugTab.add("Swerve Drive", this)
 				.withSize(5, 6)
 				.withPosition(0, 0);
-				// .getEntry();
-			debug.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
+			debugTab.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(5, 0);
-			debug.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
+			debugTab.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(11, 0);
-			debug.addNumber("RL Angle", () -> Helpers.General.roundDouble(m_rearLeft.getAngle().getDegrees(),2))
+			debugTab.addNumber("RL Angle", () -> Helpers.General.roundDouble(m_rearLeft.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(5, 4);
-			debug.addNumber("RR Angle", () -> Helpers.General.roundDouble(m_rearRight.getAngle().getDegrees(),2))
+			debugTab.addNumber("RR Angle", () -> Helpers.General.roundDouble(m_rearRight.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(11, 4);
-			debug.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
+			debugTab.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(7, 1);
-			debug.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
+			debugTab.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(9, 1);
-			debug.addNumber("RL Speed", () -> Helpers.General.roundDouble(m_rearLeft.getVelocity(),3))
+			debugTab.addNumber("RL Speed", () -> Helpers.General.roundDouble(m_rearLeft.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(7, 3);
-			debug.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_rearRight.getVelocity(),3))
+			debugTab.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_rearRight.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(9, 3);
 

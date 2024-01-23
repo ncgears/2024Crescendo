@@ -79,20 +79,20 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void createDashboards() {
 		if(Constants.Shooter.debugDashboard) {
-      ShuffleboardTab shooter = Shuffleboard.getTab("Debug: Shooter");
-      new_speed = shooter.add("Target Speed", 0)
+      ShuffleboardTab shooterTab = Shuffleboard.getTab("Debug: Shooter");
+      new_speed = shooterTab.add("Target Speed", 0)
         .withSize(4,2)
         .withPosition(0,0)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
         .getEntry();
-      shooter.add("Apply Target", new InstantCommand(() -> setSpeedPercent(getNewSpeed())).ignoringDisable(true))
+      shooterTab.add("Apply Target", new InstantCommand(() -> setSpeedPercent(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(4, 0);  
-      shooter.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)).ignoringDisable(true))
+      shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(0, 2);  
-      shooter.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
+      shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(4, 2);  
     }
