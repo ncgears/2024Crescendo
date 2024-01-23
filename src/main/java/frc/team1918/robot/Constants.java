@@ -89,8 +89,8 @@ public class Constants {
         public static final int kWheelbaseLength = 23; //from pivot to pivot of the swerve module front to back
         public static final int kFrameWidth = 28; //outside frame perimeter side to side
         public static final int kFrameLength = 30; //outside frame perimeter front to back
-        public static final int kBumperWidth = kFrameWidth + 7; //outside of bumpers side to side
-        public static final int kBumperLength = kFrameLength + 7; //outside of bumpers front to back
+        public static final int kBumperWidth = kFrameWidth + 7; //outside of bumpers side to side //.89m
+        public static final int kBumperLength = kFrameLength + 7; //outside of bumpers front to back //.965m
         public static final boolean DEBUG_ENABLED_DEFAULT = true; //Default starting state of debug mode
         public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recurring debug messages
         public static final int DASH_RECURRING_TICKS = 50; //Periodic cycles for dashboard updates
@@ -229,9 +229,15 @@ public class Constants {
 
         // swerve control definitions
         public static final double kHomeOffsetRadians = 0.0; //3 * (Math.PI/4); //135 - radians to offset the zero point of the wheels
-        public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-        public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-        public static final double kMaxSpeedMetersPerSecond = 4.115; //13.5fps calculated;
+        public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
+        public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
+        //NCServe Speed Chart with 4" Colson Wheels and Falcon500 (6380 RPM Free Speed)
+        //16:44 = 13.5fps or 4.11mps
+        //16:40 = 14.85fps or 4.53mps
+        //16:36 = 16.5fps or 5.03mps
+        //16:34 = 17.47fps or 5.32mps
+        //16:32 = 18.56fps or 5.66mps
+        public static final double kMaxSpeedMetersPerSecond = 5.66; 
         public static final boolean kGyroReversed = false;
         public static final double kDriveKP = 0.05;
         public static final double kDriveKI = 0.0;
