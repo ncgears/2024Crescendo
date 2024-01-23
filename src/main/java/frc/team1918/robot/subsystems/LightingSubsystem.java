@@ -82,18 +82,18 @@ public class LightingSubsystem extends SubsystemBase {
   // }
 
   public void createDashboards() {
-    ShuffleboardTab driver = Shuffleboard.getTab("Driver");
-    driver.addString("LED Color", this::getColor)
-      .withSize(6, 4)
+    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
+    driverTab.addString("LED Color", this::getColor)
+      .withSize(5, 4)
       .withWidget("Single Color View")
-      .withPosition(0, 4);  
+      .withPosition(19, 0);  
 		if(Constants.Lighting.debugDashboard) {
-      ShuffleboardTab lighting = Shuffleboard.getTab("Debug: Lighting");
-      lighting.addString("LED Color", this::getColor)
+      ShuffleboardTab lightingTab = Shuffleboard.getTab("Debug: Lighting");
+      lightingTab.addString("LED Color", this::getColor)
         .withSize(6, 4)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      lighting.addString("LED Color Hex", this::getColor)
+      lightingTab.addString("LED Color Hex", this::getColor)
         .withSize(6, 2)
         .withWidget("Text String")
         .withPosition(0, 4);  
