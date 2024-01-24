@@ -1,18 +1,19 @@
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.Dashboard;
-import frc.team1918.robot.Robot;
 
-public class GyroSubsystem extends SubsystemBase {
-	private static GyroSubsystem instance;
+public class Gyro implements Sendable {
+	private static Gyro instance;
 
 	private static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
     private static double yawOffset = 0;
@@ -22,37 +23,37 @@ public class GyroSubsystem extends SubsystemBase {
 	 * The purpose of this is to only create an instance if one does not already exist.
 	 * @return GyroSubSystem instance
 	 */
-    public static GyroSubsystem getInstance() {
+    public static Gyro getInstance() {
 		if (instance == null)
-			instance = new GyroSubsystem();
+			instance = new Gyro();
 		return instance;
 	}
 
 	/**
 	 * Initializes the GyroSubsystem class, performs setup steps, etc.
 	 */
-    public GyroSubsystem() {
-        // m_gyro.calibrate(); //Deprecated in 2024?
-
-		//Add this sendable to the Dashboard
-		SmartDashboard.putData("Gyro", this);
+    public Gyro() {
     }
 
-	@Override
-	public void periodic() {
-		updateDashboard();
-		if(Robot.isSimulation()) {
-            //This is for updating simulated data
+	public void buildDashboards() {
+		if(Constants.Lighting.debugDashboard) {
+			ShuffleboardTab gyroTab = Shuffleboard.getTab("Debug: Gyro");
+			gyroTab.add("Value", this)
+				.withSize(5, 4)
+				.withPosition(0, 0)  
+				.withProperties(Map.of("counter_clockwise_positive",true));
+			gyroTab.addNumber("Pitch", this::getPitch)
+				.withSize(5, 2)
+				.withPosition(0, 4)
+				.withWidget("Text Display");
 		}
 	}
 
 	@Override
 	public void initSendable(SendableBuilder builder) {
-		super.initSendable(builder);
 		builder.setSmartDashboardType("Gyro");
 		builder.setActuator(false);
-		builder.addDoubleProperty("Heading", () -> getHeading().getDegrees(), null);
-		builder.addDoubleProperty("Pitch", this::getPitch, null);
+		builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
 	}
 
 	/**
@@ -65,7 +66,7 @@ public class GyroSubsystem extends SubsystemBase {
 		if (0.0 > raw_yaw) { //yaw is negative
 			calc_yaw += 360.0;
 		}
-		calc_yaw *= (Constants.Swerve.kGyroReversed ? -1.0 : 1.0);
+		calc_yaw *= (Constants.Gyro.kGyroReversed ? -1.0 : 1.0);
 		return Rotation2d.fromDegrees(calc_yaw);
 	}
 

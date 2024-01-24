@@ -3,8 +3,9 @@ package frc.team1918.robot.commands.gyro;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 //import subsystem
-import frc.team1918.robot.subsystems.GyroSubsystem;
+import frc.team1918.robot.subsystems.Gyro;
 
 /**
  * A command to reset the gyro to 0.
@@ -12,20 +13,17 @@ import frc.team1918.robot.subsystems.GyroSubsystem;
  * @implNote The reset happens during the end method of the command to ensure that it always executes even if the command completes before the gyro finishes executing the command.
  */
 public class gyro_resetGyro extends Command {
-  private final GyroSubsystem m_gyro;
 
   /**
    * @param subsystem The drive subsystem this command will run on.
    */
-  public gyro_resetGyro(GyroSubsystem gyro) {
-    m_gyro = gyro;
-    addRequirements(m_gyro);
+  public gyro_resetGyro() {
   }
 
   @Override
   public void end(boolean interrupted) {
     Helpers.Debug.debug("Gyro: Reset Gyro");
-    m_gyro.zeroHeading();
+    RobotContainer.gyro.zeroHeading();
   }
 
   @Override

@@ -36,7 +36,7 @@ import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 //Subsystems imports
 import frc.team1918.robot.subsystems.DashboardSubsystem;
 import frc.team1918.robot.subsystems.DriveSubsystem;
-import frc.team1918.robot.subsystems.GyroSubsystem;
+import frc.team1918.robot.subsystems.Gyro;
 import frc.team1918.robot.subsystems.LightingSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.subsystems.VisionSubsystem;
@@ -69,14 +69,16 @@ public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     public static final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
     public static final LightingSubsystem lighting = LightingSubsystem.getInstance();
+    public static final Gyro gyro = new Gyro();
 
   //subsystems definitions
-    //private final PowerDistribution m_pdp = new PowerDistribution();
+    // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
-    private final GyroSubsystem m_gyro = new GyroSubsystem();
     private final DriveSubsystem m_drive = new DriveSubsystem();
     private final VisionSubsystem m_vision = new VisionSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+
+  //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
     private static SendableChooser<String> m_auto_cone = new SendableChooser<>();
     private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
@@ -153,7 +155,7 @@ public class RobotContainer {
     /** DRIVER JOYSTICK (dj) */
     // Reset Gyro
     dj.hamburger()
-      .onTrue(new gyro_resetGyro(m_gyro).andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
+      .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
     dj.a()
@@ -197,6 +199,7 @@ public class RobotContainer {
     buildAutonChooser();
     buildDriverTab();
     buildMaintenanceTab();
+    gyro.buildDashboards();
   }
 
   public void buildAutonChooser() {

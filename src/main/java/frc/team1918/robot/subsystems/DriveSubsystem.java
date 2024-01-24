@@ -33,7 +33,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @SuppressWarnings("deprecation")
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
-	private static GyroSubsystem m_gyro;
+	private static Gyro m_gyro;
 	private static VisionSubsystem m_vision;
 
 	//initialize 4 swerve modules
@@ -75,7 +75,7 @@ public class DriveSubsystem extends SubsystemBase {
 		swervePositions = getSwerveModulePositions();
 
 		//Initialize the gyro object
-		m_gyro = new GyroSubsystem();
+		m_gyro = new Gyro();
 
 		//Initialize the odometry object
 		m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);

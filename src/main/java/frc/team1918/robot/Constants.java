@@ -140,6 +140,11 @@ public class Constants {
         public static final int kCandleID = ID.CANdle.candle1;
     }
 
+    public static final class Gyro {
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean kGyroReversed = false;
+    }
+
     /**
      * Constants for the Shooter Subsystem
      */
@@ -232,7 +237,6 @@ public class Constants {
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
         public static final double kMaxSpeedMetersPerSecond = DriveTrain.kMaxMetersPerSecond; 
-        public static final boolean kGyroReversed = false;
         public static final double kDriveKP = 0.05;
         public static final double kDriveKI = 0.0;
         public static final double kDriveKD = 0.0;

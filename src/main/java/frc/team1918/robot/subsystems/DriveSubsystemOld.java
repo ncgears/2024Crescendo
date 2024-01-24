@@ -138,7 +138,7 @@ public class DriveSubsystemOld extends SubsystemBase {
 		if (0.0 > raw_yaw) { //yaw is negative
 			calc_yaw += 360.0;
 		}
-		calc_yaw *= (Constants.Swerve.kGyroReversed ? -1.0 : 1.0);
+		calc_yaw *= (Constants.Gyro.kGyroReversed ? -1.0 : 1.0);
 		return Rotation2d.fromDegrees(calc_yaw);
 	}
 
