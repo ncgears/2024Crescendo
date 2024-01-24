@@ -5,7 +5,7 @@
 - Gyro - NavX2 SPI
 - Vision - Limelight 3
 - Intake
-    - ??? Brushed, TalonSRX4
+    - ??? Brushed, TalonSRX
 - Indexer
     - Combined with intake for motor control?
     - Beam break for indexing position
