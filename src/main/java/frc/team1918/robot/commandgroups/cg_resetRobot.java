@@ -10,12 +10,11 @@ package frc.team1918.robot.commandgroups;
 // import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.team1918.robot.subsystems.VisionSubsystem;
+import frc.team1918.robot.subsystems.Vision;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.commands.vision.vision_setLight;
 
 public class cg_resetRobot extends SequentialCommandGroup {
-  private final VisionSubsystem m_vision;
   
   /**
    * This command groups issues all the different robot reset items that have to get reset on disable
@@ -26,8 +25,7 @@ public class cg_resetRobot extends SequentialCommandGroup {
    * <br>
    * @param vision Vision Subsystem
   */
-  public cg_resetRobot(VisionSubsystem vision) {
-    m_vision = vision;
+  public cg_resetRobot() {
     // addRequirements(m_stove, m_fsr);
 
     /**
@@ -37,7 +35,7 @@ public class cg_resetRobot extends SequentialCommandGroup {
     addCommands(
         //this is a comma separated list of commands, thus, the last one should not have a comma
         new helpers_debugMessage("Start robot reset sequence"),
-        new vision_setLight(m_vision, false),
+        new vision_setLight(false),
         new SequentialCommandGroup(
           new WaitCommand(1)
         ),

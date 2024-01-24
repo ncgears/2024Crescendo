@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
 	private static Gyro m_gyro;
-	private static VisionSubsystem m_vision;
+	private static Vision m_vision;
 
 	//initialize 4 swerve modules
 	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
@@ -81,7 +81,7 @@ public class DriveSubsystem extends SubsystemBase {
 		m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);
 
 		//Initialize the vision object
-		m_vision = new VisionSubsystem();
+		m_vision = new Vision();
 
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(

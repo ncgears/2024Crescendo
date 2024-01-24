@@ -39,7 +39,7 @@ import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.Gyro;
 import frc.team1918.robot.subsystems.LightingSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
-import frc.team1918.robot.subsystems.VisionSubsystem;
+import frc.team1918.robot.subsystems.Vision;
 import frc.team1918.robot.subsystems.LightingSubsystem.Colors;
 import frc.team1918.robot.utils.CTREConfigs;
 import frc.team1918.robot.utils.TunableNumber;
@@ -70,12 +70,12 @@ public class RobotContainer {
     public static final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
     public static final LightingSubsystem lighting = LightingSubsystem.getInstance();
     public static final Gyro gyro = new Gyro();
+    public static final Vision vision = new Vision();
 
   //subsystems definitions
     // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
     private final DriveSubsystem m_drive = new DriveSubsystem();
-    private final VisionSubsystem m_vision = new VisionSubsystem();
     private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
   //Sendables definitions
@@ -187,7 +187,7 @@ public class RobotContainer {
     //This selects a command (or command group) to return
     switch (name) {
       case "resetRobot":
-        return new cg_resetRobot(m_vision);
+        return new cg_resetRobot();
       default:
         return null;
     }
@@ -205,9 +205,9 @@ public class RobotContainer {
   public void buildAutonChooser() {
     //This builds the auton chooser, giving driver friendly names to the commands from above
     if(Constants.Auton.isDisabled) {
-      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive, m_vision));
+      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive));
     } else {
-      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive, m_vision));
+      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive));
     }
     //SmartDashboard.putData(m_auto_chooser); //put in the smartdash
   }

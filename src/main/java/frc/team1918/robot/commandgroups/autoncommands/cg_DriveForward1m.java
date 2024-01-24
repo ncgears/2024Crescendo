@@ -13,16 +13,13 @@ import frc.team1918.paths.*;
 import frc.team1918.robot.commands.drive.drive_followTrajectory;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.subsystems.DriveSubsystem;
-import frc.team1918.robot.subsystems.VisionSubsystem;
 
 public class cg_DriveForward1m extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;
-  private final VisionSubsystem m_vision;
 
-  public cg_DriveForward1m(DriveSubsystem drive, VisionSubsystem vision) {
+  public cg_DriveForward1m(DriveSubsystem drive) {
     m_drive = drive;
-    m_vision = vision;
-    addRequirements(m_drive, m_vision);
+    addRequirements(m_drive);
 
     addCommands(
         //this is a comma separated list of commands, thus, the last one should not have a comma

@@ -11,16 +11,10 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
  * The Vision Subsystem handles getting and managing data from the PhotoVision system.
  * It is responsible for getting target data, selecting appropriate targets, and passing information to other subsystems.
  */
-public class VisionSubsystem extends SubsystemBase {
+public class Vision {
   private LimelightHelpers.Results llresults;
 
-  public VisionSubsystem() {
-  }
-  
-  @Override
-  public void periodic() {
-    updateResults();
-    updateDashboard();
+  public Vision() {
   }
 
   public void updateDashboard() {
