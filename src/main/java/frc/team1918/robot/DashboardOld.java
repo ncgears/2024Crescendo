@@ -1,14 +1,11 @@
 //OI = Operator Interface
 package frc.team1918.robot;
 
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * This class reads and writes values to/from the SmartDashboard
  */
+@Deprecated(since = "2024")
 public class DashboardOld {
     public static final class Vision {
         public static final void setVisionRinglight(boolean value) { SmartDashboard.putBoolean("Vision/Ring Light", value); }
@@ -40,6 +37,6 @@ public class DashboardOld {
     }
 
     // Define on-the-fly tabs
-    private static ShuffleboardTab tabDriver = Shuffleboard.getTab("Driver");
-    private static GenericEntry driver_CommunityEntry = tabDriver.add("Community",false).withPosition(9,0).withSize(1,2).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
+    // private static ShuffleboardTab tabDriver = Shuffleboard.getTab("Driver");
+    // private static GenericEntry driver_CommunityEntry = tabDriver.add("Community",false).withPosition(9,0).withSize(1,2).withWidget(BuiltInWidgets.kBooleanBox).getEntry();
 }
