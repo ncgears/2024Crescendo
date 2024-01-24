@@ -18,7 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Velocity;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.Dashboard;
+import frc.team1918.robot.DashboardOld;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -323,13 +323,13 @@ public class SwerveModule {
      * This function is used to output data to the dashboard for debugging the module, typically done in the periodic method.
      */
     public void updateDashboard() {
-        Dashboard.DriveTrain.setTurnPosition(moduleName, (int) turn.getSelectedSensorPosition(0) & 0x3FF);
-        Dashboard.DriveTrain.setTurnSetpoint(moduleName, (int) turn.getClosedLoopTarget(0) & 0x3FF);
-        Dashboard.DriveTrain.setTurnPositionError(moduleName, turn.getClosedLoopError(0));
-        Dashboard.DriveTrain.setTurnVelocity(moduleName, turn.getSelectedSensorVelocity(0));
-        Dashboard.DriveTrain.setTurnZeroPosition(moduleName, getZeroPositionTicks()); 
+        DashboardOld.DriveTrain.setTurnPosition(moduleName, (int) turn.getSelectedSensorPosition(0) & 0x3FF);
+        DashboardOld.DriveTrain.setTurnSetpoint(moduleName, (int) turn.getClosedLoopTarget(0) & 0x3FF);
+        DashboardOld.DriveTrain.setTurnPositionError(moduleName, turn.getClosedLoopError(0));
+        DashboardOld.DriveTrain.setTurnVelocity(moduleName, turn.getSelectedSensorVelocity(0));
+        DashboardOld.DriveTrain.setTurnZeroPosition(moduleName, getZeroPositionTicks()); 
         // Dashboard.DriveTrain.setTurnPositionErrorChange(moduleName, turn.getErrorDerivative(0));
         // Dashboard.DriveTrain.setDriveVelocity(moduleName, drive.getVelocity());
-        Dashboard.DriveTrain.setDriveDistance(moduleName, getDriveDistanceMeters());
+        DashboardOld.DriveTrain.setDriveDistance(moduleName, getDriveDistanceMeters());
     }
 }

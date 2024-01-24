@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.Dashboard;
+import frc.team1918.robot.DashboardOld;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
 import frc.team1918.robot.modules.SwerveModule;
@@ -115,12 +115,12 @@ public class DriveSubsystemOld extends SubsystemBase {
 	}
 
 	public void updateDashboard() {
-		Dashboard.DriveTrain.setHeading(getHeading().getDegrees());
-		Dashboard.DriveTrain.setX(getPose().getX());
-		Dashboard.DriveTrain.setY(getPose().getY());
-		Dashboard.DriveTrain.setCurrentAngle(getPose().getRotation().getDegrees());
-		Dashboard.DriveTrain.setDesiredAngle(desiredAngle);
-		Dashboard.Gyro.setGyroPitch(getGyroPitch());
+		DashboardOld.DriveTrain.setHeading(getHeading().getDegrees());
+		DashboardOld.DriveTrain.setX(getPose().getX());
+		DashboardOld.DriveTrain.setY(getPose().getY());
+		DashboardOld.DriveTrain.setCurrentAngle(getPose().getRotation().getDegrees());
+		DashboardOld.DriveTrain.setDesiredAngle(desiredAngle);
+		DashboardOld.Gyro.setGyroPitch(getGyroPitch());
 		// Dashboard.DriveTrain.setTargetAngle(m_targetPose.getRotation().getRadians());
 	}
 
@@ -232,7 +232,7 @@ public class DriveSubsystemOld extends SubsystemBase {
 				} else {
 					if (Math.abs(fwd) > 0 || Math.abs(str) > 0) { //Only do angle correction while moving, for safety reasons
 						double pidVal = driveStraightPID.calculate(getHeading().getDegrees(),desiredAngle);
-						Dashboard.DriveTrain.setCorrectionAngle(pidVal);
+						DashboardOld.DriveTrain.setCorrectionAngle(pidVal);
 						rot += pidVal;
 						// Dashboard.DriveTrain.setCorrectionAngle(calcAngleStraight(desiredAngle,getHeading().getDegrees(),Constants.DriveTrain.kDriveStraight_P));
 						// rot += calcAngleStraight(desiredAngle,getHeading().getDegrees(),Constants.DriveTrain.kDriveStraight_P); //Add some correction to the rotation to account for angle drive

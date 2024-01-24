@@ -8,10 +8,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -29,7 +26,6 @@ public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
   //private and public variables defined here
   public double target_speed = 0.0;
-  private double m_oldspeed = 0.0;
   private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1;

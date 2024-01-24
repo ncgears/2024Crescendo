@@ -6,22 +6,20 @@ import java.util.Map;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.commands.shooter.shooter_stopShooter;
 /**
  * This class reads and writes values to/from the SmartDashboard
  */
-public class DashboardSubsystem extends SubsystemBase {
-	private static DashboardSubsystem instance;
+public class Dashboard {
+	private static Dashboard instance;
     //gettable values must be configured as NetworkTableEntry
     public GenericEntry shooter_target = null;
     public GenericEntry shooter_speed = null;
     //tuning tab
     private ShuffleboardTab tuning = Shuffleboard.getTab("Tuning");
     
-    public DashboardSubsystem() { //init the class
+    public Dashboard() { //init the class
         Helpers.Debug.debug("Init dashboard subsystem");
         buildTab(tuning.getTitle());
     }
@@ -34,9 +32,9 @@ public class DashboardSubsystem extends SubsystemBase {
 	 * The purpose of this is to only create an instance if one does not already exist.
 	 * @return DashboardSubsystem instance
 	 */
-    public static DashboardSubsystem getInstance() {
+    public static Dashboard getInstance() {
 		if (instance == null)
-			instance = new DashboardSubsystem();
+			instance = new Dashboard();
 		return instance;
 	}
 

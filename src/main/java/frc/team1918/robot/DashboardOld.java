@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * This class reads and writes values to/from the SmartDashboard
  */
-public class Dashboard {
+public class DashboardOld {
     public static final class Vision {
         public static final void setVisionRinglight(boolean value) { SmartDashboard.putBoolean("Vision/Ring Light", value); }
     }

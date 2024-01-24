@@ -34,7 +34,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 //Subsystems imports
-import frc.team1918.robot.subsystems.DashboardSubsystem;
+import frc.team1918.robot.subsystems.Dashboard;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.Gyro;
 import frc.team1918.robot.subsystems.LightingSubsystem;
@@ -67,7 +67,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 @SuppressWarnings("unused")
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
-    public static final DashboardSubsystem dashboard = DashboardSubsystem.getInstance();
+    public static final Dashboard dashboard = Dashboard.getInstance();
     public static final LightingSubsystem lighting = LightingSubsystem.getInstance();
     public static final Gyro gyro = new Gyro();
     public static final Vision vision = new Vision();
