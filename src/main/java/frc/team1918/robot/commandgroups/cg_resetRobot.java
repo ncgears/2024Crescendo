@@ -10,7 +10,6 @@ package frc.team1918.robot.commandgroups;
 // import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.team1918.robot.subsystems.Vision;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.commands.vision.vision_setLight;
 
@@ -19,11 +18,9 @@ public class cg_resetRobot extends SequentialCommandGroup {
   /**
    * This command groups issues all the different robot reset items that have to get reset on disable
    * <ol>
-   * <li>set whirlygig to down</li>
-   * <li>retract intake</li>
+   * <li>do something</li>
    * </ol>
    * <br>
-   * @param vision Vision Subsystem
   */
   public cg_resetRobot() {
     // addRequirements(m_stove, m_fsr);

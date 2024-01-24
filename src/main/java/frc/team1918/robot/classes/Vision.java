@@ -1,5 +1,5 @@
 
-package frc.team1918.robot.subsystems;
+package frc.team1918.robot.classes;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.team1918.robot.Constants;
@@ -11,7 +11,18 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
  * It is responsible for getting target data, selecting appropriate targets, and passing information to other subsystems.
  */
 public class Vision {
+	private static Vision instance;
   private LimelightHelpers.Results llresults;
+  /**
+	 * Returns the instance of the LightingSubsystem subsystem.
+	 * The purpose of this is to only create an instance if one does not already exist.
+	 * @return LightingSubsystem instance
+	 */
+  public static Vision getInstance() {
+		if (instance == null)
+			instance = new Vision();
+		return instance;
+	}
 
   public Vision() {
   }

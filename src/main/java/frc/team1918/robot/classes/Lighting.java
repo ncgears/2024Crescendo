@@ -1,26 +1,20 @@
 
-package frc.team1918.robot.subsystems;
-
-import java.util.Map;
+package frc.team1918.robot.classes;
 
 import com.ctre.phoenix.led.CANdle;
 
-import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.RobotContainer;
 
 /**
  * The Lighting Subsystem handles getting and managing the Lighting from the CANdle.
  * It is responsible for changing lighting colors and animations.
  */
-public class LightingSubsystem extends SubsystemBase {
-	private static LightingSubsystem instance;
+@SuppressWarnings("unused")
+public class Lighting {
+	private static Lighting instance;
   private final CANdle m_candle = new CANdle(Constants.Lighting.kCandleID, Constants.Lighting.canBus);
   private Colors m_currentColor, m_oldColor = Colors.OFF;
   private boolean m_blinking, m_oldBlinking = false;
@@ -58,29 +52,19 @@ public class LightingSubsystem extends SubsystemBase {
 	 * The purpose of this is to only create an instance if one does not already exist.
 	 * @return LightingSubsystem instance
 	 */
-  public static LightingSubsystem getInstance() {
+  public static Lighting getInstance() {
 		if (instance == null)
-			instance = new LightingSubsystem();
+			instance = new Lighting();
 		return instance;
 	}
   
-  public LightingSubsystem() {
+  public Lighting() {
     //initialize values for private and public variables, etc.
     m_currentColor = Colors.OFF;
 
-		//Add this sendable to the Dashboard
-		// SmartDashboard.putData("Lighting", this);
     createDashboards();
   }
   
-  // @Override
-  // public void initSendable(SendableBuilder builder) {
-  //   super.initSendable(builder);
-  //   builder.setActuator(false);
-  //   builder.setSmartDashboardType("Single Color View");
-  //   builder.addStringProperty("LED Color", this::getColor, null);
-  // }
-
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("LED Color", this::getColor)
@@ -100,11 +84,6 @@ public class LightingSubsystem extends SubsystemBase {
     }
   }
 
-  @Override
-  public void periodic() {
-    updateDashboard();
-  }
-
   public String getColor() {
     if(m_currentColor == null) m_currentColor = Colors.OFF;
     return new Color(m_currentColor.R(), m_currentColor.G(), m_currentColor.B()).toHexString();
@@ -115,13 +94,6 @@ public class LightingSubsystem extends SubsystemBase {
       m_currentColor = color;
       m_candle.setLEDs(color.R(), color.G(), color.B());
     }
-  }
-
-  /**
-   * updateDashboard is called periodically and is responsible for sending telemetry data from
-   * this subsystem to the Dashboard
-   */
-  public void updateDashboard() {
   }
 
 }

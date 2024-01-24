@@ -13,7 +13,6 @@ import frc.team1918.paths.*;
 import frc.team1918.robot.commands.drive.drive_followTrajectory;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.subsystems.DriveSubsystem;
-import frc.team1918.robot.subsystems.Vision;
 
 public class cg_DriveForward3p6m extends SequentialCommandGroup {
   private final DriveSubsystem m_drive;

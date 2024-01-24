@@ -4,8 +4,6 @@ package frc.team1918.robot.commands.gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
-//import subsystem
-import frc.team1918.robot.subsystems.Gyro;
 
 /**
  * A command to reset the gyro to 0.

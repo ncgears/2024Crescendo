@@ -14,7 +14,6 @@ import frc.team1918.lib.control.SwerveTrajectory.State;
 import frc.team1918.paths.Path;
 //import subsystem
 import frc.team1918.robot.subsystems.DriveSubsystem;
-import frc.team1918.robot.subsystems.Gyro;
 
 /**
  * A command to stop the calibration mode.

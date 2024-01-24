@@ -33,14 +33,8 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
-//Subsystems imports
-import frc.team1918.robot.subsystems.Dashboard;
 import frc.team1918.robot.subsystems.DriveSubsystem;
-import frc.team1918.robot.subsystems.Gyro;
-import frc.team1918.robot.subsystems.LightingSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
-import frc.team1918.robot.subsystems.Vision;
-import frc.team1918.robot.subsystems.LightingSubsystem.Colors;
 import frc.team1918.robot.utils.CTREConfigs;
 import frc.team1918.robot.utils.TunableNumber;
 //Commands imports
@@ -50,6 +44,11 @@ import frc.team1918.robot.commands.drive.*;
 import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.commands.vision.*;
 import frc.team1918.robot.generated.TunerConstants;
+import frc.team1918.robot.classes.Dashboard;
+import frc.team1918.robot.classes.Gyro;
+import frc.team1918.robot.classes.Lighting;
+import frc.team1918.robot.classes.Vision;
+import frc.team1918.robot.classes.Lighting.Colors;
 //CommandGroup imports
 import frc.team1918.robot.commandgroups.*;
 
@@ -68,9 +67,9 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
     public static final Dashboard dashboard = Dashboard.getInstance();
-    public static final LightingSubsystem lighting = LightingSubsystem.getInstance();
-    public static final Gyro gyro = new Gyro();
-    public static final Vision vision = new Vision();
+    public static final Lighting lighting = Lighting.getInstance();
+    public static final Gyro gyro = Gyro.getInstance();
+    public static final Vision vision = Vision.getInstance();
 
   //subsystems definitions
     // private final PowerDistribution m_pdp = new PowerDistribution();

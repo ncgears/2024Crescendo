@@ -7,7 +7,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 // import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 // import com.ctre.phoenix6.signals.NeutralModeValue;
 // import com.ctre.phoenix6.signals.SensorDirectionValue;
-import com.ctre.phoenix6.signals.GravityTypeValue;
+// import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 

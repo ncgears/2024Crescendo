@@ -8,7 +8,6 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 //import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 
@@ -16,7 +15,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.units.Velocity;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.DashboardOld;
 import frc.team1918.robot.Helpers;
@@ -33,7 +31,6 @@ public class SwerveModule {
     private final int TURN_ALLOWED_ERROR;
     private String moduleName;
     private double driveWheelDiam = Constants.Swerve.DEFAULT_WHEEL_DIAM_MM;
-    private int debug_ticks1;
     private NeutralOut m_brake = new NeutralOut();
     private SwerveModuleState state;
 

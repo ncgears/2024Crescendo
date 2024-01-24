@@ -1,5 +1,5 @@
 //OI = Operator Interface
-package frc.team1918.robot.subsystems;
+package frc.team1918.robot.classes;
 
 import java.util.Map;
 
@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.commands.shooter.shooter_stopShooter;
+import frc.team1918.robot.subsystems.ShooterSubsystem;
 /**
  * This class reads and writes values to/from the SmartDashboard
  */
