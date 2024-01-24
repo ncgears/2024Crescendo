@@ -26,6 +26,9 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Debug: Shooter/Apply Target": "Command",
+      "/Shuffleboard/Debug: Shooter/Shooter 100%": "Command",
+      "/Shuffleboard/Debug: Shooter/Shooter Stop": "Command",
       "/Shuffleboard/Driver/Auton Burner Temp": "String Chooser",
       "/Shuffleboard/Driver/Auton Part Type": "String Chooser",
       "/Shuffleboard/Driver/Autonomous Chooser": "String Chooser",

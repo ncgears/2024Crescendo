@@ -231,13 +231,7 @@ public class Constants {
         public static final double kHomeOffsetRadians = 0.0; //3 * (Math.PI/4); //135 - radians to offset the zero point of the wheels
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
-        //NCServe Speed Chart with 4" Colson Wheels and Falcon500 (6380 RPM Free Speed)
-        //16:44 = 13.5fps or 4.11mps
-        //16:40 = 14.85fps or 4.53mps
-        //16:36 = 16.5fps or 5.03mps
-        //16:34 = 17.47fps or 5.32mps
-        //16:32 = 18.56fps or 5.66mps
-        public static final double kMaxSpeedMetersPerSecond = 5.66; 
+        public static final double kMaxSpeedMetersPerSecond = DriveTrain.kMaxMetersPerSecond; 
         public static final boolean kGyroReversed = false;
         public static final double kDriveKP = 0.05;
         public static final double kDriveKI = 0.0;
@@ -348,8 +342,17 @@ public class Constants {
         public static final boolean useDefensiveLock = false; //use defensiveLock strategy when braking putting swerve into X pattern
         public static final boolean useBrakeWhenStopped = false; //set the brake mode when drive speed is 0
         public static final double kDriveStraight_P = 0.0075; //kP for driveStraight correction
-        public static final double kMaxMetersPerSecond = 4.115; //limit full stick speed meters to 13.5fps
-        public static final double kMaxRotationRadiansPerSecond = 3.4; //Multiplier for omega of turning the robot
+        //NCServe Speed Chart with 4" Colson Wheels and Falcon500 (6380 RPM Free Speed)
+        //16:44 = 13.5fps or 4.11mps
+        //16:40 = 14.85fps or 4.53mps
+        //16:36 = 16.5fps or 5.03mps
+        //16:34 = 17.47fps or 5.32mps
+        //16:32 = 18.56fps or 5.66mps
+        public static final double kMaxMetersPerSecond = 5.66; //limit full stick speed meters to 13.5fps
+        public static final double kMaxRotationRadiansPerSecond = 3 * Math.PI; //3.4; //Multiplier for omega of turning the robot
+        //from swerve
+        // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
+        // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
         ////Turn Tuning
         public static final double DT_TURN_MULT_STATIONARY = 1.3; //Turn speed multiplier while not moving
         public static final double DT_TURN_MULT_MOVING = 1.3; //Turn speed multiplier while moving
