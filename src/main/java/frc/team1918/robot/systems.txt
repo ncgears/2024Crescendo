@@ -7,21 +7,20 @@
 - Intake
     - ??? Brushed, TalonSRX
 - Indexer
-    - Combined with intake for motor control?
+    - Neverest on TalonSRX
     - Beam break for indexing position
 - Shooter
     - Top - Falcon 500, TalonFX, velocity control
     - Bottom - Falcon 500, TalonFX, follower to Top
 - Aimer
     - Falcon 500, TalonFX, 
-    - belt/pully reduction to mechanism
-    - CANcoder on mechanism to SyncCANcoder or FuseCANcoder to Falcon
+    - belt/pully 5:1 reduction to mechanism
     - Needs to go to pre-defined position for arm to move and for climbing
     - Uses vision information for tracking target, adjusting angle
 - Arm
     - Falcon 500, TalonFX,
     - sprocket reduction to mechanism
-    - CANcoder on mechanism to SyncCANcoder or FuseCANcoder to Falcon
     - Mechanically linked to indexer orientation
 - Climber
-    - ??? Brushed, TalonSRX
+    - Falcon 500, TalonFX
+    - Maybe 2
