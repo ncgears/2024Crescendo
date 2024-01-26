@@ -215,6 +215,9 @@ public class DriveSubsystem extends SubsystemBase {
 	public void addVisionPose() {
 		Pose2d visionPose = m_vision.getPose();
 		double visionTimestamp = m_vision.getTimestamp();
+		//from limelight docs, the 7th value in returned pose is the timestamp
+		//Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0) or Timer.getFPGATimestamp() - (botpose[6]/1000.0)
+
 		if ((m_vision.getNumTags() == 1 && m_vision.getDistance() < 75.00) ||
 			(m_vision.getNumTags() == 2 && m_vision.getDistance() < 120.00) ||
 			(m_vision.getNumTags() == 3 && m_vision.getDistance() < 185.00)
