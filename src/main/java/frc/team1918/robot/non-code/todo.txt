@@ -10,6 +10,14 @@
 9. ???
 10. profit
 
+### NOTES ###
+https://github.com/wpilibsuite/allwpilib/pull/6318/commits/abf4ae2466769eb02a848936665402ec706a0ded
+Can move triggers into subsystems for conditionals, do automated things like run commands on status of subsystems
+#subsystem
+public final Trigger hasNote = new Trigger(this::isFull);
+#robotcontainer
+subsystem.hasNote.onTrue(new Command());
+
 
 ### TODO List ###
 - Build and implement pid Heading controller (thetaController)
