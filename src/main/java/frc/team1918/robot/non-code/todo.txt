@@ -4,10 +4,11 @@
 3. Intake functional code (dashboard start/stop toggle)
 4. limelight testing/apriltag validation
 5. odometry validation, pose-estimator for vision input/apriltags addition
-6. pathplanner functioning (and Choreo?)
-7. collect underpants
-8. ???
-9. profit
+6. pathplanner functioning (and/or Choreo?)
+7. move elastic into robot code so updates are deployed from github
+8. collect underpants
+9. ???
+10. profit
 
 
 ### TODO List ###
@@ -24,14 +25,14 @@
 
 DONE - Overhaul code to remove unused modules and subsystems
 
-- Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
-- Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava
+DONE - Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
+DONE - Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava
 
 DONE - Rework getAlliance stuff - https://docs.wpilib.org/en/latest/docs/software/basic-programming/alliancecolor.html
 DONE - Review breaking changes - https://docs.wpilib.org/en/latest/docs/yearly-overview/yearly-changelog.html
 
 DONE - Change dashboard from Shuffleboard to Elastic - https://www.chiefdelphi.com/t/introducing-elastic-a-simple-and-modern-alternative-to-shuffleboard/440750/28
-- Elastic - See also - https://github.com/Gold872/elastic-dashboard
+DONE- Elastic - See also - https://github.com/Gold872/elastic-dashboard
 
 DONE - Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by Jim)
 
