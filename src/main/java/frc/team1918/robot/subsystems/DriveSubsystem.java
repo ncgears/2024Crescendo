@@ -39,9 +39,9 @@ public class DriveSubsystem extends SubsystemBase {
 	//initialize 4 swerve modules
 	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
 	private static SwerveModule m_frontRight = new SwerveModule("FR", Constants.Swerve.FR.constants); // Front Right
-	private static SwerveModule m_rearLeft = new SwerveModule("RL", Constants.Swerve.RL.constants); // Rear Left
-	private static SwerveModule m_rearRight = new SwerveModule("RR", Constants.Swerve.RR.constants); // Rear Right
-	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_rearLeft, m_rearRight};
+	private static SwerveModule m_backLeft = new SwerveModule("RL", Constants.Swerve.BL.constants); // Rear Left
+	private static SwerveModule m_backRight = new SwerveModule("RR", Constants.Swerve.BR.constants); // Rear Right
+	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
 	private SwerveModulePosition[] swervePositions;
 
 	private SwerveDrivePoseEstimator poseEstimator;
@@ -125,11 +125,11 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.addDoubleProperty("Front Right Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Front Right Velocity", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(m_rearLeft.getAngle().getDegrees(),2), null);
-		builder.addDoubleProperty("Back Left Velocity", () -> Helpers.General.roundDouble(m_rearLeft.getVelocity(),3), null);
+		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Left Velocity", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_rearRight.getAngle().getDegrees(),2), null);
-		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_rearRight.getVelocity(),3), null);
+		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3), null);
 
 		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getHeading().getDegrees(), null);
 	}
@@ -150,10 +150,10 @@ public class DriveSubsystem extends SubsystemBase {
 			debugTab.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(11, 0);
-			debugTab.addNumber("RL Angle", () -> Helpers.General.roundDouble(m_rearLeft.getAngle().getDegrees(),2))
+			debugTab.addNumber("RL Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(5, 4);
-			debugTab.addNumber("RR Angle", () -> Helpers.General.roundDouble(m_rearRight.getAngle().getDegrees(),2))
+			debugTab.addNumber("RR Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(11, 4);
 			debugTab.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
@@ -162,10 +162,10 @@ public class DriveSubsystem extends SubsystemBase {
 			debugTab.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(9, 1);
-			debugTab.addNumber("RL Speed", () -> Helpers.General.roundDouble(m_rearLeft.getVelocity(),3))
+			debugTab.addNumber("RL Speed", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(7, 3);
-			debugTab.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_rearRight.getVelocity(),3))
+			debugTab.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(9, 3);
 
@@ -176,8 +176,8 @@ public class DriveSubsystem extends SubsystemBase {
 		return new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
-            m_rearLeft.getPosition(),
-            m_rearRight.getPosition()
+            m_backLeft.getPosition(),
+            m_backRight.getPosition()
 		};
 	}
 
@@ -247,8 +247,8 @@ public class DriveSubsystem extends SubsystemBase {
 			new SwerveModulePosition[] {
         	    m_frontLeft.getPosition(),
             	m_frontRight.getPosition(),
-            	m_rearLeft.getPosition(),
-            	m_rearRight.getPosition()
+            	m_backLeft.getPosition(),
+            	m_backRight.getPosition()
 			}
 		);
 		fieldSim.setRobotPose(m_odometry.getPoseMeters());
@@ -309,8 +309,8 @@ public class DriveSubsystem extends SubsystemBase {
 		// setModuleStates(swerveModuleStates);
 		if(!Constants.Swerve.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
 		if(!Constants.Swerve.FR.isDisabled) m_frontRight.setDesiredState(swerveModuleStates[1]);
-		if(!Constants.Swerve.RL.isDisabled) m_rearLeft.setDesiredState(swerveModuleStates[2]);
-		if(!Constants.Swerve.RR.isDisabled) m_rearRight.setDesiredState(swerveModuleStates[3]);
+		if(!Constants.Swerve.BL.isDisabled) m_backLeft.setDesiredState(swerveModuleStates[2]);
+		if(!Constants.Swerve.BR.isDisabled) m_backRight.setDesiredState(swerveModuleStates[3]);
 	}
 
 	//Stops all modules
@@ -318,8 +318,8 @@ public class DriveSubsystem extends SubsystemBase {
 		if(withDefensiveLock) {
 			m_frontLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45.0)));
 			m_frontRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(315.0)));
-			m_rearLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(135.0)));
-			m_rearRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(225.0)));
+			m_backLeft.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(135.0)));
+			m_backRight.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(225.0)));
 		} else {
 			for (SwerveModule module: modules) {
 				module.setDesiredState(new SwerveModuleState(0, module.getState().angle));
@@ -336,8 +336,8 @@ public class DriveSubsystem extends SubsystemBase {
 		// SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
 		m_frontLeft.setDesiredState(desiredStates[0]);
 		m_frontRight.setDesiredState(desiredStates[1]);
-		m_rearLeft.setDesiredState(desiredStates[2]);
-		m_rearRight.setDesiredState(desiredStates[3]);
+		m_backLeft.setDesiredState(desiredStates[2]);
+		m_backRight.setDesiredState(desiredStates[3]);
 	}
 
 	/** Resets the drive encoders to read a position of 0. */

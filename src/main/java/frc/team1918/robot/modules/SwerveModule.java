@@ -87,6 +87,8 @@ public class SwerveModule {
         if(!status.isOK()) {
             Helpers.Debug.debug("Could not initialize swerve module " + name + ", error: " + status.toString());
         }
+        drive.setInverted(moduleConstants.driveIsInverted);
+
 
         // drive.configFactoryDefault(); //v5
         // // drive.getConfigurator().apply(new TalonFXConfiguration()); //v6

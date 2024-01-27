@@ -41,9 +41,9 @@ public class DriveSubsystemOld extends SubsystemBase {
 	//initialize 4 swerve modules
 	private static SwerveModule m_dtFL = new SwerveModule("dtFL", Constants.Swerve.FL.constants); // Front Left
 	private static SwerveModule m_dtFR = new SwerveModule("dtFR", Constants.Swerve.FR.constants); // Front Right
-	private static SwerveModule m_dtRL = new SwerveModule("dtRL", Constants.Swerve.RL.constants); // Rear Left
-	private static SwerveModule m_dtRR = new SwerveModule("dtRR", Constants.Swerve.RR.constants); // Rear Right
-	private SwerveModule[] modules = {m_dtFL, m_dtFR, m_dtRL, m_dtRR};
+	private static SwerveModule m_dtBL = new SwerveModule("dtRL", Constants.Swerve.BL.constants); // Rear Left
+	private static SwerveModule m_dtBR = new SwerveModule("dtRR", Constants.Swerve.BR.constants); // Rear Right
+	private SwerveModule[] modules = {m_dtFL, m_dtFR, m_dtBL, m_dtBR};
 
 	//initialize gyro object
 	private static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
@@ -81,8 +81,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		lastDistances = new double[]{
 			m_dtFL.getDriveDistanceMeters(),
 			m_dtFR.getDriveDistanceMeters(),
-			m_dtRL.getDriveDistanceMeters(),
-			m_dtRR.getDriveDistanceMeters()
+			m_dtBL.getDriveDistanceMeters(),
+			m_dtBR.getDriveDistanceMeters()
 		};
 		timer = new Timer();
 		timer.reset();
@@ -109,8 +109,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		return new SwerveModulePosition[] {
             m_dtFL.getPosition(),
             m_dtFR.getPosition(),
-            m_dtRL.getPosition(),
-            m_dtRR.getPosition()
+            m_dtBL.getPosition(),
+            m_dtBR.getPosition()
 		};
 	}
 
@@ -172,8 +172,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		double[] distances = new double[] {
 			m_dtFL.getDriveDistanceMeters(),
 			m_dtFR.getDriveDistanceMeters(),
-			m_dtRL.getDriveDistanceMeters(),
-			m_dtRR.getDriveDistanceMeters()
+			m_dtBL.getDriveDistanceMeters(),
+			m_dtBR.getDriveDistanceMeters()
 		};
 		double time = timer.get();
 		double dt = time - lastTime;
@@ -183,8 +183,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 			getHeading(),
 			new SwerveModuleState((distances[0] - lastDistances[0]) / dt, m_dtFL.getState().angle),
 			new SwerveModuleState((distances[1] - lastDistances[1]) / dt, m_dtFR.getState().angle),
-			new SwerveModuleState((distances[2] - lastDistances[2]) / dt, m_dtRL.getState().angle),
-			new SwerveModuleState((distances[3] - lastDistances[3]) / dt, m_dtRR.getState().angle)
+			new SwerveModuleState((distances[2] - lastDistances[2]) / dt, m_dtBL.getState().angle),
+			new SwerveModuleState((distances[3] - lastDistances[3]) / dt, m_dtBR.getState().angle)
 		);
 		lastDistances = distances;
 		*/
@@ -194,8 +194,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 			new SwerveModulePosition[] {
         	    m_dtFL.getPosition(),
             	m_dtFR.getPosition(),
-            	m_dtRL.getPosition(),
-            	m_dtRR.getPosition()
+            	m_dtBL.getPosition(),
+            	m_dtBR.getPosition()
 			}
 		);
 		m_2dField.setRobotPose(robotPose); //This updates the Field2d with odometry of robot
@@ -257,8 +257,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
 		if(!Constants.Swerve.FL.isDisabled) m_dtFL.setDesiredState(swerveModuleStates[0]);
 		if(!Constants.Swerve.FR.isDisabled) m_dtFR.setDesiredState(swerveModuleStates[1]);
-		if(!Constants.Swerve.RL.isDisabled) m_dtRL.setDesiredState(swerveModuleStates[2]);
-		if(!Constants.Swerve.RR.isDisabled) m_dtRR.setDesiredState(swerveModuleStates[3]);
+		if(!Constants.Swerve.BL.isDisabled) m_dtBL.setDesiredState(swerveModuleStates[2]);
+		if(!Constants.Swerve.BR.isDisabled) m_dtBR.setDesiredState(swerveModuleStates[3]);
 	}
 	public void drive(ChassisSpeeds speeds, boolean normalize) {
 		if (speeds.vxMetersPerSecond == 0 && speeds.vyMetersPerSecond == 0 && speeds.omegaRadiansPerSecond == 0) {
@@ -270,8 +270,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		// setModuleStates(swerveModuleStates);
 		if(!Constants.Swerve.FL.isDisabled) m_dtFL.setDesiredState(swerveModuleStates[0]);
 		if(!Constants.Swerve.FR.isDisabled) m_dtFR.setDesiredState(swerveModuleStates[1]);
-		if(!Constants.Swerve.RL.isDisabled) m_dtRL.setDesiredState(swerveModuleStates[2]);
-		if(!Constants.Swerve.RR.isDisabled) m_dtRR.setDesiredState(swerveModuleStates[3]);
+		if(!Constants.Swerve.BL.isDisabled) m_dtBL.setDesiredState(swerveModuleStates[2]);
+		if(!Constants.Swerve.BR.isDisabled) m_dtBR.setDesiredState(swerveModuleStates[3]);
 	}
 
 	//Stops all modules
@@ -279,8 +279,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		if(withDefensiveLock) {
 			m_dtFL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(45.0)));
 			m_dtFR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(315.0)));
-			m_dtRL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(135.0)));
-			m_dtRR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(225.0)));
+			m_dtBL.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(135.0)));
+			m_dtBR.setDesiredState(new SwerveModuleState(0, Rotation2d.fromDegrees(225.0)));
 		} else {
 			for (SwerveModule module: modules) {
 				module.setDesiredState(new SwerveModuleState(0, module.getState().angle));
@@ -297,8 +297,8 @@ public class DriveSubsystemOld extends SubsystemBase {
 		// SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
 		m_dtFL.setDesiredState(desiredStates[0]);
 		m_dtFR.setDesiredState(desiredStates[1]);
-		m_dtRL.setDesiredState(desiredStates[2]);
-		m_dtRR.setDesiredState(desiredStates[3]);
+		m_dtBL.setDesiredState(desiredStates[2]);
+		m_dtBR.setDesiredState(desiredStates[3]);
 	}
 
 	/** Resets the drive encoders to read a position of 0. */

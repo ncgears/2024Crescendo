@@ -75,7 +75,7 @@ public class RobotContainer {
     // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
     private final DriveSubsystem m_drive = new DriveSubsystem();
-    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    // private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
@@ -122,7 +122,7 @@ public class RobotContainer {
           m_drive,
           () -> -dj.getLeftY(),
           () -> dj.getLeftX(),
-          () -> dj.getRightX()
+          () -> -dj.getRightX()
         )
       );
     }
@@ -230,11 +230,11 @@ public class RobotContainer {
       .withSize(8,2)
       .withWidget("FMSInfo");
     // Camera
-    driverTab.add("Camera", Robot.camera)
-      .withPosition(8,0)
-      .withSize(11,7)
-      // .withProperties(Map.of("Glyph","CAMERA_RETRO","Show Glyph",true,"Show crosshair",true,"Crosshair color","#CCCCCC","Show controls",false))
-      .withWidget("Camera Stream");
+    // driverTab.add("Camera", Robot.camera)
+    //   .withPosition(8,0)
+    //   .withSize(11,7)
+    //   // .withProperties(Map.of("Glyph","CAMERA_RETRO","Show Glyph",true,"Show crosshair",true,"Crosshair color","#CCCCCC","Show controls",false))
+    //   .withWidget("Camera Stream");
   }
 
   private void buildMaintenanceTab(){ //This is where we add maintenance commands

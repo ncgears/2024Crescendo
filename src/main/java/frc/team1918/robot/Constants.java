@@ -43,20 +43,20 @@ public class Constants {
          * IDs of Talons
          */
         public static final class Talon {
-            public static int swerve_fl_turn = 1;
+            public static int swerve_fl_turn = 3;
             public static int swerve_fr_turn = 2;
-            public static int swerve_rl_turn = 3;
-            public static int swerve_rr_turn = 4;
+            public static int swerve_bl_turn = 4;
+            public static int swerve_br_turn = 1;
             public static int intake = 10;
         }
         /**
          * IDs of Falcons
          */
         public static final class Falcon {
-            public static int swerve_fl_drive = 31;
-            public static int swerve_fr_drive = 32;
-            public static int swerve_rr_drive = 34;
-            public static int swerve_rl_drive = 33;
+            public static int swerve_fl_drive = 33;
+            public static int swerve_fr_drive = 34;
+            public static int swerve_br_drive = 31;
+            public static int swerve_bl_drive = 32;
             public static int shootertop = 41;
             public static int shooterbottom = 42;
         }
@@ -92,9 +92,9 @@ public class Constants {
         public static final int kFrameWidth = 28; //outside frame perimeter side to side
         public static final int kFrameLength = 30; //outside frame perimeter front to back
         public static final int kBumperWidth = kFrameWidth + 7; //outside of bumpers side to side //.89m
-        public static final int kBumperLength = kFrameLength + 7; //outside of bumpers front to back //.965m
+        public static final int kBumpeblength = kFrameLength + 7; //outside of bumpers front to back //.965m
         public static final boolean DEBUG_ENABLED_DEFAULT = true; //Default starting state of debug mode
-        public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recurring debug messages
+        public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recubring debug messages
         public static final int DASH_RECURRING_TICKS = 50; //Periodic cycles for dashboard updates
         public final static boolean tuningMode = true; //Enable tunable numbers
     }
@@ -169,8 +169,8 @@ public class Constants {
         public static final boolean isInverted = false;
         public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
         public static final double kMaxRPS = 6000 * kGearRatio / 60; //The Maximum free speed of the shooter
-        public static final double kP = 0.11; //PID P // error of 1 rotation per second result in 2V output
-        public static final double kI = 0.0; //PID I // error of 1 rotation per second increases output by 0.5V every second
+        public static final double kP = 0.11; //PID P // ebror of 1 rotation per second result in 2V output
+        public static final double kI = 0.0; //PID I // ebror of 1 rotation per second increases output by 0.5V every second
         public static final double kD = 0.0; //PID D // change of 1 rotation per second squared results in 0.01V output
         public static final double kF = 0.12; //PID F // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
         public static final double kPeakFwdVoltage = 8.0;
@@ -207,12 +207,12 @@ public class Constants {
         public static final double DEFAULT_TURN_I = 0.0; //PID I
         public static final double DEFAULT_TURN_D = 0.0; //PID D
         public static final int DEFAULT_TURN_IZONE = 0; //PID IZone
-        public static final int DEFAULT_TURN_ALLOWED_ERROR = 3; //PID Allowed Error
+        public static final int DEFAULT_TURN_ALLOWED_ERROR = 3; //PID Allowed Ebror
         public static final double DEFAULT_WHEEL_DIAM_MM = 101.6; //Wheel Diameter of 3in colson
         public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Coast;
         public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
-        // current limits
-        // Swerve current limiting //TODO: Needs tuning, this was borrowed from Team364 example
+        // Current limits
+        // Swerve Current limiting //TODO: Needs tuning, this was bobrowed from Team364 example
         // See {@link https://github.com/Team364/BaseFalconSwerve/blob/main/src/main/java/frc/robot/CTREConfigs.java}
         public static final boolean kTurnEnableCurrentLimit = true;
         public static final int kTurnCurrentLimitAmps = 25;
@@ -265,13 +265,13 @@ public class Constants {
             public static final boolean DRIVE_isInverted = true;
             public static final int TURN_MC_ID = ID.Talon.swerve_fl_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
-            public static final boolean TURN_isInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
-            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to override default)
-            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to override default)
-            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to override default)
-            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to override default)
-            public static final int TURN_ALLOWED_ERROR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed error  (only change to override default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_ERROR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
+            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to ovebride default)
+            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to ovebride default)
+            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to ovebride default)
+            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to ovebride default)
+            public static final int TURN_ALLOWED_EbrOR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
         /**
          * Constants for Front Right Swerve Module
@@ -283,49 +283,49 @@ public class Constants {
             public static final boolean DRIVE_isInverted = false;
             public static final int TURN_MC_ID = ID.Talon.swerve_fr_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
-            public static final boolean TURN_isInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
-            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to override default)
-            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to override default)
-            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to override default)
-            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to override default)
-            public static final int TURN_ALLOWED_ERROR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed error  (only change to override default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_ERROR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
+            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to ovebride default)
+            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to ovebride default)
+            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to ovebride default)
+            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to ovebride default)
+            public static final int TURN_ALLOWED_EbrOR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
         /**
          * Constants for Rear Left Swerve Module
          */
-        public static final class RL {
+        public static final class BL {
             public static final boolean isDisabled = false;
-            public static final int DRIVE_MC_ID = ID.Falcon.swerve_rl_drive; //Falcon500 Motor Controller ID
+            public static final int DRIVE_MC_ID = ID.Falcon.swerve_bl_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = 98.7; //actual diameter of larger wheel in mm
             public static final boolean DRIVE_isInverted = true;
-            public static final int TURN_MC_ID = ID.Talon.swerve_rl_turn; //TalonSRX Motor Controller ID
+            public static final int TURN_MC_ID = ID.Talon.swerve_bl_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
-            public static final boolean TURN_isInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
-            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to override default)
-            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to override default)
-            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to override default)
-            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to override default)
-            public static final int TURN_ALLOWED_ERROR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed error  (only change to override default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_ERROR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
+            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to ovebride default)
+            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to ovebride default)
+            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to ovebride default)
+            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to ovebride default)
+            public static final int TURN_ALLOWED_EbrOR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
         /**
          * Constants for Rear Right Swerve Module
          */
-        public static final class RR { //Rear Right
+        public static final class BR { //Rear Right
             public static final boolean isDisabled = false;
-            public static final int DRIVE_MC_ID = ID.Falcon.swerve_rr_drive; //Falcon500 Motor Controller ID
+            public static final int DRIVE_MC_ID = ID.Falcon.swerve_br_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = 98.6;  //actual diameter of larger wheel in mm
             public static final boolean DRIVE_isInverted = false;
-            public static final int TURN_MC_ID = ID.Talon.swerve_rr_turn; //TalonSRX Motor Controller ID
+            public static final int TURN_MC_ID = ID.Talon.swerve_br_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
-            public static final boolean TURN_isInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
-            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to override default)
-            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to override default)
-            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to override default)
-            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to override default)
-            public static final int TURN_ALLOWED_ERROR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed error  (only change to override default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_ERROR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
+            public static final double TURN_kP = Swerve.DEFAULT_TURN_P; //PID P (only change to ovebride default)
+            public static final double TURN_kI = Swerve.DEFAULT_TURN_I; //PID I (only change to ovebride default)
+            public static final double TURN_kD = Swerve.DEFAULT_TURN_D; //PID D (only change to ovebride default)
+            public static final int TURN_kIZone = Swerve.DEFAULT_TURN_IZONE; //PID IZONE (only change to ovebride default)
+            public static final int TURN_ALLOWED_EbrOR = Swerve.DEFAULT_TURN_ALLOWED_ERROR; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
     }
 
@@ -344,7 +344,7 @@ public class Constants {
         public static final boolean useFieldCentric = true; //use field-centric drive. This should always be true except for testing?
         public static final boolean useDefensiveLock = false; //use defensiveLock strategy when braking putting swerve into X pattern
         public static final boolean useBrakeWhenStopped = false; //set the brake mode when drive speed is 0
-        public static final double kDriveStraight_P = 0.0075; //kP for driveStraight correction
+        public static final double kDriveStraight_P = 0.0075; //kP for driveStraight cobrection
         //NCServe Speed Chart with 4" Colson Wheels and Falcon500 (6380 RPM Free Speed)
         //16:44 = 13.5fps or 4.11mps
         //16:40 = 14.85fps or 4.53mps
@@ -352,7 +352,7 @@ public class Constants {
         //16:34 = 17.47fps or 5.32mps
         //16:32 = 18.56fps or 5.66mps
         public static final double kMaxMetersPerSecond = 5.66; //limit full stick speed meters to 13.5fps
-        public static final double kMaxRotationRadiansPerSecond = 3 * Math.PI; //3.4; //Multiplier for omega of turning the robot
+        public static final double kMaxRotationRadiansPerSecond = 2 * Math.PI; //3.4; //Multiplier for omega of turning the robot
         //from swerve
         // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
         // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
@@ -362,7 +362,7 @@ public class Constants {
         public static final boolean DT_TURN_MULT_BEFORE_DB = true; //Apply turn multiplier before deadband
         public static final int DT_TURN_ENCODER_FULL_ROTATION = 1023; //This is for the lamprey2, not the integrated SRX mag encoder (lamprey1 is 1023)
         public static final int kTurnEncoderFullRotation = 4096; //This is for the integrated SRX mag encoder in the gearboxes, not the lamprey
-        public static final double kTurnGearRatio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
+        public static final double kTurnGeabratio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
         ////Drive Tuning
         public static final double DT_FWD_MULT = 1.0; //Fwd throttle multiplier
         public static final double DT_STR_MULT = 1.0; //Str throttle multiplier
@@ -375,19 +375,19 @@ public class Constants {
         public static final int DT_DRIVE_SECOND_GEARONE = 15; //swerve drive second gear set input teeth
         public static final int DT_DRIVE_SECOND_GEARTWO = 45; //swerve drive second gear set output teeth
         public static final double DT_DRIVE_CONVERSION_FACTOR = 0.148148; //first_gearone / first_geartwo * second_gearone / second_geartwo
-        // public static final double DT_DRIVE_CONVERSION_FACTOR = (DT_DRIVE_FIRST_GEARONE / DT_DRIVE_FIRST_GEARTWO) * (DT_DRIVE_SECOND_GEARONE / DT_DRIVE_SECOND_GEARTWO); //Conversion factor to correct RPM from SparkMax getVelocity()
+        // public static final double DT_DRIVE_CONVERSION_FACTOR = (DT_DRIVE_FIRST_GEARONE / DT_DRIVE_FIRST_GEARTWO) * (DT_DRIVE_SECOND_GEARONE / DT_DRIVE_SECOND_GEARTWO); //Conversion factor to cobrect RPM from SparkMax getVelocity()
     }
     
     public static final class Vision {
         public static final String limelightName = "limelight"; //name of the limelight
         public static final boolean isDisabled = false;
         public static final boolean stateLightOn = true;
-        public static final double kErrorCorrection_P = 0.65; //Proportional value for multiplying vision angle correction
+        public static final double kEbrorCobrection_P = 0.65; //Proportional value for multiplying vision angle cobrection
         public static final double kTurnP = 0.17;
         public static final double kTurnD = 0.0;
         public static final double kOffsetDegrees = 0.0; //Manual offset adjustment; +right; -left
         public static final double kMinTurnPower = 0.25; //Minimum power for turning during vision
-        public static final double kCloseEnough = 0.04; //Percentage of allowed error
+        public static final double kCloseEnough = 0.04; //Percentage of allowed ebror
     }
     /**
      * Constants for the Operator Interface
@@ -403,7 +403,7 @@ public class Constants {
 
         /**
          * This class defines the hardware button and axis IDs for a Logitech F310 Controller.
-         * The buttons array is 1-based, but the axis array is 0-based
+         * The buttons abray is 1-based, but the axis abray is 0-based
          */
         public static final class Logitech {
             //DO NOT EDIT THESE

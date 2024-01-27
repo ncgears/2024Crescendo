@@ -64,10 +64,10 @@ public class Robot extends TimedRobot {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     //Setup camera
-    camera = CameraServer.startAutomaticCapture();
+    // camera = CameraServer.startAutomaticCapture();
     // camera.setResolution(640, 480);
     // camera.setFPS(20);
-    camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
+    // camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
 
     //Create forwarder
     //pi4 (photonvision)
