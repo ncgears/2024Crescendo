@@ -112,36 +112,5 @@ public class Helpers {
         public final static double rpsToMetersPerSecond(double rps, double wheelDiamMM) {
             return ((rps) * (wheelDiamMM * Math.PI)) / 1000;
         }
-        /**
-         * This function takes a value in a speed in meters per second and converts to rotations per second based on the size of the wheel
-         * @param mps (double) Meters Per Second
-         * @param wheelDiamMM (double) Diameter of the wheel in mm
-         * @return (double) rotations per second based on wheel size and speed
-         */
-        public final static double metersPerSecondToRPS(double mps, double wheelDiamMM) {
-            return ((mps * 1000) / (wheelDiamMM * Math.PI));
-        }
-
-        /**
-         * Converts RPS to Ticks per 100ms
-         * @param rps - RPS to convert
-         * @param fullRotationTicks - Number of ticks in a full rotation (encoder dependent)
-         * @return
-         */
-        public final static double rpsToTicksPer100ms(double rps, int fullRotationTicks, double factor) {
-            factor = 0.58;
-            return ((rps * fullRotationTicks) / 10 / factor);
-        }
-
-        /**
-         * Converts Ticks per 100ms to RPS
-         * @param ticks - Ticks per 100ms to convert
-         * @param fullRotationTicks - Number of ticks in a full rotation (encoder dependent)
-         * @param factor - Factor to multiple by (for getting rpm at wheel)
-         * @return
-         */
-        public final static double ticksPer100msToRPS(double ticks, int fullRotationTicks, double factor) {
-            return ((ticks / fullRotationTicks) * 10 * factor);
-        }
     }
 }
