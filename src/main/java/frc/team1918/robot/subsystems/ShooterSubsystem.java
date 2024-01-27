@@ -4,6 +4,7 @@ package frc.team1918.robot.subsystems;
 import java.util.Map;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -28,7 +29,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public double target_speed = 0.0;
   private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
   private NeutralOut m_brake = new NeutralOut();
-  private TalonFX m_motor1;
+  private TalonFX m_motor1, m_motor2;
   private GenericEntry new_speed;
   
   /**
@@ -44,15 +45,25 @@ public class ShooterSubsystem extends SubsystemBase {
   
   public ShooterSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new TalonFX(Constants.Shooter.kMotorID, Constants.Shooter.canBus);
-    StatusCode status = StatusCode.StatusCodeNotInitialized;
+    m_motor1 = new TalonFX(Constants.Shooter.Top.kMotorID, Constants.Shooter.canBus);
+    StatusCode status1 = StatusCode.StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
-      status = m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.shooterFXConfig);
-      if (status.isOK()) break;
+      status1 = m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.shooterFXConfig);
+      if (status1.isOK()) break;
     }
-    if(!status.isOK()) {
-      Helpers.Debug.debug("Could not initialize shooter controller, error: " + status.toString());
+    if(!status1.isOK()) {
+      Helpers.Debug.debug("Could not initialize shooter motor1, error: " + status1.toString());
     }
+    m_motor2 = new TalonFX(Constants.Shooter.Bottom.kMotorID, Constants.Shooter.canBus);
+    StatusCode status2 = StatusCode.StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+      status2 = m_motor2.getConfigurator().apply(RobotContainer.ctreConfigs.shooterFXConfig);
+      if (status2.isOK()) break;
+    }
+    if(!status2.isOK()) {
+      Helpers.Debug.debug("Could not initialize shooter motor2, error: " + status2.toString());
+    }
+    m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
 
 		//Add this sendable to the Dashboard
 		// SmartDashboard.putData("Shooter", this);

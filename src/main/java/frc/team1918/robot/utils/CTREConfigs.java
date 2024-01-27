@@ -28,6 +28,9 @@ public final class CTREConfigs {
 
     public final TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration shooterFXConfig = new TalonFXConfiguration();
+    public final TalonFXConfiguration aimerFXConfig = new TalonFXConfiguration();
+    public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
+    public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
 
     public CTREConfigs() {
         /* Swerve Drive Motor Configuration */

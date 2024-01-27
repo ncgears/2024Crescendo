@@ -47,6 +47,7 @@ public class Constants {
             public static int swerve_fr_turn = 2;
             public static int swerve_rl_turn = 3;
             public static int swerve_rr_turn = 4;
+            public static int intake = 10;
         }
         /**
          * IDs of Falcons
@@ -56,7 +57,8 @@ public class Constants {
             public static int swerve_fr_drive = 32;
             public static int swerve_rr_drive = 34;
             public static int swerve_rl_drive = 33;
-            public static int shooter = 41;
+            public static int shootertop = 41;
+            public static int shooterbottom = 42;
         }
         /**
          * IDs of Krakens
@@ -146,13 +148,23 @@ public class Constants {
     }
 
     /**
+     * Constants for the Intake Subsystem
+     */
+    public static final class Intake {
+        //Controller Setup
+        public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kMotorID = ID.Talon.intake;
+        public static final boolean neutralIsBrake = false; 
+    }
+
+    /**
      * Constants for the Shooter Subsystem
      */
     public static final class Shooter {
         //Controller Setup
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
-        public static final int kMotorID = ID.Falcon.shooter;
         public static final boolean neutralIsBrake = false; 
         public static final boolean isInverted = false;
         public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
@@ -172,26 +184,13 @@ public class Constants {
         public static final double kOpenLoopRamp = 0.0;
 		public static final double kClosedLoopRamp = 0.0;
 
-        public static final class Top { //This would be used for Talon based conroller
-            public static final int kMotorID = ID.Falcon.shooter; //TalonSRX Motor Controller ID
-            public static final boolean kSensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
-            public static final int kSensorTicks = 4096;
-            public static final boolean kSensorNotContinuous = false;
-            public static final boolean kIsInverted = true; //Once sensor phase is correct, we can invert these so fwd always is green, reverse is always is red
-            public static final int kAllowedError = 5; //PID Allowed error
-            public static final TalonConstants constants = new TalonConstants(kMotorID, kSensorPhase, kSensorTicks, kSensorNotContinuous, kIsInverted, kAllowedError);
-            //PID Setup
-            public static final double kP = 0.5; //PID P 
-            public static final double kI = 0.0; //PID I
-            public static final double kD = 0.0; //PID D
-            public static final double kF = 0.25; //PID F
-            public static final int kIZone = 0; //PID IZONE
-            public static final double kPeakOutput = 1.0;
-            public static final double kNeutralDeadband = 0.001; //0.04 default
-            public static final double kCruise = 4000; //MotionMagic Cruise
-            public static final double kAccel = 5000; //MotionMagic Acceleration
-            public static final int kSCurve = 0; //MotionMagic SCurve
-            public static final PIDGains gains = new PIDGains(kP,kI,kD,kF,kIZone,kPeakOutput,kNeutralDeadband,kCruise,kAccel,kSCurve);
+        public static final class Top {
+            public static final int kMotorID = ID.Falcon.shootertop;
+            public static final boolean kIsInverted = true;
+        }
+        public static final class Bottom {
+            public static final int kMotorID = ID.Falcon.shooterbottom;
+            public static final boolean kIsInverted = true;
         }
     }
     
