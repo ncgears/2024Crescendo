@@ -12,7 +12,7 @@ import frc.team1918.robot.Constants;
 
 /**
  * This subsystem handles managing the Indexer.
- * It is responsible for doing some stuff.
+ * It is responsible for holding a note until the shooter requests it, and for advancing notes into the shooter.
  */
 public class IndexerSubsystem extends SubsystemBase {
 	private static IndexerSubsystem instance;
@@ -98,6 +98,6 @@ public class IndexerSubsystem extends SubsystemBase {
   public String getColor() { return m_curState.getColor(); }
 
   public void updateState() {
-    //TODO: If the closed loop error is under threshold, then consider the aimer "READY"
+    
   }
 }

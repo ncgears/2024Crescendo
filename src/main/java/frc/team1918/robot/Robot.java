@@ -10,12 +10,9 @@ package frc.team1918.robot;
 import edu.wpi.first.cscore.UsbCamera;
 import java.util.Optional;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.net.PortForwarder;
-// import edu.wpi.first.net.PortForwarder;
-import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -26,8 +23,6 @@ import frc.team1918.lib.statefactory.state.StateMachine;
 import frc.team1918.lib.statefactory.state.StateMachineBuilder;
 import frc.team1918.robot.Helpers.Debug;
 
-// import frc.team1918.robot.subsystems.ClimberSubsystem;
-// import frc.team1918.robot.subsystems.CollectorSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -35,6 +30,7 @@ import frc.team1918.robot.Helpers.Debug;
  * the package after creating this project, you must also update the build.gradle file in the
  * project.
  */
+@SuppressWarnings("unused")
 public class Robot extends TimedRobot {
   public Optional<Alliance> m_alliance;
   private Command m_autonomousCommand;
@@ -102,7 +98,7 @@ public class Robot extends TimedRobot {
         //do this when entering the state
       })
       .loop( () -> {
-        Debug.debug("FSM Done");
+        // Debug.debug("FSM Done");
       })
       .build();
 

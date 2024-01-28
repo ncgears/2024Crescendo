@@ -56,6 +56,7 @@ public class AimerSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
+    // updateState();
   }
 
   // @Override
@@ -109,7 +110,7 @@ public class AimerSubsystem extends SubsystemBase {
 
   public void updateState() {
     //TODO: If the closed loop error is under threshold, then consider the aimer "READY"
-    if(false) m_curState = State.READY;
+    if(true) m_curState = State.READY;
   }
 
   public void setPosition(double position) {

@@ -12,8 +12,8 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 
 /**
- * Th subsystem handles managing the Intake.
- * It is responsible for doing some stuff.
+ * This subsystem handles managing the Intake.
+ * It is responsible for running the intake using information from the indexer about whether we have a note.
  */
 public class IntakeSubsystem extends SubsystemBase {
 	private static IntakeSubsystem instance;

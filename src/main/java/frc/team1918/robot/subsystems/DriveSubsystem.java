@@ -30,6 +30,10 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 //import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
+/**
+ * This subsystem handles managing the Drivetrain.
+ * It is responsible for controlling the swerve modules based on input from the auton system or the driver.
+ */
 @SuppressWarnings("deprecation")
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;

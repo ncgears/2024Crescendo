@@ -20,8 +20,8 @@ import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
 /**
- * The Template Subsystem handles getting and managing the Template.
- * It is responsible for doing some stuff.
+ * This subsystem handles managing the Shooter.
+ * It is responsible for adjusting the speed of the shooter wheels and requesting a note from the indexer.
  */
 public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
