@@ -1,21 +1,6 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "Talon FX (v6)[41]": {
-        "header": {
-          "open": true
-        }
-      },
-      "Talon FX (v6)[41]/Fwd Limit": {
-        "header": {
-          "open": true
-        }
-      },
-      "Talon FX (v6)[41]/Rotor Sensor": {
-        "header": {
-          "open": true
-        }
-      },
       "Talon FX[34]": {
         "header": {
           "open": true
@@ -26,6 +11,10 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/Debug: Gyro/Value": "Gyro",
+      "/Shuffleboard/Debug: Intake/Intake In": "Command",
+      "/Shuffleboard/Debug: Intake/Intake Out": "Command",
+      "/Shuffleboard/Debug: Intake/Intake Stop": "Command",
       "/Shuffleboard/Debug: Shooter/Apply Target": "Command",
       "/Shuffleboard/Debug: Shooter/Shooter 100%": "Command",
       "/Shuffleboard/Debug: Shooter/Shooter Stop": "Command",

@@ -1,30 +1,29 @@
 
 package frc.team1918.robot.subsystems;
 
-import java.util.Map;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.Helpers;
-// import frc.team1918.robot.utils.TunableNumber;
-import frc.team1918.robot.RobotContainer;
 
 /**
- * The Template Subsystem handles getting and managing the Template.
+ * The Intake Subsystem handles getting and managing the Template.
  * It is responsible for doing some stuff.
  */
 public class IntakeSubsystem extends SubsystemBase {
 	private static IntakeSubsystem instance;
   //private and public variables defined here
-  public double target_speed = 0.0;
-  private TalonSRX m_motor1;
+  public enum Direction {
+    IN,
+    OUT,
+    STOP;
+  }
+  private WPI_TalonSRX m_motor1;
+  private Direction m_curDirection = Direction.STOP;
   
   /**
 	 * Returns the instance of the IntakeSubsystem subsystem.
@@ -39,13 +38,17 @@ public class IntakeSubsystem extends SubsystemBase {
   
   public IntakeSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new TalonSRX(Constants.Intake.kMotorID);
+    m_motor1 = new WPI_TalonSRX(Constants.Intake.kMotorID);
+    m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
+    m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
+    m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
+    m_motor1.setInverted(Constants.Intake.kIsInverted);
+    m_curDirection = Direction.STOP;
     createDashboards();
   }
   
   @Override
   public void periodic() {
-    updateDashboard();
   }
 
   // @Override
@@ -58,60 +61,59 @@ public class IntakeSubsystem extends SubsystemBase {
   // }
 
   public void createDashboards() {
-		// if(Constants.Intake.debugDashboard) {
-    //   ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Intake");
-    //   intakeTab.add("Target Speed", 0)
-    //     .withSize(4,2)
-    //     .withPosition(0,0)
-    //     .withWidget("Number Slider")
-    //     .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
-    //     .getEntry();
-    //   intakeTab.add("Apply Target", new InstantCommand(() -> setSpeedPercent(getNewSpeed())).ignoringDisable(true))
-    //     .withSize(4, 2)
-    //     .withPosition(4, 0);  
-    //   intakeTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)).ignoringDisable(true))
-    //     .withSize(4, 2)
-    //     .withPosition(0, 2);  
-    //   intakeTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
-    //     .withSize(4, 2)
-    //     .withPosition(4, 2);  
-    // }
-  }
-
-  public double getTargetSpeed() {
-    return target_speed;
-  }
-
-  /**
-   * Gets the speed of the shooter
-   * @return The speed of the shooter in revolutions per second
-   */
-  public double getCurrentSpeed() {
-    return 0.0; //m_motor1.getVelocity().getValueAsDouble();
-  }
-
-  public double getSpeedPercent() {
-    return getCurrentSpeed() / Constants.Shooter.kMaxRPS;
+    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
+    driverTab.addString("Intake", this::getDirectionColor)
+      .withSize(2, 2)
+      .withWidget("Single Color View")
+      .withPosition(8, 7);  
+		if(Constants.Intake.debugDashboard) {
+      ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Intake");
+      intakeTab.addString("Direction", () -> getDirection().toString())
+        .withSize(4,2)
+        .withPosition(0,0)
+        .withWidget("Text Display");
+      intakeTab.add("Intake In", new InstantCommand(this::intakeIn))
+        .withSize(4, 2)
+        .withPosition(4, 0);  
+      intakeTab.add("Intake Out", new InstantCommand(this::intakeOut))
+        .withSize(4, 2)
+        .withPosition(8, 0);  
+      intakeTab.add("Intake Stop", new InstantCommand(this::intakeStop))
+        .withSize(4, 2)
+        .withPosition(12, 0);  
+    }
   }
 
   /**
-   * Sets the speed of the shooter
-   * @param speed The speed of the shooter in percentage (-1.0 to 1.0)
+   * Sets the speed of the Intake
+   * @param speed The speed of the Intake in percentage (-1.0 to 1.0)
    */
   public void setSpeedPercent(double speed) {
     m_motor1.set(ControlMode.PercentOutput, speed);
   }
 
-  public void stopShooter() {
-    setSpeedPercent(0);
+  public Direction getDirection() { return m_curDirection; }
+  public String getDirectionColor() { 
+    switch (m_curDirection) {
+      case IN: return "#00FF00";
+      case OUT: return "#FF0000";
+      case STOP:
+      default: return "#000000";
+    }
   }
 
-  /**
-   * updateDashboard is called periodically and is responsible for sending telemetry data from
-   * this subsystem to the Dashboard
-   */
-  public void updateDashboard() {
-    // Dashboard.Shooter.setShooterSpeed(getCurrentSpeed());
+  public void intakeIn() {
+    m_curDirection = Direction.IN;
+    setSpeedPercent(Constants.Intake.kSpeed);
   }
 
+  public void intakeOut() {
+    m_curDirection = Direction.OUT;
+    setSpeedPercent(-Constants.Intake.kSpeed);
+  }
+
+  public void intakeStop() {
+    m_curDirection = Direction.STOP;
+    setSpeedPercent(0.0);
+  }
 }

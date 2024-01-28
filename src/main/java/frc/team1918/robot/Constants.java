@@ -5,6 +5,7 @@ import frc.team1918.robot.utils.PIDGains;
 import frc.team1918.robot.modules.SwerveModuleConstants;
 import frc.team1918.robot.utils.TalonConstants;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -155,7 +156,9 @@ public class Constants {
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Talon.intake;
-        public static final boolean neutralIsBrake = false; 
+        public static final boolean kIsInverted = false;
+        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final double kSpeed = 0.5;
     }
 
     /**

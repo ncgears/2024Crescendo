@@ -34,6 +34,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 import frc.team1918.robot.subsystems.DriveSubsystem;
+import frc.team1918.robot.subsystems.IntakeSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.utils.CTREConfigs;
 import frc.team1918.robot.utils.TunableNumber;
@@ -44,7 +45,6 @@ import frc.team1918.robot.commands.drive.*;
 import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.commands.vision.*;
 import frc.team1918.robot.generated.TunerConstants;
-import frc.team1918.robot.classes.Dashboard;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.classes.Lighting;
 import frc.team1918.robot.classes.Vision;
@@ -66,7 +66,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 @SuppressWarnings("unused")
 public class RobotContainer {
     public static final CTREConfigs ctreConfigs = new CTREConfigs();
-    public static final Dashboard dashboard = Dashboard.getInstance();
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
     public static final Vision vision = Vision.getInstance();
@@ -75,7 +74,8 @@ public class RobotContainer {
     // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
     private final DriveSubsystem m_drive = new DriveSubsystem();
-    // private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    private final IntakeSubsystem m_intake = new IntakeSubsystem();
+    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
