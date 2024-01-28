@@ -79,7 +79,7 @@ public class IndexerSubsystem extends SubsystemBase {
     driverTab.addString("Indexer", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(12, 7);  
+      .withPosition(10, 7);  
 		if(Constants.Intake.debugDashboard) {
       ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Indexer");
       intakeTab.addString("Indexer", this::getColor)

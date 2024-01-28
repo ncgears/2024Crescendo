@@ -80,7 +80,7 @@ public class RobotContainer {
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
     private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
     private final IntakeSubsystem m_intake = IntakeSubsystem.getInstance();
-    // private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
+    private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
     private final ClimberSubsystem m_climber = ClimberSubsystem.getInstance();
     private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
     private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
@@ -147,7 +147,7 @@ public class RobotContainer {
     lighting.init();
     m_aimer.init();
     m_climber.init();
-    // m_indexer.init();
+    m_indexer.init();
     m_intake.init();
     m_shooter.init();
   }
