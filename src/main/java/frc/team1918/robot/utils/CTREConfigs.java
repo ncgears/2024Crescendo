@@ -81,34 +81,12 @@ public final class CTREConfigs {
         shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Shooter.kOpenLoopRamp;
         shooterFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Shooter.kClosedLoopRamp;
         //Neutral and Direction
-        shooterFXConfig.MotorOutput.NeutralMode = (Constants.Shooter.neutralIsBrake) ? NeutralModeValue.Brake : NeutralModeValue.Coast;
+        shooterFXConfig.MotorOutput.NeutralMode = Constants.Shooter.kNeutralMode;
         shooterFXConfig.MotorOutput.Inverted = (Constants.Shooter.isInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Rotational rate modifiers
         shooterFXConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.kGearRatio;
 
         //Example for other TalonFX based systems
-        // //Shooter Configuration
-        // Slot0Configs shooterSlot0Configs = new Slot0Configs();
-        // shooterSlot0Configs.kP = Constants.Shooter.kP;
-        // shooterSlot0Configs.kI = Constants.Shooter.kI;
-        // shooterSlot0Configs.kD = Constants.Shooter.kD;
-        // shooterSlot0Configs.kV = Constants.Shooter.kF;
-        // shooterFXConfig.Slot0 = shooterSlot0Configs;
-        // shooterFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
-        // shooterFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
-        // //Shooter Current Limits
-        // CurrentLimitsConfigs shooterCurrentLimitsConfigs = new CurrentLimitsConfigs();
-        // shooterCurrentLimitsConfigs.SupplyCurrentLimit = Constants.Shooter.kCurrentLimitAmps;
-        // shooterCurrentLimitsConfigs.SupplyCurrentThreshold = Constants.Shooter.kCurrentLimitThresholdAmps;
-        // shooterCurrentLimitsConfigs.SupplyTimeThreshold = Constants.Shooter.kCurrentLimitThresholdSecs;
-        // shooterCurrentLimitsConfigs.SupplyCurrentLimitEnable = Constants.Shooter.kCurrentLimitEnable;
-        // shooterFXConfig.CurrentLimits = shooterCurrentLimitsConfigs;
-        // //Ramping (spinup/spindown)
-        // shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Shooter.kOpenLoopRamp;
-        // shooterFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Shooter.kClosedLoopRamp;
-        // //Neutral and Direction
-        // shooterFXConfig.MotorOutput.NeutralMode = (Constants.Shooter.neutralIsBrake) ? NeutralModeValue.Brake : NeutralModeValue.Coast;
-        // shooterFXConfig.MotorOutput.Inverted = (Constants.Shooter.isInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
 
         // /* Elevator Left and Right Motor Configuration */
         // Slot0Configs rightSlot0Configs = new Slot0Configs();

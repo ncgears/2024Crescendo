@@ -60,6 +60,7 @@ public class Constants {
             public static int swerve_bl_drive = 32;
             public static int shootertop = 41;
             public static int shooterbottom = 42;
+            public static int aimer = 43;
         }
         /**
          * IDs of Krakens
@@ -162,13 +163,26 @@ public class Constants {
     }
 
     /**
+     * Constants for the Aimer Subsystem
+     */
+    public static final class Aimer {
+        //Controller Setup
+        public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kMotorID = ID.Falcon.aimer;
+        public static final boolean kIsInverted = false;
+        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final double kStowPosition = 0;
+    }
+
+    /**
      * Constants for the Shooter Subsystem
      */
     public static final class Shooter {
         //Controller Setup
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
-        public static final boolean neutralIsBrake = false; 
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast; 
         public static final boolean isInverted = false;
         public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
         public static final double kMaxRPS = 6000 * kGearRatio / 60; //The Maximum free speed of the shooter
@@ -189,7 +203,7 @@ public class Constants {
 
         public static final class Top {
             public static final int kMotorID = ID.Falcon.shootertop;
-            public static final boolean kIsInverted = true;
+            public static final boolean kIsInverted = false;
         }
         public static final class Bottom {
             public static final int kMotorID = ID.Falcon.shooterbottom;
