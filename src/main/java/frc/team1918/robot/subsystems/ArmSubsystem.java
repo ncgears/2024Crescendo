@@ -12,11 +12,11 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 
 /**
- * This subsystem handles managing the Climber.
- * It is responsible for extending and retracting the elevator/climber.
+ * This subsystem handles managing the Arm.
+ * It is responsible for moving the arm with the indexer for scoring trap and amp notes.
  */
-public class ClimberSubsystem extends SubsystemBase {
-	private static ClimberSubsystem instance;
+public class ArmSubsystem extends SubsystemBase {
+	private static ArmSubsystem instance;
   //private and public variables defined here
   public enum State {
     UP("#00FF00"),
@@ -31,23 +31,23 @@ public class ClimberSubsystem extends SubsystemBase {
   private State m_curState = State.STOP;
   
   /**
-	 * Returns the instance of the ClimberSubsystem subsystem.
+	 * Returns the instance of the ArmSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
-	 * @return ClimberSubsystem instance
+	 * @return ArmSubsystem instance
 	 */
-  public static ClimberSubsystem getInstance() {
+  public static ArmSubsystem getInstance() {
 		if (instance == null)
-			instance = new ClimberSubsystem();
+			instance = new ArmSubsystem();
 		return instance;
 	}
   
-  public ClimberSubsystem() {
+  public ArmSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new WPI_TalonSRX(Constants.Climber.kMotorID);
+    m_motor1 = new WPI_TalonSRX(Constants.Arm.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    m_motor1.setNeutralMode(Constants.Climber.kNeutralMode); //Set controller to brake mode  
-    m_motor1.setInverted(Constants.Climber.kIsInverted);
+    m_motor1.setNeutralMode(Constants.Arm.kNeutralMode); //Set controller to brake mode  
+    m_motor1.setInverted(Constants.Arm.kIsInverted);
     init();
     createDashboards();
   }
@@ -58,7 +58,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public void init() {
     m_motor1.set(ControlMode.PercentOutput,0);
     m_curState = State.STOP;
-    Helpers.Debug.debug("Climber: Initialized");
+    Helpers.Debug.debug("Arm: Initialized");
   }
   
   @Override
@@ -77,38 +77,38 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Climber", this::getColor)
+    driverTab.addString("Arm", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(16, 7);  
-		if(Constants.Climber.debugDashboard) {
-      ShuffleboardTab climberTab = Shuffleboard.getTab("Debug: Climber");
-      climberTab.addString("Climber", this::getColor)
+      .withPosition(14, 7);  
+		if(Constants.Arm.debugDashboard) {
+      ShuffleboardTab armTab = Shuffleboard.getTab("Debug: Arm");
+      armTab.addString("Arm", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      climberTab.addString("State", this::getStateName)
+      armTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      climberTab.add("Climber Up", new InstantCommand(this::climberUp))
+      armTab.add("Arm Up", new InstantCommand(this::armUp))
         .withSize(4, 2)
         .withPosition(0, 2);  
-      climberTab.add("Climber Down", new InstantCommand(this::climberDown))
+      armTab.add("Arm Down", new InstantCommand(this::armDown))
         .withSize(4, 2)
         .withPosition(4, 2);  
-      climberTab.add("Climber Hold", new InstantCommand(this::climberHold))
+      armTab.add("Arm Hold", new InstantCommand(this::armHold))
         .withSize(4, 2)
         .withPosition(8, 2);  
-      climberTab.add("Climber Stop", new InstantCommand(this::climberStop))
+      armTab.add("Arm Stop", new InstantCommand(this::armStop))
         .withSize(4, 2)
         .withPosition(12, 2);  
     }
   }
 
   /**
-   * Sets the speed of the Climber
-   * @param speed The speed of the Climber in percentage (-1.0 to 1.0)
+   * Sets the speed of the Arm
+   * @param speed The speed of the Arm in percentage (-1.0 to 1.0)
    */
   public void setSpeedPercent(double speed) {
     m_motor1.set(ControlMode.PercentOutput, speed);
@@ -122,20 +122,20 @@ public class ClimberSubsystem extends SubsystemBase {
     
   }
 
-  public void climberUp() {
+  public void armUp() {
     m_curState = State.UP;
-    Helpers.Debug.debug("Climber: Up");
+    Helpers.Debug.debug("Arm: Up");
   }
-  public void climberDown() {
+  public void armDown() {
     m_curState = State.DOWN;
-    Helpers.Debug.debug("Climber: Down");
+    Helpers.Debug.debug("Arm: Down");
   }
-  public void climberHold() {
+  public void armHold() {
     m_curState = State.HOLD;
-    Helpers.Debug.debug("Climber: Hold");
+    Helpers.Debug.debug("Arm: Hold");
   }
-  public void climberStop() {
+  public void armStop() {
     m_curState = State.STOP;
-    Helpers.Debug.debug("Climber: Stop");
+    Helpers.Debug.debug("Arm: Stop");
   }
 }

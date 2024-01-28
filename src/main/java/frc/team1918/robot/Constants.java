@@ -49,6 +49,7 @@ public class Constants {
             public static int swerve_bl_turn = 4;
             public static int swerve_br_turn = 1;
             public static int intake = 10;
+            public static int indexer = 11;
         }
         /**
          * IDs of Falcons
@@ -61,6 +62,8 @@ public class Constants {
             public static int shootertop = 41;
             public static int shooterbottom = 42;
             public static int aimer = 43;
+            public static int arm = 44;
+            public static int climber = 45;
         }
         /**
          * IDs of Krakens
@@ -163,6 +166,19 @@ public class Constants {
     }
 
     /**
+     * Constants for the Intake Subsystem
+     */
+    public static final class Indexer {
+        //Controller Setup
+        public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kMotorID = ID.Talon.indexer;
+        public static final boolean kIsInverted = false;
+        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final double kSpeed = 0.5;
+    }
+    
+    /**
      * Constants for the Aimer Subsystem
      */
     public static final class Aimer {
@@ -170,6 +186,32 @@ public class Constants {
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Falcon.aimer;
+        public static final boolean kIsInverted = false;
+        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final double kStowPosition = 0;
+    }
+
+    /**
+     * Constants for the Aimer Subsystem
+     */
+    public static final class Arm {
+        //Controller Setup
+        public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kMotorID = ID.Falcon.arm;
+        public static final boolean kIsInverted = false;
+        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final double kStowPosition = 0;
+    }
+
+    /**
+     * Constants for the Aimer Subsystem
+     */
+    public static final class Climber {
+        //Controller Setup
+        public static final String canBus = "rio";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kMotorID = ID.Falcon.climber;
         public static final boolean kIsInverted = false;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
         public static final double kStowPosition = 0;

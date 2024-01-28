@@ -42,11 +42,11 @@ public class IndexerSubsystem extends SubsystemBase {
   
   public IndexerSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new WPI_TalonSRX(Constants.Intake.kMotorID);
+    m_motor1 = new WPI_TalonSRX(Constants.Indexer.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
-    m_motor1.setInverted(Constants.Intake.kIsInverted);
+    m_motor1.setNeutralMode(Constants.Indexer.kNeutralMode); //Set controller to brake mode  
+    m_motor1.setInverted(Constants.Indexer.kIsInverted);
     init();
     createDashboards();
   }
@@ -80,25 +80,25 @@ public class IndexerSubsystem extends SubsystemBase {
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(10, 7);  
-		if(Constants.Intake.debugDashboard) {
-      ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Indexer");
-      intakeTab.addString("Indexer", this::getColor)
+		if(Constants.Indexer.debugDashboard) {
+      ShuffleboardTab indexerTab = Shuffleboard.getTab("Debug: Indexer");
+      indexerTab.addString("Indexer", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      intakeTab.addString("State", this::getStateName)
+      indexerTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      intakeTab.add("Update State", new InstantCommand(this::updateState))
+      indexerTab.add("Update State", new InstantCommand(this::updateState))
         .withSize(4, 2)
         .withPosition(6, 0);  
     }
   }
 
   /**
-   * Sets the speed of the Intake
-   * @param speed The speed of the Intake in percentage (-1.0 to 1.0)
+   * Sets the speed of the Indexer
+   * @param speed The speed of the Indexer in percentage (-1.0 to 1.0)
    */
   public void setSpeedPercent(double speed) {
     m_motor1.set(ControlMode.PercentOutput, speed);
