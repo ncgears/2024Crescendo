@@ -76,7 +76,7 @@ public class IntakeSubsystem extends SubsystemBase {
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      intakeTab.addString("Direction", () -> getDirection().toString())
+      intakeTab.addString("Direction", this::getDirectionName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
@@ -101,6 +101,7 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Direction getDirection() { return m_curDirection; }
+  public String getDirectionName() { return m_curDirection.toString(); }
   public String getColor() { return m_curDirection.getColor(); }
 
   public void intakeIn() {

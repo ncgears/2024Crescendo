@@ -76,7 +76,7 @@ public class IndexerSubsystem extends SubsystemBase {
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      intakeTab.addString("State", () -> getState().toString())
+      intakeTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
@@ -95,6 +95,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public State getState() { return m_curState; }
+  public String getStateName() { return m_curState.toString(); }
   public String getColor() { return m_curState.getColor(); }
 
   public void updateState() {
