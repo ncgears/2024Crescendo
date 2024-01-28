@@ -72,7 +72,6 @@ public class ShooterSubsystem extends SubsystemBase {
   
   @Override
   public void periodic() {
-    updateDashboard();
   }
 
   // @Override
@@ -145,14 +144,6 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopShooter() {
     // target_speed = 0.0;
     // if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
+    Helpers.Debug.debug("Shooter: Stop");
   }
-
-  /**
-   * updateDashboard is called periodically and is responsible for sending telemetry data from
-   * this subsystem to the Dashboard
-   */
-  public void updateDashboard() {
-    // Dashboard.Shooter.setShooterSpeed(getCurrentSpeed());
-  }
-
 }

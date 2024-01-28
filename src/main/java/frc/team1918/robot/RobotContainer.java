@@ -31,9 +31,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.team1918.robot.subsystems.AimerSubsystem;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 import frc.team1918.robot.subsystems.DriveSubsystem;
+import frc.team1918.robot.subsystems.IndexerSubsystem;
 import frc.team1918.robot.subsystems.IntakeSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.utils.CTREConfigs;
@@ -73,9 +75,11 @@ public class RobotContainer {
   //subsystems definitions
     // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
-    private final DriveSubsystem m_drive = new DriveSubsystem();
-    private final IntakeSubsystem m_intake = new IntakeSubsystem();
-    private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+    private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
+    private final IntakeSubsystem m_intake = IntakeSubsystem.getInstance();
+    // private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
+    private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
+    private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();

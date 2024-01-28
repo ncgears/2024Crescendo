@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 
 /**
  * This subsystem handles managing the Aimer.
@@ -18,11 +19,15 @@ public class AimerSubsystem extends SubsystemBase {
 	private static AimerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    READY,
-    TRACKING,
-    ERROR,
-    STOP;
+    READY("#00FF00"),
+    TRACKING("#FFA500"),
+    ERROR("#FF0000"),
+    STOP("#000000");
+    private final String color;
+    State(String color) { this.color = color; }
+    public String getColor() { return this.color; }
   }
+
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
   private boolean m_suppressTracking = false; //do not allow tracking while true
@@ -64,19 +69,23 @@ public class AimerSubsystem extends SubsystemBase {
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Aimer", this::getDirectionColor)
+    driverTab.addString("Aimer", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(12, 7);  
 		if(Constants.Intake.debugDashboard) {
-      ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Intake");
+      ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Aimer");
+      intakeTab.addString("Aimer", this::getColor)
+        .withSize(2, 2)
+        .withWidget("Single Color View")
+        .withPosition(0, 0);  
       intakeTab.addString("State", () -> getState().toString())
         .withSize(4,2)
-        .withPosition(0,0)
+        .withPosition(2,0)
         .withWidget("Text Display");
       intakeTab.add("Update State", new InstantCommand(this::updateState))
         .withSize(4, 2)
-        .withPosition(4, 0);  
+        .withPosition(6, 0);  
     }
   }
 
@@ -89,32 +98,35 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public State getState() { return m_curState; }
-  public String getDirectionColor() { 
-    switch (m_curState) {
-      case READY: return "#00FF00";
-      case TRACKING: return "#FFA500";
-      case ERROR: return "#FF0000";
-      case STOP:
-      default: return "#000000";
+  public String getColor() { return m_curState.getColor(); }
+
+  public void updateSetpoint() {
+    if(!m_suppressTracking) { //allowed to track
+      //determine the proper setpoint from vision and set it as the closed loop target
+      // RobotContainer.vision.getTarget()
     }
   }
 
   public void updateState() {
     //TODO: If the closed loop error is under threshold, then consider the aimer "READY"
-    if(true) m_curState = State.READY;
+    if(false) m_curState = State.READY;
   }
 
-  public void moveTo(double position) {
+  public void setPosition(double position) {
     m_motor1.set(ControlMode.Position, position);
   }
 
   public void aimerStopAndStow() {
     m_suppressTracking = true;
-    moveTo(Constants.Aimer.kStowPosition);
+    m_curState = State.STOP;
+    Helpers.Debug.debug("Aimer: Stop and Stow");
+    setPosition(Constants.Aimer.kStowPosition);
   }
 
   public void aimerStartTracking() {
     m_suppressTracking = false;
+    m_curState = State.TRACKING;
+    Helpers.Debug.debug("Aimer: Start Tracking");
   }
 
 }

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 
 /**
  * Th subsystem handles managing the Intake.
@@ -18,13 +19,16 @@ public class IntakeSubsystem extends SubsystemBase {
 	private static IntakeSubsystem instance;
   //private and public variables defined here
   public enum Direction {
-    IN,
-    OUT,
-    STOP;
+    IN("#00FF00"),
+    OUT("#FF0000"),
+    STOP("#000000");
+    private final String color;
+    Direction(String color) { this.color = color; }
+    public String getColor() { return this.color; }
   }
   private WPI_TalonSRX m_motor1;
   private Direction m_curDirection = Direction.STOP;
-  
+ 
   /**
 	 * Returns the instance of the IntakeSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -62,25 +66,29 @@ public class IntakeSubsystem extends SubsystemBase {
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Intake", this::getDirectionColor)
+    driverTab.addString("Intake", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(8, 7);  
 		if(Constants.Intake.debugDashboard) {
       ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Intake");
+      intakeTab.addString("Intake", this::getColor)
+        .withSize(2, 2)
+        .withWidget("Single Color View")
+        .withPosition(0, 0);  
       intakeTab.addString("Direction", () -> getDirection().toString())
         .withSize(4,2)
-        .withPosition(0,0)
+        .withPosition(2,0)
         .withWidget("Text Display");
       intakeTab.add("Intake In", new InstantCommand(this::intakeIn))
         .withSize(4, 2)
-        .withPosition(4, 0);  
+        .withPosition(6, 0);  
       intakeTab.add("Intake Out", new InstantCommand(this::intakeOut))
         .withSize(4, 2)
-        .withPosition(8, 0);  
+        .withPosition(10, 0);  
       intakeTab.add("Intake Stop", new InstantCommand(this::intakeStop))
         .withSize(4, 2)
-        .withPosition(12, 0);  
+        .withPosition(14, 0);  
     }
   }
 
@@ -93,27 +101,23 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   public Direction getDirection() { return m_curDirection; }
-  public String getDirectionColor() { 
-    switch (m_curDirection) {
-      case IN: return "#00FF00";
-      case OUT: return "#FF0000";
-      case STOP:
-      default: return "#000000";
-    }
-  }
+  public String getColor() { return m_curDirection.getColor(); }
 
   public void intakeIn() {
     m_curDirection = Direction.IN;
+    Helpers.Debug.debug("Intake: In");
     setSpeedPercent(Constants.Intake.kSpeed);
-  }
+}
 
   public void intakeOut() {
     m_curDirection = Direction.OUT;
+    Helpers.Debug.debug("Intake: Out");
     setSpeedPercent(-Constants.Intake.kSpeed);
   }
 
   public void intakeStop() {
     m_curDirection = Direction.STOP;
+    Helpers.Debug.debug("Intake: Stop");
     setSpeedPercent(0.0);
   }
 }

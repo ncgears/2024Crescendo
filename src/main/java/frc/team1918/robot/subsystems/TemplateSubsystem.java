@@ -38,22 +38,6 @@ public class TemplateSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    doStuff();
-    updateDashboard();
-  }
-
-  /**
-   * doStuff is called periodically and is responsible for performing the actions for
-   * this subsystem. It is separate from the periodic method solely for code organization.
-   */
-  public void doStuff() {
-  }
-
-  /**
-   * updateDashboard is called periodically and is responsible for sending telemetry data from
-   * this subsystem to the Dashboard
-   */
-  public void updateDashboard() {
   }
 
 }
