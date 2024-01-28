@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 
 /**
- * The Intake Subsystem handles getting and managing the Template.
+ * Th subsystem handles managing the Intake.
  * It is responsible for doing some stuff.
  */
 public class IntakeSubsystem extends SubsystemBase {

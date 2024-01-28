@@ -4,7 +4,7 @@ package frc.team1918.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
- * The Template Subsystem handles getting and managing the Template.
+ * This subsystem handles managing the Template.
  * It is responsible for doing some stuff.
  */
 public class TemplateSubsystem extends SubsystemBase {
