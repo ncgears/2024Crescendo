@@ -48,8 +48,17 @@ public class ClimberSubsystem extends SubsystemBase {
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
     m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
     m_motor1.setInverted(Constants.Intake.kIsInverted);
-    m_curState = State.STOP;
+    init();
     createDashboards();
+  }
+  
+  /**
+   * The init function resets and operational state of the subsystem
+   */
+  public void init() {
+    m_motor1.set(ControlMode.PercentOutput,0);
+    m_curState = State.STOP;
+    Helpers.Debug.debug("Climber: Initialized");
   }
   
   @Override
@@ -91,6 +100,9 @@ public class ClimberSubsystem extends SubsystemBase {
       climberTab.add("Climber Hold", new InstantCommand(this::climberHold))
         .withSize(4, 2)
         .withPosition(8, 2);  
+      climberTab.add("Climber Stop", new InstantCommand(this::climberStop))
+        .withSize(4, 2)
+        .withPosition(12, 2);  
     }
   }
 
@@ -111,13 +123,19 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void climberUp() {
+    m_curState = State.UP;
     Helpers.Debug.debug("Climber: Up");
   }
   public void climberDown() {
+    m_curState = State.DOWN;
     Helpers.Debug.debug("Climber: Down");
   }
   public void climberHold() {
+    m_curState = State.HOLD;
     Helpers.Debug.debug("Climber: Hold");
   }
-
+  public void climberStop() {
+    m_curState = State.STOP;
+    Helpers.Debug.debug("Climber: Stop");
+  }
 }

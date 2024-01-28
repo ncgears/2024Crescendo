@@ -3,6 +3,7 @@ package frc.team1918.robot.subsystems;
 
 import java.util.Map;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
@@ -65,11 +66,17 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
 
-		//Add this sendable to the Dashboard
-		// SmartDashboard.putData("Shooter", this);
+    init();
     createDashboards();
   }
   
+  /**
+   * The init function resets and operational state of the subsystem
+   */
+  public void init() {
+    Helpers.Debug.debug("Shooter: Initialized");
+  }
+
   @Override
   public void periodic() {
   }

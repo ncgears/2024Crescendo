@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 
 /**
  * This subsystem handles managing the Indexer.
@@ -46,10 +47,19 @@ public class IndexerSubsystem extends SubsystemBase {
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
     m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
     m_motor1.setInverted(Constants.Intake.kIsInverted);
-    m_curState = State.STOP;
+    init();
     createDashboards();
   }
-  
+   
+  /**
+   * The init function resets and operational state of the subsystem
+   */
+  public void init() {
+    m_motor1.set(ControlMode.PercentOutput,0);
+    m_curState = State.STOP;
+    Helpers.Debug.debug("Indexer: Initialized");
+  }
+ 
   @Override
   public void periodic() {
     // updateState();

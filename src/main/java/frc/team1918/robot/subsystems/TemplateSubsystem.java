@@ -1,7 +1,10 @@
 
 package frc.team1918.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.team1918.robot.Helpers;
 
 /**
  * This subsystem handles managing the Template.
@@ -25,8 +28,7 @@ public class TemplateSubsystem extends SubsystemBase {
   public TemplateSubsystem() {
     //initialize values for private and public variables, etc.
   	
-    //Add this sendable to the Dashboard
-		// SmartDashboard.putData("TemplateSubsystem", this);
+    init();
   }
 
   // @Override
@@ -35,7 +37,15 @@ public class TemplateSubsystem extends SubsystemBase {
   //   builder.setActuator(false); //true if this subsystem can move something on the robot
   //   builder.addStringProperty("String Value", null, null);
   // }
-
+  
+  /**
+   * The init method resets and operational state of the subsystem
+   */
+  public void init() {
+    // set initial stuff, etc.
+    Helpers.Debug.debug("Template: Initialized");
+  }
+  
   @Override
   public void periodic() {
   }

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 
 /**
  * The Lighting Subsystem handles getting and managing the Lighting from the CANdle.
@@ -60,11 +61,20 @@ public class Lighting {
   
   public Lighting() {
     //initialize values for private and public variables, etc.
-    m_currentColor = Colors.OFF;
-
+    init();
     createDashboards();
   }
   
+    
+  /**
+   * The init method resets and operational state of the class
+   */
+  public void init() {
+    m_currentColor = Colors.OFF;
+    Helpers.Debug.debug("Lighting: Initialized");
+  }
+  
+
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("LED Color", this::getColor)

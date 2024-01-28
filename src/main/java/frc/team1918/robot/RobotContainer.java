@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.Map;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -30,8 +31,10 @@ import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 //import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.subsystems.AimerSubsystem;
+import frc.team1918.robot.subsystems.ClimberSubsystem;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 import frc.team1918.robot.subsystems.DriveSubsystem;
@@ -78,6 +81,7 @@ public class RobotContainer {
     private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
     private final IntakeSubsystem m_intake = IntakeSubsystem.getInstance();
     // private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
+    private final ClimberSubsystem m_climber = ClimberSubsystem.getInstance();
     private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
     private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
 
@@ -85,6 +89,10 @@ public class RobotContainer {
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
     private static SendableChooser<String> m_auto_cone = new SendableChooser<>();
     private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
+
+    private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
+      return new Trigger(DriverStation::isDisabled);
+    }
    
     //CommandSwerve stuff
     // private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
@@ -99,11 +107,11 @@ public class RobotContainer {
     private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
     private final CommandStadiaController oj = new CommandStadiaController(Constants.OI.OI_JOY_OPER);
 
-
    /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true));
     // Configure the button bindings
     configureButtonBindings();
     buildDashboards();
@@ -131,7 +139,19 @@ public class RobotContainer {
       );
     }
   }
-    
+
+  /**
+   * This performs robot reset initializations when the disabled() trigger fires.
+   */
+  private void resetRobot() {
+    lighting.init();
+    m_aimer.init();
+    m_climber.init();
+    // m_indexer.init();
+    m_intake.init();
+    m_shooter.init();
+  }
+
   private void configureButtonBindings() {
     /** New for 2023:
     * onTrue (replaces whenPressed and whenActive): schedule on rising edge 

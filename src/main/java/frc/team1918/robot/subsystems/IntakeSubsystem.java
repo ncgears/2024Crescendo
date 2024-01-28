@@ -47,10 +47,19 @@ public class IntakeSubsystem extends SubsystemBase {
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
     m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
     m_motor1.setInverted(Constants.Intake.kIsInverted);
-    m_curDirection = Direction.STOP;
+    init();
     createDashboards();
   }
-  
+    
+  /**
+   * The init function resets and operational state of the subsystem
+   */
+  public void init() {
+    m_motor1.set(ControlMode.PercentOutput,0);
+    m_curDirection = Direction.STOP;
+    Helpers.Debug.debug("Intake: Initialized");
+  }
+
   @Override
   public void periodic() {
   }
