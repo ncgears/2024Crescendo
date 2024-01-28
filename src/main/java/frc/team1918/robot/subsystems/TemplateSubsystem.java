@@ -1,8 +1,6 @@
 
 package frc.team1918.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Helpers;
 

@@ -3,7 +3,6 @@ package frc.team1918.robot.subsystems;
 
 import java.util.Map;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
