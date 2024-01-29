@@ -84,7 +84,7 @@ public class AimerSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(12, 7);  
 		if(Constants.Aimer.debugDashboard) {
-      ShuffleboardTab aimerTab = Shuffleboard.getTab("Debug: Aimer");
+      ShuffleboardTab aimerTab = Shuffleboard.getTab("DBG:Aimer");
       aimerTab.addString("Aimer", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")

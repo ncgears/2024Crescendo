@@ -82,7 +82,7 @@ public class ClimberSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(16, 7);  
 		if(Constants.Climber.debugDashboard) {
-      ShuffleboardTab climberTab = Shuffleboard.getTab("Debug: Climber");
+      ShuffleboardTab climberTab = Shuffleboard.getTab("DBG:Climber");
       climberTab.addString("Climber", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")

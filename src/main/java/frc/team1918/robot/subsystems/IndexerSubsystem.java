@@ -81,7 +81,7 @@ public class IndexerSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(10, 7);  
 		if(Constants.Indexer.debugDashboard) {
-      ShuffleboardTab indexerTab = Shuffleboard.getTab("Debug: Indexer");
+      ShuffleboardTab indexerTab = Shuffleboard.getTab("DBG:Indexer");
       indexerTab.addString("Indexer", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")

@@ -15,9 +15,11 @@ import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.Map;
+import java.util.Random;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -48,7 +50,6 @@ import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.commands.gyro.gyro_resetGyro;
 import frc.team1918.robot.commands.drive.*;
 import frc.team1918.robot.commands.gyro.*;
-import frc.team1918.robot.commands.vision.*;
 import frc.team1918.robot.generated.TunerConstants;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.classes.Lighting;
@@ -176,6 +177,13 @@ public class RobotContainer {
     }
 
     /** DRIVER JOYSTICK (dj) */
+    // Add random offset to pose estimator to test vision correction
+    dj.stadia().onTrue(new InstantCommand(() -> {
+      Random rand = new Random(1918);
+      var trf = new Transform2d(new Translation2d(rand.nextDouble() * 4 - 2, rand.nextDouble() * 4 - 2),
+        new Rotation2d(rand.nextDouble() * 2 * Math.PI));
+      m_drive.resetPose(gyro.getHeading().getDegrees(), m_drive.getPose().plus(trf));
+    }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
       .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));

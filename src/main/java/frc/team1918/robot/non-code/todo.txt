@@ -35,6 +35,7 @@ DONE - Overhaul code to remove unused modules and subsystems
 
 DONE - Phoenix 6 - https://store.ctr-electronics.com/phoenix-6-announcement-details/
 DONE - Limelight Lib - https://github.com/LimelightVision/limelightlib-wpijava
+- Update LL to PhotonVision
 
 DONE - Rework getAlliance stuff - https://docs.wpilib.org/en/latest/docs/software/basic-programming/alliancecolor.html
 DONE - Review breaking changes - https://docs.wpilib.org/en/latest/docs/yearly-overview/yearly-changelog.html
@@ -57,6 +58,7 @@ DONE - Switch to WPILib StadiaController class (2024.1.1-beta-5) (contributed by
 ### Other VendorDeps ###
 PhotonVision: https://docs.photonvision.org/en/latest/docs/programming/photonlib/adding-vendordep.html
 PV Lib: https://maven.photonvision.org/repository/internal/org/photonvision/photonlib-json/1.0/photonlib-json-1.0.json
+PV Examples: https://github.com/PhotonVision/photonvision/tree/master/photonlib-java-examples/swervedriveposeestsim
 
 REV Robotics: https://docs.revrobotics.com/brushless/spark-flex/revlib
 RevLib: https://software-metadata.revrobotics.com/REVLib-2024.json

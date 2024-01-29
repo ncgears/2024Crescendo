@@ -4,6 +4,8 @@ import java.util.Map;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -37,7 +39,7 @@ public class Gyro implements Sendable {
 
 	public void buildDashboards() {
 		if(Constants.Lighting.debugDashboard) {
-			ShuffleboardTab gyroTab = Shuffleboard.getTab("Debug: Gyro");
+			ShuffleboardTab gyroTab = Shuffleboard.getTab("DBG:Gyro");
 			gyroTab.add("Value", this)
 				.withSize(5, 4)
 				.withPosition(0, 0)  

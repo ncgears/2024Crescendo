@@ -82,7 +82,7 @@ public class ArmSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(14, 7);  
 		if(Constants.Arm.debugDashboard) {
-      ShuffleboardTab armTab = Shuffleboard.getTab("Debug: Arm");
+      ShuffleboardTab armTab = Shuffleboard.getTab("DBG:Arm");
       armTab.addString("Arm", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")

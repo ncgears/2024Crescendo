@@ -8,8 +8,17 @@ import frc.team1918.robot.utils.TalonConstants;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 
 //Sometimes it is useful to comment out the following to see what variables or what controller buttons are not assigned yet
@@ -97,7 +106,7 @@ public class Constants {
         public static final int kFrameWidth = 28; //outside frame perimeter side to side
         public static final int kFrameLength = 30; //outside frame perimeter front to back
         public static final int kBumperWidth = kFrameWidth + 7; //outside of bumpers side to side //.89m
-        public static final int kBumpeblength = kFrameLength + 7; //outside of bumpers front to back //.965m
+        public static final int kBumperLength = kFrameLength + 7; //outside of bumpers front to back //.965m
         public static final boolean DEBUG_ENABLED_DEFAULT = true; //Default starting state of debug mode
         public static final int DEBUG_RECURRING_TICKS = 100; //Periodic cycles for recubring debug messages
         public static final int DASH_RECURRING_TICKS = 50; //Periodic cycles for dashboard updates
@@ -132,6 +141,22 @@ public class Constants {
         }
     }
 
+    /**
+     * Constants for the Vision class
+     */
+    public static final class Vision {
+        public static final String kCameraName = "photon";
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+        //Translation3d is the position of the camera on the robot in meters
+        //Rotation3d is the roll, pitch, and yaw of the camera on the robot (0,0,0 is straight ahead, right side up)
+        public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5,0.0,0.5), new Rotation3d(0,0,0));
+        // The standard deviations of our vision estimated poses, which affect correction rate
+        // (Fake values. Experiment and determine estimation noise on an actual robot.)
+        public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
+        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+        }
+    
     /**
      * Constants for the Template Subsystem
      */
@@ -437,17 +462,6 @@ public class Constants {
         // public static final double DT_DRIVE_CONVERSION_FACTOR = (DT_DRIVE_FIRST_GEARONE / DT_DRIVE_FIRST_GEARTWO) * (DT_DRIVE_SECOND_GEARONE / DT_DRIVE_SECOND_GEARTWO); //Conversion factor to cobrect RPM from SparkMax getVelocity()
     }
     
-    public static final class Vision {
-        public static final String limelightName = "limelight"; //name of the limelight
-        public static final boolean isDisabled = false;
-        public static final boolean stateLightOn = true;
-        public static final double kEbrorCobrection_P = 0.65; //Proportional value for multiplying vision angle cobrection
-        public static final double kTurnP = 0.17;
-        public static final double kTurnD = 0.0;
-        public static final double kOffsetDegrees = 0.0; //Manual offset adjustment; +right; -left
-        public static final double kMinTurnPower = 0.25; //Minimum power for turning during vision
-        public static final double kCloseEnough = 0.04; //Percentage of allowed ebror
-    }
     /**
      * Constants for the Operator Interface
      * The OI is based on 2 Logitech Controllers, a driver and an operator, setup for swerve drive.

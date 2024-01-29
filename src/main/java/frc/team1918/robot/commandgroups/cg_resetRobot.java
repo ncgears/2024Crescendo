@@ -11,7 +11,6 @@ package frc.team1918.robot.commandgroups;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.team1918.robot.commands.helpers.helpers_debugMessage;
-import frc.team1918.robot.commands.vision.vision_setLight;
 
 public class cg_resetRobot extends SequentialCommandGroup {
   
@@ -32,7 +31,6 @@ public class cg_resetRobot extends SequentialCommandGroup {
     addCommands(
         //this is a comma separated list of commands, thus, the last one should not have a comma
         new helpers_debugMessage("Start robot reset sequence"),
-        new vision_setLight(false),
         new SequentialCommandGroup(
           new WaitCommand(1)
         ),

@@ -80,7 +80,7 @@ public class IntakeSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(8, 7);  
 		if(Constants.Intake.debugDashboard) {
-      ShuffleboardTab intakeTab = Shuffleboard.getTab("Debug: Intake");
+      ShuffleboardTab intakeTab = Shuffleboard.getTab("DBG:Intake");
       intakeTab.addString("Intake", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")

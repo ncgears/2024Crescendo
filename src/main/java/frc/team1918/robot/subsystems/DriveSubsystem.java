@@ -1,21 +1,21 @@
 package frc.team1918.robot.subsystems;
 
-// import com.kauailabs.navx.frc.AHRS;
-
-// import edu.wpi.first.wpilibj.SPI;
-// import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
-// import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
+import frc.team1918.robot.RobotContainer;
 import frc.team1918.robot.classes.Gyro;
-import frc.team1918.robot.classes.Vision;
 import frc.team1918.robot.modules.SwerveModule;
+
+import java.util.Map;
+
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // import edu.wpi.first.math.controller.PIDController;
-//kinematics and odometry
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -23,11 +23,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-//import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 /**
@@ -38,7 +39,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
 	private static Gyro m_gyro;
-	private static Vision m_vision;
 
 	//initialize 4 swerve modules
 	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
@@ -50,6 +50,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private SwerveDrivePoseEstimator poseEstimator;
 	private Field2d fieldSim;
+
+	private int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+    SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
+    SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
 
 	//robot theta Controller
 	// private PIDController driveStraightPID = new PIDController(Constants.DriveTrain.DriveStraight.kP, Constants.DriveTrain.DriveStraight.kI, Constants.DriveTrain.DriveStraight.kD);
@@ -84,19 +88,16 @@ public class DriveSubsystem extends SubsystemBase {
 		//Initialize the odometry object
 		m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);
 
-		//Initialize the vision object
-		m_vision = new Vision();
-
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(
 			Constants.Swerve.kDriveKinematics,
 			m_gyro.getHeading(),
 			getSwerveModulePositions(),
-			getPose(),
+			new Pose2d(),
 			//stateStdDevs Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust your state estimate less.
-			VecBuilder.fill(.05, .05, Units.degreesToRadians(5)), //.1,.1,.1
+			VecBuilder.fill(0.1, 0.1, 0.1),
 			//visionMeasurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust the vision pose measurement less.
-			VecBuilder.fill(.5, .5, Units.degreesToRadians(30)) //.9,.9,.9
+			VecBuilder.fill(0.9, 0.9, 0.9)
 		);
 		
 		// m_targetPose = m_odometry.getPoseMeters();
@@ -112,7 +113,8 @@ public class DriveSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		updateOdometry();
-		updateDashboard();
+		correctPose();
+		fieldSim.setRobotPose(poseEstimator.getEstimatedPosition());
 		if(Robot.isSimulation()) {
             //This is for updating simulated data
 		}
@@ -135,7 +137,7 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Robot Angle", () -> m_gyro.getHeading().getDegrees(), null);
+		builder.addDoubleProperty("Robot Angle", () -> poseEstimator.getEstimatedPosition().getRotation().getDegrees(), null);
 	}
 
 	public void createDashboards() {
@@ -144,7 +146,7 @@ public class DriveSubsystem extends SubsystemBase {
 			.withSize(5, 5)
 			.withPosition(19, 4);
 		if(Constants.Swerve.debugDashboard) {
-			ShuffleboardTab debugTab = Shuffleboard.getTab("Debug: Swerve");
+			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Swerve");
 			debugTab.add("Swerve Drive", this)
 				.withSize(5, 6)
 				.withPosition(0, 0);
@@ -172,7 +174,11 @@ public class DriveSubsystem extends SubsystemBase {
 			debugTab.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
 				.withSize(2, 2)
 				.withPosition(9, 3);
-
+			debugTab.add("Field", fieldSim)
+				.withSize(8,5)
+				.withPosition(0,6)
+				.withWidget("Field")
+				.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
 		}
 	}
 
@@ -185,49 +191,20 @@ public class DriveSubsystem extends SubsystemBase {
 		};
 	}
 
-	public void updateDashboard() {
-		// Dashboard.DriveTrain.setHeading(m_gyro.getHeading().getDegrees());
-		// Dashboard.DriveTrain.setX(getPose().getX());
-		// Dashboard.DriveTrain.setY(getPose().getY());
-		// Dashboard.DriveTrain.setCurrentAngle(getPose().getRotation().getDegrees());
-		// Dashboard.DriveTrain.setDesiredAngle(desiredAngle);
-		// Dashboard.DriveTrain.setCommunity(inCommunity);
-		// Dashboard.DriveTrain.setTargetAngle(m_targetPose.getRotation().getRadians());
-	}
-
 	/**
 	 * Returns the currently-estimated pose of the robot.
 	 * @return The pose.
 	 */
 	public Pose2d getPose() {
-		return m_odometry.getPoseMeters();
+		return poseEstimator.getEstimatedPosition();
 	}
 
-	public Pose2d getEstimatedPose() {
-		return poseEstimator.getEstimatedPosition();
+	public Rotation2d getHeading() {
+		return getPose().getRotation();
 	}
 
 	public Field2d getField2d() {
 		return fieldSim;
-	}
-
-	public void resetEstimatedPose(Pose2d pose) {
-		poseEstimator.resetPosition(m_gyro.getHeading(), swervePositions, pose);
-		fieldSim.setRobotPose(getEstimatedPose());
-	}
-
-	public void addVisionPose() {
-		Pose2d visionPose = m_vision.getPose();
-		double visionTimestamp = m_vision.getTimestamp();
-		//from limelight docs, the 7th value in returned pose is the timestamp
-		//Timer.getFPGATimestamp() - (tl/1000.0) - (cl/1000.0) or Timer.getFPGATimestamp() - (botpose[6]/1000.0)
-
-		if ((m_vision.getNumTags() == 1 && m_vision.getDistance() < 75.00) ||
-			(m_vision.getNumTags() == 2 && m_vision.getDistance() < 120.00) ||
-			(m_vision.getNumTags() == 3 && m_vision.getDistance() < 185.00)
-		) {
-			poseEstimator.addVisionMeasurement(visionPose, visionTimestamp);
-		}
 	}
 
 	/**
@@ -237,16 +214,42 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetOdometry(double heading, Pose2d pose) {
-	  m_gyro.zeroHeading();
-	  m_gyro.setYawOffset(heading);
-	  m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
+		m_gyro.zeroHeading();
+		m_gyro.setYawOffset(heading);
+		m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
+	}
+
+	/**
+     * Reset the estimated pose of the swerve drive on the field.
+     *
+	 * @param heading Heading to reset robot to (for configuring a yaw offset)
+     * @param pose New robot pose.
+     */
+	public void resetPose(double heading, Pose2d pose) {
+	  	// m_gyro.zeroHeading();
+	  	// m_gyro.setYawOffset(heading);
+		poseEstimator.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
+	}
+
+	/**
+	 * Corrects the bot pose based on information from the vision system
+	 */
+	public void correctPose() {
+		var visionEst = RobotContainer.vision.getEstimatedGlobalPose();
+		visionEst.ifPresent(
+			est -> {
+				var estPose = est.estimatedPose.toPose2d();
+				// Change our trust in the measurement based on the tags we can see
+				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose);
+				addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+			});
 	}
 
 	/**
 	 * Updates the odometry of the robot. This should be done in every periodic loop.
 	 */
 	public void updateOdometry() {
-		m_odometry.update(
+		poseEstimator.update(
 			m_gyro.getHeading(),
 			new SwerveModulePosition[] {
         	    m_frontLeft.getPosition(),
@@ -255,18 +258,14 @@ public class DriveSubsystem extends SubsystemBase {
             	m_backRight.getPosition()
 			}
 		);
-		fieldSim.setRobotPose(m_odometry.getPoseMeters());
-		//TODO: See https://github.com/wpilibsuite/allwpilib/blob/main/wpilibjExamples/src/main/java/edu/wpi/first/wpilibj/examples/swervedriveposeestimator/Drivetrain.java
-		//TODO: Using a pose estimator will allow us to fuse multiple data into the odometry
-		// if(Constants.Vision.useForOdometry) {
-		// 	m_odometry.addVisionMeasurement(
-		// 		m_vision.getEstimatedGlobalPose(m_odometry.getEstimatedPosition()),
-		// 		Timer.getFPGATimestamp() - 0.3
-		// 	);
-		// }
 	}
 
-
+	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
+		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
+	}
+	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
+		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
+	}
 
 	/**
 	 * Method to drive the robot using percentages of max speeds (from -1.0 to 1.0)

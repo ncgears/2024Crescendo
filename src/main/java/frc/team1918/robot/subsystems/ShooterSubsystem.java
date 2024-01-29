@@ -91,7 +91,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void createDashboards() {
 		if(Constants.Shooter.debugDashboard) {
-      ShuffleboardTab shooterTab = Shuffleboard.getTab("Debug: Shooter");
+      ShuffleboardTab shooterTab = Shuffleboard.getTab("DBG:Shooter");
       new_speed = shooterTab.add("Target Speed", 0)
         .withSize(4,2)
         .withPosition(0,0)

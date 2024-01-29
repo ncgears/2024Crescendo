@@ -82,7 +82,7 @@ public class Lighting {
       .withWidget("Single Color View")
       .withPosition(19, 0);  
 		if(Constants.Lighting.debugDashboard) {
-      ShuffleboardTab lightingTab = Shuffleboard.getTab("Debug: Lighting");
+      ShuffleboardTab lightingTab = Shuffleboard.getTab("DBG:Lighting");
       lightingTab.addString("LED Color", this::getColor)
         .withSize(6, 4)
         .withWidget("Single Color View")
