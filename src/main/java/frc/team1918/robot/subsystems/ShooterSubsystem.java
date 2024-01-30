@@ -86,6 +86,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public void createDashboards() {
 		if(Constants.Shooter.debugDashboard) {
       ShuffleboardTab shooterTab = Shuffleboard.getTab("DBG:Shooter");
+      //This widget has a bug that Nadav is working on where it doesn't set value into NT when dropping the handle until next time
       shooterTab.addNumber("New Target (RPS)", this::getNewSpeed)
         .withSize(4,2)
         .withPosition(0,0)
