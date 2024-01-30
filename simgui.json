@@ -11,6 +11,20 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/Shuffleboard/DBG:Aimer/Update State": "Command",
+      "/Shuffleboard/DBG:Climber/Climber Down": "Command",
+      "/Shuffleboard/DBG:Climber/Climber Hold": "Command",
+      "/Shuffleboard/DBG:Climber/Climber Stop": "Command",
+      "/Shuffleboard/DBG:Climber/Climber Up": "Command",
+      "/Shuffleboard/DBG:Gyro/Value": "Gyro",
+      "/Shuffleboard/DBG:Indexer/Update State": "Command",
+      "/Shuffleboard/DBG:Intake/Intake In": "Command",
+      "/Shuffleboard/DBG:Intake/Intake Out": "Command",
+      "/Shuffleboard/DBG:Intake/Intake Stop": "Command",
+      "/Shuffleboard/DBG:Shooter/Apply Target": "Command",
+      "/Shuffleboard/DBG:Shooter/Shooter 100%": "Command",
+      "/Shuffleboard/DBG:Shooter/Shooter Stop": "Command",
+      "/Shuffleboard/DBG:Swerve/Field": "Field2d",
       "/Shuffleboard/Debug: Gyro/Value": "Gyro",
       "/Shuffleboard/Debug: Intake/Intake In": "Command",
       "/Shuffleboard/Debug: Intake/Intake Out": "Command",
@@ -25,7 +39,15 @@
       "/Shuffleboard/Driver/Gyro": "Gyro",
       "/Shuffleboard/Shooter/Shooter 100%": "Command",
       "/Shuffleboard/Tuning/Stop Shooter": "Command",
-      "/SmartDashboard/Gyro": "Gyro"
+      "/SmartDashboard/Gyro": "Gyro",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
+    }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "Shuffleboard": {
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {

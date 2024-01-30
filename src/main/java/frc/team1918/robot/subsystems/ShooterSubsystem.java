@@ -9,7 +9,8 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
-import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,7 +31,8 @@ public class ShooterSubsystem extends SubsystemBase {
   private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1, m_motor2;
-  private GenericEntry new_speed;
+  private DoubleSubscriber new_speed_sub;
+  private double new_speed = 0.0;
   
   /**
 	 * Returns the instance of the ShooterSubsystem subsystem.
@@ -78,40 +80,44 @@ public class ShooterSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    new_speed = new_speed_sub.get(0.0);
   }
-
-  // @Override
-  // public void initSendable(SendableBuilder builder) {
-  //   super.initSendable(builder);
-  //   builder.setSmartDashboardType("Number Slider");
-  //   builder.setActuator(true);
-  //   builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
-  //   builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
-  // }
 
   public void createDashboards() {
 		if(Constants.Shooter.debugDashboard) {
       ShuffleboardTab shooterTab = Shuffleboard.getTab("DBG:Shooter");
-      new_speed = shooterTab.add("Target Speed", 0)
+      shooterTab.addNumber("New Target (RPS)", this::getNewSpeed)
         .withSize(4,2)
         .withPosition(0,0)
         .withWidget("Number Slider")
-        .withProperties(Map.of("min_value",-1.0,"max_value",1.0,"divisions",5))
-        .getEntry();
-      shooterTab.add("Apply Target", new InstantCommand(() -> setSpeedPercent(getNewSpeed())).ignoringDisable(true))
+        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS+100,"divisions",10));
+      shooterTab.add("Apply Target", new InstantCommand(() -> setSpeed(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(4, 0);  
+        .withPosition(4, 0);
+      shooterTab.addNumber("Current Target (RPS)", this::getTargetSpeed)
+        .withSize(4,2)
+        .withPosition(8,0)
+        .withWidget("Text Display");
+      shooterTab.addNumber("Current Speed (RPS)", this::getCurrentSpeed)
+        .withSize(4,2)
+        .withPosition(0,2)
+        .withWidget("Number Bar")
+        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
       shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(0, 2);  
+        .withPosition(4, 2);  
       shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(4, 2);  
+        .withPosition(8, 2);
+      
+      new_speed_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Shooter/New Target (RPS)").subscribe(0.0);
     }
   }
 
+  public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / Constants.Shooter.kMaxRPS,2); }
+
   public double getNewSpeed() {
-    return new_speed.getDouble(0.0);
+    return Helpers.General.roundDouble(new_speed,2);
   }
 
   public double getTargetSpeed() {
@@ -135,15 +141,23 @@ public class ShooterSubsystem extends SubsystemBase {
    * @param speed The speed of the shooter in percentage (-1.0 to 1.0)
    */
   public void setSpeedPercent(double speed) {
+    double rps = speed * Constants.Shooter.kMaxRPS;
+    setSpeed(rps);
+  }
+
+  /**
+   * Sets the speed of the shooter
+   * @param speed The speed of the shooter in rotations per second
+   */
+  public void setSpeed(double speed) {
+    speed = Math.min(Constants.Shooter.kMaxRPS,Math.max(-Constants.Shooter.kMaxRPS,speed));
     target_speed = speed;
-    //set the shooter motor speed by percent (-1 to 1)
     if(speed == 0.0) {
       Helpers.Debug.debug("Shooter Target RPS: 0.0");
       m_motor1.setControl(m_brake);
     } else {
-      double rps = speed * Constants.Shooter.kMaxRPS;
-      Helpers.Debug.debug("Shooter Target RPS: " + Helpers.General.roundDouble(rps, 2));
-      m_motor1.setControl(m_voltageVelocity.withVelocity(rps));
+      Helpers.Debug.debug("Shooter Target RPS: " + Helpers.General.roundDouble(speed, 2));
+      m_motor1.setControl(m_voltageVelocity.withVelocity(speed));
     }
   }
 
