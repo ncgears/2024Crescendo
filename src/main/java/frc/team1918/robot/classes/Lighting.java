@@ -24,7 +24,7 @@ public class Lighting {
   public enum Colors {
     OFF(0,0,0),
     NCBLUE(0,119,181),
-    NCGREEN(0,173,80),
+    NCGREEN(0,255,0),
     AMBER(255,100,0),
     AQUA(50,255,255),
     BLACK(0,0,0),

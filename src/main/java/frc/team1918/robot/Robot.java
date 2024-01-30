@@ -68,13 +68,13 @@ public class Robot extends TimedRobot {
 
     //Create forwarder
     //pi4 (photonvision)
-    // PortForwarder.add(5800,"photonvision.local",5800);
-    // PortForwarder.add(1181,"photonvision.local",1181);
-    // PortForwarder.add(1182,"photonvision.local",1182);
+    PortForwarder.add(5800,"photonvision.local",5800);
+    PortForwarder.add(1181,"photonvision.local",1181);
+    PortForwarder.add(1182,"photonvision.local",1182);
     //limelight (photovision)
-    PortForwarder.add(5800,"gloworm.local",5800);
-    PortForwarder.add(1181,"gloworm.local",1181);
-    PortForwarder.add(1182,"gloworm.local",1182);
+    // PortForwarder.add(5800,"gloworm.local",5800);
+    // PortForwarder.add(1181,"gloworm.local",1181);
+    // PortForwarder.add(1182,"gloworm.local",1182);
     //limelight (limelightOS)
     // for (int port = 5800; port <= 5807; port++) {
     //   PortForwarder.add(port,"limelight.local",port);

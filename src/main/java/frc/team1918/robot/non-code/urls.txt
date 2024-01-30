@@ -1,6 +1,10 @@
 
 ## Roborio
-#get roborio address info
+http://roborio-1918-frc.local
+
+## PhotonVision
+http://roborio-1918-frc.local:5800 //via portforwarder
+http://photonvision.local:5800
 
 ## Limelight
 http://limelight.local:5800

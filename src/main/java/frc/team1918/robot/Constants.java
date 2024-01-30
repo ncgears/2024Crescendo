@@ -83,7 +83,7 @@ public class Constants {
          * IDs of CANdles
          */
         public static final class CANdle {
-            public static int candle1 = 1;
+            public static int candle1 = 0;
         }
 
     }
