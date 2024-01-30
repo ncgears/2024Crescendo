@@ -94,15 +94,6 @@ public class RobotContainer {
     private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
       return new Trigger(DriverStation::isDisabled);
     }
-   
-    //CommandSwerve stuff
-    // private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
-    // private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-    //   .withDeadband(Constants.DriveTrain.kMaxMetersPerSecond * 0.1)
-    //   .withRotationalDeadband(Constants.DriveTrain.kMaxRotationRadiansPerSecond)
-    //   .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-    // private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    // private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
 
     //init joysticks
     private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
@@ -112,9 +103,8 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true));
-    // Configure the button bindings
-    configureButtonBindings();
+    // Configure the bindings (buttons, triggers, etc.)
+    configureBindings();
     buildDashboards();
 
     // Enable closed loop control of compressor and enable it
@@ -153,7 +143,7 @@ public class RobotContainer {
     m_shooter.init();
   }
 
-  private void configureButtonBindings() {
+  private void configureBindings() {
     /** New for 2023:
     * onTrue (replaces whenPressed and whenActive): schedule on rising edge 
     * onFalse (replaces whenReleased and whenInactive): schedule on falling edge
@@ -166,15 +156,8 @@ public class RobotContainer {
     * This should make it much easier to find the appropriate functions
     */
 
-    if(!Constants.DriveTrain.isDisabled) {
-      //Uses CTRE SwerveDrive, which requires TalonFX drive+steer and Pigeon2
-      // drivetrain.setDefaultCommand( //Drivetrain will execute this command periodically
-      //   drivetrain.applyRequest(() -> drive
-      //     .withVelocityX(-dj.getLeftY() * Constants.DriveTrain.kMaxMetersPerSecond)
-      //     .withVelocityY(dj.getLeftX() * Constants.DriveTrain.kMaxMetersPerSecond)
-      //     .withRotationalRate(dj.getRightX() * Constants.DriveTrain.kMaxRotationRadiansPerSecond)
-      //   ).ignoringDisable(true));
-    }
+    // bind to the disabled() trigger which happens any time the robot is disabled
+    disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true));
 
     /** DRIVER JOYSTICK (dj) */
     // Add random offset to pose estimator to test vision correction
@@ -189,16 +172,17 @@ public class RobotContainer {
       .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
+    // Test the lighting system
     dj.a()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    /** OPERATOR JOYSTICK (oj) */
+
+      /** OPERATOR JOYSTICK (oj) */
 
   }
-
 
   /**
    * Use this to pass the named command to the main Robot class.
@@ -217,8 +201,6 @@ public class RobotContainer {
   public Command getRobotCommand(String name) {
     //This selects a command (or command group) to return
     switch (name) {
-      case "resetRobot":
-        return new cg_resetRobot();
       default:
         return null;
     }
@@ -277,5 +259,5 @@ public class RobotContainer {
     // maintTab.add("Zero Robot", new cg_zeroMovingParts(m_stove, m_fsr))
     //     .withPosition(1, 0)
     //     .withSize(1, 1);
-}
+  }
 }
