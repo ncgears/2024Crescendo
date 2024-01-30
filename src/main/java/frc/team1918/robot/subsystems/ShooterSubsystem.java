@@ -116,14 +116,8 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / Constants.Shooter.kMaxRPS,2); }
-
-  public double getNewSpeed() {
-    return Helpers.General.roundDouble(new_speed,2);
-  }
-
-  public double getTargetSpeed() {
-    return target_speed;
-  }
+  public double getNewSpeed() { return Helpers.General.roundDouble(new_speed,2); }
+  public double getTargetSpeed() { return target_speed; }
 
   /**
    * Gets the speed of the shooter
