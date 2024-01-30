@@ -115,7 +115,6 @@ public class RobotContainer {
       // UsbCamera cam = CameraServer.startAutomaticCapture();
       // cam.setResolution(320, 240);
       // cam.setFPS(25);
-
     }
 
     // Set the default command that is run for the robot. Normally, this is the drive command

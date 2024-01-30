@@ -54,8 +54,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //Disable LiveWindow
-    // LiveWindow.disableAllTelemetry();
-    LiveWindow.enableAllTelemetry();
+    LiveWindow.disableAllTelemetry();
+    // LiveWindow.enableAllTelemetry();
 
     //Silence Joystick Warnings
     DriverStation.silenceJoystickConnectionWarning(true);
