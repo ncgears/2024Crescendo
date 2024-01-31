@@ -13,15 +13,6 @@ public class Helpers {
                 System.out.println(message);
             }
         }
-        public final static int debug(String message, int ticks) {
-            if (debugEnabled) {
-                if(debugThrottleMet(ticks)) System.out.println(message);
-            }
-            return ticks++;
-        }
-        public final static boolean debugThrottleMet(int ticks) {
-            return (ticks % Constants.Global.DEBUG_RECURRING_TICKS == 0);
-        }
 
         /**
          * This function toggles the debugging output to console. In a future version, each press will increase the debug level
@@ -34,27 +25,6 @@ public class Helpers {
     }
     //General Helpers
     public static final class General {
-        /**
-         * This function takes values a and b. It determines the minimum delta between the two based on the wrap value.
-         * @param a 
-         * @param b
-         * @param wrap
-         * @return
-         */
-        public final static double minChange(double a, double b, double wrap) {
-            return Math.IEEEremainder(a - b, wrap);
-        }
-        public final static int minChange(int a, int b, int wrap) {
-            return (int) Math.IEEEremainder(a - b, wrap);
-        }
-        
-        public static double encoderToMeters(double encoder, double wheelDiam) {
-            return (double) encoder * (Constants.DriveTrain.DT_DRIVE_CONVERSION_FACTOR * wheelDiam * Math.PI) / Constants.DriveTrain.DT_DRIVE_ENCODER_FULL_ROTATION / 1000.0;
-        }
-        public static double metersToEncoder(double meters, double wheelDiam) {
-            return (double) meters * 1000.0 * Constants.DriveTrain.DT_DRIVE_ENCODER_FULL_ROTATION / (Constants.DriveTrain.DT_DRIVE_CONVERSION_FACTOR * wheelDiam * Math.PI);
-        }
-        
         public final static double roundDouble(double val, int decimals) {
             return Math.round(val * Math.pow(10,decimals)) / Math.pow(10,decimals);
             // final DecimalFormat df = new DecimalFormat(format);
@@ -78,39 +48,6 @@ public class Helpers {
         public final static int radiansToTicks(double rads) {
 
 			return (int) (rads / Math.PI * (Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION / 2));
-        }
-
-        /**
-         * This function takes a value and modifies it by a gear reduction (or multiplication) for a single reduction
-         * @param value double precision value of input
-         * @param gearOne integer value of the number of teeth on the input side of the gear set (motor side)
-         * @param gearTwo integer value of the number of teeth on the output side of the gear set (wheel side)
-         * @return double precision value after gear reduction (or multiplication)
-         */
-        public final static double gearCalcSingle(double value, int gearOne, int gearTwo) {
-            return value * (gearOne / gearTwo);
-        }
-        /**
-         * This function takes a value and modifies it by a gear reduction (or multiplication) for a single reduction
-         * @param value double precision value of input
-         * @param firstGearOne integer value of the number of teeth on the input side of the first gear set (motor side)
-         * @param firstGearTwo integer value of the number of teeth on the output side of the first gear set (wheel side)
-         * @param secondGearOne integer value of the number of teeth on the output side of the second gear set (wheel side)
-         * @param secondGearTwo integer value of the number of teeth on the output side of the second gear set (wheel side)
-         * @return double precision value after gear reduction (or multiplication)
-         */
-        public final static double gearCalcDouble(double value, int firstGearOne, int firstGearTwo, int secondGearOne, int secondGearTwo) {
-            return value * (firstGearOne / firstGearTwo) * (secondGearOne / secondGearTwo);
-        }
-
-        /**
-         * This function takes a value in rotations per second and converts it to meters per second based on the size of the wheel
-         * @param rps (double) Rotations Per Second
-         * @param wheelDiamMM (double) Diameter of the wheel in mm
-         * @return (double) meters per second based on the wheel size and rotations per second
-         */
-        public final static double rpsToMetersPerSecond(double rps, double wheelDiamMM) {
-            return ((rps) * (wheelDiamMM * Math.PI)) / 1000;
         }
     }
 }
