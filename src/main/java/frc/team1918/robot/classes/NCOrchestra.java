@@ -4,12 +4,15 @@ import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import frc.team1918.robot.Helpers;
+
 public class NCOrchestra {
     private static NCOrchestra instance;
     private String m_music = "";
     private Orchestra m_orchestra = new Orchestra();
     private boolean flagChanged = false;
     private boolean hasAddedInstruments = false;
+    public boolean isPlaying = false;
 
     // private TalonFX[] instruments = null;
 
@@ -33,32 +36,51 @@ public class NCOrchestra {
         }
 
         if (flagChanged) {
-            ret = m_orchestra.loadMusic(m_music);
+            Helpers.Debug.debug("Orchestra: load song music/"+m_music);
+            ret = m_orchestra.loadMusic("music/"+m_music);
             flagChanged = false;
         }
 
         return ret;
     }
 
-    public boolean isPlaying() { return m_orchestra.isPlaying(); }
+    public boolean isPlaying() { return isPlaying; }
+
+    public StatusCode update() {
+        StatusCode ret = StatusCode.OK;
+        if (flagChanged) {
+            Helpers.Debug.debug("Orchestra: load song music/"+m_music);
+            ret = m_orchestra.loadMusic("music/"+m_music);
+            flagChanged = false;
+        }
+        return ret;
+    }
 
     public StatusCode play() {
+        Helpers.Debug.debug("Orchestra: play");
+        isPlaying = true;
         return m_orchestra.play();
     }
 
     public StatusCode stop() {
+        Helpers.Debug.debug("Orchestra: stop");
+        isPlaying = false;
         return m_orchestra.stop();
     }
 
     public StatusCode pause() {
+        Helpers.Debug.debug("Orchestra: pause");
+        isPlaying = false;
         return m_orchestra.pause();
     }
 
     public NCOrchestra withMusic(String music) {
         if (m_music.compareTo(music) != 0) {
             m_music = music;
+            Helpers.Debug.debug("Orchestra: song change "+music);
             flagChanged = true;
         }
+        update();
 
         return this;
     }
@@ -72,6 +94,8 @@ public class NCOrchestra {
 
             if (err.isError()) {
                 retErr = err;
+            } else {
+                Helpers.Debug.debug("Orchestra: Instrument added "+motor.getDeviceID());
             }
         }
 

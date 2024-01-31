@@ -178,15 +178,15 @@ public class RobotContainer {
     /** DRIVER JOYSTICK (dj) */
     if(Constants.Audio.isEnabled) {
       // Manage Music
-          // music/Brawl-Theme.chrp
-          // music/Megalovania.chrp
-          // music/Rickroll.chrp
-          // music/Still-Alive.chrp
+          // Brawl-Theme.chrp
+          // Megalovania.chrp
+          // Rickroll.chrp
+          // Still-Alive.chrp
       dj.google().onTrue(new InstantCommand(() -> {
         if(m_orchestra.isPlaying()) {
           m_orchestra.stop();
         } else {
-          m_orchestra.withMusic("music/Still-Alive.chrp").play();
+          m_orchestra.withMusic("Still-Alive.chrp").play();
         }
       }).ignoringDisable(true));
     }
