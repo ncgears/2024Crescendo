@@ -2,10 +2,12 @@ package frc.team1918.robot.modules;
 
 //Talon SRX/Talon FX
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.mechanisms.swerve.SimSwerveDrivetrain;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -16,7 +18,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import frc.team1918.robot.Constants;
-import frc.team1918.robot.DashboardOld;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -71,7 +72,7 @@ public class SwerveModule {
         turn.config_IntegralZone(Constants.Global.kPidProfileSlotIndex, TURN_IZONE);
         turn.overrideLimitSwitchesEnable(false);
         turn.configAllowableClosedloopError(Constants.Global.kPidProfileSlotIndex, TURN_ALLOWED_ERROR); 
-        if(Constants.Swerve.homeOnInit) turn.set(ControlMode.Position, getZeroPositionTicks());
+        if(Constants.Swerve.homeOnInit) turn.set(ControlMode.Position, 0);
         // SupplyCurrentLimitConfiguration(enabled,peak,trigger threshold current,trigger threshold time(s))
         // turn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
         //     Constants.Swerve.isTurnCurrentLimitEnabled,
@@ -88,32 +89,6 @@ public class SwerveModule {
             Helpers.Debug.debug("Could not initialize swerve module " + name + ", error: " + status.toString());
         }
         drive.setInverted(moduleConstants.driveIsInverted);
-
-
-        // drive.configFactoryDefault(); //v5
-        // // drive.getConfigurator().apply(new TalonFXConfiguration()); //v6
-        // drive.set(ControlMode.PercentOutput, 0);
-        // drive.setNeutralMode(NeutralMode.Brake);
-        // drive.setInverted(moduleConstants.driveIsInverted);
-        // drive.config_kP(Constants.Global.kPidProfileSlotIndex, 0.0005);
-        // drive.config_kI(Constants.Global.kPidProfileSlotIndex, 0.0);
-        // drive.config_kD(Constants.Global.kPidProfileSlotIndex, 0.00005);
-        // drive.config_IntegralZone(Constants.Global.kPidProfileSlotIndex, 4740);
-        // SupplyCurrentLimitConfiguration(enabled,peak,trigger threshold current,trigger threshold time(s))
-        // drive.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true,60.0,45.0,1.0));
-        // drive.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
-        //     Constants.Swerve.isDriveCurrentLimitEnabled,
-        //     Constants.Swerve.kDriveCurrentLimitAmps,
-        //     Constants.Swerve.kDriveCurrentThresholdAmps,
-        //     Constants.Swerve.kDriveCurrentThresholdSecs));
-            
-        // m_drive_pidController = drive.getPIDController();
-        // m_drive_pidController.setP(0.0005); //PID P
-        // m_drive_pidController.setI(0.0); //PID I
-        // m_drive_pidController.setD(0.00005); //PID D
-        // // m_drive_pidController.setIZone(0); //IZone
-        // m_drive_pidController.setFF(1/4740); //Feed forward
-        // m_drive_pidController.setOutputRange(-1, 1);
     }
 
     /**
@@ -122,14 +97,6 @@ public class SwerveModule {
      * @return The current state of the module.
      */
     public SwerveModuleState getState() {
-        // double rps = drive.getVelocity().getValueAsDouble();
-        // double wheelRps = Helpers.General.gearCalcDouble(rps,
-        //     Constants.DriveTrain.DT_DRIVE_FIRST_GEARONE,
-        //     Constants.DriveTrain.DT_DRIVE_FIRST_GEARTWO,
-        //     Constants.DriveTrain.DT_DRIVE_SECOND_GEARONE,
-        //     Constants.DriveTrain.DT_DRIVE_SECOND_GEARTWO
-        // );
-        // return new SwerveModuleState(Helpers.General.rpsToMetersPerSecond(wheelRps, this.driveWheelDiam), getTurnPositionAsRotation2d());
         if (state != null) return state;
         return new SwerveModuleState(0, getTurnPositionAsRotation2d());
     }
@@ -159,34 +126,13 @@ public class SwerveModule {
      */
     public void setDesiredState(SwerveModuleState desiredState) {
         state = (Constants.Swerve.useTurnOptimization) ? optimize(desiredState) : desiredState;
+
         double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond; //Create a percentage from the theoretical max
         // drive.set(percentOutput);
         setDrivePower(percentOutput);
 
         int turn_ticks = Helpers.General.radiansToTicks(state.angle.getRadians() + Constants.Swerve.kHomeOffsetRadians);
         turn.set(ControlMode.Position, turn_ticks);
-
-        // //Display output for debugging
-        // if(Helpers.Debug.debugThrottleMet(debug_ticks1) && state.speedMetersPerSecond != 0.0) {
-        //     Helpers.Debug.debug(moduleName+" Speed (metersPerSecond)="+Helpers.General.roundDouble(state.speedMetersPerSecond,3)+" Turn Setpoint="+turn_ticks);
-        // }
-        // debug_ticks1++;
-    }
-
-    /**
-     * This function calculates the minimum turn (in encoder ticks) based on the desired location and the current location.
-     * It uses the encoder wrap-around to determine if we should turn negative past 0
-     * @param desiredPosition encoder count of desired position
-     * @param currentPosition encoder count of current position
-     * @return An encoder count between -1024..0..1024 of the new target
-     */
-    public int minTurnTicks(int desiredPosition, int currentPosition) {
-        int wrap = (int) Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION; //This is where the encoder changes from high to 0
-        return Helpers.General.minChange(desiredPosition,currentPosition,wrap);
-        //minChange calculates the shortest distance to the desired target, even if that means wrapping over 0.
-        //Examples based on 4096 (SRX Mag Encoder)
-        //Example: curTicks = 1023 (45deg), desiredTicks = 3073 (1 tick above 270deg)
-        //Example result: -2047 ticks (-180deg) instead of +2049 ticks
     }
 
     /**
@@ -205,15 +151,8 @@ public class SwerveModule {
         drive.setControl(new DutyCycleOut(power, true, false, false, false));
     }
 
-    public int getZeroPositionTicks() {
-        int total = (int) turn.getSelectedSensorPosition(0);
-        int curr = (int) total & Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION;//0x3ff; //ticks in current rotation
-        return total - curr;
-    }
-
     public void homeSwerve() {
         turn.set(ControlMode.Position, 0);
-        // turn.set(ControlMode.Position, getZeroPositionTicks());
     }
 
     public void defensiveLock(double position) {
@@ -302,6 +241,8 @@ public class SwerveModule {
     }
 
     public double getDriveDistanceMeters() {
+        // double pos = drive.getPosition().getValueAsDouble();
+        // Helpers.Debug.debug("pos["+moduleName+"]="+pos);
         return Helpers.General.encoderToMeters(drive.getPosition().getValueAsDouble(), this.driveWheelDiam);
     }
 
@@ -316,19 +257,5 @@ public class SwerveModule {
 
     public void syncTurningEncoders() {
         // turn.setSelectedSensorPosition(turn.getSelectedSensorPosition(0),1,0);
-    }
-
-    /**
-     * This function is used to output data to the dashboard for debugging the module, typically done in the periodic method.
-     */
-    public void updateDashboard() {
-        DashboardOld.DriveTrain.setTurnPosition(moduleName, (int) turn.getSelectedSensorPosition(0) & 0x3FF);
-        DashboardOld.DriveTrain.setTurnSetpoint(moduleName, (int) turn.getClosedLoopTarget(0) & 0x3FF);
-        DashboardOld.DriveTrain.setTurnPositionError(moduleName, turn.getClosedLoopError(0));
-        DashboardOld.DriveTrain.setTurnVelocity(moduleName, turn.getSelectedSensorVelocity(0));
-        DashboardOld.DriveTrain.setTurnZeroPosition(moduleName, getZeroPositionTicks()); 
-        // Dashboard.DriveTrain.setTurnPositionErrorChange(moduleName, turn.getErrorDerivative(0));
-        // Dashboard.DriveTrain.setDriveVelocity(moduleName, drive.getVelocity());
-        DashboardOld.DriveTrain.setDriveDistance(moduleName, getDriveDistanceMeters());
     }
 }

@@ -46,7 +46,7 @@ public class DriveSubsystem extends SubsystemBase {
 	private static SwerveModule m_backLeft = new SwerveModule("RL", Constants.Swerve.BL.constants); // Rear Left
 	private static SwerveModule m_backRight = new SwerveModule("RR", Constants.Swerve.BR.constants); // Rear Right
 	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
-	private SwerveModulePosition[] swervePositions;
+	// private SwerveModulePosition[] swervePositions;
 
 	private SwerveDrivePoseEstimator poseEstimator;
 	private Field2d fieldSim;
@@ -59,7 +59,7 @@ public class DriveSubsystem extends SubsystemBase {
 	// private PIDController driveStraightPID = new PIDController(Constants.DriveTrain.DriveStraight.kP, Constants.DriveTrain.DriveStraight.kI, Constants.DriveTrain.DriveStraight.kD);
 
 	//intialize odometry class for tracking robot pose
-	SwerveDriveOdometry m_odometry;
+	// SwerveDriveOdometry m_odometry;
 
 	// = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getRotation2d());
 	//positions(3rd arg) = new SwerveModulePosition(modulePositions[index].distanceMeters, modulePositions[index].angle);
@@ -73,6 +73,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public DriveSubsystem() { //initialize the class
 		fieldSim = new Field2d();
+
 		//Perform init function on each module, not needed?
 		// for (SwerveModule module: modules) {
 		// 	module.resetDistance();
@@ -80,13 +81,13 @@ public class DriveSubsystem extends SubsystemBase {
 		// }
 
 		//Get the positions of the swerve modules
-		swervePositions = getSwerveModulePositions();
+		// swervePositions = getSwerveModulePositions();
 
 		//Initialize the gyro object
 		m_gyro = new Gyro();
 
-		//Initialize the odometry object
-		m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);
+		//Initialize the odometry object, we now use the poseEstimator instead
+		// m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);
 
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(
@@ -112,12 +113,9 @@ public class DriveSubsystem extends SubsystemBase {
 	// @SuppressWarnings("unused")
 	@Override
 	public void periodic() {
-		updateOdometry();
-		correctPose();
+		updatePose();
+		correctPoseWithVision();
 		fieldSim.setRobotPose(poseEstimator.getEstimatedPosition());
-		if(Robot.isSimulation()) {
-            //This is for updating simulated data
-		}
 	}
 
 	@Override
@@ -216,7 +214,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void resetOdometry(double heading, Pose2d pose) {
 		m_gyro.zeroHeading();
 		m_gyro.setYawOffset(heading);
-		m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
+		// m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
 	}
 
 	/**
@@ -226,15 +224,13 @@ public class DriveSubsystem extends SubsystemBase {
      * @param pose New robot pose.
      */
 	public void resetPose(double heading, Pose2d pose) {
-	  	// m_gyro.zeroHeading();
-	  	// m_gyro.setYawOffset(heading);
 		poseEstimator.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
 	}
 
 	/**
 	 * Corrects the bot pose based on information from the vision system
 	 */
-	public void correctPose() {
+	public void correctPoseWithVision() {
 		var visionEst = RobotContainer.vision.getEstimatedGlobalPose();
 		visionEst.ifPresent(
 			est -> {
@@ -242,21 +238,17 @@ public class DriveSubsystem extends SubsystemBase {
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose);
 				addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-			});
+			}
+		);
 	}
 
 	/**
-	 * Updates the odometry of the robot. This should be done in every periodic loop.
+	 * Updates the bot pose based on feedback from the drivetrain. This should be done in every periodic loop.
 	 */
-	public void updateOdometry() {
+	public void updatePose() {
 		poseEstimator.update(
 			m_gyro.getHeading(),
-			new SwerveModulePosition[] {
-        	    m_frontLeft.getPosition(),
-            	m_frontRight.getPosition(),
-            	m_backLeft.getPosition(),
-            	m_backRight.getPosition()
-			}
+			getSwerveModulePositions()
 		);
 	}
 

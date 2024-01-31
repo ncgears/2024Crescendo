@@ -437,6 +437,8 @@ public class Constants {
         //16:32 = 18.56fps or 5.66mps
         public static final double kMaxMetersPerSecond = 5.66; //limit full stick speed meters to 13.5fps
         public static final double kMaxRotationRadiansPerSecond = 2 * Math.PI; //3.4; //Multiplier for omega of turning the robot
+        // public static final double kRotationsPerWheelRotation = (16 / 44 * 15 / 45);
+        // public static final double kWheelDiameterInMM = 101.6;
         //from swerve
         // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
         // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
@@ -446,7 +448,7 @@ public class Constants {
         public static final boolean DT_TURN_MULT_BEFORE_DB = true; //Apply turn multiplier before deadband
         public static final int DT_TURN_ENCODER_FULL_ROTATION = 1023; //This is for the lamprey2, not the integrated SRX mag encoder (lamprey1 is 1023)
         public static final int kTurnEncoderFullRotation = 4096; //This is for the integrated SRX mag encoder in the gearboxes, not the lamprey
-        public static final double kTurnGeabratio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
+        public static final double kTurnGearRatio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
         ////Drive Tuning
         public static final double DT_FWD_MULT = 1.0; //Fwd throttle multiplier
         public static final double DT_STR_MULT = 1.0; //Str throttle multiplier
