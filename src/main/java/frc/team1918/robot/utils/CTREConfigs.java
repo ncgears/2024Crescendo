@@ -1,5 +1,6 @@
 package frc.team1918.robot.utils;
 
+import com.ctre.phoenix6.configs.AudioConfigs;
 // import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -41,6 +42,8 @@ public final class CTREConfigs {
         // driveSlot0Configs.kV = Constants.SwerveK.kDriveKF;
         swerveDriveFXConfig.Slot0 = driveSlot0Configs;
         swerveDriveFXConfig.MotorOutput.NeutralMode = Constants.Swerve.kDriveNeutralMode;
+        swerveDriveFXConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.kRotationsPerWheelRotation;
+        swerveDriveFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //current limits
         CurrentLimitsConfigs driveCurrentLimitsConfigs = new CurrentLimitsConfigs();
@@ -49,7 +52,6 @@ public final class CTREConfigs {
         // TODO: check whether it is duty cycle or smtg else
         swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.kOpenLoopRamp;
         swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.kClosedLoopRamp;
-        swerveDriveFXConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.kRotationsPerWheelRotation;
         
         // /* Swerve CANcoder Configuration */
         // // TODO: check whether 0To1 works
@@ -85,6 +87,8 @@ public final class CTREConfigs {
         shooterFXConfig.MotorOutput.Inverted = (Constants.Shooter.isInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Rotational rate modifiers
         shooterFXConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.kGearRatio;
+        //Audio
+        shooterFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //Example for other TalonFX based systems
 

@@ -8,8 +8,11 @@ import frc.team1918.robot.RobotContainer;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.modules.SwerveModule;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.SimSwerveDrivetrain;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 
@@ -417,4 +420,12 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 	}
 	//#endregion MOTOR CONTROLLER STUFF
+
+	public TalonFX[] getMotors() {
+	    ArrayList<TalonFX> motors = new ArrayList<>();
+		for (SwerveModule module: modules) {
+			motors.add(module.getDriveMotor());
+		}
+		return motors.toArray(new TalonFX[motors.size()]);
+	}
 }

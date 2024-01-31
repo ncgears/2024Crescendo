@@ -19,6 +19,7 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 // import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.RobotContainer;
+import frc.team1918.robot.modules.SwerveModule;
 
 /**
  * This subsystem handles managing the Shooter.
@@ -161,4 +162,10 @@ public class ShooterSubsystem extends SubsystemBase {
     // if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
     Helpers.Debug.debug("Shooter: Stop");
   }
+
+  public TalonFX[] getMotors() {
+    TalonFX[] motors = {m_motor1, m_motor2};
+    return motors;
+  }
+
 }

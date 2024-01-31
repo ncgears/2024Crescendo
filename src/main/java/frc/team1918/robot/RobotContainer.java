@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
 
@@ -48,10 +49,12 @@ import frc.team1918.robot.utils.TunableNumber;
 //Commands imports
 // import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.commands.gyro.gyro_resetGyro;
+import frc.team1918.robot.modules.SwerveModule;
 import frc.team1918.robot.commands.drive.*;
 import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.classes.Lighting;
+import frc.team1918.robot.classes.NCOrchestra;
 import frc.team1918.robot.classes.Vision;
 import frc.team1918.robot.classes.Lighting.Colors;
 //CommandGroup imports
@@ -59,6 +62,7 @@ import frc.team1918.robot.commandgroups.*;
 
 //Phoenix6
 import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
 
@@ -74,6 +78,7 @@ public class RobotContainer {
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
     public static final Vision vision = Vision.getInstance();
+    private final NCOrchestra m_orchestra = NCOrchestra.getInstance();
 
   //subsystems definitions
     // private final PowerDistribution m_pdp = new PowerDistribution();
@@ -108,6 +113,19 @@ public class RobotContainer {
 
     // Enable closed loop control of compressor and enable it
     // if(Constants.Air.isDisabled) m_air.disable();
+
+    if(Constants.Audio.isEnabled) {
+	    ArrayList<TalonFX> instrumentsAll = new ArrayList<>();
+		  for (TalonFX motor: m_drive.getMotors()) {
+			  instrumentsAll.add(motor);
+		  }
+		  // for (TalonFX motor: m_shooter.getMotors()) {
+			//   instrumentsAll.add(motor);
+		  // }
+      // instrumentsAll.add(aimer.getMotors());
+      TalonFX[] instruments = instrumentsAll.toArray(new TalonFX[instrumentsAll.size()]);
+      m_orchestra.apply(instruments);
+    }
 
     // Enable the camera server and start capture
     if(Constants.Global.CAMERA_ENABLED) {
@@ -158,6 +176,20 @@ public class RobotContainer {
     disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true));
 
     /** DRIVER JOYSTICK (dj) */
+    if(Constants.Audio.isEnabled) {
+      // Manage Music
+          // music/Brawl-Theme.chrp
+          // music/Megalovania.chrp
+          // music/Rickroll.chrp
+          // music/Still-Alive.chrp
+      dj.google().onTrue(new InstantCommand(() -> {
+        if(m_orchestra.isPlaying()) {
+          m_orchestra.stop();
+        } else {
+          m_orchestra.withMusic("music/Still-Alive.chrp").play();
+        }
+      }).ignoringDisable(true));
+    }
     // Add random offset to pose estimator to test vision correction
     dj.stadia().onTrue(new InstantCommand(() -> {
       Random rand = new Random(1918);
