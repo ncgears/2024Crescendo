@@ -2,12 +2,10 @@ package frc.team1918.robot.modules;
 
 //Talon SRX/Talon FX
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.mechanisms.swerve.SimSwerveDrivetrain;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -17,28 +15,30 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
-@Deprecated(since="2024")
 public class SwerveModule {
     private WPI_TalonSRX turn;
-    private TalonFX drive;
+    public TalonFX drive;
+    public final DCMotorSim SimDriveMotor, SimSteerMotor;
     //private final double FULL_ROTATION = Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION;
     private final double TURN_P, TURN_I, TURN_D;
     private final int TURN_IZONE;
     private final int TURN_ALLOWED_ERROR;
     private String moduleName;
-    private double driveWheelDiam = Constants.Swerve.DEFAULT_WHEEL_DIAM_MM;
+    private double driveWheelDiamMM = Constants.Swerve.DEFAULT_WHEEL_DIAM_MM;
     private NeutralOut m_brake = new NeutralOut();
     private SwerveModuleState state;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
 
  	/**
-	 * 1918 Swerve Module v2022.1 - This swerve module uses a Falcon 500 (TalonFX) for drive and Talon SRX for turn (bag motor with gearbox).
+	 * 1918 Swerve Module v2024.1 - This swerve module uses a Falcon 500 (TalonFX) for drive and Talon SRX for turn (bag motor with gearbox).
      * The module uses a Lamprey Absolute encoder for positioning data
 	 * @param name This is the name of this swerve module (ie. "dtFL")
      * @param moduleConstants This is a SwerveModuleConstants object containing the data for this module
@@ -52,7 +52,9 @@ public class SwerveModule {
         TURN_D = moduleConstants.turnD;
         TURN_IZONE = moduleConstants.turnIZone;
         TURN_ALLOWED_ERROR = moduleConstants.turnMaxAllowedError;
-        driveWheelDiam = moduleConstants.driveWheelDiam;
+        driveWheelDiamMM = moduleConstants.driveWheelDiamMM;
+        SimDriveMotor = new DCMotorSim(DCMotor.getFalcon500(1), Constants.Swerve.kRotationsPerWheelRotation, moduleConstants.DriveInertia);
+        SimSteerMotor = new DCMotorSim(DCMotor.getFalcon500(1), Constants.Swerve.kRotationsPerWheelRotation, moduleConstants.DriveInertia);
 
         turn.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
         turn.set(ControlMode.PercentOutput, 0); //Set controller to disabled
@@ -241,9 +243,10 @@ public class SwerveModule {
     }
 
     public double getDriveDistanceMeters() {
-        // double pos = drive.getPosition().getValueAsDouble();
-        // Helpers.Debug.debug("pos["+moduleName+"]="+pos);
-        return Helpers.General.encoderToMeters(drive.getPosition().getValueAsDouble(), this.driveWheelDiam);
+        // return Helpers.General.encoderToMeters(drive.getPosition().getValue(), this.driveWheelDiamMM);
+        double wheel_rotations = drive.getPosition().getValue(); //Uses configured SensorToMechanismRatio in CTREConfigs
+        double distance = wheel_rotations * Math.PI * driveWheelDiamMM / 1000;
+        return distance;
     }
 
     public void resetDistance() {
@@ -257,5 +260,13 @@ public class SwerveModule {
 
     public void syncTurningEncoders() {
         // turn.setSelectedSensorPosition(turn.getSelectedSensorPosition(0),1,0);
+    }
+
+    public TalonFX getDriveMotor() {
+        return drive;
+    }
+
+    public WPI_TalonSRX getSteerMotor() {
+        return turn;
     }
 }

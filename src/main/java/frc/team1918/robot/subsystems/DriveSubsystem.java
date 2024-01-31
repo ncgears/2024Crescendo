@@ -10,6 +10,9 @@ import frc.team1918.robot.modules.SwerveModule;
 
 import java.util.Map;
 
+import com.ctre.phoenix6.mechanisms.swerve.SimSwerveDrivetrain;
+import com.ctre.phoenix6.sim.TalonFXSimState;
+
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.Matrix;
@@ -25,10 +28,14 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 /**
@@ -54,6 +61,7 @@ public class DriveSubsystem extends SubsystemBase {
 	private int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
     SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
+	private double sim_last_time = Timer.getFPGATimestamp();
 
 	//robot theta Controller
 	// private PIDController driveStraightPID = new PIDController(Constants.DriveTrain.DriveStraight.kP, Constants.DriveTrain.DriveStraight.kI, Constants.DriveTrain.DriveStraight.kD);
@@ -113,6 +121,7 @@ public class DriveSubsystem extends SubsystemBase {
 	// @SuppressWarnings("unused")
 	@Override
 	public void periodic() {
+		if(Robot.isSimulation()) updateSim();
 		updatePose();
 		correctPoseWithVision();
 		fieldSim.setRobotPose(poseEstimator.getEstimatedPosition());
@@ -241,6 +250,37 @@ public class DriveSubsystem extends SubsystemBase {
 			}
 		);
 	}
+
+	public void updateSim() {
+		for (SwerveModule module: modules) {
+			double ts = Timer.getFPGATimestamp();
+			TalonFXSimState driveMotor = module.getDriveMotor().getSimState();
+			driveMotor.setSupplyVoltage(RobotController.getBatteryVoltage());
+			module.SimDriveMotor.setInputVoltage(addFriction(driveMotor.getMotorVoltage(), 0.25));
+			module.SimDriveMotor.update(ts - sim_last_time);
+			driveMotor.setRawRotorPosition(module.SimDriveMotor.getAngularPositionRotations() * Constants.Swerve.kRotationsPerWheelRotation);
+			driveMotor.setRotorVelocity(module.SimDriveMotor.getAngularVelocityRPM() / 60 * Constants.Swerve.kRotationsPerWheelRotation);
+			sim_last_time = ts;
+		}
+	}
+
+	    /**
+     * Applies the effects of friction to dampen the motor voltage.
+     *
+     * @param motorVoltage Voltage output by the motor
+     * @param frictionVoltage Voltage required to overcome friction
+     * @return Friction-dampened motor voltage
+     */
+    protected double addFriction(double motorVoltage, double frictionVoltage) {
+        if (Math.abs(motorVoltage) < frictionVoltage) {
+            motorVoltage = 0.0;
+        } else if (motorVoltage > 0.0) {
+            motorVoltage -= frictionVoltage;
+        } else {
+            motorVoltage += frictionVoltage;
+        }
+        return motorVoltage;
+    }
 
 	/**
 	 * Updates the bot pose based on feedback from the drivetrain. This should be done in every periodic loop.

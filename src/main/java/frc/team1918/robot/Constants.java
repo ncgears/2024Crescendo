@@ -292,7 +292,8 @@ public class Constants {
         public static final double DEFAULT_TURN_D = 0.0; //PID D
         public static final int DEFAULT_TURN_IZONE = 0; //PID IZone
         public static final int DEFAULT_TURN_ALLOWED_ERROR = 3; //PID Allowed Ebror
-        public static final double DEFAULT_WHEEL_DIAM_MM = 101.6; //Wheel Diameter of 3in colson
+        public static final double DEFAULT_WHEEL_DIAM_MM = 101.6; //Wheel Diameter of 4in colson
+        public static final double kRotationsPerWheelRotation = 6.0; //(32/16*45/15); or 6.75 //(44/16*45/15)
         public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Coast;
         public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
         // Current limits
@@ -437,8 +438,7 @@ public class Constants {
         //16:32 = 18.56fps or 5.66mps
         public static final double kMaxMetersPerSecond = 5.66; //limit full stick speed meters to 13.5fps
         public static final double kMaxRotationRadiansPerSecond = 2 * Math.PI; //3.4; //Multiplier for omega of turning the robot
-        // public static final double kRotationsPerWheelRotation = (16 / 44 * 15 / 45);
-        // public static final double kWheelDiameterInMM = 101.6;
+
         //from swerve
         // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
         // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2

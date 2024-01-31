@@ -49,7 +49,7 @@ public final class CTREConfigs {
         // TODO: check whether it is duty cycle or smtg else
         swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.kOpenLoopRamp;
         swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.kClosedLoopRamp;
-        // swerveDriveFXConfig.Feedback.SensorToMechanismRatio = Constants.DriveTrain.kDriveGearRatio;
+        swerveDriveFXConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.kRotationsPerWheelRotation;
         
         // /* Swerve CANcoder Configuration */
         // // TODO: check whether 0To1 works

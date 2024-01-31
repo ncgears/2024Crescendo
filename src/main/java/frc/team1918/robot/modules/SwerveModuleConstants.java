@@ -13,7 +13,17 @@ public class SwerveModuleConstants {
     //drive
     public final int idDriveMotor;
     public final boolean driveIsInverted;
-    public final double driveWheelDiam;
+    public final double driveWheelDiamMM;
+
+    //Sim Specific
+    /** Simulated azimuthal inertia in kilogram meters squared. */
+    public double SteerInertia = 0.00001;
+    /** Simulated drive inertia in kilogram meters squared. */
+    public double DriveInertia = 0.001;
+    /** Simulated steer voltage required to overcome friction. */
+    public double SteerFrictionVoltage = 0.25;
+    /** Simulated drive voltage required to overcome friction. */
+    public double DriveFrictionVoltage = 0.25;
 
     /**
      * Creates a new constants object for initializing a 1918 swerve module v3.0
@@ -27,9 +37,9 @@ public class SwerveModuleConstants {
      * @param turnI - Integral constant for the turn controller
      * @param turnD - Derivative constant for the turn controller
      * @param turnIZone - Integral Zone constant for the turn controller
-     * @param driveWheelDiam - Size of this wheel in mm
+     * @param driveWheelDiamMM - Size of this wheel in mm
      */
-    public SwerveModuleConstants(int idDriveMotor, boolean driveIsInverted, int idTurnMotor, boolean turnSensorPhase, boolean turnIsInverted, int turnMaxAllowedError, double turnP, double turnI, double turnD, int turnIZone, double driveWheelDiam) {
+    public SwerveModuleConstants(int idDriveMotor, boolean driveIsInverted, int idTurnMotor, boolean turnSensorPhase, boolean turnIsInverted, int turnMaxAllowedError, double turnP, double turnI, double turnD, int turnIZone, double driveWheelDiamMM) {
         //turn
         this.idTurnMotor = idTurnMotor;
         this.turnSensorPhase = turnSensorPhase;
@@ -42,6 +52,6 @@ public class SwerveModuleConstants {
         //drive
         this.idDriveMotor = idDriveMotor;
         this.driveIsInverted = driveIsInverted;
-        this.driveWheelDiam = driveWheelDiam;
+        this.driveWheelDiamMM = driveWheelDiamMM;
     }
 }
