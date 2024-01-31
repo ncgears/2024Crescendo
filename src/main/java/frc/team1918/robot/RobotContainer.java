@@ -50,7 +50,6 @@ import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.commands.gyro.gyro_resetGyro;
 import frc.team1918.robot.commands.drive.*;
 import frc.team1918.robot.commands.gyro.*;
-import frc.team1918.robot.generated.TunerConstants;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.classes.Lighting;
 import frc.team1918.robot.classes.Vision;
