@@ -84,7 +84,7 @@ public class RobotContainer {
     private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
     private final ClimberSubsystem m_climber = ClimberSubsystem.getInstance();
     private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
-    private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
+    // private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
@@ -139,7 +139,7 @@ public class RobotContainer {
     m_climber.init();
     m_indexer.init();
     m_intake.init();
-    m_shooter.init();
+    // m_shooter.init();
   }
 
   private void configureBindings() {
@@ -162,7 +162,7 @@ public class RobotContainer {
     // Add random offset to pose estimator to test vision correction
     dj.stadia().onTrue(new InstantCommand(() -> {
       Random rand = new Random(1918);
-      var trf = new Transform2d(new Translation2d(rand.nextDouble() * 4 - 2, rand.nextDouble() * 4 - 2),
+      var trf = new Transform2d(new Translation2d(rand.nextDouble() * 10 - 2, rand.nextDouble() * 8 - 2),
         new Rotation2d(rand.nextDouble() * 2 * Math.PI));
       m_drive.resetPose(gyro.getHeading().getDegrees(), m_drive.getPose().plus(trf));
     }).ignoringDisable(true));

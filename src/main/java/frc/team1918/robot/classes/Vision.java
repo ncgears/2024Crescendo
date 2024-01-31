@@ -88,7 +88,7 @@ public class Vision {
     // Simulation
     if (Robot.isSimulation()) {
         // Create the vision system simulation which handles cameras and targets on the field.
-        visionSim = new VisionSystemSim("main");
+        visionSim = new VisionSystemSim("llcam1");
         // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
         visionSim.addAprilTags(Constants.Vision.kTagLayout);
         // Create simulated camera properties. These can be set to mimic your actual camera.

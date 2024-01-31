@@ -145,7 +145,7 @@ public class Constants {
      * Constants for the Vision class
      */
     public static final class Vision {
-        public static final String kCameraName = "photon";
+        public static final String kCameraName = "llcam1";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
         //Translation3d is the position of the camera on the robot in meters
