@@ -92,6 +92,7 @@ public class SwerveModule {
         }
         drive.setInverted(moduleConstants.driveIsInverted);
         // drive.getVelocity().setUpdateFrequency(50); //example of changing update signal frequency, 0 disables the frame
+        // drive.optimizeBusUtilization(0.2); //clean up the bus of all not explicitly requested signals
     }
 
     /**
