@@ -14,12 +14,10 @@ public class NCOrchestra {
     private boolean hasAddedInstruments = false;
     public boolean isPlaying = false;
 
-    // private TalonFX[] instruments = null;
-
     /**
-	 * Returns the instance of the LightingSubsystem subsystem.
+	 * Returns the instance of the NCOrchestra class.
 	 * The purpose of this is to only create an instance if one does not already exist.
-	 * @return LightingSubsystem instance
+	 * @return NCOrchestra instance
 	 */
     public static NCOrchestra getInstance() {
 		if (instance == null) instance = new NCOrchestra();
