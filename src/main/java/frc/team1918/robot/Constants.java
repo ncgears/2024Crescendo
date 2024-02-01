@@ -483,6 +483,7 @@ public class Constants {
         public static final double kMinDeadband = 0.1; //Deadband for analog joystick axis minimum
         public static final double kMaxDeadband = 0.95; //Deadband for analog joystick axis minimum
         public static final boolean useInputRamping = true; //Enable input ramping
+        // kInputExponent must be greater than 1.0.  1 would be like disabling (linear correlation); 2 would be input squaring
         public static final double kInputExponent = 2.0; //Exponent for tuning input ramping
 
         /**

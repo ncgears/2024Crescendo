@@ -30,7 +30,8 @@ public class Helpers {
         // kMaxDeadband=0.95; kMinDeadband=0.1; useInputRamping=true; kInputExponent=2
         public final static double ncdeadband(double value, boolean suppressRamping) {
             if(Math.abs(value) >= Constants.OI.kMaxDeadband) return 1.0 * Math.signum(value); //account for dirty joysticks that dont reach 1.0
-            if(suppressRamping || !Constants.OI.useInputRamping) return MathUtil.applyDeadband(value, Constants.OI.kMinDeadband); //apply minimum deadband
+            if(Constants.OI.kInputExponent <= 1.0) Helpers.Debug.debug("ncdeadband: kInputExponent is not greater than 1.0");
+            if(suppressRamping || !Constants.OI.useInputRamping || Constants.OI.kInputExponent <= 1.0) return MathUtil.applyDeadband(value, Constants.OI.kMinDeadband); //apply minimum deadband
             return Math.pow(value,Constants.OI.kInputExponent) * Math.signum(value); //non-linear input ramping (x^y)
         }
     }
