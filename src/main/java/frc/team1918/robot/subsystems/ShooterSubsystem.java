@@ -9,6 +9,7 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -19,7 +20,6 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 // import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.RobotContainer;
-import frc.team1918.robot.modules.SwerveModule;
 
 /**
  * This subsystem handles managing the Shooter.
@@ -146,7 +146,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * @param speed The speed of the shooter in rotations per second
    */
   public void setSpeed(double speed) {
-    speed = Math.min(Constants.Shooter.kMaxRPS,Math.max(-Constants.Shooter.kMaxRPS,speed));
+    // speed = Math.min(Constants.Shooter.kMaxRPS,Math.max(-Constants.Shooter.kMaxRPS,speed));
+    speed = MathUtil.clamp(speed, -Constants.Shooter.kMaxRPS, Constants.Shooter.kMaxRPS);
     target_speed = speed;
     if(speed == 0.0) {
       Helpers.Debug.debug("Shooter Target RPS: 0.0");
