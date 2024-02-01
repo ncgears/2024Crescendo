@@ -99,6 +99,9 @@ public class RobotContainer {
     private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
       return new Trigger(DriverStation::isDisabled);
     }
+    private static Trigger enabled() {
+      return new Trigger(DriverStation::isEnabled);
+    }
 
     //init joysticks
     private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
@@ -175,19 +178,20 @@ public class RobotContainer {
 
     // bind to the disabled() trigger which happens any time the robot is disabled
     disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true));
+    enabled().onTrue(new InstantCommand(m_orchestra::stop).ignoringDisable(true));
 
     /** DRIVER JOYSTICK (dj) */
     if(Constants.Audio.isEnabled) {
       // Manage Music
-          // music/Brawl-Theme.chrp
-          // music/Megalovania.chrp
-          // music/Rickroll.chrp
-          // music/Still-Alive.chrp
+          // Brawl-Theme.chrp
+          // Megalovania.chrp
+          // Rickroll.chrp
+          // Still-Alive.chrp
       dj.google().onTrue(new InstantCommand(() -> {
         if(m_orchestra.isPlaying()) {
           m_orchestra.stop();
         } else {
-          m_orchestra.withMusic("music/Still-Alive.chrp").play();
+          m_orchestra.withMusic("Still-Alive.chrp").play();
         }
       }).ignoringDisable(true));
     }
