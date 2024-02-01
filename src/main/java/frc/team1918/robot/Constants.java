@@ -480,8 +480,10 @@ public class Constants {
     public static final class OI { //we define the axis' here because they are not bound in robotContainer.
         public static final int OI_JOY_DRIVER = 0; //ID of Driver Joystick
         public static final int OI_JOY_OPER = 1; //ID of Operator Joystick
-        public static final double OI_JOY_MIN_DEADBAND = 0.1; //Deadband for analog joystick axis minimum
-        public static final double OI_JOY_MAX_DEADBAND = 0.9; //Deadband for analog joystick axis minimum
+        public static final double kMinDeadband = 0.1; //Deadband for analog joystick axis minimum
+        public static final double kMaxDeadband = 0.95; //Deadband for analog joystick axis minimum
+        public static final boolean useInputRamping = true; //Enable input ramping
+        public static final double kInputExponent = 2.0; //Exponent for tuning input ramping
 
         /**
          * This class defines the hardware button and axis IDs for a Logitech F310 Controller.

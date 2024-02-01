@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -139,9 +140,9 @@ public class RobotContainer {
       m_drive.setDefaultCommand(
         new drive_defaultDrive(
           m_drive,
-          () -> -dj.getLeftY(),
-          () -> dj.getLeftX(),
-          () -> -dj.getRightX()
+          () -> Helpers.OI.ncdeadband(-dj.getLeftY(),false),
+          () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
+          () -> Helpers.OI.ncdeadband(-dj.getRightX(),true)
         )
       );
     }
