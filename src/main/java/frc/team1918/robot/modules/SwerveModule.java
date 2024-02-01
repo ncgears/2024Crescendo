@@ -91,6 +91,7 @@ public class SwerveModule {
             Helpers.Debug.debug("Could not initialize swerve module " + name + ", error: " + status.toString());
         }
         drive.setInverted(moduleConstants.driveIsInverted);
+        // drive.getVelocity().setUpdateFrequency(50); //example of changing update signal frequency, 0 disables the frame
     }
 
     /**
