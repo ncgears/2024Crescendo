@@ -13,6 +13,7 @@ import java.util.Optional;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.net.PortForwarder;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -204,6 +205,11 @@ public class Robot extends TimedRobot {
   @SuppressWarnings("unused")
   @Override
   public void simulationInit() {
+    // NetworkTableInstance nt = NetworkTableInstance.getDefault();
+    // nt.stopServer();
+    // nt.setServer("10.19.18.12");
+    // nt.startClient4("Robot Simulation");
+
     int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
   }

@@ -16,9 +16,9 @@ import frc.team1918.robot.subsystems.DriveSubsystem;
  */
 public class drive_defaultDrive extends Command {
   private final DriveSubsystem m_drive;
-  private final double m_forward;
-  private final double m_strafe;
-  private final double m_rotation;
+  private final DoubleSupplier m_forward;
+  private final DoubleSupplier m_strafe;
+  private final DoubleSupplier m_rotation;
   private final PIDController m_thetaController;
   // private final PIDController m_xController, m_yController;
 
@@ -33,9 +33,9 @@ public class drive_defaultDrive extends Command {
    */
   public drive_defaultDrive(DriveSubsystem subsystem, DoubleSupplier forward, DoubleSupplier strafe, DoubleSupplier rotation) {
     m_drive = subsystem;
-    m_forward = forward.getAsDouble();
-    m_strafe = strafe.getAsDouble();
-    m_rotation = rotation.getAsDouble();
+    m_forward = forward;
+    m_strafe = strafe;
+    m_rotation = rotation;
 
     m_thetaController = new PIDController(
       Constants.DriveTrain.thetaController.kP, 
@@ -55,9 +55,9 @@ public class drive_defaultDrive extends Command {
 
   @Override
   public void execute() {
-    if (m_forward != 0 || m_strafe != 0 || m_rotation != 0) { //any commanded movements
-      double m_rotation_adjusted = m_rotation;
-      if(m_rotation != 0) { //turn requested, unlock heading
+    if (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0 || m_rotation.getAsDouble() != 0) { //any commanded movements
+      double m_rotation_adjusted = m_rotation.getAsDouble();
+      if(m_rotation.getAsDouble() != 0) { //turn requested, unlock heading
         m_drive.heading_locked = false;
       } else {
         if(!m_drive.heading_locked) m_drive.target_heading = RobotContainer.gyro.getHeading().getDegrees();
@@ -68,11 +68,11 @@ public class drive_defaultDrive extends Command {
         m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(), m_drive.target_heading);
       }
       //adjust rotation by multiplier, different if moving vs stationary
-      // double m_rotation_adjusted = (m_forward != 0 || m_strafe != 0) 
-      //   ? m_rotation * Constants.DriveTrain.DT_TURN_MULT_MOVING 
-      //   : m_rotation * Constants.DriveTrain.DT_TURN_MULT_STATIONARY;
-      double m_forward_adjusted = m_forward;
-      double m_strafe_adjusted = m_strafe;
+      // double m_rotation_adjusted = (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0) 
+      //   ? m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_MOVING 
+      //   : m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_STATIONARY;
+      double m_forward_adjusted = m_forward.getAsDouble();
+      double m_strafe_adjusted = m_strafe.getAsDouble();
       m_drive.drivePercentage(m_forward_adjusted, m_strafe_adjusted, m_rotation_adjusted, Constants.DriveTrain.useFieldCentric);
     } else { //no movement requested
       m_drive.brake(false);
