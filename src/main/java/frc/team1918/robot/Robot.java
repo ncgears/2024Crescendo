@@ -204,24 +204,18 @@ public class Robot extends TimedRobot {
   @SuppressWarnings("unused")
   @Override
   public void simulationInit() {
-    // NetworkTableInstance nt = NetworkTableInstance.getDefault();
-    // nt.stopServer();
-    // nt.setServer("10.19.18.11");
-    // nt.startClient4("Robot Simulation");
-
     int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
-    // angle.set(0.0);
   }
 
   @SuppressWarnings("unused")
   @Override
   public void simulationPeriodic() {
-    int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
-    SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
-    SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
-    // angle.set(angle.get()+0.25);
-    // pitch.set(pitch.get()+0.25);
+    // int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+    // SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
+    // SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
+    // // angle.set(angle.get()+0.25);
+    // // pitch.set(pitch.get()+0.25);
   }
 
 }
