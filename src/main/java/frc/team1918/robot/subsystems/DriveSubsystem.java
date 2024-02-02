@@ -58,8 +58,8 @@ public class DriveSubsystem extends SubsystemBase {
     SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
 	private double sim_last_time = Timer.getFPGATimestamp();
 
-	public double target_heading = 0.0;
-	public boolean heading_locked = false;
+	private double target_heading = 0.0;
+	private boolean heading_locked = false;
 
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
@@ -155,10 +155,20 @@ public class DriveSubsystem extends SubsystemBase {
 				.withSize(2, 2)
 				.withPosition(9, 3);
 			debugTab.add("Field", fieldSim)
-				.withSize(8,5)
+				.withSize(7,4)
 				.withPosition(0,6)
 				.withWidget("Field")
 				.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+			debugTab.addBoolean("Hdg Locked", this::getHeadingLocked)
+				.withSize(2, 2)
+				.withPosition(5,2)
+				.withWidget("Boolean Box");
+			debugTab.addNumber("Hdg Target", this::getTargetHeading)
+				.withSize(2, 2)
+				.withPosition(7,5);
+			debugTab.addNumber("Hdg Err", this::getHeadingError)
+				.withSize(2, 2)
+				.withPosition(9,5);
 		}
 	}
 
@@ -189,9 +199,21 @@ public class DriveSubsystem extends SubsystemBase {
 		return error;
 	}
 
+	public void lockHeading(double heading) {
+		target_heading = heading;
+		heading_locked = true;
+	}
+
+	public void unlockHeading() {
+		heading_locked = false;
+	}
+
 	public Field2d getField2d() {
 		return fieldSim;
 	}
+
+	public boolean getHeadingLocked() { return heading_locked; }
+	public double getTargetHeading() { return target_heading; }
 
 	/**
 	 * Resets the odometry to the specified pose. Requires the current heading to account for starting position other than 0.
