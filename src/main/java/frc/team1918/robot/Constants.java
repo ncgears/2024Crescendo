@@ -429,8 +429,8 @@ public class Constants {
         ////Global Tuning
         public static final class DriveStraight {
             public static final boolean isDisabled = false; //disable drivestraight function
-            public static final double kP = 0.05;
-            public static final double kI = 0.0001;
+            public static final double kP = 0.08;
+            public static final double kI = 0.0002;
             public static final double kD = 0.002;
         }
         public static final boolean useFieldCentric = true; //use field-centric drive. This should always be true except for testing?
