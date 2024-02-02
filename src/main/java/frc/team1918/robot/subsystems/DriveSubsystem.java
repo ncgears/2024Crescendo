@@ -18,6 +18,8 @@ import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -42,7 +44,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
  */
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
-	private static Gyro m_gyro;
 
 	//initialize 4 swerve modules
 	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
@@ -50,7 +51,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private static SwerveModule m_backLeft = new SwerveModule("RL", Constants.Swerve.BL.constants); // Rear Left
 	private static SwerveModule m_backRight = new SwerveModule("RR", Constants.Swerve.BR.constants); // Rear Right
 	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
-	// private SwerveModulePosition[] swervePositions;
 
 	private SwerveDrivePoseEstimator poseEstimator;
 	private Field2d fieldSim;
@@ -60,15 +60,10 @@ public class DriveSubsystem extends SubsystemBase {
     SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
 	private double sim_last_time = Timer.getFPGATimestamp();
 
-	//robot theta Controller
-	// private PIDController driveStraightPID = new PIDController(Constants.DriveTrain.DriveStraight.kP, Constants.DriveTrain.DriveStraight.kI, Constants.DriveTrain.DriveStraight.kD);
-
-	//intialize odometry class for tracking robot pose
-	// SwerveDriveOdometry m_odometry;
-
-	// = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getRotation2d());
-	//positions(3rd arg) = new SwerveModulePosition(modulePositions[index].distanceMeters, modulePositions[index].angle);
-	//initial pose (4th arg) = Pose2d of position on field
+	//drivetrain Controllers
+	private PIDController thetaController = new PIDController(Constants.DriveTrain.thetaController.kP, Constants.DriveTrain.thetaController.kI, Constants.DriveTrain.thetaController.kD);
+	private PIDController xController = new PIDController(Constants.DriveTrain.xController.kP, Constants.DriveTrain.xController.kI, Constants.DriveTrain.xController.kD);
+	private PIDController yController = new PIDController(Constants.DriveTrain.yController.kP, Constants.DriveTrain.yController.kI, Constants.DriveTrain.yController.kD);
 
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
@@ -79,25 +74,10 @@ public class DriveSubsystem extends SubsystemBase {
 	public DriveSubsystem() { //initialize the class
 		fieldSim = new Field2d();
 
-		//Perform init function on each module, not needed?
-		// for (SwerveModule module: modules) {
-		// 	module.resetDistance();
-		// 	module.syncTurningEncoders();
-		// }
-
-		//Get the positions of the swerve modules
-		// swervePositions = getSwerveModulePositions();
-
-		//Initialize the gyro object
-		m_gyro = new Gyro();
-
-		//Initialize the odometry object, we now use the poseEstimator instead
-		// m_odometry = new SwerveDriveOdometry(Constants.Swerve.kDriveKinematics, m_gyro.getHeading(), swervePositions);
-
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(
 			Constants.Swerve.kDriveKinematics,
-			m_gyro.getHeading(),
+			RobotContainer.gyro.getHeading(),
 			getSwerveModulePositions(),
 			new Pose2d(),
 			//stateStdDevs Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust your state estimate less.
@@ -218,8 +198,8 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param pose The pose to which to set the odometry.
 	 */
 	public void resetOdometry(double heading, Pose2d pose) {
-		m_gyro.zeroHeading();
-		m_gyro.setYawOffset(heading);
+		RobotContainer.gyro.zeroHeading();
+		RobotContainer.gyro.setYawOffset(heading);
 		// m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
 	}
 
@@ -284,7 +264,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void updatePose() {
 		poseEstimator.update(
-			m_gyro.getHeading(),
+			RobotContainer.gyro.getHeading(),
 			getSwerveModulePositions()
 		);
 	}
@@ -321,7 +301,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 		ChassisSpeeds speeds = ChassisSpeeds.discretize(
 			(fieldRelative) 
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_gyro.getHeading()) 
+				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, RobotContainer.gyro.getHeading()) 
 				: new ChassisSpeeds(xSpeed, ySpeed, rot),
 			Robot.kDefaultPeriod);
 			drive(speeds,true);
@@ -396,7 +376,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public boolean swervesAtHome() {
 		boolean home = true;
 		for (SwerveModule module: modules) {
-			home &= module.getTurnError() <= Constants.Swerve.DEFAULT_TURN_ALLOWED_ERROR;
+			home &= module.getTurnError() <= Constants.Swerve.kDefaultModuleTurnAllowableError;
 		}
 		return home;
 	}

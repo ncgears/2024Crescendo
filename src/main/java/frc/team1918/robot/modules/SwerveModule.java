@@ -31,7 +31,7 @@ public class SwerveModule {
     private final int TURN_IZONE;
     private final int TURN_ALLOWED_ERROR;
     private String moduleName;
-    private double driveWheelDiamMM = Constants.Swerve.DEFAULT_WHEEL_DIAM_MM;
+    private double driveWheelDiamMM = Constants.Swerve.kDefaultModuleWheelDiamMM;
     private NeutralOut m_brake = new NeutralOut();
     private SwerveModuleState state;
 
