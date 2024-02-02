@@ -32,7 +32,7 @@ public class Vision {
 	private static Vision instance;
   private final PhotonCamera front_camera, back_camera;
   private final PhotonPoseEstimator photonEstimatorFront, photonEstimatorBack;
-  private double lastEstTimestamp = 0;
+  private double lastEstTimestampFront, lastEstTimestampBack = 0;
 
   // Simulator
   private PhotonCameraSim cameraSim;
@@ -145,13 +145,20 @@ public class Vision {
    *     used for estimation.
    */
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(String camera) {
-      var visionEst = photonEstimatorFront.update();
-      double latestTimestamp = front_camera.getLatestResult().getTimestampSeconds();
+      Optional<EstimatedRobotPose> visionEst;
+      double latestTimestamp;
+      boolean newResult;
       if(camera=="back") {
-          visionEst = photonEstimatorBack.update();
-          latestTimestamp = back_camera.getLatestResult().getTimestampSeconds();
+        visionEst = photonEstimatorBack.update();
+        latestTimestamp = back_camera.getLatestResult().getTimestampSeconds();
+        newResult = Math.abs(latestTimestamp - lastEstTimestampBack) > 1e-5;
+        if (newResult) lastEstTimestampBack = latestTimestamp;
+      } else {
+        visionEst = photonEstimatorFront.update();
+        latestTimestamp = front_camera.getLatestResult().getTimestampSeconds();
+        newResult = Math.abs(latestTimestamp - lastEstTimestampFront) > 1e-5;
+        if (newResult) lastEstTimestampFront = latestTimestamp;
       }
-      boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
       if (Robot.isSimulation()) {
           visionEst.ifPresentOrElse(
                   est ->
@@ -162,7 +169,6 @@ public class Vision {
                       if (newResult) getSimDebugField().getObject("VisionEstimation").setPoses();
                   });
       }
-      if (newResult) lastEstTimestamp = latestTimestamp;
       return visionEst;
   }
 
