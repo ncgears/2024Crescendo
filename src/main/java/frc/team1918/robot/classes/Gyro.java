@@ -20,6 +20,10 @@ public class Gyro implements Sendable {
 	private static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
     private static double yawOffset = 0;
 
+    int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+    SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
+    SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
+
 	/**
 	 * Returns the instance of the Gyro subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
