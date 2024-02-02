@@ -3,8 +3,14 @@
 http://roborio-1918-frc.local
 
 ## PhotonVision
-http://roborio-1918-frc.local:5800 //via portforwarder
+#front
+http://roborio-1918-frc.local:15800 //via portforwarder
 http://photonvision.local:5800
+http://10.19.18.11:5800
+#back
+http://roborio-1918-frc.local:25800 //via portforwarder
+http://photonvision2.local:5800
+http://10.19.18.12:5800
 
 ## Limelight
 http://limelight.local:5800

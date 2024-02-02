@@ -68,10 +68,16 @@ public class Robot extends TimedRobot {
     // camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
 
     //Create forwarder
-    //pi4 (photonvision)
-    PortForwarder.add(5800,"photonvision.local",5800);
-    PortForwarder.add(1181,"photonvision.local",1181);
-    PortForwarder.add(1182,"photonvision.local",1182);
+    //ll3 (photonvision)
+    PortForwarder.add(15800,"photonvision.local",5800);
+    PortForwarder.add(11181,"photonvision.local",1181);
+    PortForwarder.add(11182,"photonvision.local",1182);
+
+    //ll3 (photonvision2)
+    PortForwarder.add(25800,"photonvision2.local",5800);
+    PortForwarder.add(21181,"photonvision2.local",1181);
+    PortForwarder.add(21182,"photonvision2.local",1182);
+
     //limelight (photovision)
     // PortForwarder.add(5800,"gloworm.local",5800);
     // PortForwarder.add(1181,"gloworm.local",1181);
