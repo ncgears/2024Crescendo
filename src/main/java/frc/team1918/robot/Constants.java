@@ -300,6 +300,8 @@ public class Constants {
         public static final int DEFAULT_TURN_IZONE = 0; //PID IZone
         public static final int DEFAULT_TURN_ALLOWED_ERROR = 3; //PID Allowed Ebror
         public static final double DEFAULT_WHEEL_DIAM_MM = 101.6; //Wheel Diameter of 4in colson
+        public static final int kTurnEncoderFullRotation = 1024; //lamprey2 //was 1023, why?
+        public static final double kTurnGearRatio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
         public static final double kRotationsPerWheelRotation = 6.0; //(32/16*45/15); or 6.75 //(44/16*45/15)
         public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Coast;
         public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
@@ -445,20 +447,7 @@ public class Constants {
         //16:32 = 18.56fps or 5.66mps
         public static final double kMaxMetersPerSecond = 5.66; //limit full stick speed meters to 13.5fps
         public static final double kMaxRotationRadiansPerSecond = 2 * Math.PI; //3.4; //Multiplier for omega of turning the robot
-
-        //from swerve
-        // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 3 * Math.PI; // 540 deg/sec
-        // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 4 * Math.PI; //720 deg/sec^2
-        ////Turn Tuning
-        public static final double DT_TURN_MULT_STATIONARY = 1.3; //Turn speed multiplier while not moving
-        public static final double DT_TURN_MULT_MOVING = 1.3; //Turn speed multiplier while moving
-        public static final boolean DT_TURN_MULT_BEFORE_DB = true; //Apply turn multiplier before deadband
-        public static final int DT_TURN_ENCODER_FULL_ROTATION = 1023; //This is for the lamprey2, not the integrated SRX mag encoder (lamprey1 is 1023)
-        public static final int kTurnEncoderFullRotation = 4096; //This is for the integrated SRX mag encoder in the gearboxes, not the lamprey
-        public static final double kTurnGearRatio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
         ////Drive Tuning
-        public static final double DT_FWD_MULT = 1.0; //Fwd throttle multiplier
-        public static final double DT_STR_MULT = 1.0; //Str throttle multiplier
         public static final boolean DT_DRIVE_DISABLED = false; //Set to true to disable the drive motors (for lab)
         public static final double DT_WHEEL_DIAM_MM = 101.6; //diameter of drive wheels in millimeters
         public static final int DT_DRIVE_ENCODER_FULL_ROTATION = 2048; //falcon integrated encoder is 2048

@@ -50,7 +50,7 @@ public class Helpers {
          * @return (double) value in radians
          */
         public final static double ticksToRadians(int ticks) {
-            return (ticks * Math.PI / (Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION / 2));
+            return (ticks * Math.PI / (Constants.Swerve.kTurnEncoderFullRotation / 2));
         }
 
         /**
@@ -60,7 +60,7 @@ public class Helpers {
          */
         public final static int radiansToTicks(double rads) {
 
-			return (int) (rads / Math.PI * (Constants.DriveTrain.DT_TURN_ENCODER_FULL_ROTATION / 2));
+			return (int) (rads / Math.PI * (Constants.Swerve.kTurnEncoderFullRotation / 2));
         }
     }
 }

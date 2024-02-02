@@ -39,11 +39,12 @@ public class drive_defaultDrive extends Command {
   public void execute() {
     if (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0 || m_rotation.getAsDouble() != 0) {
       //adjust rotation by multiplier, different if moving vs stationary
-      double m_rotation_adjusted = (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0) 
-        ? m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_MOVING 
-        : m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_STATIONARY;
-      double m_forward_adjusted = (m_forward.getAsDouble() * Constants.DriveTrain.DT_FWD_MULT);
-      double m_strafe_adjusted = (m_strafe.getAsDouble() * Constants.DriveTrain.DT_STR_MULT);
+      // double m_rotation_adjusted = (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0) 
+      //   ? m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_MOVING 
+      //   : m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_STATIONARY;
+      double m_rotation_adjusted = m_rotation.getAsDouble();
+      double m_forward_adjusted = m_forward.getAsDouble();
+      double m_strafe_adjusted = m_strafe.getAsDouble();
       m_drive.drivePercentage(m_forward_adjusted, m_strafe_adjusted, m_rotation_adjusted, Constants.DriveTrain.useFieldCentric);
     } else {
       m_drive.brake(false);
