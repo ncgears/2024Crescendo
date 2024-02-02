@@ -145,17 +145,25 @@ public class Constants {
      * Constants for the Vision class
      */
     public static final class Vision {
-        public static final String kCameraName = "llcam1";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
-        //Translation3d is the position of the camera on the robot in meters
-        //Rotation3d is the roll, pitch, and yaw of the camera on the robot (0,0,0 is straight ahead, right side up)
-        public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5,0.0,0.5), new Rotation3d(0,0,0));
         // The standard deviations of our vision estimated poses, which affect correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)
         public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
         public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+        public static final class Front { //forward facing camera
+            public static final String kCameraName = "llcam1";
+            //Translation3d is the position of the camera on the robot in meters
+            //Rotation3d is the roll, pitch, and yaw of the camera on the robot (0,0,0 is straight ahead, right side up)
+            public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5,0.0,0.5), new Rotation3d(0,0,0));
         }
+        public static final class Back { //backwards facing camera
+            public static final String kCameraName = "llcam2";
+            //Translation3d is the position of the camera on the robot in meters
+            //Rotation3d is the roll, pitch, and yaw of the camera on the robot (0,0,0 is straight ahead, right side up)
+            public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5,0.0,0.5), new Rotation3d(0,0,180));
+        }
+    }
 
     /**
      * Constants for the Audio Class
@@ -333,13 +341,11 @@ public class Constants {
         public static final double kDriveKP = 0.05;
         public static final double kDriveKI = 0.0;
         public static final double kDriveKD = 0.0;
-        public static final double kDriveKF = 0.0;
         // Drive Motor Characterization
-        // See {@link https://first.wpi.edu/FRC/roborio/release/docs/java/edu/wpi/first/wpilibj/controller/SimpleMotorFeedforward.html}
         // How do we determine these numbers? Need to find out. These falcon numbers are from Team364 example
-        public static final double driveKS = (0.667 / 12); //Static Gain //divide by 12 to convert from volts to percent output for CTRE
-        public static final double driveKV = (2.44 / 12); //Velocity Gain
-        public static final double driveKA = (0.27 / 12); //Acceleration Gain
+        public static final double kDriveKS = (0.667 / 12); //Static Gain //divide by 12 to convert from volts to percent output for CTRE
+        public static final double kDriveKV = (2.44 / 12); //Velocity Gain
+        public static final double kDriveKA = (0.27 / 12); //Acceleration Gain
 
         //Forward Positive, Left Positive, Up Positive (NWU Convention)
         public static final SwerveDriveKinematics kDriveKinematics =
@@ -432,6 +438,8 @@ public class Constants {
             public static final double kP = 0.05;
             public static final double kI = 0.0001;
             public static final double kD = 0.002;
+            public static final double kIZone = 3.0;
+            public static final double kToleranceDegrees = 0.5;
         }
         public static final class xController {
             public static final double kP = 0.05;

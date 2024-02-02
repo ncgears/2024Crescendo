@@ -35,7 +35,10 @@ public class SwerveModule {
     private NeutralOut m_brake = new NeutralOut();
     private SwerveModuleState state;
 
-    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(Constants.Swerve.driveKS, Constants.Swerve.driveKV, Constants.Swerve.driveKA);
+    SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
+        Constants.Swerve.kDriveKS, 
+        Constants.Swerve.kDriveKV, 
+        Constants.Swerve.kDriveKA);
 
  	/**
 	 * 1918 Swerve Module v2024.1 - This swerve module uses a Falcon 500 (TalonFX) for drive and Talon SRX for turn (bag motor with gearbox).
@@ -132,8 +135,8 @@ public class SwerveModule {
         state = (Constants.Swerve.useTurnOptimization) ? optimize(desiredState) : desiredState;
 
         double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond; //Create a percentage from the theoretical max
-        // drive.set(percentOutput);
         setDrivePower(percentOutput);
+        // setDrivePower(feedforward.calculate(state.speedMetersPerSecond));
 
         int turn_ticks = Helpers.General.radiansToTicks(state.angle.getRadians() + Constants.Swerve.kHomeOffsetRadians);
         turn.set(ControlMode.Position, turn_ticks);

@@ -20,7 +20,6 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Robot;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -31,8 +30,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
  */
 public class Vision {
 	private static Vision instance;
-  private final PhotonCamera camera;
-  private final PhotonPoseEstimator photonEstimator;
+  private final PhotonCamera front_camera, back_camera;
+  private final PhotonPoseEstimator photonEstimatorFront, photonEstimatorBack;
   private double lastEstTimestamp = 0;
 
   // Simulator
@@ -81,9 +80,13 @@ public class Vision {
 	}
 
   public Vision() {
-    camera = new PhotonCamera(Constants.Vision.kCameraName);
-    photonEstimator = new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
-    photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+    front_camera = new PhotonCamera(Constants.Vision.Front.kCameraName);
+    photonEstimatorFront = new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, front_camera, Constants.Vision.Front.kRobotToCam);
+    photonEstimatorFront.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+    back_camera = new PhotonCamera(Constants.Vision.Back.kCameraName);
+    photonEstimatorBack = new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, back_camera, Constants.Vision.Back.kRobotToCam);
+    photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
     // Simulation
     if (Robot.isSimulation()) {
@@ -100,9 +103,9 @@ public class Vision {
         cameraProp.setLatencyStdDevMs(15);
         // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible
         // targets.
-        cameraSim = new PhotonCameraSim(camera, cameraProp);
+        cameraSim = new PhotonCameraSim(front_camera, cameraProp);
         // Add the simulated camera to view the targets on this simulated field.
-        visionSim.addCamera(cameraSim, Constants.Vision.kRobotToCam);
+        visionSim.addCamera(cameraSim, Constants.Vision.Front.kRobotToCam);
 
         cameraSim.enableDrawWireframe(true);
     }
@@ -117,15 +120,21 @@ public class Vision {
     //   .withPosition(19, 0);  
 		if(Constants.Vision.debugDashboard) {
       ShuffleboardTab visionTab = Shuffleboard.getTab("DBG:Vision");
-      visionTab.addBoolean("hasTargets", () -> getLatestResult().hasTargets())
+      visionTab.addBoolean("hasTargets", () -> getLatestResult("front").hasTargets())
         .withSize(2, 2)
         .withWidget("Boolean Box")
         .withPosition(0, 0);  
     }
   }
 
-  public PhotonPipelineResult getLatestResult() {
-    return camera.getLatestResult();
+  public PhotonPipelineResult getLatestResult(String camera) {
+    switch (camera) {
+      case "back":
+        return back_camera.getLatestResult();
+      case "front":
+      default:
+        return front_camera.getLatestResult();
+    }
   }
 
   /**
@@ -135,9 +144,13 @@ public class Vision {
    * @return An {@link EstimatedRobotPose} with an estimated pose, estimate timestamp, and targets
    *     used for estimation.
    */
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-      var visionEst = photonEstimator.update();
-      double latestTimestamp = camera.getLatestResult().getTimestampSeconds();
+  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(String camera) {
+      var visionEst = photonEstimatorFront.update();
+      double latestTimestamp = front_camera.getLatestResult().getTimestampSeconds();
+      if(camera=="back") {
+          visionEst = photonEstimatorBack.update();
+          latestTimestamp = back_camera.getLatestResult().getTimestampSeconds();
+      }
       boolean newResult = Math.abs(latestTimestamp - lastEstTimestamp) > 1e-5;
       if (Robot.isSimulation()) {
           visionEst.ifPresentOrElse(
@@ -160,13 +173,13 @@ public class Vision {
    *
    * @param estimatedPose The estimated pose to guess standard deviations for.
    */
-  public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose) {
+  public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, String camera) {
       var estStdDevs = Constants.Vision.kSingleTagStdDevs;
-      var targets = getLatestResult().getTargets();
+      var targets = getLatestResult(camera).getTargets();
       int numTags = 0;
       double avgDist = 0;
       for (var tgt : targets) {
-          var tagPose = photonEstimator.getFieldTags().getTagPose(tgt.getFiducialId());
+          var tagPose = photonEstimatorFront.getFieldTags().getTagPose(tgt.getFiducialId());
           if (tagPose.isEmpty()) continue;
           numTags++;
           avgDist +=

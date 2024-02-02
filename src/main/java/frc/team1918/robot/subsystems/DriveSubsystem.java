@@ -5,7 +5,6 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
 import frc.team1918.robot.RobotContainer;
-import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.modules.SwerveModule;
 
 import java.util.ArrayList;
@@ -16,10 +15,9 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -60,10 +58,8 @@ public class DriveSubsystem extends SubsystemBase {
     SimDouble pitch = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Pitch"));
 	private double sim_last_time = Timer.getFPGATimestamp();
 
-	//drivetrain Controllers
-	private PIDController thetaController = new PIDController(Constants.DriveTrain.thetaController.kP, Constants.DriveTrain.thetaController.kI, Constants.DriveTrain.thetaController.kD);
-	private PIDController xController = new PIDController(Constants.DriveTrain.xController.kP, Constants.DriveTrain.xController.kI, Constants.DriveTrain.xController.kD);
-	private PIDController yController = new PIDController(Constants.DriveTrain.yController.kP, Constants.DriveTrain.yController.kI, Constants.DriveTrain.yController.kD);
+	public double target_heading = 0.0;
+	public boolean heading_locked = false;
 
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
@@ -187,6 +183,12 @@ public class DriveSubsystem extends SubsystemBase {
 		return getPose().getRotation();
 	}
 
+	public double getHeadingError() {
+		double  error = target_heading - getHeading().getDegrees();
+		error = MathUtil.inputModulus(error, -180.0, 180.0);
+		return error;
+	}
+
 	public Field2d getField2d() {
 		return fieldSim;
 	}
@@ -217,12 +219,21 @@ public class DriveSubsystem extends SubsystemBase {
 	 * Corrects the bot pose based on information from the vision system
 	 */
 	public void correctPoseWithVision() {
-		var visionEst = RobotContainer.vision.getEstimatedGlobalPose();
-		visionEst.ifPresent(
+		var visionEstFront = RobotContainer.vision.getEstimatedGlobalPose("front");
+		visionEstFront.ifPresent(
 			est -> {
 				var estPose = est.estimatedPose.toPose2d();
 				// Change our trust in the measurement based on the tags we can see
-				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose);
+				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "front");
+				addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+			}
+		);
+		var visionEstBack = RobotContainer.vision.getEstimatedGlobalPose("back");
+		visionEstBack.ifPresent(
+			est -> {
+				var estPose = est.estimatedPose.toPose2d();
+				// Change our trust in the measurement based on the tags we can see
+				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
 				addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
 			}
 		);
