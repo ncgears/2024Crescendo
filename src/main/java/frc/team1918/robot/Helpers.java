@@ -1,6 +1,7 @@
 package frc.team1918.robot;
 
 import edu.wpi.first.math.MathUtil;
+import frc.team1918.robot.Constants.OI.RampingStrength;
 
 public class Helpers {
     //Helpers for Debugging
@@ -27,12 +28,11 @@ public class Helpers {
     }
     //OI Helpers
     public static final class OI {
-        // kMaxDeadband=0.95; kMinDeadband=0.1; useInputRamping=true; kInputExponent=2
+        // kMaxDeadband=0.95; kMinDeadband=0.1; kRampingStrength={NONE,LOW,MEDIUM,HIGH}
         public final static double ncdeadband(double value, boolean suppressRamping) {
             if(Math.abs(value) >= Constants.OI.kMaxDeadband) return 1.0 * Math.signum(value); //account for dirty joysticks that dont reach 1.0
-            if(Constants.OI.kInputExponent <= 1.0) Helpers.Debug.debug("ncdeadband: kInputExponent is not greater than 1.0");
-            if(suppressRamping || !Constants.OI.useInputRamping || Constants.OI.kInputExponent <= 1.0) return MathUtil.applyDeadband(value, Constants.OI.kMinDeadband); //apply minimum deadband
-            return MathUtil.clamp(Math.pow(value,Constants.OI.kInputExponent) * Math.signum(value),-1.0,1.0); //non-linear input ramping (x^y)
+            if(suppressRamping || Constants.OI.kRampingStrength == RampingStrength.NONE) return MathUtil.applyDeadband(value, Constants.OI.kMinDeadband); //apply minimum deadband
+            return MathUtil.clamp(Math.pow(Math.abs(value),Constants.OI.kRampingStrength.exponent()) * Math.signum(value),-1.0,1.0); //non-linear input ramping (x^y)
         }
     }
 

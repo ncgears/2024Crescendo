@@ -477,14 +477,21 @@ public class Constants {
      * The driver left stick controls the forward rate (up/down), and strafe rate (left/right).
      * The driver right stick controls the rotation rate (left/right).
      */
-    public static final class OI { //we define the axis' here because they are not bound in robotContainer.
+    public class OI { //we define the axis' here because they are not bound in robotContainer.
         public static final int OI_JOY_DRIVER = 0; //ID of Driver Joystick
         public static final int OI_JOY_OPER = 1; //ID of Operator Joystick
         public static final double kMinDeadband = 0.1; //Deadband for analog joystick axis minimum
         public static final double kMaxDeadband = 0.95; //Deadband for analog joystick axis minimum
-        public static final boolean useInputRamping = true; //Enable input ramping
-        // kInputExponent must be greater than 1.0.  1 would be like disabling (linear correlation); 2 would be input squaring
-        public static final double kInputExponent = 2.0; //Exponent for tuning input ramping
+        public static final RampingStrength kRampingStrength = RampingStrength.LOW;
+        public static enum RampingStrength {
+            NONE(1.0), //linear inputs, no ramping
+            LOW(1.5), //mild ramping
+            MEDIUM(2.0), //squared inputs
+            HIGH(3.0); //cubic inputs
+            private final double exp;
+            RampingStrength(double exp) { this.exp = exp; }
+            public final double exponent() { return this.exp; }
+        }
 
         /**
          * This class defines the hardware button and axis IDs for a Logitech F310 Controller.
