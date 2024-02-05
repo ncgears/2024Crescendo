@@ -153,15 +153,17 @@ public class Constants {
         public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
         public static final class Front { //forward facing camera
             public static final String kCameraName = "llcam1";
-            //Translation3d is the position of the camera on the robot in meters
-            //Rotation3d is the roll, pitch, and yaw of the camera on the robot (0,0,0 is straight ahead, right side up)
-            public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(0.5,0.0,0.5), new Rotation3d(0,0,0));
+            public static final Transform3d kRobotToCam = new Transform3d(
+                new Translation3d(0.5,0.0,0.5), //x,y,z location of camera on robot in meters
+                new Rotation3d(0,Math.toRadians(32),0) //yaw,pitch/roll of camera on robot in radians
+            );
         }
         public static final class Back { //backwards facing camera
             public static final String kCameraName = "llcam2";
-            //Translation3d is the position of the camera on the robot in meters
-            //Rotation3d is the roll, pitch, and yaw of the camera on the robot (0,0,0 is straight ahead, right side up)
-            public static final Transform3d kRobotToCam = new Transform3d(new Translation3d(-0.5,0.0,0.5), new Rotation3d(0,0,Math.toRadians(180)));
+            public static final Transform3d kRobotToCam = new Transform3d(
+                new Translation3d(-0.5,0.0,0.5), //x,y,z location of camera on robot in meters
+                new Rotation3d(0,Math.toRadians(32),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
+            );
         }
     }
 
