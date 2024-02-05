@@ -34,10 +34,10 @@ public final class CTREConfigs {
 
     public CTREConfigs() {
         /* Swerve Drive Motor Configuration */
-        Slot0Configs driveSlot0Configs = new Slot0Configs();
-        driveSlot0Configs.kP = Constants.Swerve.kDriveKP;
-        driveSlot0Configs.kI = Constants.Swerve.kDriveKI;
-        driveSlot0Configs.kD = Constants.Swerve.kDriveKD;
+        Slot0Configs driveSlot0Configs = new Slot0Configs()
+            .withKP(Constants.Swerve.kDriveKP)
+            .withKI(Constants.Swerve.kDriveKI)
+            .withKD(Constants.Swerve.kDriveKD);
         // TODO: figure out kV (again)
         // driveSlot0Configs.kV = Constants.SwerveK.kDriveKF;
         swerveDriveFXConfig.Slot0 = driveSlot0Configs;
@@ -64,20 +64,20 @@ public final class CTREConfigs {
         // swerveCancoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
 
         //Shooter Configuration
-        Slot0Configs shooterSlot0Configs = new Slot0Configs();
-        shooterSlot0Configs.kP = Constants.Shooter.kP;
-        shooterSlot0Configs.kI = Constants.Shooter.kI;
-        shooterSlot0Configs.kD = Constants.Shooter.kD;
-        shooterSlot0Configs.kV = Constants.Shooter.kF;
+        Slot0Configs shooterSlot0Configs = new Slot0Configs()
+            .withKP(Constants.Shooter.kP)
+            .withKI(Constants.Shooter.kI)
+            .withKD(Constants.Shooter.kD)
+            .withKV(Constants.Shooter.kV);
         shooterFXConfig.Slot0 = shooterSlot0Configs;
         shooterFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
         shooterFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
         //Shooter Current Limits
-        CurrentLimitsConfigs shooterCurrentLimitsConfigs = new CurrentLimitsConfigs();
-        shooterCurrentLimitsConfigs.SupplyCurrentLimit = Constants.Shooter.kCurrentLimitAmps;
-        shooterCurrentLimitsConfigs.SupplyCurrentThreshold = Constants.Shooter.kCurrentLimitThresholdAmps;
-        shooterCurrentLimitsConfigs.SupplyTimeThreshold = Constants.Shooter.kCurrentLimitThresholdSecs;
-        shooterCurrentLimitsConfigs.SupplyCurrentLimitEnable = Constants.Shooter.kCurrentLimitEnable;
+        CurrentLimitsConfigs shooterCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(Constants.Shooter.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(Constants.Shooter.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(Constants.Shooter.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(Constants.Shooter.kCurrentLimitEnable);
         shooterFXConfig.CurrentLimits = shooterCurrentLimitsConfigs;
         //Ramping (spinup/spindown)
         shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Shooter.kOpenLoopRamp;
@@ -91,6 +91,8 @@ public final class CTREConfigs {
         shooterFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //Example for other TalonFX based systems
+        // See https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/Slot0Configs.html#kG
+        // for more information on feedforward gain for elevators, arms, etc.
 
         // /* Elevator Left and Right Motor Configuration */
         // Slot0Configs rightSlot0Configs = new Slot0Configs();

@@ -275,9 +275,9 @@ public class Constants {
         public static final double kP = 0.11; //PID P // ebror of 1 rotation per second result in 2V output
         public static final double kI = 0.0; //PID I // ebror of 1 rotation per second increases output by 0.5V every second
         public static final double kD = 0.0; //PID D // change of 1 rotation per second squared results in 0.01V output
-        public static final double kF = 0.12; //PID F // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
-        public static final double kPeakFwdVoltage = 8.0;
-        public static final double kPeakRevVoltage = -8.0;
+        public static final double kV = 0.12; //PID V // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
+        public static final double kPeakFwdVoltage = 12.0;
+        public static final double kPeakRevVoltage = -12.0;
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 30.0;
