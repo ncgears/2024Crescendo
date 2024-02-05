@@ -91,8 +91,16 @@ public final class CTREConfigs {
         shooterFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //Example for other TalonFX based systems
+        
+        // FeedForward Gains
         // See https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/Slot0Configs.html#kG
         // for more information on feedforward gain for elevators, arms, etc.
+        // Elevators use GravityType Elevator_Static where gravity is constant
+        // Arms use GravityType Arm_Cosine where it depends on mechanism position
+        // kG is the gravity gain -512..512
+        // kA is the Acceleration gain
+        // kV is the Velocity gain
+        // kS is the Static gain
 
         // /* Elevator Left and Right Motor Configuration */
         // Slot0Configs rightSlot0Configs = new Slot0Configs();
