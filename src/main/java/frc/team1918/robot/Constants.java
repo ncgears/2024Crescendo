@@ -156,7 +156,7 @@ public class Constants {
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
                 new Translation3d(0.5,0.0,0.5), //x,y,z location of camera on robot in meters
-                new Rotation3d(0,Math.toRadians(32),0) //yaw,pitch/roll of camera on robot in radians
+                new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
             );
         }
         public static final class Back { //backwards facing camera
@@ -164,7 +164,7 @@ public class Constants {
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
                 new Translation3d(-0.5,0.0,0.5), //x,y,z location of camera on robot in meters
-                new Rotation3d(0,Math.toRadians(32),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
+                new Rotation3d(0,Math.toRadians(33),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
             );
         }
     }
@@ -206,7 +206,7 @@ public class Constants {
         public static final int kMotorID = ID.Talon.intake;
         public static final boolean kIsInverted = false;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
-        public static final double kSpeed = 0.5;
+        public static final double kSpeed = 0.75;
     }
 
     /**

@@ -214,8 +214,11 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
+    dj.rightBumper()
+      .onTrue(new InstantCommand(m_intake::intakeIn))
+      .onFalse(new InstantCommand(m_intake::intakeStop));
 
-      /** OPERATOR JOYSTICK (oj) */
+    /** OPERATOR JOYSTICK (oj) */
 
   }
 
