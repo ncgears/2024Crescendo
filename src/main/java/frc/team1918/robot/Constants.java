@@ -204,7 +204,7 @@ public class Constants {
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Talon.intake;
-        public static final boolean kIsInverted = false;
+        public static final boolean kIsInverted = true;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
         public static final double kSpeed = 0.75;
     }
@@ -324,7 +324,7 @@ public class Constants {
         public static final int kTurnCurrentLimitAmps = 25;
         public static final int kTurnCurrentThresholdAmps = 40;
         public static final double kTurnCurrentThresholdSecs = 0.1;
-        public static final boolean isDriveCurrentLimitEnabled = false;
+        public static final boolean kDriveCurrentLimitEnabled = false;
         public static final int kDriveCurrentLimitAmps = 35;
         public static final int kDriveCurrentThresholdAmps = 60;
         public static final double kDriveCurrentThresholdSecs = 0.3;

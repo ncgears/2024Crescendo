@@ -46,8 +46,11 @@ public final class CTREConfigs {
         swerveDriveFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //current limits
-        CurrentLimitsConfigs driveCurrentLimitsConfigs = new CurrentLimitsConfigs();
-        driveCurrentLimitsConfigs.SupplyCurrentLimit = Constants.Swerve.kDriveCurrentLimitAmps;
+        CurrentLimitsConfigs driveCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(Constants.Swerve.kDriveCurrentLimitAmps)
+            .withSupplyCurrentThreshold(Constants.Swerve.kDriveCurrentThresholdAmps)
+            .withSupplyTimeThreshold(Constants.Swerve.kDriveCurrentThresholdSecs)
+            .withSupplyCurrentLimitEnable(Constants.Swerve.kDriveCurrentLimitEnabled);
         swerveDriveFXConfig.CurrentLimits = driveCurrentLimitsConfigs;
         // TODO: check whether it is duty cycle or smtg else
         swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.kOpenLoopRamp;
