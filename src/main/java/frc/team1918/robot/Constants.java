@@ -231,8 +231,14 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Falcon.aimer;
         public static final boolean kIsInverted = false;
-        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kStowPosition = 0;
+        public static final double kGearRatio = 5.0; // 80/16
+        //Current Limiting
+        public static final boolean kCurrentLimitEnable = false;
+        public static final double kCurrentLimitAmps = 30.0;
+        public static final double kCurrentLimitThresholdAmps = 60.0;
+        public static final double kCurrentLimitThresholdSecs = 0.3;
     }
 
     /**
@@ -244,7 +250,7 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Falcon.arm;
         public static final boolean kIsInverted = false;
-        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0;
     }
 
@@ -257,7 +263,7 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kMotorID = ID.Falcon.climber;
         public static final boolean kIsInverted = false;
-        public static final NeutralMode kNeutralMode = NeutralMode.Brake;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0;
     }
 

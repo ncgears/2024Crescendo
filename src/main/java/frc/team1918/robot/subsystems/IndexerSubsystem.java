@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
@@ -19,8 +18,8 @@ public class IndexerSubsystem extends SubsystemBase {
 	private static IndexerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    FWD("#FFA500"),
-    LOADED("#00FF00"),
+    UP("#FFA500"),
+    DOWN("#00FF00"),
     STOP("#000000");
     private final String color;
     State(String color) { this.color = color; }
@@ -90,9 +89,6 @@ public class IndexerSubsystem extends SubsystemBase {
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      indexerTab.add("Update State", new InstantCommand(this::updateState))
-        .withSize(4, 2)
-        .withPosition(6, 0);  
     }
   }
 
@@ -108,7 +104,25 @@ public class IndexerSubsystem extends SubsystemBase {
   public String getStateName() { return m_curState.toString(); }
   public String getColor() { return m_curState.getColor(); }
 
-  public void updateState() {
-    
+  public State getDirection() { return m_curState; }
+  public String getDirectionName() { return m_curState.toString(); }
+
+  public void indexerUp() {
+    m_curState = State.UP;
+    Helpers.Debug.debug("Intake: In");
+    setSpeedPercent(Constants.Indexer.kSpeed);
   }
+
+  public void indexerDown() {
+    m_curState = State.DOWN;
+    Helpers.Debug.debug("Intake: Out");
+    setSpeedPercent(-Constants.Indexer.kSpeed);
+  }
+
+  public void indexerStop() {
+    m_curState = State.STOP;
+    Helpers.Debug.debug("Intake: Stop");
+    setSpeedPercent(0.0);
+  }
+
 }

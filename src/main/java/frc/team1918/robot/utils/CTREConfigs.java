@@ -55,16 +55,6 @@ public final class CTREConfigs {
         // TODO: check whether it is duty cycle or smtg else
         swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.kOpenLoopRamp;
         swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.kClosedLoopRamp;
-        
-        // /* Swerve CANcoder Configuration */
-        // // TODO: check whether 0To1 works
-        // swerveCancoderConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
-        // swerveCancoderConfig.MagnetSensor.SensorDirection = Constants.Swerve.kInvertCancoder
-        //         ? SensorDirectionValue.Clockwise_Positive
-        //         : SensorDirectionValue.CounterClockwise_Positive;
-
-        // TODO: figure out what this is
-        // swerveCancoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;
 
         //Shooter Configuration
         Slot0Configs shooterSlot0Configs = new Slot0Configs()
@@ -92,6 +82,30 @@ public final class CTREConfigs {
         shooterFXConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.kGearRatio;
         //Audio
         shooterFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
+
+        //Aimer Configuration
+        Slot0Configs aimerSlot0Configs = new Slot0Configs()
+            .withKP(Constants.Shooter.kP)
+            .withKI(Constants.Shooter.kI)
+            .withKD(Constants.Shooter.kD)
+            .withKV(Constants.Shooter.kV);
+        aimerFXConfig.Slot0 = aimerSlot0Configs;
+        aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
+        aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
+        //Shooter Current Limits
+        CurrentLimitsConfigs aimerCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(Constants.Aimer.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(Constants.Aimer.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(Constants.Aimer.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(Constants.Aimer.kCurrentLimitEnable);
+        aimerFXConfig.CurrentLimits = aimerCurrentLimitsConfigs;
+        //Neutral and Direction
+        aimerFXConfig.MotorOutput.NeutralMode = Constants.Aimer.kNeutralMode;
+        aimerFXConfig.MotorOutput.Inverted = (Constants.Aimer.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        //Rotational rate modifiers
+        aimerFXConfig.Feedback.SensorToMechanismRatio = Constants.Aimer.kGearRatio;
+        //Audio
+        aimerFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //Example for other TalonFX based systems
         

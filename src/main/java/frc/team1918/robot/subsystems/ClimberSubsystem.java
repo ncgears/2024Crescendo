@@ -46,7 +46,7 @@ public class ClimberSubsystem extends SubsystemBase {
     m_motor1 = new WPI_TalonSRX(Constants.Climber.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    m_motor1.setNeutralMode(Constants.Climber.kNeutralMode); //Set controller to brake mode  
+    // m_motor1.setNeutralMode(Constants.Climber.kNeutralMode); //Set controller to brake mode  
     m_motor1.setInverted(Constants.Climber.kIsInverted);
     init();
     createDashboards();

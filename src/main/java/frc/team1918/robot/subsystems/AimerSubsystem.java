@@ -1,8 +1,9 @@
 
 package frc.team1918.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 
 /**
  * This subsystem handles managing the Aimer.
@@ -27,9 +29,10 @@ public class AimerSubsystem extends SubsystemBase {
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
-
-  private WPI_TalonSRX m_motor1;
+  private PositionVoltage m_voltagePosition = new PositionVoltage(0,0,true,0,0,false, false, false);
+  private TalonFX m_motor1;
   private State m_curState = State.STOP;
+  private Double m_targetPosition = 0.0;
   private boolean m_suppressTracking = false; //do not allow tracking while true
   
   /**
@@ -45,11 +48,17 @@ public class AimerSubsystem extends SubsystemBase {
   
   public AimerSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new WPI_TalonSRX(Constants.Aimer.kMotorID);
-    m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
-    m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    m_motor1.setNeutralMode(Constants.Aimer.kNeutralMode); //Set controller to brake mode  
+    m_motor1 = new TalonFX(Constants.Aimer.kMotorID, Constants.Aimer.canBus);
     m_motor1.setInverted(Constants.Aimer.kIsInverted);
+    StatusCode status1 = StatusCode.StatusCodeNotInitialized;
+    for (int i = 0; i < 5; ++i) {
+      status1 = m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.aimerFXConfig);
+      if (status1.isOK()) break;
+    }
+    if(!status1.isOK()) {
+      Helpers.Debug.debug("Could not initialize aimer motor, error: " + status1.toString());
+    }
+
     init();
     createDashboards();
   }
@@ -58,9 +67,8 @@ public class AimerSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
-    m_motor1.set(ControlMode.PercentOutput,0);
-    m_curState = State.STOP;
     Helpers.Debug.debug("Aimer: Initialized");
+    m_targetPosition = 0.0;
   }
 
   @Override
@@ -99,14 +107,6 @@ public class AimerSubsystem extends SubsystemBase {
     }
   }
 
-  /**
-   * Sets the speed of the Aimer
-   * @param speed The speed of the Aimer in percentage (-1.0 to 1.0)
-   */
-  public void setSpeedPercent(double speed) {
-    m_motor1.set(ControlMode.PercentOutput, speed);
-  }
-
   public State getState() { return m_curState; }
   public String getStateName() { return m_curState.toString(); }
   public String getColor() { return m_curState.getColor(); }
@@ -124,7 +124,7 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public void setPosition(double position) {
-    m_motor1.set(ControlMode.Position, position);
+    m_motor1.setControl(m_voltagePosition.withPosition(position));
   }
 
   public void aimerStopAndStow() {

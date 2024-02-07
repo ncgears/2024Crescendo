@@ -117,7 +117,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_curDirection = Direction.IN;
     Helpers.Debug.debug("Intake: In");
     setSpeedPercent(Constants.Intake.kSpeed);
-}
+  }
 
   public void intakeOut() {
     m_curDirection = Direction.OUT;
