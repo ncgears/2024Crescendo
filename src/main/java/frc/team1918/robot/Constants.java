@@ -155,7 +155,7 @@ public class Constants {
             public static final String kCameraName = "llcam1";
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
-                new Translation3d(0.5,0.0,0.5), //x,y,z location of camera on robot in meters
+                new Translation3d(0.36,0.29,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
             );
         }
@@ -163,7 +163,7 @@ public class Constants {
             public static final String kCameraName = "llcam2";
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
-                new Translation3d(-0.5,0.0,0.5), //x,y,z location of camera on robot in meters
+                new Translation3d(-0.36,0.29,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
             );
         }
