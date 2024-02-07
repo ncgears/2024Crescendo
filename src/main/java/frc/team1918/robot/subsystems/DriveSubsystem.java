@@ -195,7 +195,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public double getHeadingError() {
 		double  error = target_heading - getHeading().getDegrees();
-		error = MathUtil.inputModulus(error, -180.0, 180.0);
+		// error = MathUtil.inputModulus(error, -180.0, 180.0);
 		return error;
 	}
 
