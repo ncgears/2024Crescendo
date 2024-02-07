@@ -57,15 +57,17 @@ public class drive_defaultDrive extends Command {
   public void execute() {
     if (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0 || m_rotation.getAsDouble() != 0) { //any commanded movements
       double m_rotation_adjusted = m_rotation.getAsDouble();
-      // if(m_rotation.getAsDouble() != 0) { //turn requested, unlock heading
-      //   m_drive.unlockHeading();
-      // } else {
-      //   if(!m_drive.getHeadingLocked()) m_drive.lockHeading(RobotContainer.gyro.getHeading().getDegrees());
-      // }
-      // if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
-      //   // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(),m_drive.target_heading);
-      //   m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(), m_drive.getTargetHeading());
-      // }
+      if(m_rotation.getAsDouble() != 0) { //turn requested, unlock heading
+        m_drive.unlockHeading();
+      } else {
+        if(!m_drive.getHeadingLocked()) m_drive.lockHeading(RobotContainer.gyro.getHeading().getDegrees());
+      }
+      if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
+        if(Constants.DriveTrain.thetaController.isEnabled) {
+          // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(),m_drive.target_heading);
+          m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(), m_drive.getTargetHeading());
+        }
+      }
       //adjust rotation by multiplier, different if moving vs stationary
       // double m_rotation_adjusted = (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0) 
       //   ? m_rotation.getAsDouble() * Constants.DriveTrain.DT_TURN_MULT_MOVING 
