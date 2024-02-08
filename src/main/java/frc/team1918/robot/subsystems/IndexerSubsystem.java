@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
@@ -28,6 +29,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
+  private boolean m_hasnote = false;
   
   /**
 	 * Returns the instance of the IndexerSubsystem subsystem.
@@ -95,6 +97,9 @@ public class IndexerSubsystem extends SubsystemBase {
       indexerTab.addBoolean("Has Note", this::hasNote)
         .withSize(2,2)
         .withPosition(10,0);
+      indexerTab.add("DBG Toggle Note", new InstantCommand(this::toggleFull))
+        .withSize(4, 2)
+        .withPosition(0, 2);  
     }
   }
 
@@ -132,7 +137,11 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public boolean hasNote() {
-    return false; //TODO: couple to sensor to detect note
+    return m_hasnote; //TODO: couple to sensor to detect note
+  }
+
+  private void toggleFull() {
+    m_hasnote = !m_hasnote;
   }
 
 }
