@@ -3,13 +3,16 @@ package frc.team1918.robot.utils;
 import com.ctre.phoenix6.configs.AudioConfigs;
 // import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 // import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 // import com.ctre.phoenix6.signals.NeutralModeValue;
 // import com.ctre.phoenix6.signals.SensorDirectionValue;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 
 import frc.team1918.robot.Constants;
 
@@ -65,7 +68,7 @@ public final class CTREConfigs {
         shooterFXConfig.Slot0 = shooterSlot0Configs;
         shooterFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
         shooterFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
-        //Shooter Current Limits
+        //Current Limits
         CurrentLimitsConfigs shooterCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(Constants.Shooter.kCurrentLimitAmps)
             .withSupplyCurrentThreshold(Constants.Shooter.kCurrentLimitThresholdAmps)
@@ -85,20 +88,30 @@ public final class CTREConfigs {
 
         //Aimer Configuration
         Slot0Configs aimerSlot0Configs = new Slot0Configs()
-            .withKP(Constants.Shooter.kP)
-            .withKI(Constants.Shooter.kI)
-            .withKD(Constants.Shooter.kD)
-            .withKV(Constants.Shooter.kV);
+            .withKP(Constants.Aimer.kP)
+            .withKI(Constants.Aimer.kI)
+            .withKD(Constants.Aimer.kD)
+            .withKV(Constants.Aimer.kV);
         aimerFXConfig.Slot0 = aimerSlot0Configs;
-        aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
-        aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
-        //Shooter Current Limits
+        aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Aimer.kPeakFwdVoltage;
+        aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Aimer.kPeakRevVoltage;
+        //Current Limits
         CurrentLimitsConfigs aimerCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(Constants.Aimer.kCurrentLimitAmps)
             .withSupplyCurrentThreshold(Constants.Aimer.kCurrentLimitThresholdAmps)
             .withSupplyTimeThreshold(Constants.Aimer.kCurrentLimitThresholdSecs)
             .withSupplyCurrentLimitEnable(Constants.Aimer.kCurrentLimitEnable);
         aimerFXConfig.CurrentLimits = aimerCurrentLimitsConfigs;
+        //Mechanical Limits
+        //TODO: Move these to constants
+        HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+            .withReverseLimitEnable(true)
+            .withReverseLimitType(ReverseLimitTypeValue.NormallyClosed)
+            .withReverseLimitAutosetPositionEnable(true)
+            .withReverseLimitAutosetPositionValue(0.0)
+            .withForwardLimitEnable(true)
+            .withForwardLimitType(ForwardLimitTypeValue.NormallyClosed); //TODO: Add autoset position on forward limit to appropriate number also.
+        aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
         //Neutral and Direction
         aimerFXConfig.MotorOutput.NeutralMode = Constants.Aimer.kNeutralMode;
         aimerFXConfig.MotorOutput.Inverted = (Constants.Aimer.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;

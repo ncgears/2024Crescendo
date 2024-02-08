@@ -233,7 +233,14 @@ public class Constants {
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kStowPosition = 0;
-        public static final double kGearRatio = 0.2; // 80/16
+        public static final double kGearRatio = 0.2; // 16t:80t
+        //PID Control
+        public static final double kP = 6.0; //PID P // error of 1/2 rotation result in 3V output
+        public static final double kI = 0.0; //PID I // error of 1/2 rotation increases output by 0.0V every second
+        public static final double kD = 0.1; //PID D // change of 1 rotation per second squared results in 0.1V output
+        public static final double kV = 0.0; //PID V // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
+        public static final double kPeakFwdVoltage = 8.0;
+        public static final double kPeakRevVoltage = -8.0;
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 30.0;

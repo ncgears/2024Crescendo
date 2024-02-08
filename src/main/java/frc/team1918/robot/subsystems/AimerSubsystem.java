@@ -4,6 +4,8 @@ package frc.team1918.robot.subsystems;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -103,7 +105,22 @@ public class AimerSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       aimerTab.add("Update State", new InstantCommand(this::updateState))
         .withSize(4, 2)
-        .withPosition(6, 0);  
+        .withPosition(6, 0);
+      aimerTab.addNumber("Target", this::getTargetPosition)
+        .withSize(2,2)
+        .withPosition(0,2);
+      aimerTab.addNumber("Position", this::getPosition)
+        .withSize(2,2)
+        .withPosition(2,2);
+      aimerTab.addNumber("Absolute", this::getPositionAbsolute)
+        .withSize(2,2)
+        .withPosition(4,2);
+      aimerTab.addBoolean("Rev Lim", this::getReverseLimit)
+        .withSize(2,2)
+        .withPosition(6,2);    
+      aimerTab.addBoolean("Fwd Lim", this::getForwardLimit)
+        .withSize(2,2)
+        .withPosition(8,2);    
     }
   }
 
@@ -115,6 +132,8 @@ public class AimerSubsystem extends SubsystemBase {
     if(!m_suppressTracking) { //allowed to track
       //determine the proper setpoint from vision and set it as the closed loop target
       // RobotContainer.vision.getTarget()
+    } else {
+      setPosition(m_targetPosition);
     }
   }
 
@@ -125,6 +144,26 @@ public class AimerSubsystem extends SubsystemBase {
 
   public void setPosition(double position) {
     m_motor1.setControl(m_voltagePosition.withPosition(position));
+  }
+
+  public double getTargetPosition() { return m_targetPosition; }
+
+  public double getPosition() {
+    return m_motor1.getPosition().getValue();
+  }
+
+  public double getPositionAbsolute() {
+    return m_motor1.getPosition().getValue(); //TODO this should be from a through bore. Maybe we put a limit in to store the offset when limit is hit?
+  }
+
+  public boolean getForwardLimit() {
+    //if using NormallyOpen, this should be ForwardLimitValue.ClosedToGround
+    return m_motor1.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
+  }
+
+  public boolean getReverseLimit() {
+    //if using NormallyOpen, this should be ReverseLimitValue.ClosedToGround
+    return m_motor1.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
   public void aimerStopAndStow() {
