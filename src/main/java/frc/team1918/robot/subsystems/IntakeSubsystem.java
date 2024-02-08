@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 
 /**
  * This subsystem handles managing the Intake.
@@ -47,6 +48,7 @@ public class IntakeSubsystem extends SubsystemBase {
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
     m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
     m_motor1.setInverted(Constants.Intake.kIsInverted);
+
     init();
     createDashboards();
   }
@@ -63,15 +65,6 @@ public class IntakeSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
   }
-
-  // @Override
-  // public void initSendable(SendableBuilder builder) {
-  //   super.initSendable(builder);
-  //   builder.setSmartDashboardType("Number Slider");
-  //   builder.setActuator(true);
-  //   builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
-  //   builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
-  // }
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
@@ -112,6 +105,14 @@ public class IntakeSubsystem extends SubsystemBase {
   public Direction getDirection() { return m_curDirection; }
   public String getDirectionName() { return m_curDirection.toString(); }
   public String getColor() { return m_curDirection.getColor(); }
+
+  public void intakeAuto() {
+    if(RobotContainer.m_indexer.hasNote()) {
+      intakeOut();
+    } else {
+      intakeIn();
+    }
+  }
 
   public void intakeIn() {
     m_curDirection = Direction.IN;

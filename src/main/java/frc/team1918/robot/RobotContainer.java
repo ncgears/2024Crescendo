@@ -10,6 +10,7 @@ package frc.team1918.robot;
 //Global imports
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.UsbCamera;
@@ -85,8 +86,8 @@ public class RobotContainer {
     // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
     private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
-    private final IntakeSubsystem m_intake = IntakeSubsystem.getInstance();
-    private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
+    public static final IntakeSubsystem m_intake = IntakeSubsystem.getInstance();
+    public static final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
     private final ClimberSubsystem m_climber = ClimberSubsystem.getInstance();
     private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
     private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
@@ -215,9 +216,12 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
     dj.rightBumper()
-      .onTrue(new InstantCommand(m_intake::intakeIn))
-      .onFalse(new InstantCommand(m_intake::intakeStop));
-
+      .onTrue(m_intake.runOnce(m_intake::intakeAuto))
+      .onFalse(m_intake.runOnce(m_intake::intakeStop));
+    m_indexer.isFull.onTrue(m_intake.runOnce(m_intake::intakeOut)
+        .andThen(new WaitCommand(3))
+        .andThen(m_intake.runOnce(m_intake::intakeStop)))
+      .onFalse(m_intake.runOnce(m_intake::intakeIn));
     /** OPERATOR JOYSTICK (oj) */
 
   }
