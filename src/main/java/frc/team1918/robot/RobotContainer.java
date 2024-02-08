@@ -207,7 +207,7 @@ public class RobotContainer {
     dj.hamburger()
       .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
-    dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
+    // dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
     // Test the lighting system
     dj.a()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
@@ -215,12 +215,17 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
+    dj.rightTrigger().onTrue(m_shooter.runOnce(m_shooter::startShooter))
+      .onFalse(m_shooter.runOnce(m_shooter::stopShooter));
+    dj.leftTrigger().onTrue(m_indexer.runOnce(m_indexer::indexerUp))
+      .onFalse(m_indexer.runOnce(m_indexer::indexerStop));
     dj.rightBumper()
       .onTrue(m_intake.runOnce(m_intake::intakeAuto))
       .onFalse(m_intake.runOnce(m_intake::intakeStop));
     m_indexer.isFull.onTrue(m_intake.runOnce(m_intake::intakeOut)
         .andThen(new WaitCommand(3))
-        .andThen(m_intake.runOnce(m_intake::intakeStop)))
+        .andThen(m_intake.runOnce(m_intake::intakeStop))
+      )
       .onFalse(m_intake.runOnce(m_intake::intakeIn));
     /** OPERATOR JOYSTICK (oj) */
 
@@ -253,7 +258,7 @@ public class RobotContainer {
     //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
     buildAutonChooser();
     buildDriverTab();
-    buildMaintenanceTab();
+    // buildMaintenanceTab();
     gyro.buildDashboards();
   }
 

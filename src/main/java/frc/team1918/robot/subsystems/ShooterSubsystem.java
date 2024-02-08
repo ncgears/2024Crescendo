@@ -93,7 +93,7 @@ public class ShooterSubsystem extends SubsystemBase {
         .withPosition(0,0)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS+100,"divisions",10));
-      shooterTab.add("Apply Target", new InstantCommand(() -> setSpeed(getNewSpeed())).ignoringDisable(true))
+      shooterTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(4, 0);
       shooterTab.addNumber("Current Target (RPS)", this::getTargetSpeed)
@@ -105,10 +105,10 @@ public class ShooterSubsystem extends SubsystemBase {
         .withPosition(0,2)
         .withWidget("Number Bar")
         .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
-      shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)).ignoringDisable(true))
+      shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)))
         .withSize(4, 2)
         .withPosition(4, 2);  
-      shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)).ignoringDisable(true))
+      shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)))
         .withSize(4, 2)
         .withPosition(8, 2);
       
@@ -161,7 +161,17 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopShooter() {
     // target_speed = 0.0;
     // if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
+    m_motor1.setControl(m_brake);
     Helpers.Debug.debug("Shooter: Stop");
+  }
+
+  public void startShooter() {
+    setSpeed(target_speed);
+    Helpers.Debug.debug("Shooter: Start");
+  }
+
+  private void setTarget(double speed) {
+    target_speed = speed;
   }
 
   public TalonFX[] getMotors() {

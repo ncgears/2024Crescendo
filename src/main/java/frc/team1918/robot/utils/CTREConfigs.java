@@ -106,11 +106,11 @@ public final class CTREConfigs {
         //TODO: Move these to constants
         HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
             .withReverseLimitEnable(true)
-            .withReverseLimitType(ReverseLimitTypeValue.NormallyClosed)
+            .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
             .withReverseLimitAutosetPositionEnable(true)
             .withReverseLimitAutosetPositionValue(0.0)
             .withForwardLimitEnable(true)
-            .withForwardLimitType(ForwardLimitTypeValue.NormallyClosed); //TODO: Add autoset position on forward limit to appropriate number also.
+            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
         aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
         //Neutral and Direction
         aimerFXConfig.MotorOutput.NeutralMode = Constants.Aimer.kNeutralMode;
