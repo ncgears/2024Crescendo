@@ -233,7 +233,7 @@ public class Constants {
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kStowPosition = 0;
-        public static final double kGearRatio = 5.0; // 80/16
+        public static final double kGearRatio = 0.2; // 80/16
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 30.0;
