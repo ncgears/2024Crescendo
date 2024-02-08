@@ -89,7 +89,7 @@ public class RobotContainer {
     private final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
     private final ClimberSubsystem m_climber = ClimberSubsystem.getInstance();
     private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
-    // private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
+    private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
@@ -160,7 +160,7 @@ public class RobotContainer {
     m_climber.init();
     m_indexer.init();
     m_intake.init();
-    // m_shooter.init();
+    m_shooter.init();
   }
 
   private void configureBindings() {

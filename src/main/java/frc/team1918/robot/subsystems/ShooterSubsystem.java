@@ -125,7 +125,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * @return The speed of the shooter in revolutions per second
    */
   public double getCurrentSpeed() {
-    return m_motor1.getVelocity().getValueAsDouble();
+    return m_motor1.getVelocity().getValue();
   }
 
   public double getSpeedPercent() {
