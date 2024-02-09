@@ -447,8 +447,7 @@ public class DriveSubsystem extends SubsystemBase {
 		
 		//center of blue speaker, at 6'8.5" up, 9in forward from wall
 		Pose3d targetPose = new Pose3d(
-			new Translation3d(8.078467, 1.442593, 2.0447),
-			new Rotation3d()
+			new Translation3d(8.078467, 1.442593, 2.0447),new Rotation3d()
 		); 
 		
 		var shooterToTarget = shooterPose.minus(targetPose);
@@ -462,8 +461,7 @@ public class DriveSubsystem extends SubsystemBase {
 		
 		//center of blue speaker, at 6'8.5" up, 9in forward from wall
 		Pose3d targetPose = new Pose3d(
-			new Translation3d(8.078467, 1.442593, 2.0447),
-			new Rotation3d()
+			new Translation3d(8.078467, 1.442593, 2.0447),new Rotation3d()
 		); 
 		
 		Transform3d shooterToTarget = shooterPose.minus(targetPose);

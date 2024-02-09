@@ -220,7 +220,6 @@ public class Vision {
       return visionSim.getDebugField();
   }
 
-
   public void updateDashboard() {
     // Dashboard.Vision.setVisionRinglight(llresults.targetingResults.);
   }
