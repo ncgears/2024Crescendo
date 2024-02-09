@@ -103,7 +103,7 @@ public class AimerSubsystem extends SubsystemBase {
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      aimerTab.add("Update State", new InstantCommand(this::updateState))
+      aimerTab.add("Update State", new InstantCommand(this::updateState).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(6, 0);
       aimerTab.addNumber("Target", this::getTargetPosition)
@@ -115,12 +115,18 @@ public class AimerSubsystem extends SubsystemBase {
       aimerTab.addNumber("Absolute", this::getPositionAbsolute)
         .withSize(2,2)
         .withPosition(4,2);
+      aimerTab.addNumber("Error", this::getPositionError)
+        .withSize(2,2)
+        .withPosition(6,2);
+      aimerTab.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(8, 2);
       aimerTab.addBoolean("Rev Lim", this::getReverseLimit)
         .withSize(2,2)
-        .withPosition(6,2);    
+        .withPosition(0,4);    
       aimerTab.addBoolean("Fwd Lim", this::getForwardLimit)
         .withSize(2,2)
-        .withPosition(8,2);    
+        .withPosition(2,4);    
     }
   }
 
@@ -146,7 +152,12 @@ public class AimerSubsystem extends SubsystemBase {
     m_motor1.setControl(m_voltagePosition.withPosition(position));
   }
 
-  public double getTargetPosition() { return m_targetPosition; }
+  public void setZero() {
+    m_motor1.setPosition(0.0);
+  }
+
+  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
+  public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
 
   public double getPosition() {
     return m_motor1.getPosition().getValue();

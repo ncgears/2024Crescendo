@@ -91,7 +91,8 @@ public final class CTREConfigs {
             .withKP(Constants.Aimer.kP)
             .withKI(Constants.Aimer.kI)
             .withKD(Constants.Aimer.kD)
-            .withKV(Constants.Aimer.kV);
+            .withKS(Constants.Aimer.kS);
+            // .withKV(Constants.Aimer.kV);
         aimerFXConfig.Slot0 = aimerSlot0Configs;
         aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Aimer.kPeakFwdVoltage;
         aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Aimer.kPeakRevVoltage;
@@ -102,6 +103,9 @@ public final class CTREConfigs {
             .withSupplyTimeThreshold(Constants.Aimer.kCurrentLimitThresholdSecs)
             .withSupplyCurrentLimitEnable(Constants.Aimer.kCurrentLimitEnable);
         aimerFXConfig.CurrentLimits = aimerCurrentLimitsConfigs;
+        //Ramping (spinup/spindown)
+        aimerFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Aimer.kOpenLoopRamp;
+        aimerFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Aimer.kClosedLoopRamp;
         //Mechanical Limits
         //TODO: Move these to constants
         HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
