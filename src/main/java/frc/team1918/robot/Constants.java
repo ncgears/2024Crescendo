@@ -310,7 +310,11 @@ public class Constants {
         //Ramping (0.0 by default)
         public static final double kOpenLoopRamp = 0.0;
 		public static final double kClosedLoopRamp = 0.0;
-
+        public static final Transform3d kRobotToShooter = new Transform3d(
+            //TODO: Measure and set proper locations
+            new Translation3d(0.0,0.0,0.5), //x,y,z location of shooter on robot in meters
+            new Rotation3d(0,0,0) //yaw,pitch,roll of shooter on robot in radians
+        );
         public static final class Top {
             public static final int kMotorID = ID.Falcon.shootertop;
             public static final boolean kIsInverted = false;

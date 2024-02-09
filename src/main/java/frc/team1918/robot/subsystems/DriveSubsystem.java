@@ -15,13 +15,16 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 // import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -124,12 +127,14 @@ public class DriveSubsystem extends SubsystemBase {
 		ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
 		driverTab.add("Swerve Drive", this)
 			.withSize(5, 5)
-			.withPosition(19, 4);
+			.withPosition(19, 4)
+			.withProperties(Map.of("show_robot_rotation","true"));
 		if(Constants.Swerve.debugDashboard) {
 			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Swerve");
 			debugTab.add("Swerve Drive", this)
 				.withSize(5, 6)
-				.withPosition(0, 0);
+				.withPosition(0, 0)
+				.withProperties(Map.of("show_robot_rotation","true"));
 			debugTab.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
 				.withSize(2, 2)
 				.withPosition(5, 0);
@@ -435,4 +440,35 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 		return motors.toArray(new TalonFX[motors.size()]);
 	}
+
+	public double getAngleOfTarget() { //TODO: take in enum of targets, move this to its own helper class
+		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
+			.transformBy(Constants.Shooter.kRobotToShooter);
+		
+		//center of blue speaker, at 6'8.5" up, 9in forward from wall
+		Pose3d targetPose = new Pose3d(
+			new Translation3d(8.078467, 1.442593, 2.0447),
+			new Rotation3d()
+		); 
+		
+		var shooterToTarget = shooterPose.minus(targetPose);
+		var targetAngle = Math.atan(shooterToTarget.getZ()) / (shooterToTarget.getX()); // arctan(height / distance) = radians
+		return Math.toDegrees(targetAngle); //change radians to degrees
+	}
+
+	public double getHeadingOfTarget() {
+		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
+			.transformBy(Constants.Shooter.kRobotToShooter);
+		
+		//center of blue speaker, at 6'8.5" up, 9in forward from wall
+		Pose3d targetPose = new Pose3d(
+			new Translation3d(8.078467, 1.442593, 2.0447),
+			new Rotation3d()
+		); 
+		
+		Transform3d shooterToTarget = shooterPose.minus(targetPose);
+		double targetHeading = shooterToTarget.getRotation().getZ(); //radians
+		return Math.toDegrees(targetHeading); //change radians to degrees
+	}
+
 }
