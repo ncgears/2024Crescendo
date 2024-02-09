@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.AudioConfigs;
 // import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
@@ -91,11 +92,10 @@ public final class CTREConfigs {
             .withKP(Constants.Aimer.kP)
             .withKI(Constants.Aimer.kI)
             .withKD(Constants.Aimer.kD)
-            .withKS(Constants.Aimer.kS);
-            // .withKV(Constants.Aimer.kV);
+            .withKS(Constants.Aimer.kS)
+            .withKV(Constants.Aimer.kV)
+            .withKA(Constants.Aimer.kA);
         aimerFXConfig.Slot0 = aimerSlot0Configs;
-        aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Aimer.kPeakFwdVoltage;
-        aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Aimer.kPeakRevVoltage;
         //Current Limits
         CurrentLimitsConfigs aimerCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(Constants.Aimer.kCurrentLimitAmps)
@@ -103,9 +103,17 @@ public final class CTREConfigs {
             .withSupplyTimeThreshold(Constants.Aimer.kCurrentLimitThresholdSecs)
             .withSupplyCurrentLimitEnable(Constants.Aimer.kCurrentLimitEnable);
         aimerFXConfig.CurrentLimits = aimerCurrentLimitsConfigs;
-        //Ramping (spinup/spindown)
-        aimerFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Aimer.kOpenLoopRamp;
-        aimerFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Aimer.kClosedLoopRamp;
+        // aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Aimer.kPeakFwdVoltage;
+        // aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Aimer.kPeakRevVoltage;
+        //Ramping (spinup/spindown) //not needed or wanted for MM
+        // aimerFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Aimer.kOpenLoopRamp;
+        // aimerFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Aimer.kClosedLoopRamp;
+        //Motion Magic
+        MotionMagicConfigs aimerMotionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(Constants.Aimer.kMotionMagicCruise)
+            .withMotionMagicAcceleration(Constants.Aimer.kMotionMagicAccel)
+            .withMotionMagicJerk(Constants.Aimer.kMotionMagicJerk);
+        aimerFXConfig.MotionMagic = aimerMotionMagicConfigs;
         //Mechanical Limits
         //TODO: Move these to constants
         HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()

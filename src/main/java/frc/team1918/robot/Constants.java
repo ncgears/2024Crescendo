@@ -233,22 +233,30 @@ public class Constants {
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kStowPosition = 0.0;
-        public static final double kGearRatio = 0.2; // 16t:80t
+        public static final double kGearRatio = 5.0; // 16t:80t
         //PID Control
-        public static final double kP = 0.9; //PID P // error of 1/2 rotation result in 0.5V output
-        public static final double kI = 0.05; //PID I // error of 1/2 rotation increases output by 0.0V every second
-        public static final double kD = 0.0; //PID D // change of 1 rotation per second squared results in 0.1V output
-        public static final double kS = 0.0; //PID S // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
-        public static final double kPeakFwdVoltage = 9.0;
-        public static final double kPeakRevVoltage = -9.0;
+        public static final double kS = 0.1; // add kS to overcome static friction: adjust first to start moving
+        public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
+        public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
+        public static final double kP = 12.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+        public static final double kI = 0.0; // no integral
+        public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
+        public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
+        public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
+        public static final double kMotionMagicJerk = 400; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        // Review https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-vertical-arm.html
+        // Using motionMagic: https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/motion-magic.html
+
+        // public static final double kPeakFwdVoltage = 9.0;
+        // public static final double kPeakRevVoltage = -9.0;
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 30.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
         //Ramping (0.0 by default)
-        public static final double kOpenLoopRamp = 0.5;
-		public static final double kClosedLoopRamp = 0.5;
+        public static final double kOpenLoopRamp = 0.0;
+		public static final double kClosedLoopRamp = 0.0;
     }
 
     /**

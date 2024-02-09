@@ -2,6 +2,7 @@
 package frc.team1918.robot.subsystems;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
@@ -31,7 +32,16 @@ public class AimerSubsystem extends SubsystemBase {
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
-  private PositionVoltage m_voltagePosition = new PositionVoltage(0,0,true,0,0,false, false, false);
+  private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
+  private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
+    // 0,
+    // 0,
+    // true,
+    // 0,
+    // 0,
+    // false,
+    // false,
+    // false);
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
   private Double m_targetPosition = 0.0;
@@ -149,7 +159,8 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public void setPosition(double position) {
-    m_motor1.setControl(m_voltagePosition.withPosition(position));
+    // m_motor1.setControl(m_voltagePosition.withPosition(position));
+    m_motor1.setControl(m_mmVoltage.withPosition(position));
   }
 
   public void setZero() {
