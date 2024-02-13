@@ -60,7 +60,7 @@ public class drive_defaultDrive extends Command {
       if(m_rotation.getAsDouble() != 0) { //turn requested, unlock heading
         m_drive.unlockHeading();
       } else {
-        if(!m_drive.getHeadingLocked()) m_drive.lockHeading(RobotContainer.gyro.getHeading().getDegrees());
+        if(!m_drive.getHeadingLocked()) m_drive.lockHeading();
       }
       if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
         if(Constants.DriveTrain.thetaController.isEnabled) {

@@ -174,6 +174,9 @@ public class DriveSubsystem extends SubsystemBase {
 			debugTab.addNumber("Hdg Err", this::getHeadingError)
 				.withSize(2, 2)
 				.withPosition(9,5);
+			debugTab.addNumber("Hdg Curr", () -> getHeading().getDegrees())
+				.withSize(2, 2)
+				.withPosition(11,2);
 		}
 	}
 
@@ -199,13 +202,13 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public double getHeadingError() {
-		double  error = target_heading - getHeading().getDegrees();
+		double error = target_heading - getHeading().getDegrees();
 		// error = MathUtil.inputModulus(error, -180.0, 180.0);
 		return error;
 	}
 
-	public void lockHeading(double heading) {
-		target_heading = heading;
+	public void lockHeading() {
+		target_heading = getHeading().getDegrees();
 		heading_locked = true;
 	}
 
