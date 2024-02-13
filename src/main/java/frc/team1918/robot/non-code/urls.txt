@@ -19,3 +19,6 @@ http://10.19.18.11:5800
 
 ## Vivid Hosting VH-109 FRC Radio (2024 CMP and 2025+ season)
 https://frc-radio.vivid-hosting.net/
+
+## FRC 2027 and beyond robot controller RFP
+https://www.firstinspires.org/sites/default/files/uploads/resource_library/frc/frc-ftc-RFP-2027-robot-controller.pdf
