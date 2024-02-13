@@ -193,7 +193,7 @@ public class Constants {
 
     public static final class Gyro {
         public static final boolean debugDashboard = true; //enable debugging dashboard
-        public static final boolean kGyroReversed = false;
+        public static final boolean kGyroReversed = true;
     }
 
     /**
