@@ -85,6 +85,12 @@ public class Constants {
         public static final class CANdle {
             public static int candle1 = 0;
         }
+        /**
+         * IDs of CANcoders
+         */
+        public static final class CANcoder {
+            public static int aimer = 0;
+        }
 
     }
 
@@ -229,6 +235,9 @@ public class Constants {
         //Controller Setup
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final int kCANcoderID = ID.CANcoder.aimer;
+        public static final boolean kUseCANcoder = false;
+        public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.aimer;
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;

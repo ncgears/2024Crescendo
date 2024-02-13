@@ -2,10 +2,12 @@
 package frc.team1918.robot.subsystems;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.PositionVoltage;
+// import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
@@ -37,8 +39,9 @@ public class AimerSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
-  private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
+  // private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
 
+  private CANcoder m_encoder;
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
   private Double m_targetPosition = 0.0;
@@ -57,18 +60,24 @@ public class AimerSubsystem extends SubsystemBase {
 		return instance;
 	}
   
+  private void retryConfigApply(Supplier<StatusCode> toApply) {
+    StatusCode finalCode = StatusCode.StatusCodeNotInitialized;
+    int triesLeftOver = 5;
+    do{
+        finalCode = toApply.get();
+    } while (!finalCode.isOK() && --triesLeftOver > 0);
+    assert(finalCode.isOK());
+  }
+
   public AimerSubsystem() {
     //initialize values for private and public variables, etc.
+    m_encoder = new CANcoder(Constants.Aimer.kCANcoderID, Constants.Aimer.canBus);
+    retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.aimerCCConfig));
+
     m_motor1 = new TalonFX(Constants.Aimer.kMotorID, Constants.Aimer.canBus);
     m_motor1.setInverted(Constants.Aimer.kIsInverted);
-    StatusCode status1 = StatusCode.StatusCodeNotInitialized;
-    for (int i = 0; i < 5; ++i) {
-      status1 = m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.aimerFXConfig);
-      if (status1.isOK()) break;
-    }
-    if(!status1.isOK()) {
-      Helpers.Debug.debug("Could not initialize aimer motor, error: " + status1.toString());
-    }
+    retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.aimerFXConfig));
+    // Helpers.Debug.debug("Could not initialize aimer motor, error: " + status1.toString());
 
     init();
     createDashboards();
@@ -177,7 +186,7 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public double getPositionAbsolute() {
-    return m_motor1.getPosition().getValue(); //TODO this should be from a through bore. Maybe we put a limit in to store the offset when limit is hit?
+    return m_encoder.getPosition().getValue();
   }
 
   public boolean getForwardLimit() {
