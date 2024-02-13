@@ -1,12 +1,15 @@
 package frc.team1918.robot.utils;
 
 import com.ctre.phoenix6.configs.AudioConfigs;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 // import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 // import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 // import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -14,6 +17,7 @@ import com.ctre.phoenix6.signals.ForwardLimitTypeValue;
 // import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import frc.team1918.robot.Constants;
 
@@ -35,6 +39,7 @@ public final class CTREConfigs {
     public final TalonFXConfiguration aimerFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
+    public final CANcoderConfiguration aimerCCConfig = new CANcoderConfiguration();
 
     public CTREConfigs() {
         /* Swerve Drive Motor Configuration */
@@ -88,6 +93,11 @@ public final class CTREConfigs {
         shooterFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //Aimer Configuration
+        //CANcoder
+        aimerCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        aimerCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        aimerCCConfig.MagnetSensor.MagnetOffset = Constants.Aimer.kMagnetOffset;
+        
         Slot0Configs aimerSlot0Configs = new Slot0Configs()
             .withKP(Constants.Aimer.kP)
             .withKI(Constants.Aimer.kI)
@@ -124,11 +134,18 @@ public final class CTREConfigs {
             .withForwardLimitEnable(true)
             .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
         aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
+        //Encoder
+        if(Constants.Aimer.kUseCANcoder) {
+            aimerFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Aimer.kCANcoderID;
+            aimerFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
+            aimerFXConfig.Feedback.RotorToSensorRatio = Constants.Aimer.kGearRatio;
+            aimerFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
+        } else {
+            aimerFXConfig.Feedback.SensorToMechanismRatio = Constants.Aimer.kGearRatio;
+        }
         //Neutral and Direction
         aimerFXConfig.MotorOutput.NeutralMode = Constants.Aimer.kNeutralMode;
         aimerFXConfig.MotorOutput.Inverted = (Constants.Aimer.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
-        //Rotational rate modifiers
-        aimerFXConfig.Feedback.SensorToMechanismRatio = Constants.Aimer.kGearRatio;
         //Audio
         aimerFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
