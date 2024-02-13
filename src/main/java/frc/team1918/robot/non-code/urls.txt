@@ -16,3 +16,6 @@ http://10.19.18.12:5800
 http://limelight.local:5800
 http://10.19.18.11:5800
 #info: https://docs.limelightvision.io/docs/docs-limelight/pipeline-apriltag/apriltags
+
+## Vivid Hosting VH-109 FRC Radio (2024 CMP and 2025+ season)
+https://frc-radio.vivid-hosting.net/
