@@ -101,16 +101,15 @@ public class ShooterSubsystem extends SubsystemBase {
         .withPosition(8,0)
         .withWidget("Text Display");
       shooterTab.addNumber("Current Speed (RPS)", this::getCurrentSpeed)
-        .withSize(4,2)
+        .withSize(2,2)
         .withPosition(0,2)
-        .withWidget("Number Bar")
-        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
+        .withWidget("Text Display");
       shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)))
         .withSize(4, 2)
-        .withPosition(4, 2);  
+        .withPosition(2, 2);  
       shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)))
         .withSize(4, 2)
-        .withPosition(8, 2);
+        .withPosition(6, 2);
       
       new_speed_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Shooter/New Target (RPS)").subscribe(0.0);
     }
@@ -124,13 +123,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * Gets the speed of the shooter
    * @return The speed of the shooter in revolutions per second
    */
-  public double getCurrentSpeed() {
-    return m_motor1.getVelocity().getValue();
-  }
-
-  public double getSpeedPercent() {
-    return getCurrentSpeed() / Constants.Shooter.kMaxRPS;
-  }
+  public double getCurrentSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
+  public double getCurrentSpeedPercent() { return getCurrentSpeed() / Constants.Shooter.kMaxRPS; }
 
   /**
    * Sets the speed of the shooter
