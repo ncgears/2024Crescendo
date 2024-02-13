@@ -1,6 +1,8 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -8,6 +10,8 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
+import edu.wpi.first.networktables.DoubleSubscriber;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,18 +38,13 @@ public class AimerSubsystem extends SubsystemBase {
   }
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
-    // 0,
-    // 0,
-    // true,
-    // 0,
-    // 0,
-    // false,
-    // false,
-    // false);
+
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
   private Double m_targetPosition = 0.0;
   private boolean m_suppressTracking = false; //do not allow tracking while true
+  private DoubleSubscriber new_position_sub;
+  private double new_position = 0.0;
   
   /**
 	 * Returns the instance of the AimerSubsystem subsystem.
@@ -85,17 +84,10 @@ public class AimerSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+    new_position = new_position_sub.get(0.0);
+    updateSetpoint();
     // updateState();
   }
-
-  // @Override
-  // public void initSendable(SendableBuilder builder) {
-  //   super.initSendable(builder);
-  //   builder.setSmartDashboardType("Number Slider");
-  //   builder.setActuator(true);
-  //   builder.addDoubleProperty("Target Speed", this::getTargetSpeed, this::setSpeedPercent);
-  //   builder.addDoubleProperty("Current Speed", this::getSpeedPercent, null);
-  // }
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
@@ -131,23 +123,32 @@ public class AimerSubsystem extends SubsystemBase {
       aimerTab.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(8, 2);
+      aimerTab.addNumber("Target Position", this::getNewPosition)
+        .withSize(4,2)
+        .withPosition(12,2)
+        .withWidget("Number Slider")
+        .withProperties(Map.of("min_value",0,"max_value",0.125,"divisions",10));
       aimerTab.addBoolean("Rev Lim", this::getReverseLimit)
         .withSize(2,2)
         .withPosition(0,4);    
       aimerTab.addBoolean("Fwd Lim", this::getForwardLimit)
         .withSize(2,2)
         .withPosition(2,4);    
+
+      new_position_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Aimer/Target Position").subscribe(0.0);
     }
   }
 
   public State getState() { return m_curState; }
   public String getStateName() { return m_curState.toString(); }
   public String getColor() { return m_curState.getColor(); }
+  public double getNewPosition() { return Helpers.General.roundDouble(new_position,3); }
 
   public void updateSetpoint() {
     if(!m_suppressTracking) { //allowed to track
       //determine the proper setpoint from vision and set it as the closed loop target
       // RobotContainer.vision.getTarget()
+      if(new_position != m_targetPosition) setPosition(new_position);
     } else {
       setPosition(m_targetPosition);
     }
@@ -160,6 +161,7 @@ public class AimerSubsystem extends SubsystemBase {
 
   public void setPosition(double position) {
     // m_motor1.setControl(m_voltagePosition.withPosition(position));
+    m_targetPosition = position;
     m_motor1.setControl(m_mmVoltage.withPosition(position));
   }
 

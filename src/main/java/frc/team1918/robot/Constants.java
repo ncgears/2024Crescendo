@@ -53,10 +53,10 @@ public class Constants {
          * IDs of Talons
          */
         public static final class Talon {
-            public static int swerve_fl_turn = 3;
-            public static int swerve_fr_turn = 2;
-            public static int swerve_bl_turn = 4;
-            public static int swerve_br_turn = 1;
+            public static int swerve_fl_turn = 1;
+            public static int swerve_fr_turn = 4;
+            public static int swerve_bl_turn = 2;
+            public static int swerve_br_turn = 3;
             public static int intake = 10;
             public static int indexer = 11;
         }
@@ -235,15 +235,15 @@ public class Constants {
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
         //PID Control
-        public static final double kS = 0.1; // add kS to overcome static friction: adjust first to start moving
+        public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
         public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-        public static final double kP = 12.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+        public static final double kP = 24.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
         public static final double kI = 0.0; // no integral
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
         public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
         public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
-        public static final double kMotionMagicJerk = 400; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         // Review https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-vertical-arm.html
         // Using motionMagic: https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/motion-magic.html
 
@@ -394,7 +394,7 @@ public class Constants {
             public static final boolean isDisabled = false;
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_fl_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = true;
+            public static final boolean DRIVE_isInverted = false;
             public static final int TURN_MC_ID = ID.Talon.swerve_fl_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
@@ -412,7 +412,7 @@ public class Constants {
             public static final boolean isDisabled = false; 
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_fr_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = false;
+            public static final boolean DRIVE_isInverted = true;
             public static final int TURN_MC_ID = ID.Talon.swerve_fr_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
@@ -430,7 +430,7 @@ public class Constants {
             public static final boolean isDisabled = false;
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_bl_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = true;
+            public static final boolean DRIVE_isInverted = false;
             public static final int TURN_MC_ID = ID.Talon.swerve_bl_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
@@ -448,7 +448,7 @@ public class Constants {
             public static final boolean isDisabled = false;
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_br_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM;  //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = false;
+            public static final boolean DRIVE_isInverted = true;
             public static final int TURN_MC_ID = ID.Talon.swerve_br_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red

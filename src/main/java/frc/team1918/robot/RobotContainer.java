@@ -215,7 +215,9 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    dj.rightTrigger().onTrue(m_shooter.runOnce(m_shooter::startShooter))
+    dj.rightTrigger().onTrue(m_shooter.runOnce(m_shooter::startShooter)
+        .andThen(m_aimer.runOnce(() -> m_aimer.setPosition(0.1)))
+      )
       .onFalse(m_shooter.runOnce(m_shooter::stopShooter));
     dj.leftTrigger().onTrue(m_indexer.runOnce(m_indexer::indexerUp))
       .onFalse(m_indexer.runOnce(m_indexer::indexerStop));

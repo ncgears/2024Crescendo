@@ -92,7 +92,7 @@ public class ShooterSubsystem extends SubsystemBase {
         .withSize(4,2)
         .withPosition(0,0)
         .withWidget("Number Slider")
-        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS+100,"divisions",10));
+        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
       shooterTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(4, 0);
