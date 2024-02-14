@@ -325,8 +325,8 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param fieldRelative Whether the provided x and y speeds are relative to the field.
 	 */
 	public void drivePercentage(double xPercent, double yPercent, double rotPercent, boolean fieldRelative) {
-		double xSpeed = xPercent * Constants.DriveTrain.kMaxMetersPerSecond;
-		double ySpeed = yPercent * Constants.DriveTrain.kMaxMetersPerSecond;
+		double xSpeed = -xPercent * Constants.DriveTrain.kMaxMetersPerSecond;
+		double ySpeed = -yPercent * Constants.DriveTrain.kMaxMetersPerSecond;
 		double rot = rotPercent * Constants.DriveTrain.kMaxRotationRadiansPerSecond;
 		drive(xSpeed, ySpeed, rot, fieldRelative);
 	}

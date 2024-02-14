@@ -199,7 +199,7 @@ public class Constants {
 
     public static final class Gyro {
         public static final boolean debugDashboard = true; //enable debugging dashboard
-        public static final boolean kGyroReversed = true;
+        public static final boolean kGyroReversed = false;
     }
 
     /**
@@ -476,8 +476,8 @@ public class Constants {
     public static final class DriveTrain {
         public static final boolean isDisabled = false; 
         public static final class thetaController {
-            public static final boolean isEnabled = true;
-            public static final double kP = 0.05;
+            public static final boolean isEnabled = false;
+            public static final double kP = 0.02;
             public static final double kI = 0.0001;
             public static final double kD = 0.002;
             public static final double kIZone = 3.0;

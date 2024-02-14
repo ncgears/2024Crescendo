@@ -146,7 +146,7 @@ public class RobotContainer {
           m_drive,
           () -> Helpers.OI.ncdeadband(-dj.getLeftY(),false),
           () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
-          () -> Helpers.OI.ncdeadband(-dj.getRightX(),true)
+          () -> Helpers.OI.ncdeadband(dj.getRightX(),true)
         )
       );
     }
@@ -205,7 +205,7 @@ public class RobotContainer {
     }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
-      .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(-180.0)))));
+      .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
     // Test the lighting system
