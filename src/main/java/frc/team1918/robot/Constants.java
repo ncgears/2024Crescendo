@@ -99,6 +99,8 @@ public class Constants {
      */
     public static final class Global {
         //Global Constants
+        public static final int kFalconMaxRPS = 6350 / 60;
+        public static final int kKrakenMaxRPS = 6000 / 60;
         public static final boolean CAMERA_ENABLED = false; //set to false if UsbCamera is removed
         public static final boolean SWERVE_SENSOR_NONCONTINUOUS = false;
         public static final int kTimeoutMs = 30; //Timeout for reporting in DS if action fails, set to 0 to skip confirmation
@@ -304,7 +306,7 @@ public class Constants {
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast; 
         public static final boolean isInverted = false;
         public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
-        public static final double kMaxRPS = 6000 * kGearRatio / 60; //The Maximum free speed of the shooter
+        public static final double kMaxRPS = Global.kFalconMaxRPS * kGearRatio; //The Maximum free speed of the shooter
         public static final double kP = 0.11; //PID P // ebror of 1 rotation per second result in 2V output
         public static final double kI = 0.0; //PID I // ebror of 1 rotation per second increases output by 0.5V every second
         public static final double kD = 0.0; //PID D // change of 1 rotation per second squared results in 0.01V output
