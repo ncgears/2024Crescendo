@@ -180,6 +180,7 @@ public class AimerSubsystem extends SubsystemBase {
 
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
+  // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
 
   public double getPosition() {
     return m_motor1.getPosition().getValue();

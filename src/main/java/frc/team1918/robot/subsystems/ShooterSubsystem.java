@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 // import frc.team1918.robot.utils.TunableNumber;
@@ -71,7 +72,9 @@ public class ShooterSubsystem extends SubsystemBase {
     init();
     createDashboards();
   }
-  
+
+  public final Trigger isReady = new Trigger(this::isAtSpeed);
+
   /**
    * The init function resets and operational state of the subsystem
    */
@@ -118,6 +121,11 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / Constants.Shooter.kMaxRPS,2); }
   public double getNewSpeed() { return Helpers.General.roundDouble(new_speed,2); }
   public double getTargetSpeed() { return target_speed; }
+  public boolean isAtSpeed() { 
+    if(target_speed == 0.0) return false;
+    double error = target_speed - m_motor1.getVelocity().getValue();
+    return (Math.abs(error) <= Constants.Shooter.kSpeedTolerance);
+  }
 
   /**
    * Gets the speed of the shooter

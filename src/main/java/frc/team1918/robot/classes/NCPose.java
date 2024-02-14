@@ -103,12 +103,6 @@ public class NCPose {
 		return instance;
 	}
 
-    //TODO: method to translate coordinates to red alliance
-    //See: https://github.com/frc6995/Robot-2024/blob/main/src/main/java/frc/robot/util/NomadMathUtil.java
-    public double translateToRed(double x) {
-        return 0.0;
-    }
-
 	/**
 	 * Returns the currently-estimated pose of the robot.
 	 * @return The pose.

@@ -233,7 +233,7 @@ public class RobotContainer {
         .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
       )
       .onFalse(shooter.runOnce(shooter::stopShooter));
-    dj.leftTrigger().onTrue(indexer.runOnce(indexer::indexerUp))
+    dj.leftTrigger().and(shooter.isReady).onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
     dj.rightBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
