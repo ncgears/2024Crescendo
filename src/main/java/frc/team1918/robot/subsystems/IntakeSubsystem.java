@@ -107,7 +107,7 @@ public class IntakeSubsystem extends SubsystemBase {
   public String getColor() { return m_curDirection.getColor(); }
 
   public void intakeAuto() {
-    if(RobotContainer.m_indexer.hasNote()) {
+    if(RobotContainer.indexer.hasNote()) {
       intakeOut();
     } else {
       intakeIn();

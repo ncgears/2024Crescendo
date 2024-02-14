@@ -59,7 +59,7 @@ public class drive_followTrajectory extends Command {
     double time = m_timer.get();
     double dt = time - m_lastTime;
     State refState = m_trajectory.sample(time);
-    Pose2d currentPose = m_drive.getPose();
+    Pose2d currentPose = RobotContainer.pose.getPose();
     
     m_xController.setReference(refState.pose.getX());
     m_yController.setReference(refState.pose.getY());

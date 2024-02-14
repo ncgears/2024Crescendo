@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
 /**
- * The Vision Subsystem handles getting and managing data from the PhotoVision system.
+ * The Vision class handles getting and managing data from the PhotoVision system.
  * It is responsible for getting target data, selecting appropriate targets, and passing information to other subsystems.
  */
 public class Vision {
@@ -69,9 +69,9 @@ public class Vision {
   }
 
   /**
-	 * Returns the instance of the LightingSubsystem subsystem.
+	 * Returns the instance of the class.
 	 * The purpose of this is to only create an instance if one does not already exist.
-	 * @return LightingSubsystem instance
+	 * @return instance of this class
 	 */
   public static Vision getInstance() {
 		if (instance == null)

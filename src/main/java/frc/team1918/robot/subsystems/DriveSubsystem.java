@@ -15,22 +15,14 @@ import com.ctre.phoenix6.sim.TalonFXSimState;
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.MathUtil;
 // import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotController;
@@ -53,7 +45,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private static SwerveModule m_backRight = new SwerveModule("RR", Constants.Swerve.BR.constants); // Rear Right
 	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
 
-	private SwerveDrivePoseEstimator poseEstimator;
 	private Field2d fieldSim;
 
 	private int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -73,18 +64,6 @@ public class DriveSubsystem extends SubsystemBase {
 	public DriveSubsystem() { //initialize the class
 		fieldSim = new Field2d();
 
-		//Initialize the pose estimator
-		poseEstimator = new SwerveDrivePoseEstimator(
-			Constants.Swerve.kDriveKinematics,
-			RobotContainer.gyro.getHeading(),
-			getSwerveModulePositions(),
-			new Pose2d(),
-			//stateStdDevs Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust your state estimate less.
-			VecBuilder.fill(0.1, 0.1, 0.1),
-			//visionMeasurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust the vision pose measurement less.
-			VecBuilder.fill(0.9, 0.9, 0.9)
-		);
-		
 		// m_targetPose = m_odometry.getPoseMeters();
 		// m_thetaController.reset();
 		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -98,9 +77,9 @@ public class DriveSubsystem extends SubsystemBase {
 	@Override
 	public void periodic() {
 		if(Robot.isSimulation()) updateSim();
-		updatePose();
-		correctPoseWithVision();
-		fieldSim.setRobotPose(poseEstimator.getEstimatedPosition());
+		RobotContainer.pose.updatePose();
+		RobotContainer.pose.correctPoseWithVision();
+		fieldSim.setRobotPose(RobotContainer.pose.getPose());
 	}
 
 	@Override
@@ -108,19 +87,19 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.setSmartDashboardType("SwerveDrive");
 		builder.setActuator(true);
 		//builder.setSafeState(this::disable); //function for safe state to  make sure things dont move
-		builder.addDoubleProperty("Front Left Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Front Left Angle", () -> Helpers.General.roundDouble(-m_frontLeft.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Front Left Velocity", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Front Right Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Front Right Angle", () -> Helpers.General.roundDouble(-m_frontRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Front Right Velocity", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(-m_backLeft.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Back Left Velocity", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(-m_backRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Robot Angle", () -> poseEstimator.getEstimatedPosition().getRotation().getDegrees(), null);
+		builder.addDoubleProperty("Robot Angle", () -> RobotContainer.pose.getPose().getRotation().getDegrees(), null);
 	}
 
 	public void createDashboards() {
@@ -189,16 +168,8 @@ public class DriveSubsystem extends SubsystemBase {
 		};
 	}
 
-	/**
-	 * Returns the currently-estimated pose of the robot.
-	 * @return The pose.
-	 */
-	public Pose2d getPose() {
-		return poseEstimator.getEstimatedPosition();
-	}
-
 	public Rotation2d getHeading() {
-		return getPose().getRotation();
+		return RobotContainer.pose.getPose().getRotation();
 	}
 
 	public double getHeadingError() {
@@ -208,7 +179,8 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void lockHeading() {
-		target_heading = getHeading().getDegrees();
+		//getHeading().getDegrees()
+		target_heading = MathUtil.inputModulus(getHeading().getDegrees(), -180.0, 180.0);
 		heading_locked = true;
 	}
 
@@ -233,40 +205,6 @@ public class DriveSubsystem extends SubsystemBase {
 		RobotContainer.gyro.zeroHeading();
 		RobotContainer.gyro.setYawOffset(heading);
 		// m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
-	}
-
-	/**
-     * Reset the estimated pose of the swerve drive on the field.
-     *
-	 * @param heading Heading to reset robot to (for configuring a yaw offset)
-     * @param pose New robot pose.
-     */
-	public void resetPose(double heading, Pose2d pose) {
-		poseEstimator.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
-	}
-
-	/**
-	 * Corrects the bot pose based on information from the vision system
-	 */
-	public void correctPoseWithVision() {
-		var visionEstFront = RobotContainer.vision.getEstimatedGlobalPose("front");
-		visionEstFront.ifPresent(
-			est -> {
-				var estPose = est.estimatedPose.toPose2d();
-				// Change our trust in the measurement based on the tags we can see
-				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "front");
-				addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-			}
-		);
-		var visionEstBack = RobotContainer.vision.getEstimatedGlobalPose("back");
-		visionEstBack.ifPresent(
-			est -> {
-				var estPose = est.estimatedPose.toPose2d();
-				// Change our trust in the measurement based on the tags we can see
-				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
-				addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
-			}
-		);
 	}
 
 	public void updateSim() {
@@ -299,23 +237,6 @@ public class DriveSubsystem extends SubsystemBase {
         }
         return motorVoltage;
     }
-
-	/**
-	 * Updates the bot pose based on feedback from the drivetrain. This should be done in every periodic loop.
-	 */
-	public void updatePose() {
-		poseEstimator.update(
-			RobotContainer.gyro.getHeading(),
-			getSwerveModulePositions()
-		);
-	}
-
-	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds) {
-		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds);
-	}
-	public void addVisionMeasurement(Pose2d visionMeasurement, double timestampSeconds, Matrix<N3, N1> stdDevs) {
-		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
-	}
 
 	/**
 	 * Method to drive the robot using percentages of max speeds (from -1.0 to 1.0)
@@ -442,34 +363,6 @@ public class DriveSubsystem extends SubsystemBase {
 			motors.add(module.getDriveMotor());
 		}
 		return motors.toArray(new TalonFX[motors.size()]);
-	}
-
-	public double getAngleOfTarget() { //TODO: take in enum of targets, move this to its own helper class
-		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter);
-		
-		//center of blue speaker, at 6'8.5" up, 9in forward from wall
-		Pose3d targetPose = new Pose3d(
-			new Translation3d(8.078467, 1.442593, 2.0447),new Rotation3d()
-		); 
-		
-		var shooterToTarget = shooterPose.minus(targetPose);
-		var targetAngle = Math.atan(shooterToTarget.getZ()) / (shooterToTarget.getX()); // arctan(height / distance) = radians
-		return Math.toDegrees(targetAngle); //change radians to degrees
-	}
-
-	public double getHeadingOfTarget() {
-		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter);
-		
-		//center of blue speaker, at 6'8.5" up, 9in forward from wall
-		Pose3d targetPose = new Pose3d(
-			new Translation3d(8.078467, 1.442593, 2.0447),new Rotation3d()
-		); 
-		
-		Transform3d shooterToTarget = shooterPose.minus(targetPose);
-		double targetHeading = shooterToTarget.getRotation().getZ(); //radians
-		return Math.toDegrees(targetHeading); //change radians to degrees
 	}
 
 }

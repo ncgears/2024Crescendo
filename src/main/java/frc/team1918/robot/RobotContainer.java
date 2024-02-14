@@ -57,6 +57,7 @@ import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.classes.Lighting;
 import frc.team1918.robot.classes.NCOrchestra;
+import frc.team1918.robot.classes.NCPose;
 import frc.team1918.robot.classes.Vision;
 import frc.team1918.robot.classes.Lighting.Colors;
 //CommandGroup imports
@@ -80,17 +81,18 @@ public class RobotContainer {
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
     public static final Vision vision = Vision.getInstance();
+    public static final NCPose pose = NCPose.getInstance();
     private final NCOrchestra m_orchestra = NCOrchestra.getInstance();
 
   //subsystems definitions
     // private final PowerDistribution m_pdp = new PowerDistribution();
     // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
-    private final DriveSubsystem m_drive = DriveSubsystem.getInstance();
-    public static final IntakeSubsystem m_intake = IntakeSubsystem.getInstance();
-    public static final IndexerSubsystem m_indexer = IndexerSubsystem.getInstance();
-    private final ClimberSubsystem m_climber = ClimberSubsystem.getInstance();
-    private final AimerSubsystem m_aimer = AimerSubsystem.getInstance();
-    private final ShooterSubsystem m_shooter = ShooterSubsystem.getInstance();
+    public static final DriveSubsystem drive = DriveSubsystem.getInstance();
+    public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
+    public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
+    public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
+    public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
+    public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
@@ -121,10 +123,10 @@ public class RobotContainer {
 
     if(Constants.Audio.isEnabled) {
 	    ArrayList<TalonFX> instrumentsAll = new ArrayList<>();
-		  for (TalonFX motor: m_drive.getMotors()) {
+		  for (TalonFX motor: drive.getMotors()) {
 			  instrumentsAll.add(motor);
 		  }
-		  // for (TalonFX motor: m_shooter.getMotors()) {
+		  // for (TalonFX motor: shooter.getMotors()) {
 			//   instrumentsAll.add(motor);
 		  // }
       // instrumentsAll.add(aimer.getMotors());
@@ -141,9 +143,9 @@ public class RobotContainer {
 
     // Set the default command that is run for the robot. Normally, this is the drive command
     if(!Constants.DriveTrain.isDisabled) {
-      m_drive.setDefaultCommand(
+      drive.setDefaultCommand(
         new drive_defaultDrive(
-          m_drive,
+          drive,
           () -> Helpers.OI.ncdeadband(-dj.getLeftY(),false),
           () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
           () -> Helpers.OI.ncdeadband(dj.getRightX(),true)
@@ -157,11 +159,11 @@ public class RobotContainer {
    */
   private void resetRobot() {
     lighting.init();
-    m_aimer.init();
-    m_climber.init();
-    m_indexer.init();
-    m_intake.init();
-    m_shooter.init();
+    aimer.init();
+    climber.init();
+    indexer.init();
+    intake.init();
+    shooter.init();
   }
 
   private void configureBindings() {
@@ -201,13 +203,13 @@ public class RobotContainer {
       Random rand = new Random(1918);
       var trf = new Transform2d(new Translation2d(rand.nextDouble() * 10 - 2, rand.nextDouble() * 8 - 2),
         new Rotation2d(rand.nextDouble() * 2 * Math.PI));
-      m_drive.resetPose(gyro.getHeading().getDegrees(), m_drive.getPose().plus(trf));
+      pose.resetPose(gyro.getHeading().getDegrees(), pose.getPose().plus(trf));
     }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
-      .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(m_drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
+      .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
-    // dj.rightTrigger().whileTrue(new drive_defLock(m_drive));
+    // dj.rightTrigger().whileTrue(new drive_defLock(drive));
     // Test the lighting system
     dj.a()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
@@ -215,20 +217,20 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    dj.rightTrigger().onTrue(m_shooter.runOnce(m_shooter::startShooter)
-        .andThen(m_aimer.runOnce(() -> m_aimer.setPosition(0.1)))
+    dj.rightTrigger().onTrue(shooter.runOnce(shooter::startShooter)
+        .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
       )
-      .onFalse(m_shooter.runOnce(m_shooter::stopShooter));
-    dj.leftTrigger().onTrue(m_indexer.runOnce(m_indexer::indexerUp))
-      .onFalse(m_indexer.runOnce(m_indexer::indexerStop));
+      .onFalse(shooter.runOnce(shooter::stopShooter));
+    dj.leftTrigger().onTrue(indexer.runOnce(indexer::indexerUp))
+      .onFalse(indexer.runOnce(indexer::indexerStop));
     dj.rightBumper()
-      .onTrue(m_intake.runOnce(m_intake::intakeAuto))
-      .onFalse(m_intake.runOnce(m_intake::intakeStop));
-    m_indexer.isFull.onTrue(m_intake.runOnce(m_intake::intakeOut)
+      .onTrue(intake.runOnce(intake::intakeAuto))
+      .onFalse(intake.runOnce(intake::intakeStop));
+    indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
         .andThen(new WaitCommand(3))
-        .andThen(m_intake.runOnce(m_intake::intakeStop))
+        .andThen(intake.runOnce(intake::intakeStop))
       )
-      .onFalse(m_intake.runOnce(m_intake::intakeIn));
+      .onFalse(intake.runOnce(intake::intakeIn));
     /** OPERATOR JOYSTICK (oj) */
 
   }
@@ -267,9 +269,9 @@ public class RobotContainer {
   public void buildAutonChooser() {
     //This builds the auton chooser, giving driver friendly names to the commands from above
     if(Constants.Auton.isDisabled) {
-      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive));
+      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
     } else {
-      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(m_drive));
+      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
     }
     //SmartDashboard.putData(m_auto_chooser); //put in the smartdash
   }
