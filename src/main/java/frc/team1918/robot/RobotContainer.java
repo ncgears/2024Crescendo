@@ -22,10 +22,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
@@ -93,6 +95,8 @@ public class RobotContainer {
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
     public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
     public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
+
+    public static Optional<Alliance> m_alliance;
 
   //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
@@ -164,6 +168,14 @@ public class RobotContainer {
     indexer.init();
     intake.init();
     shooter.init();
+  }
+
+  public static boolean isAllianceRed() {
+    m_alliance = DriverStation.getAlliance();
+    if(m_alliance.isPresent()) {
+      return m_alliance.get() == Alliance.Red;
+    }
+    return false;
   }
 
   private void configureBindings() {

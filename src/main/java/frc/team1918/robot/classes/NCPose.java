@@ -72,6 +72,10 @@ public class NCPose {
         public double getY() { return this.y; }
         public double getZ() { return this.z; }
         public double getAngle() { return this.angle; }
+        public Pose3d getPose() { return new Pose3d(
+            new Translation3d(this.x, this.y, this.z),
+            new Rotation3d(0,0,this.angle)
+        ); }
     }
 
     public NCPose() {
@@ -171,37 +175,42 @@ public class NCPose {
 
     /**
      * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
-     * @return
+     * @return the vertical angle of the target, relative to the shooter, in degrees
      */
 	public double getAngleOfTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
 			.transformBy(Constants.Shooter.kRobotToShooter);
-		
-		//center of blue speaker, at 6'8.5" up, 9in forward from wall
-		Pose3d targetPose = new Pose3d(
-			new Translation3d(target.getX(), target.getY(), target.getZ()),new Rotation3d()
-		); 
-		
+        Pose3d targetPose = mirrorPoseIfRed(target.getPose());
 		var shooterToTarget = shooterPose.minus(targetPose);
 		var targetAngle = Math.atan(shooterToTarget.getZ()) / (shooterToTarget.getX()); // arctan(height / distance) = radians
 		return Math.toDegrees(targetAngle); //change radians to degrees
 	}
 
     /**
-     * getHeadingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
-     * @return
+     * getBearingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
+     * @return the bearing (heading) of the target, relative to the shooter, in degrees
      */
-	public double getHeadingOfTarget(Targets target) {
+	public double getBearingOfTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter);
-		
-		//center of blue speaker, at 6'8.5" up, 9in forward from wall
-		Pose3d targetPose = new Pose3d(
-			new Translation3d(target.getX(), target.getY(), target.getZ()),new Rotation3d()
-		); 
-		
-		Transform3d shooterToTarget = shooterPose.minus(targetPose);
-		double targetHeading = shooterToTarget.getRotation().getZ(); //radians
-		return Math.toDegrees(targetHeading); //change radians to degrees
+			.transformBy(Constants.Shooter.kRobotToShooter); //pose of the shooter
+		Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
+		Transform3d shooterToTarget = shooterPose.minus(targetPose); //delta from shooter to target
+		double targetBearing = shooterToTarget.getRotation().getZ(); //radians
+		return Math.toDegrees(targetBearing); //change radians to degrees
 	}
+
+    public Pose3d mirrorPoseIfRed(Pose3d bluePose) {
+        if(!RobotContainer.isAllianceRed()) return bluePose; //Only transform if we are red
+        //this is wrong, I don't want to lose the Z information in the pose3d
+        //if I convert to pose2d to flip it based on the field length, how do I get
+        //it back to a pose3d at the end?
+        Pose2d bluePose2d = bluePose.toPose2d();
+        Pose3d newPose = new Pose3d(new Pose2d(
+            16.54175 - bluePose2d.getX(),
+            bluePose2d.getY(),
+            Rotation2d.fromRadians(Math.PI - bluePose2d.getRotation().getRadians())
+            )
+        ); //pose3d is created, but Z info is gone now...
+        return newPose;
+    }
 }
