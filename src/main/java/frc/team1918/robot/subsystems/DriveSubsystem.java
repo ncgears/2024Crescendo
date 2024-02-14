@@ -180,7 +180,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public void lockHeading() {
 		//getHeading().getDegrees()
-		target_heading = MathUtil.inputModulus(getHeading().getDegrees(), -180.0, 180.0);
+		// target_heading = MathUtil.inputModulus(getHeading().getDegrees(), -180.0, 180.0);
+		target_heading = RobotContainer.gyro.getYaw();
 		heading_locked = true;
 	}
 

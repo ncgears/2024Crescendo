@@ -64,8 +64,12 @@ public class drive_defaultDrive extends Command {
       }
       if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
         if(Constants.DriveTrain.thetaController.isEnabled) {
-          // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(),m_drive.target_heading);
-          m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(), m_drive.getTargetHeading());
+          //old
+          // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(),m_drive.getTargetHeading());
+          // m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getHeading().getDegrees(), m_drive.getTargetHeading());
+          //new
+          // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTargetHeading());
+          m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTargetHeading());
         }
       }
       //adjust rotation by multiplier, different if moving vs stationary

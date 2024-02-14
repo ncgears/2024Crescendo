@@ -99,7 +99,7 @@ public class Gyro implements Sendable {
 
    	/**
      * Returns the yaw/heading of the robot.
-     * @return the robot's yaw as a double in degrees
+     * @return the robot's yaw as a double in degrees, from -180 to 180
      */
 	public double getYaw() {
 		return m_gyro.getYaw();

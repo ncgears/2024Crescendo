@@ -21,6 +21,58 @@ import frc.team1918.robot.RobotContainer;
 public class NCPose {
 	private static NCPose instance;
 	private SwerveDrivePoseEstimator poseEstimator;
+/**
+ * April tag positions, in inches
+ * ID	X	Y	Z	Rotation
+ * 1	593.68	9.68	53.38	120
+ * 2	637.21	34.79	53.38	120
+ * 3	652.73	196.17	57.13	180
+ * 4	652.73	218.42	57.13	180
+ * 5	578.77	323.00	53.38	270
+ * 6	72.5	323.00	53.38	270
+ * 7	-1.50	218.42	57.13	0
+ * 8	-1.50	196.17	57.13	0
+ * 9	14.02	34.79	53.38	60
+ * 10	57.54	9.68	53.38	60
+ * 11	468.69	146.19	52.00	300
+ * 12	468.69	177.10	52.00	60
+ * 13	441.74	161.62	52.00	180
+ * 14	209.48	161.62	52.00	0
+ * 15	182.73	177.10	52.00	120
+ * 16	182.73	146.19	52.00	240
+ * April tag positions, in meters
+ * ID	X	        Y	        Z	        Rotation    Name
+ * 1	15.079472	0.245872	1.355852	120         Blue Source Right
+ * 2	16.185134	0.883666	1.355852	120         Blue Source Left
+ * 3	16.579342	4.982718	1.451102	180         Red Speaker Right
+ * 4	16.579342	5.547868	1.451102	180         Red Speaker Center
+ * 5	14.700758	8.2042  	1.355852	270         Red Amp Center
+ * 6	1.8415  	8.2042	    1.355852	270         Blue Amp Center
+ * 7	-0.0381 	5.547868	1.451102	0           Blue Speaker Center
+ * 8	-0.0381 	4.982718	1.451102	0           Blue Speaker Left
+ * 9	0.356108	0.883666	1.355852	60          Red Source Right
+ * 10	1.461516	0.245872	1.355852	60          Red Source Left
+ * 11	11.904726	3.713226	1.3208	    300         Red Trap South (left)
+ * 12	11.904726	4.49834	    1.3208	    60          Red Trap North (right)
+ * 13	11.220196	4.105148	1.3208	    180         Red Trap Center
+ * 14	5.320792	4.105148	1.3208	    0           Blue Trap Center
+ * 15	4.641342	4.49834 	1.3208	    120         Blue Trap North (left)
+ * 16	4.641342	3.713226	1.3208  	240         Blue Trap South (right)
+ */
+    public enum Targets { //based on blue origin 0,0 (bottom left) field coordinates, North-East-Up
+        SOURCE(0,0,0,120),
+        AMP(1.8415,8.2042,0.889,270),
+        SPEAKER(0.23,5.547868,2.0447,0),
+        STAGE_NORTH(0,0,0,120),
+        STAGE_SOUTH(0,0,0,240),
+        STAGE_CENTER(0,0,0,0);
+        private final double x,y,z,angle;
+        Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
+        public double getX() { return this.x; }
+        public double getY() { return this.y; }
+        public double getZ() { return this.z; }
+        public double getAngle() { return this.angle; }
+    }
 
     public NCPose() {
 		//Initialize the pose estimator
@@ -46,7 +98,13 @@ public class NCPose {
 			instance = new NCPose();
 		return instance;
 	}
-    
+
+    //TODO: method to translate coordinates to red alliance
+    //See: https://github.com/frc6995/Robot-2024/blob/main/src/main/java/frc/robot/util/NomadMathUtil.java
+    public double translateToRed(double x) {
+        return 0.0;
+    }
+
 	/**
 	 * Returns the currently-estimated pose of the robot.
 	 * @return The pose.
@@ -115,13 +173,13 @@ public class NCPose {
      * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
      * @return
      */
-	public double getAngleOfTarget() { //TODO: take in enum of targets, move this to its own helper class
+	public double getAngleOfTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
 			.transformBy(Constants.Shooter.kRobotToShooter);
 		
 		//center of blue speaker, at 6'8.5" up, 9in forward from wall
 		Pose3d targetPose = new Pose3d(
-			new Translation3d(8.078467, 1.442593, 2.0447),new Rotation3d()
+			new Translation3d(target.getX(), target.getY(), target.getZ()),new Rotation3d()
 		); 
 		
 		var shooterToTarget = shooterPose.minus(targetPose);
@@ -133,13 +191,13 @@ public class NCPose {
      * getHeadingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
      * @return
      */
-	public double getHeadingOfTarget() {
+	public double getHeadingOfTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
 			.transformBy(Constants.Shooter.kRobotToShooter);
 		
 		//center of blue speaker, at 6'8.5" up, 9in forward from wall
 		Pose3d targetPose = new Pose3d(
-			new Translation3d(8.078467, 1.442593, 2.0447),new Rotation3d()
+			new Translation3d(target.getX(), target.getY(), target.getZ()),new Rotation3d()
 		); 
 		
 		Transform3d shooterToTarget = shooterPose.minus(targetPose);

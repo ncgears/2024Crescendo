@@ -58,6 +58,9 @@ public class Robot extends TimedRobot {
     LiveWindow.disableAllTelemetry();
     // LiveWindow.enableAllTelemetry();
 
+    //Attempt to get alliance - This can change, so we also get this during periodic
+    m_alliance = DriverStation.getAlliance();
+
     //Silence Joystick Warnings
     DriverStation.silenceJoystickConnectionWarning(true);
 
@@ -128,6 +131,7 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+    m_alliance = DriverStation.getAlliance();
     CommandScheduler.getInstance().run();
   }
 
