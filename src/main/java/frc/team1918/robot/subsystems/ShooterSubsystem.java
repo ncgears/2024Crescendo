@@ -4,7 +4,6 @@ package frc.team1918.robot.subsystems;
 import java.util.Map;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -67,7 +66,9 @@ public class ShooterSubsystem extends SubsystemBase {
     if(!status2.isOK()) {
       Helpers.Debug.debug("Could not initialize shooter motor2, error: " + status2.toString());
     }
-    m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
+    m_motor2.setInverted(Constants.Shooter.Bottom.kIsInverted);
+    // Dont use a follower for disconnected mechanical systems
+    // m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
 
     init();
     createDashboards();
@@ -154,9 +155,11 @@ public class ShooterSubsystem extends SubsystemBase {
     if(speed == 0.0) {
       Helpers.Debug.debug("Shooter Target RPS: 0.0");
       m_motor1.setControl(m_brake);
+      m_motor2.setControl(m_brake);
     } else {
       Helpers.Debug.debug("Shooter Target RPS: " + Helpers.General.roundDouble(speed, 2));
       m_motor1.setControl(m_voltageVelocity.withVelocity(speed));
+      m_motor2.setControl(m_voltageVelocity.withVelocity(speed));
     }
   }
 
@@ -164,6 +167,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // target_speed = 0.0;
     // if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
     m_motor1.setControl(m_brake);
+    m_motor2.setControl(m_brake);
     Helpers.Debug.debug("Shooter: Stop");
   }
 
