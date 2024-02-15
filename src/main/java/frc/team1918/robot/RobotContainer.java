@@ -27,6 +27,7 @@ import java.util.Random;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -83,13 +84,10 @@ public class RobotContainer {
     public static final Lighting lighting = Lighting.getInstance();
     public static final Gyro gyro = Gyro.getInstance();
     public static final Vision vision = Vision.getInstance();
-    public static final NCPose pose = NCPose.getInstance();
+    public static final DriveSubsystem drive = DriveSubsystem.getInstance(); //must be after gyro
+    public static final NCPose pose = NCPose.getInstance(); //must be after drive
     private final NCOrchestra m_orchestra = NCOrchestra.getInstance();
-
-  //subsystems definitions
-    // private final PowerDistribution m_pdp = new PowerDistribution();
-    // private final Compressor m_air = new Compressor(PneumaticsModuleType.CTREPCM);
-    public static final DriveSubsystem drive = DriveSubsystem.getInstance();
+    // private final PowerDistribution pdh = new PowerDistribution();
     public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
     public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
@@ -230,19 +228,28 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    dj.rightTrigger()
+    dj.leftTrigger()
       .onTrue(shooter.runOnce(shooter::startShooter))
       //   .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
       // )
       .onFalse(shooter.runOnce(shooter::stopShooter));
-    dj.leftTrigger().and(shooter.isReady)
+    dj.rightTrigger().and(shooter.isReady)
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
-    dj.rightBumper()
+    dj.leftBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
       .onFalse(intake.runOnce(intake::intakeStop));
 
     /** OPERATOR JOYSTICK (oj) */
+    oj.leftTrigger()
+      .onTrue(shooter.runOnce(shooter::startShooter))
+      .onFalse(shooter.runOnce(shooter::stopShooter));
+    oj.rightTrigger().and(shooter.isReady)
+      .onTrue(indexer.runOnce(indexer::indexerUp))
+      .onFalse(indexer.runOnce(indexer::indexerStop));
+    oj.leftBumper()
+      .onTrue(intake.runOnce(intake::intakeAuto))
+      .onFalse(intake.runOnce(intake::intakeStop));
 
     /** AUTONOMOUS ACTIONS */
     //run the indexer if it's not full. This should also be combined with a location based trigger
