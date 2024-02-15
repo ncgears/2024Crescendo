@@ -1,0 +1,14 @@
+Driver Joystick:
+    - Google: Toggle Music (disabled mode only)
+    - [DEBUG] Stadia: Add random pose data (for testing vision correction)
+    - Hamburger: Reset Odometry
+    - [DEBUG] A: Blue Light (testing lighting)
+    - [DEBUG] B: Green Light (testing lighting)
+    - Left Trigger: Spin up shooter (while held)
+    - Right Trigger (if shooter ready): Advance indexer (while held)
+    - Left Bumper: Intake (while held)
+    
+Operator Joystick:
+    - Left Trigger: Spin up shooter (while held)
+    - Right Trigger (if shooter ready): Advance indexer (while held)
+    - Left Bumper: Intake (while held)
