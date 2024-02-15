@@ -12,7 +12,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -197,10 +196,10 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param heading The current heading of the robot to offset the zero position
 	 * @param pose The pose to which to set the odometry.
 	 */
-	public void resetOdometry(double heading, Pose2d pose) {
+	public void resetOdometry() { //double heading, Pose2d pose
 		RobotContainer.gyro.zeroHeading();
-		RobotContainer.gyro.setYawOffset(heading);
-		// m_odometry.resetPosition(Rotation2d.fromDegrees(heading), getSwerveModulePositions(), pose);
+		RobotContainer.gyro.setYawOffset(RobotContainer.isAllianceRed() ? 180 : 0); //set offset to 180 if red
+		// RobotContainer.gyro.setYawOffset(heading);
 	}
 
 	public void updateSim() {
