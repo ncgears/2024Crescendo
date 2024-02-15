@@ -60,21 +60,21 @@ public class NCPose {
  * 16	4.641342	3.713226	1.3208  	240         Blue Trap South (right)
  */
     public enum Targets { //based on blue origin 0,0 (bottom left) field coordinates, North-East-Up
-        SOURCE(0,0,0,120),
-        AMP(1.8415,8.2042,0.889,270),
-        SPEAKER(0.23,5.547868,2.0447,0),
-        STAGE_NORTH(0,0,0,120),
-        STAGE_SOUTH(0,0,0,240),
-        STAGE_CENTER(0,0,0,0);
+        SOURCE(0,0,0,120),  //TODO: determine positions
+        AMP(1.8415,8.2042,0.889,-90), 
+        SPEAKER(0.23,5.547868,2.0447,180),
+        STAGE_NORTH(0,0,0,-60),
+        STAGE_SOUTH(0,0,0,60),
+        STAGE_CENTER(0,0,0,180);
         private final double x,y,z,angle;
         Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
-        public double getX() { return this.x; }
-        public double getY() { return this.y; }
-        public double getZ() { return this.z; }
-        public double getAngle() { return this.angle; }
         public Pose3d getPose() { return new Pose3d(
             new Translation3d(this.x, this.y, this.z),
-            new Rotation3d(0,0,this.angle)
+            new Rotation3d(0,0,Math.toRadians(this.angle))
+        ); }
+        public Pose3d getMirrorPose() { return new Pose3d(
+            new Translation3d(16.54175 - this.x, this.y, this.z), //field is 16.54175 meters
+            new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
         ); }
     }
 
@@ -174,7 +174,8 @@ public class NCPose {
 	public double getAngleOfTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
 			.transformBy(Constants.Shooter.kRobotToShooter);
-        Pose3d targetPose = mirrorPoseIfRed(target.getPose());
+		// Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
+        Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
 		var shooterToTarget = shooterPose.minus(targetPose);
 		var targetAngle = Math.atan(shooterToTarget.getZ()) / (shooterToTarget.getX()); // arctan(height / distance) = radians
 		return Math.toDegrees(targetAngle); //change radians to degrees
@@ -187,24 +188,10 @@ public class NCPose {
 	public double getBearingOfTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
 			.transformBy(Constants.Shooter.kRobotToShooter); //pose of the shooter
-		Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
+		// Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
+        Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
 		Transform3d shooterToTarget = shooterPose.minus(targetPose); //delta from shooter to target
 		double targetBearing = shooterToTarget.getRotation().getZ(); //radians
 		return Math.toDegrees(targetBearing); //change radians to degrees
 	}
-
-    public Pose3d mirrorPoseIfRed(Pose3d bluePose) {
-        if(!RobotContainer.isAllianceRed()) return bluePose; //Only transform if we are red
-        //this is wrong, I don't want to lose the Z information in the pose3d
-        //if I convert to pose2d to flip it based on the field length, how do I get
-        //it back to a pose3d at the end?
-        Pose2d bluePose2d = bluePose.toPose2d();
-        Pose3d newPose = new Pose3d(new Pose2d(
-            16.54175 - bluePose2d.getX(),
-            bluePose2d.getY(),
-            Rotation2d.fromRadians(Math.PI - bluePose2d.getRotation().getRadians())
-            )
-        ); //pose3d is created, but Z info is gone now...
-        return newPose;
-    }
 }
