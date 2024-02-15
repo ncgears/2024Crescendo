@@ -24,7 +24,7 @@ public class cg_autonDoNothing extends SequentialCommandGroup {
         //setup the odometry in a starting position from the center of the field (negative is right/back)
         //rotation is the initial rotation of the robot from the downstream direction
         new helpers_debugMessage("Auton: ### Do Nothing ###"),
-        new cg_SetOdom180(m_drive),
+        // new cg_SetOdom180(m_drive),
         new cg_Wait(0.5),
         new helpers_debugMessage("Auton: Done with auton")
     );
