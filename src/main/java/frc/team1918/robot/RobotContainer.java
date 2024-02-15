@@ -219,7 +219,8 @@ public class RobotContainer {
     }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
-      .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
+      .onTrue(drive.runOnce(drive::resetDistances).andThen(drive::resetOdometry));
+      // .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
     // Test the lighting system
@@ -229,21 +230,27 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    dj.rightTrigger().onTrue(shooter.runOnce(shooter::startShooter)
-        .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
-      )
+    dj.rightTrigger()
+      .onTrue(shooter.runOnce(shooter::startShooter))
+      //   .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
+      // )
       .onFalse(shooter.runOnce(shooter::stopShooter));
-    dj.leftTrigger().and(shooter.isReady).onTrue(indexer.runOnce(indexer::indexerUp))
+    dj.leftTrigger().and(shooter.isReady)
+      .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
     dj.rightBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
       .onFalse(intake.runOnce(intake::intakeStop));
+
+    /** OPERATOR JOYSTICK (oj) */
+
+    /** AUTONOMOUS ACTIONS */
+    //run the indexer if it's not full. This should also be combined with a location based trigger
     indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
         .andThen(new WaitCommand(3))
         .andThen(intake.runOnce(intake::intakeStop))
       )
       .onFalse(intake.runOnce(intake::intakeIn));
-    /** OPERATOR JOYSTICK (oj) */
 
   }
 
