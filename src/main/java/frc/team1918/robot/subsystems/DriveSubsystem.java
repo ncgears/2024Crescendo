@@ -233,19 +233,19 @@ public class DriveSubsystem extends SubsystemBase {
         return motorVoltage;
     }
 
-	/**
-	 * Method to drive the robot using percentages of max speeds (from -1.0 to 1.0)
-	 * @param xPercent Speed of the robot in the x direction (forward).
-	 * @param yPercent Speed of the robot in the y direction (sideways).
-	 * @param rotPercent Angular rate of the robot.
-	 * @param fieldRelative Whether the provided x and y speeds are relative to the field.
-	 */
-	public void drivePercentage(double xPercent, double yPercent, double rotPercent, boolean fieldRelative) {
-		double xSpeed = -xPercent * Constants.DriveTrain.kMaxMetersPerSecond;
-		double ySpeed = -yPercent * Constants.DriveTrain.kMaxMetersPerSecond;
-		double rot = rotPercent * Constants.DriveTrain.kMaxRotationRadiansPerSecond;
-		drive(xSpeed, ySpeed, rot, fieldRelative);
-	}
+	// /**
+	//  * Method to drive the robot using percentages of max speeds (from -1.0 to 1.0)
+	//  * @param xPercent Speed of the robot in the x direction (forward).
+	//  * @param yPercent Speed of the robot in the y direction (sideways).
+	//  * @param rotPercent Angular rate of the robot.
+	//  * @param fieldRelative Whether the provided x and y speeds are relative to the field.
+	//  */
+	// public void drivePercentage(double xPercent, double yPercent, double rotPercent, boolean fieldRelative) {
+	// 	double xSpeed = -xPercent * Constants.DriveTrain.kMaxMetersPerSecond;
+	// 	double ySpeed = -yPercent * Constants.DriveTrain.kMaxMetersPerSecond;
+	// 	double rot = rotPercent * Constants.DriveTrain.kMaxRotationRadiansPerSecond;
+	// 	drive(xSpeed, ySpeed, rot, fieldRelative);
+	// }
 
 	/**
 	 * Method to drive the robot using calculated speed info.
