@@ -149,7 +149,7 @@ public class RobotContainer {
         new drive_defaultDrive(
           drive,
           () -> Helpers.OI.ncdeadband(-dj.getLeftY(),false),
-          () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
+          () -> Helpers.OI.ncdeadband(-dj.getLeftX(),false),
           () -> Helpers.OI.ncdeadband(dj.getRightX(),true)
         )
       );

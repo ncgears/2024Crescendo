@@ -102,7 +102,8 @@ public class Gyro implements Sendable {
      * @return the robot's yaw as a double in degrees, from -180 to 180
      */
 	public double getYaw() {
-		return m_gyro.getYaw();
+		// return m_gyro.getYaw();
+		return m_gyro.getYaw() * (Constants.Gyro.kGyroReversed ? -1.0 : 1.0); //invert to CCW Positive
 	}
 
    	/**
