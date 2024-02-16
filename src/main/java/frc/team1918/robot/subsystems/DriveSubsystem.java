@@ -263,7 +263,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void drivePercentage(double xPercent, double yPercent, double rotPercent, boolean fieldRelative) {
 		double invert = (RobotContainer.isAllianceRed()) ? -1 : 1; //invert if red
-		double xSpeed = invert * xPercent * Constants.DriveTrain.kMaxMetersPerSecond; //positive is away
+		double xSpeed = invert * -xPercent * Constants.DriveTrain.kMaxMetersPerSecond; //positive is away
 		double ySpeed = invert * yPercent * Constants.DriveTrain.kMaxMetersPerSecond; //positive is left
 		double rot = rotPercent * Constants.DriveTrain.kMaxRotationRadiansPerSecond;
 		drive(xSpeed, ySpeed, rot, fieldRelative);
