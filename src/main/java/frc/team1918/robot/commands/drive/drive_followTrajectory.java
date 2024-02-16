@@ -69,8 +69,8 @@ public class drive_followTrajectory extends Command {
     double vy = m_yController.calculate(currentPose.getY(), dt) + refState.velocity.y;
     double omega = -m_thetaController.calculate(currentPose.getRotation().getRadians(), dt) - refState.velocity.z;
 
-    // m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, m_drive.getHeading().minus(m_offset)), true);
-    m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, RobotContainer.gyro.getHeading()), true);
+    // m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, m_drive.getHeading().minus(m_offset)));
+    m_drive.driveRelative(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, RobotContainer.gyro.getHeading()));
     m_lastTime = time;
   }
 

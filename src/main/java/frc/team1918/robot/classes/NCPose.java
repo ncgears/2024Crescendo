@@ -120,6 +120,15 @@ public class NCPose {
 	public void resetPose(double heading, Pose2d pose) {
 		poseEstimator.resetPosition(Rotation2d.fromDegrees(heading), RobotContainer.drive.getSwerveModulePositions(), pose);
 	}
+	/**
+     * Reset the estimated pose of the swerve drive on the field.
+     *
+	 * @param heading Heading to reset robot to (for configuring a yaw offset)
+     * @param pose New robot pose.
+     */
+	public void resetPose(Pose2d pose) {
+		poseEstimator.resetPosition(Rotation2d.fromDegrees(RobotContainer.gyro.getYaw()), RobotContainer.drive.getSwerveModulePositions(), pose);
+	}
 
 	/**
 	 * Updates the bot pose based on feedback from the drivetrain. This should be done in every periodic loop.

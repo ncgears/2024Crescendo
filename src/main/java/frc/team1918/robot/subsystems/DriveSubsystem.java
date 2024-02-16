@@ -10,8 +10,14 @@ import java.util.ArrayList;
 import java.util.Map;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -57,6 +63,22 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public DriveSubsystem() { //initialize the class
 		fieldSim = new Field2d();
+
+		AutoBuilder.configureHolonomic(
+		this::getPose, // Robot pose supplier
+		this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+		this::getSpeeds,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+		this::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+		new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+			new PIDConstants(Constants.Auton.kPTranslationController, 0.0, 0.0), // Translation PID constants
+			new PIDConstants(Constants.Auton.kPThetaController, 0.0, 0.0), // Rotation PID constants
+			4, // Max module speed, in m/s
+			Units.inchesToMeters(Math.max(Constants.Global.kWheelbaseLength / 2, Constants.Global.kWheelbaseWidth / 2)), // Drive base radius in meters. Distance from robot center to furthest module. 
+			new ReplanningConfig() // Default path replanning config. See the API for the options here
+		),
+		() -> { return RobotContainer.isAllianceRed(); },
+		this // Reference to this subsystem to set requirements
+		);
 
 		// m_targetPose = m_odometry.getPoseMeters();
 		// m_thetaController.reset();
@@ -153,17 +175,16 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 	}
 
-	public SwerveModulePosition[] getSwerveModulePositions() {
-		return new SwerveModulePosition[] {
-            m_frontLeft.getPosition(),
-            m_frontRight.getPosition(),
-            m_backLeft.getPosition(),
-            m_backRight.getPosition()
-		};
-	}
-
 	public Rotation2d getHeading() {
 		return RobotContainer.pose.getPose().getRotation();
+	}
+
+	public Pose2d getPose() {
+		return RobotContainer.pose.getPose();
+	}
+
+	public void resetPose(Pose2d pose) {
+		RobotContainer.pose.resetPose(pose);
 	}
 
 	public double getHeadingError() {
@@ -215,7 +236,7 @@ public class DriveSubsystem extends SubsystemBase {
 		}
 	}
 
-	    /**
+	/**
      * Applies the effects of friction to dampen the motor voltage.
      *
      * @param motorVoltage Voltage output by the motor
@@ -262,7 +283,7 @@ public class DriveSubsystem extends SubsystemBase {
 				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, RobotContainer.gyro.getHeading()) 
 				: new ChassisSpeeds(xSpeed, ySpeed, rot),
 			Robot.kDefaultPeriod);
-			drive(speeds,true);
+			driveRelative(speeds);
 	}
 	/**
 	 * Method to drive the robot using calculated speed info.
@@ -270,13 +291,12 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param normalize Boolean value indicating whether the speeds should be normalized such that none of them are over 100%
 	 */
 	@SuppressWarnings("unused")
-	public void drive(ChassisSpeeds speeds, boolean normalize) {
+	public void driveRelative(ChassisSpeeds speeds) {
 		if (Constants.DriveTrain.useBrakeWhenStopped && (speeds.vxMetersPerSecond == 0 && speeds.vyMetersPerSecond == 0 && speeds.omegaRadiansPerSecond == 0)) {
 			brake(false);
 		}
 		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
-		if (normalize) SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
-		// setModuleStates(swerveModuleStates);
+		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
 		if(!Constants.Swerve.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
 		if(!Constants.Swerve.FR.isDisabled) m_frontRight.setDesiredState(swerveModuleStates[1]);
 		if(!Constants.Swerve.BL.isDisabled) m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -295,6 +315,38 @@ public class DriveSubsystem extends SubsystemBase {
 				module.setDesiredState(new SwerveModuleState(0, module.getState().angle));
 			}
 		}
+	}
+
+	public SwerveModulePosition[] getSwerveModulePositions() {
+		// SwerveModulePosition[] positions = new SwerveModulePosition[4];
+		// for (SwerveModule module: modules) {
+		// 	positions[module.ID]=module.getPosition();
+		// }
+		// return positions;
+		return new SwerveModulePosition[] {
+            m_frontLeft.getPosition(),
+            m_frontRight.getPosition(),
+            m_backLeft.getPosition(),
+            m_backRight.getPosition()
+		};
+	}
+
+	public ChassisSpeeds getSpeeds() {
+		return Constants.Swerve.kDriveKinematics.toChassisSpeeds(getModuleStates());
+	}
+
+	public SwerveModuleState[] getModuleStates() {
+		// SwerveModuleState[] states = new SwerveModuleState[4];
+		// for (SwerveModule module: modules) {
+		// 	module.getState();
+		// }
+		// return states;
+		return new SwerveModuleState[] {
+			m_frontLeft.getState(),
+			m_frontRight.getState(),
+			m_backLeft.getState(),
+			m_backRight.getState()
+		};
 	}
 
 	/**
