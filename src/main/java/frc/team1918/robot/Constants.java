@@ -37,6 +37,7 @@ public class Constants {
          */
         public static final class DIO {
             //public static int some_named_dio = 0;
+            public static int indexer_beambreak = 0;
         }
         /**
          * IDs of RoboRio Analog IO
@@ -219,6 +220,7 @@ public class Constants {
         public static final boolean kIsInverted = false;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
         public static final double kSpeed = 0.9;
+        public static final int kBeamBreakID = ID.DIO.indexer_beambreak;
     }
     
     /**

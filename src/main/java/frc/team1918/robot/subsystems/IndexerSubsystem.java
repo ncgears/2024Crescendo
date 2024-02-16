@@ -4,6 +4,7 @@ package frc.team1918.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -30,6 +31,7 @@ public class IndexerSubsystem extends SubsystemBase {
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
   private boolean m_hasnote = false;
+  private DigitalInput m_beambreak = new DigitalInput(Constants.Indexer.kBeamBreakID);
   
   /**
 	 * Returns the instance of the IndexerSubsystem subsystem.
@@ -137,7 +139,12 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public boolean hasNote() {
-    return m_hasnote; //TODO: couple to sensor to detect note
+    return m_hasnote; //TODO: switch to beambreak
+    // return getBeamBreak();
+  }
+
+  private boolean getBeamBreak() {
+    return !m_beambreak.get();
   }
 
   private void toggleFull() {
