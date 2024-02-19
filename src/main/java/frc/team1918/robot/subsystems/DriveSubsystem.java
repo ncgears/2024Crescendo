@@ -328,7 +328,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public SwerveModuleState[] getModuleStates() {
 		// SwerveModuleState[] states = new SwerveModuleState[4];
 		// for (SwerveModule module: modules) {
-		// 	module.getState();
+		// 	states[module.ID] = module.getState();
 		// }
 		// return states;
 		return new SwerveModuleState[] {
