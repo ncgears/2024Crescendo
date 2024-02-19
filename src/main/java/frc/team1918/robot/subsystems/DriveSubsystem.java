@@ -79,13 +79,6 @@ public class DriveSubsystem extends SubsystemBase {
 		() -> { return RobotContainer.isAllianceRed(); },
 		this // Reference to this subsystem to set requirements
 		);
-
-		// m_targetPose = m_odometry.getPoseMeters();
-		// m_thetaController.reset();
-		// m_thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-		//Add this sendable to the Dashboard
-		//SmartDashboard.putData("Swerve Drive", this);
 		createDashboards();
 	}
 
@@ -189,13 +182,10 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public double getHeadingError() {
 		double error = target_heading - getHeading().getDegrees();
-		// error = MathUtil.inputModulus(error, -180.0, 180.0);
 		return error;
 	}
 
 	public void lockHeading() {
-		//getHeading().getDegrees()
-		// target_heading = MathUtil.inputModulus(getHeading().getDegrees(), -180.0, 180.0);
 		target_heading = RobotContainer.gyro.getYaw();
 		heading_locked = true;
 	}
@@ -355,7 +345,6 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
 		SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
-		// SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
 		m_frontLeft.setDesiredState(desiredStates[0]);
 		m_frontRight.setDesiredState(desiredStates[1]);
 		m_backLeft.setDesiredState(desiredStates[2]);
