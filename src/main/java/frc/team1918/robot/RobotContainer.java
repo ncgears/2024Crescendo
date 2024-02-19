@@ -9,6 +9,7 @@ package frc.team1918.robot;
 
 //Global imports
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -290,7 +291,7 @@ public class RobotContainer {
     //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
     buildAutonChooser();
     buildDriverTab();
-    buildPowerTab();
+    buildSystemTab();
     gyro.buildDashboards();
   }
 
@@ -330,10 +331,12 @@ public class RobotContainer {
     //   .withWidget("Camera Stream");
   }
 
-  private void buildPowerTab(){ //This is where we add maintenance commands
-    ShuffleboardTab powerTab = Shuffleboard.getTab("DBG:Power");
-    powerTab.add("Power", pdh)
-        .withPosition(0, 0);
-        // .withSize(1, 1);
+  private void buildSystemTab(){ //This is where we add maintenance commands
+    ShuffleboardTab systemTab = Shuffleboard.getTab("DBG:System");
+    systemTab.add("Power", pdh)
+      .withPosition(0, 0);
+      // .withSize(1, 1);
+    systemTab.add("Command Scheduler", CommandScheduler.getInstance())
+      .withPosition(6,0);      
   }
 }
