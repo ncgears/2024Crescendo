@@ -4,6 +4,7 @@ package frc.team1918.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -27,8 +28,21 @@ public class ClimberSubsystem extends SubsystemBase {
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
+  public enum LatchPosition {
+    OUT(0,0,"#00FF00"), //TODO set positions
+    IN(90,90,"#FF0000"); //TODO set positions
+    private final int left,right;
+    private final String color;
+    LatchPosition(int left, int right, String color) { this.left=left; this.right=right; this.color=color; }
+    public int getLeft() { return this.left; }
+    public int getRight() { return this.right; }
+    public String getColor() { return this.color; }
+  }
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
+  private LatchPosition m_curLatchPosition = LatchPosition.OUT;
+  private Servo m_leftServo = new Servo(Constants.Climber.kLeftServoID);
+  private Servo m_rightServo = new Servo(Constants.Climber.kRightServoID);
   
   /**
 	 * Returns the instance of the ClimberSubsystem subsystem.
@@ -56,14 +70,13 @@ public class ClimberSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
-    m_motor1.set(ControlMode.PercentOutput,0);
-    m_curState = State.STOP;
+    climberStop();
+    setLatchOut();
     Helpers.Debug.debug("Climber: Initialized");
   }
   
   @Override
   public void periodic() {
-    // updateState();
   }
 
   // @Override
@@ -77,19 +90,23 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
-    driverTab.addString("Climber", this::getColor)
+    driverTab.addString("Climber", this::getStateColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(16, 7);  
 		if(Constants.Climber.debugDashboard) {
       ShuffleboardTab climberTab = Shuffleboard.getTab("DBG:Climber");
-      climberTab.addString("Climber", this::getColor)
+      climberTab.addString("Climber", this::getStateColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
       climberTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
+        .withWidget("Text Display");
+      climberTab.addNumber("Position", this::getPosition)
+        .withSize(2,2)
+        .withPosition(6,0)
         .withWidget("Text Display");
       climberTab.add("Climber Up", new InstantCommand(this::climberUp))
         .withSize(4, 2)
@@ -103,9 +120,55 @@ public class ClimberSubsystem extends SubsystemBase {
       climberTab.add("Climber Stop", new InstantCommand(this::climberStop))
         .withSize(4, 2)
         .withPosition(12, 2);  
+      climberTab.addString("Latch", this::getLatchColor)
+        .withSize(2, 2)
+        .withPosition(0, 4)  
+        .withWidget("Single Color View");
+      climberTab.addString("Latch Pos", this::getLatchPostionName)
+        .withSize(2,2)
+        .withPosition(2,4)
+        .withWidget("Text Display");
+      climberTab.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); })
+        .withSize(2,2)
+        .withPosition(4,4)
+        .withWidget("Text Display");
+      climberTab.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); })
+        .withSize(2,2)
+        .withPosition(6,4)
+        .withWidget("Text Display");
+      climberTab.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(0,6);  
+      climberTab.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(4, 6);  
     }
   }
 
+  public State getState() { return m_curState; }
+  public String getStateName() { return m_curState.toString(); }
+  public String getStateColor() { return m_curState.getColor(); }
+  public LatchPosition getLatchPosition() { return m_curLatchPosition; }
+  public String getLatchPostionName() { return m_curLatchPosition.toString(); }
+  public String getLatchColor() { return m_curLatchPosition.getColor(); }
+
+  private void setLatchPosition(LatchPosition pos) {
+    m_curLatchPosition = pos;
+    m_leftServo.setAngle(pos.getLeft());
+    m_rightServo.setAngle(pos.getRight());
+  }
+  public void setLatchOut() {
+    setLatchPosition(LatchPosition.OUT);
+    Helpers.Debug.debug("Climber: Latch Out");
+  }
+  public void setLatchIn() {
+    setLatchPosition(LatchPosition.IN);
+    Helpers.Debug.debug("Climber: Latch In");
+  }
+
+  public double getPosition() {
+    return 0.0; //TODO: position of climber
+  }
   /**
    * Sets the speed of the Climber
    * @param speed The speed of the Climber in percentage (-1.0 to 1.0)
@@ -113,15 +176,6 @@ public class ClimberSubsystem extends SubsystemBase {
   public void setSpeedPercent(double speed) {
     m_motor1.set(ControlMode.PercentOutput, speed);
   }
-
-  public State getState() { return m_curState; }
-  public String getStateName() { return m_curState.toString(); }
-  public String getColor() { return m_curState.getColor(); }
-
-  public void updateState() {
-    
-  }
-
   public void climberUp() {
     m_curState = State.UP;
     Helpers.Debug.debug("Climber: Up");
@@ -135,6 +189,7 @@ public class ClimberSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Climber: Hold");
   }
   public void climberStop() {
+    m_motor1.set(ControlMode.PercentOutput,0);
     m_curState = State.STOP;
     Helpers.Debug.debug("Climber: Stop");
   }

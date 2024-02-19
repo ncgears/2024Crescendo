@@ -46,6 +46,13 @@ public class Constants {
             //public static int some_named_aio = 0;
         }
         /**
+         * IDs of RoboRio PWM
+         */
+        public static final class PWM {
+            public static int climber_leftServo = 0;
+            public static int climber_rightServo = 1;
+        }
+        /**
          * IDs of RoboRio Relays
          */
         public static final class Relay {
@@ -287,6 +294,8 @@ public class Constants {
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0;
+        public static final int kLeftServoID = ID.PWM.climber_leftServo;
+        public static final int kRightServoID = ID.PWM.climber_rightServo;
     }
 
     /**
