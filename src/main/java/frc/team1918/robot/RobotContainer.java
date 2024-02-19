@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
@@ -87,7 +88,8 @@ public class RobotContainer {
     public static final DriveSubsystem drive = DriveSubsystem.getInstance(); //must be after gyro
     public static final NCPose pose = NCPose.getInstance(); //must be after drive
     private final NCOrchestra m_orchestra = NCOrchestra.getInstance();
-    // private final PowerDistribution pdh = new PowerDistribution();
+    // private final PowerDistribution m_power = new PowerDistribution(0, ModuleType.kRev);
+    private final PowerDistribution pdh = new PowerDistribution();
     public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
     public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
@@ -288,7 +290,7 @@ public class RobotContainer {
     //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
     buildAutonChooser();
     buildDriverTab();
-    // buildMaintenanceTab();
+    buildPowerTab();
     gyro.buildDashboards();
   }
 
@@ -328,13 +330,10 @@ public class RobotContainer {
     //   .withWidget("Camera Stream");
   }
 
-  private void buildMaintenanceTab(){ //This is where we add maintenance commands
-    ShuffleboardTab maintTab = Shuffleboard.getTab("Maintenance");
-    // maintTab.add("Reset Robot", new cg_resetRobot(m_stove, m_fsr, m_vision))
-    //     .withPosition(0, 0)
-    //     .withSize(1, 1);
-    // maintTab.add("Zero Robot", new cg_zeroMovingParts(m_stove, m_fsr))
-    //     .withPosition(1, 0)
-    //     .withSize(1, 1);
+  private void buildPowerTab(){ //This is where we add maintenance commands
+    ShuffleboardTab powerTab = Shuffleboard.getTab("DBG:Power");
+    powerTab.add("Power", pdh)
+        .withPosition(0, 0);
+        // .withSize(1, 1);
   }
 }
