@@ -61,7 +61,7 @@ public class NCOrchestra {
     }
 
     public StatusCode stop() {
-        Helpers.Debug.debug("Orchestra: stop");
+        if(isPlaying) Helpers.Debug.debug("Orchestra: stop");
         isPlaying = false;
         return m_orchestra.stop();
     }

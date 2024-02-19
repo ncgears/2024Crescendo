@@ -39,6 +39,7 @@
       "/Shuffleboard/DBG:Shooter/Shooter 100%": "Command",
       "/Shuffleboard/DBG:Shooter/Shooter Stop": "Command",
       "/Shuffleboard/DBG:Swerve/Field": "Field2d",
+      "/Shuffleboard/DBG:System/Command Scheduler": "Scheduler",
       "/Shuffleboard/Debug: Gyro/Value": "Gyro",
       "/Shuffleboard/Debug: Intake/Intake In": "Command",
       "/Shuffleboard/Debug: Intake/Intake Out": "Command",
@@ -61,6 +62,15 @@
   "NetworkTables": {
     "transitory": {
       "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "Alerts": {
+          "open": true,
+          "string[]##v_/SmartDashboard/Alerts/infos": {
+            "open": true
+          }
+        },
         "open": true
       }
     }

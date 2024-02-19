@@ -103,16 +103,16 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.setSmartDashboardType("SwerveDrive");
 		builder.setActuator(true);
 		//builder.setSafeState(this::disable); //function for safe state to  make sure things dont move
-		builder.addDoubleProperty("Front Left Angle", () -> Helpers.General.roundDouble(-m_frontLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Front Left Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Front Left Velocity", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Front Right Angle", () -> Helpers.General.roundDouble(-m_frontRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Front Right Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Front Right Velocity", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(-m_backLeft.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Left Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Back Left Velocity", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(-m_backRight.getAngle().getDegrees(),2), null);
+		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3), null);
 
 		builder.addDoubleProperty("Robot Angle", () -> RobotContainer.pose.getPose().getRotation().getDegrees(), null);

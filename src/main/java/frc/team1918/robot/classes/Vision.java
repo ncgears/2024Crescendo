@@ -35,7 +35,6 @@ public class Vision {
   private double lastEstTimestampFront, lastEstTimestampBack = 0;
 
   // Simulator
-  private PhotonCameraSim cameraSim;
   private VisionSystemSim visionSim;
 
   public enum Tags {
@@ -89,9 +88,9 @@ public class Vision {
     photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
     // Simulation
-    if (Robot.isSimulation()) {
+    // if (Robot.isSimulation()) {
         // Create the vision system simulation which handles cameras and targets on the field.
-        visionSim = new VisionSystemSim("llcam1");
+        visionSim = new VisionSystemSim("main");
         // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
         visionSim.addAprilTags(Constants.Vision.kTagLayout);
         // Create simulated camera properties. These can be set to mimic your actual camera.
@@ -103,12 +102,15 @@ public class Vision {
         cameraProp.setLatencyStdDevMs(15);
         // Create a PhotonCameraSim which will update the linked PhotonCamera's values with visible
         // targets.
-        cameraSim = new PhotonCameraSim(front_camera, cameraProp);
+        PhotonCameraSim front_cameraSim = new PhotonCameraSim(front_camera, cameraProp);
+        PhotonCameraSim back_cameraSim = new PhotonCameraSim(back_camera, cameraProp);
         // Add the simulated camera to view the targets on this simulated field.
-        visionSim.addCamera(cameraSim, Constants.Vision.Front.kRobotToCam);
+        visionSim.addCamera(front_cameraSim, Constants.Vision.Front.kRobotToCam);
+        visionSim.addCamera(back_cameraSim,Constants.Vision.Back.kRobotToCam);
 
-        cameraSim.enableDrawWireframe(true);
-    }
+        // front_cameraSim.enableDrawWireframe(true);
+        // back_cameraSim.enableDrawWireframe(true);
+    // }
     createDashboards();
   }
 

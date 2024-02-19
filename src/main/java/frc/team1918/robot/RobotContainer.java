@@ -51,8 +51,10 @@ import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.IndexerSubsystem;
 import frc.team1918.robot.subsystems.IntakeSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
+import frc.team1918.robot.utils.Alert;
 import frc.team1918.robot.utils.CTREConfigs;
 import frc.team1918.robot.utils.TunableNumber;
+import frc.team1918.robot.utils.Alert.AlertType;
 //Commands imports
 // import frc.team1918.robot.commands.helpers.helpers_debugMessage;
 import frc.team1918.robot.commands.gyro.gyro_resetGyro;
@@ -97,6 +99,8 @@ public class RobotContainer {
     public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
     public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
 
+    private static final Alert enabledAlert = new Alert("Robot is Enabled", AlertType.INFO);
+
     public static Optional<Alliance> m_alliance;
 
   //Sendables definitions
@@ -105,9 +109,11 @@ public class RobotContainer {
     private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
 
     private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
+      enabledAlert.set(false);
       return new Trigger(DriverStation::isDisabled);
     }
     private static Trigger enabled() {
+      enabledAlert.set(true);
       return new Trigger(DriverStation::isEnabled);
     }
 
@@ -151,8 +157,8 @@ public class RobotContainer {
       drive.setDefaultCommand(
         new drive_defaultDrive(
           drive,
-          () -> Helpers.OI.ncdeadband(-dj.getLeftY(),false),
-          () -> Helpers.OI.ncdeadband(-dj.getLeftX(),false),
+          () -> Helpers.OI.ncdeadband(dj.getLeftY(),false),
+          () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
           () -> Helpers.OI.ncdeadband(dj.getRightX(),true)
         )
       );
@@ -323,6 +329,11 @@ public class RobotContainer {
     //   .withPosition(0,5)
     //   .withSize(8,2)
     //   .withWidget("FMSInfo");
+    // Alerts
+    // driverTab.add("Alerts", "")
+    //   .withPosition(8,0)
+    //   .withSize(11,7)
+    //   .withWidget("Alerts");
     // Camera
     // driverTab.add("Camera", Robot.camera)
     //   .withPosition(8,0)
