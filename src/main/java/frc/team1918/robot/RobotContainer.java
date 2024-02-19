@@ -316,10 +316,10 @@ public class RobotContainer {
       .withSize(8, 2)
       .withWidget("ComboBox Chooser");
     // FMS Info - Cannot be programmatically placed, but we put it here for informative reasons
-    driverTab.add("FMS Info", "")
-      .withPosition(0,5)
-      .withSize(8,2)
-      .withWidget("FMSInfo");
+    // driverTab.add("FMS Info", "")
+    //   .withPosition(0,5)
+    //   .withSize(8,2)
+    //   .withWidget("FMSInfo");
     // Camera
     // driverTab.add("Camera", Robot.camera)
     //   .withPosition(8,0)
