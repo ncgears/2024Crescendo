@@ -1,6 +1,8 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -110,16 +112,20 @@ public class ClimberSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       climberTab.add("Climber Up", new InstantCommand(this::climberUp))
         .withSize(4, 2)
-        .withPosition(0, 2);  
+        .withPosition(0, 2)
+        .withProperties(Map.of("show_type",false));  
       climberTab.add("Climber Down", new InstantCommand(this::climberDown))
         .withSize(4, 2)
-        .withPosition(4, 2);  
+        .withPosition(4, 2)
+        .withProperties(Map.of("show_type",false));  
       climberTab.add("Climber Hold", new InstantCommand(this::climberHold))
         .withSize(4, 2)
-        .withPosition(8, 2);  
+        .withPosition(8, 2)  
+        .withProperties(Map.of("show_type",false));  
       climberTab.add("Climber Stop", new InstantCommand(this::climberStop))
         .withSize(4, 2)
-        .withPosition(12, 2);  
+        .withPosition(12, 2)
+        .withProperties(Map.of("show_type",false));  
       climberTab.addString("Latch", this::getLatchColor)
         .withSize(2, 2)
         .withPosition(0, 4)  
@@ -138,10 +144,12 @@ public class ClimberSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       climberTab.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(0,6);  
+        .withPosition(0,6)
+        .withProperties(Map.of("show_type",false));  
       climberTab.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(4, 6);  
+        .withPosition(4, 6)
+        .withProperties(Map.of("show_type",false));  
     }
   }
 

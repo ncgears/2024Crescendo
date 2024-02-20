@@ -99,7 +99,8 @@ public class ShooterSubsystem extends SubsystemBase {
         .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
       shooterTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(4, 0);
+        .withPosition(4, 0)
+        .withProperties(Map.of("show_type",false));  
       shooterTab.addNumber("Current Target (RPS)", this::getTargetSpeed)
         .withSize(4,2)
         .withPosition(8,0)
@@ -110,10 +111,12 @@ public class ShooterSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)))
         .withSize(4, 2)
-        .withPosition(2, 2);  
+        .withPosition(2, 2)
+        .withProperties(Map.of("show_type",false));  
       shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)))
         .withSize(4, 2)
-        .withPosition(6, 2);
+        .withPosition(6, 2)
+        .withProperties(Map.of("show_type",false));  
       
       new_speed_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Shooter/New Target (RPS)").subscribe(0.0);
     }

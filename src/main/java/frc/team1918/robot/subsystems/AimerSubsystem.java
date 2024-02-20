@@ -116,7 +116,8 @@ public class AimerSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       aimerTab.add("Update State", new InstantCommand(this::updateState).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(6, 0);
+        .withPosition(6, 0)
+        .withProperties(Map.of("show_type",false));  
       aimerTab.addNumber("Target", this::getTargetPosition)
         .withSize(2,2)
         .withPosition(0,2);
@@ -131,7 +132,8 @@ public class AimerSubsystem extends SubsystemBase {
         .withPosition(6,2);
       aimerTab.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(8, 2);
+        .withPosition(8, 2)
+        .withProperties(Map.of("show_type",false));  
       aimerTab.addNumber("Target Position", this::getNewPosition)
         .withSize(4,2)
         .withPosition(12,2)

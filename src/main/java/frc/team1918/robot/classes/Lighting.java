@@ -87,10 +87,10 @@ public class Lighting {
         .withSize(6, 4)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      lightingTab.addString("LED Color Hex", this::getColor)
-        .withSize(6, 2)
-        .withWidget("Text String")
-        .withPosition(0, 4);  
+      // lightingTab.addString("LED Hex", this::getColor)
+      //   .withSize(6, 2)
+      //   .withWidget("Text String")
+      //   .withPosition(0, 4);  
     }
   }
 

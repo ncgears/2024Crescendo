@@ -1,6 +1,8 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -84,13 +86,16 @@ public class IntakeSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       intakeTab.add("Intake In", new InstantCommand(this::intakeIn))
         .withSize(4, 2)
-        .withPosition(6, 0);  
+        .withPosition(0, 2)
+        .withProperties(Map.of("show_type",false));  
       intakeTab.add("Intake Out", new InstantCommand(this::intakeOut))
         .withSize(4, 2)
-        .withPosition(10, 0);  
+        .withPosition(4, 2)
+        .withProperties(Map.of("show_type",false));  
       intakeTab.add("Intake Stop", new InstantCommand(this::intakeStop))
         .withSize(4, 2)
-        .withPosition(14, 0);  
+        .withPosition(8, 2)
+        .withProperties(Map.of("show_type",false));  
     }
   }
 

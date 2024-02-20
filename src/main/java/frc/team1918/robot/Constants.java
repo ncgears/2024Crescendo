@@ -194,7 +194,7 @@ public class Constants {
      */
     public static final class Lighting {
         public static final String canBus = "rio";
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final int kCandleID = ID.CANdle.candle1;
     }
 

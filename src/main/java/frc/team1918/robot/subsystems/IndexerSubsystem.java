@@ -1,6 +1,8 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
@@ -98,10 +100,11 @@ public class IndexerSubsystem extends SubsystemBase {
         .withWidget("Text Display");
       indexerTab.addBoolean("Has Note", this::hasNote)
         .withSize(2,2)
-        .withPosition(10,0);
+        .withPosition(6,0);
       indexerTab.add("DBG Toggle Note", new InstantCommand(this::toggleFull))
         .withSize(4, 2)
-        .withPosition(0, 2);  
+        .withPosition(0, 2) 
+        .withProperties(Map.of("show_type",false));  
     }
   }
 
