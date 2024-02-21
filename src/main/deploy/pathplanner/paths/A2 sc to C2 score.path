@@ -1,0 +1,87 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.9044150514855396,
+        "y": 7.022705556594352
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.0843428011124585,
+        "y": 7.473425794749961
+      },
+      "isLocked": false,
+      "linkedName": "A2 score"
+    },
+    {
+      "anchor": {
+        "x": 6.055849044565231,
+        "y": 6.425545873530886
+      },
+      "prevControl": {
+        "x": 5.538245898363215,
+        "y": 7.317685011775674
+      },
+      "nextControl": {
+        "x": 6.6248589928210135,
+        "y": 5.444802134597933
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.28998143282745,
+        "y": 5.791447548968594
+      },
+      "prevControl": {
+        "x": 7.576390299904392,
+        "y": 3.5018415280448023
+      },
+      "nextControl": {
+        "x": 8.483193530094852,
+        "y": 6.4113817953579115
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 4.061798871138252,
+        "y": 6.734290999217126
+      },
+      "prevControl": {
+        "x": 4.64381124197723,
+        "y": 6.92385985209615
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "C score"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.25,
+      "rotationDegrees": 90.0,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 25.0,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": null,
+  "previewStartingState": null,
+  "useDefaultConstraints": false
+}
