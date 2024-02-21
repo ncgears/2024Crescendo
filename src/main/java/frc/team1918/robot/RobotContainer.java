@@ -170,6 +170,7 @@ public class RobotContainer {
    */
   private void resetRobot() {
     lighting.init();
+    pose.init();
     aimer.init();
     climber.init();
     indexer.init();
@@ -248,6 +249,11 @@ public class RobotContainer {
     dj.leftBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
       .onFalse(intake.runOnce(intake::intakeStop));
+    dj.rightBumper()
+      .onTrue(new InstantCommand(() -> pose.trackingStart()))
+      .onFalse(new InstantCommand(() -> pose.trackingStop()));
+    dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
+    dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
 
     /** OPERATOR JOYSTICK (oj) */
     oj.leftTrigger()

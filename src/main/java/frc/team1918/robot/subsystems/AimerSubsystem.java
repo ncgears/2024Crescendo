@@ -2,9 +2,6 @@
 package frc.team1918.robot.subsystems;
 
 import java.util.Map;
-import java.util.function.Supplier;
-
-import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 // import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;

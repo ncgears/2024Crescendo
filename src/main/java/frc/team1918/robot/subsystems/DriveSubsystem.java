@@ -27,7 +27,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 
@@ -54,7 +56,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private double target_heading = 0.0;
 	private boolean heading_locked = false;
-
+	
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
 			instance = new DriveSubsystem();
@@ -120,51 +122,47 @@ public class DriveSubsystem extends SubsystemBase {
 		if(Constants.Swerve.debugDashboard) {
 			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Swerve");
 			debugTab.add("Swerve Drive", this)
-				.withSize(5, 6)
+				.withSize(6, 6)
 				.withPosition(0, 0)
 				.withProperties(Map.of("show_robot_rotation","true"));
 			debugTab.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
 				.withSize(2, 2)
-				.withPosition(5, 0);
+				.withPosition(6, 0);
 			debugTab.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
 				.withSize(2, 2)
-				.withPosition(11, 0);
-			debugTab.addNumber("RL Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2))
+				.withPosition(12, 0);
+			debugTab.addNumber("BL Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2))
 				.withSize(2, 2)
-				.withPosition(5, 4);
-			debugTab.addNumber("RR Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2))
+				.withPosition(6, 4);
+			debugTab.addNumber("BR Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2))
 				.withSize(2, 2)
-				.withPosition(11, 4);
+				.withPosition(12, 4);
 			debugTab.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
 				.withSize(2, 2)
-				.withPosition(7, 1);
+				.withPosition(8, 1);
 			debugTab.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
 				.withSize(2, 2)
-				.withPosition(9, 1);
-			debugTab.addNumber("RL Speed", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3))
+				.withPosition(10, 1);
+			debugTab.addNumber("BL Speed", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3))
 				.withSize(2, 2)
-				.withPosition(7, 3);
-			debugTab.addNumber("RR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
+				.withPosition(8, 3);
+			debugTab.addNumber("BR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
 				.withSize(2, 2)
-				.withPosition(9, 3);
+				.withPosition(10, 3);
 			debugTab.add("Field", fieldSim)
-				.withSize(7,4)
+				.withSize(6,4)
 				.withPosition(0,6)
 				.withWidget("Field")
 				.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
-			debugTab.addBoolean("Hdg Locked", this::getHeadingLocked)
-				.withSize(2, 2)
-				.withPosition(5,2)
+			ShuffleboardLayout thetaList = debugTab.getLayout("theta Controller", BuiltInLayouts.kList)
+				.withSize(4,4)
+				.withPosition(6,6)
+				.withProperties(Map.of("Label position","LEFT"));
+			thetaList.addBoolean("Heading Lock", this::getHeadingLocked)
 				.withWidget("Boolean Box");
-			debugTab.addNumber("Hdg Target", this::getTargetHeading)
-				.withSize(2, 2)
-				.withPosition(7,5);
-			debugTab.addNumber("Hdg Err", this::getHeadingError)
-				.withSize(2, 2)
-				.withPosition(9,5);
-			debugTab.addNumber("Hdg Curr", () -> getHeading().getDegrees())
-				.withSize(2, 2)
-				.withPosition(11,2);
+			thetaList.addNumber("Target Heading", this::getTargetHeading);
+			thetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
+			thetaList.addNumber("Heading Error", this::getHeadingError);
 		}
 	}
 
@@ -200,6 +198,8 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public boolean getHeadingLocked() { return heading_locked; }
 	public double getTargetHeading() { return target_heading; }
+	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
+	public double getTrackingTargetHeading() { return RobotContainer.pose.getTrackingTargetBearing(); }
 
 	/**
 	 * Resets the odometry to the specified pose. Requires the current heading to account for starting position other than 0.

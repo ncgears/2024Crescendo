@@ -1,5 +1,7 @@
 package frc.team1918.robot.classes;
 
+import java.util.Map;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -11,7 +13,12 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
 /**
@@ -21,6 +28,7 @@ import frc.team1918.robot.RobotContainer;
 public class NCPose {
 	private static NCPose instance;
 	private SwerveDrivePoseEstimator poseEstimator;
+
 /**
  * April tag positions, in inches
  * ID	X	Y	Z	Rotation
@@ -59,6 +67,9 @@ public class NCPose {
  * 15	4.641342	4.49834 	1.3208	    120         Blue Trap North (left)
  * 16	4.641342	3.713226	1.3208  	240         Blue Trap South (right)
  */
+	/**
+	 * Targets represents different locations on the field that we might be interested in tracking
+	 */
     public enum Targets { //based on blue origin 0,0 (bottom left) field coordinates, North-East-Up
         SOURCE(0,0,0,120),  //TODO: determine positions
         AMP(1.8415,8.2042,0.889,-90), 
@@ -77,6 +88,18 @@ public class NCPose {
             new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
         ); }
     }
+	/** State represents different tracking system states */
+    public enum State {
+        READY("#00FF00"),
+        TRACKING("#FFA500"),
+        ERROR("#FF0000"),
+        STOP("#000000");
+        private final String color;
+        State(String color) { this.color = color; }
+        public String getColor() { return this.color; }
+    }
+    private State m_trackingState = State.STOP; //current Tracking state
+	private Targets m_trackingTarget = Targets.SPEAKER; //current Tracking target
 
     public NCPose() {
 		//Initialize the pose estimator
@@ -90,7 +113,14 @@ public class NCPose {
 			//visionMeasurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust the vision pose measurement less.
 			VecBuilder.fill(0.9, 0.9, 0.9)
 		);
+		createDashboards();
     }
+
+	public void init() {
+		m_trackingState = State.STOP;
+		m_trackingTarget = Targets.SPEAKER;
+		Helpers.Debug.debug("Pose: Initialized");
+	}
 
     /**
 	 * Returns the instance of the class.
@@ -203,4 +233,83 @@ public class NCPose {
 		double targetBearing = shooterToTarget.getRotation().getZ(); //radians
 		return Math.toDegrees(targetBearing); //change radians to degrees
 	}
+
+	////#region "Tracking"
+	/** Creates the dashboard for the tracking system */
+	public void createDashboards() {
+		if(true) { //false to disable tracking dashboard
+			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Tracking");
+			// debugTab.addString("Tracking", this::getTrackingStateColor)
+			// 	.withSize(2, 2)
+			// 	.withWidget("Single Color View")
+			// 	.withPosition(0, 0);  
+			// debugTab.addString("State", this::getTrackingStateName)
+			// 	.withSize(2,2)
+			// 	.withPosition(2,0)
+			// 	.withWidget("Text Display");
+			// debugTab.addString("Target", this::getTrackingTargetName)
+			// 	.withSize(2,2)
+			// 	.withPosition(4,0)
+			// 	.withWidget("Text Display");
+			// debugTab.addNumber("Bearing", this::getTrackingTargetBearing)
+			// 	.withSize(2,2)
+			// 	.withPosition(0,2);
+			// debugTab.addNumber("Angle", this::getTrackingTargetAngle)
+			// 	.withSize(2,2)
+			// 	.withPosition(2,2);
+			ShuffleboardLayout trackingList = debugTab.getLayout("Target Tracking", BuiltInLayouts.kList)
+				.withSize(4,6)
+				.withPosition(0,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			trackingList.addString("Tracking", this::getTrackingStateColor)
+				.withWidget("Single Color View");
+			trackingList.addString("State", this::getTrackingStateName)
+				.withWidget("Text Display");
+			trackingList.addString("Target", this::getTrackingTargetName)
+				.withWidget("Text Display");
+			trackingList.addNumber("Bearing", this::getTrackingTargetBearing);
+			trackingList.addNumber("Angle", this::getTrackingTargetAngle);
+		}
+	}
+	/** Determines if the robot should be tracking a target
+	 * @return boolean indicating if robot is tracking
+	 */
+	public boolean getTracking() { return m_trackingState != State.STOP; }
+	/** Gets the current target tracking state */
+	public State getTrackingState() { return m_trackingState; }
+	/** Gets the name of the current target tracking state */
+	public String getTrackingStateName() { return m_trackingState.toString(); }
+	/** Gets the defined color of the current target tracking state */
+	public String getTrackingStateColor() { return m_trackingState.getColor(); }
+	/** Gets the current tracking target */
+	public Targets getTrackingTarget() { return m_trackingTarget; }
+	/** Gets the name of the current tracking target */
+	public String getTrackingTargetName() { return m_trackingTarget.toString(); }
+	/** Gets the relative bearing of the current tracking target */
+	public double getTrackingTargetBearing() { return Helpers.General.roundDouble(getBearingOfTarget(m_trackingTarget),2); }
+	/** Gets the relative angle from the shooter to the current tracking target */
+	public double getTrackingTargetAngle() { return Helpers.General.roundDouble(getAngleOfTarget(m_trackingTarget),2); }
+	/** Enables target tracking */
+	public void trackingStart() {
+		m_trackingState = State.TRACKING;
+		Helpers.Debug.debug("Tracking: Start Tracking ("+m_trackingTarget.toString()+")");
+    }
+	/** Disables target tracking */
+    public void trackingStop() {
+        m_trackingState = State.STOP;
+		Helpers.Debug.debug("Tracking: Stop Tracking");
+	}
+	/** Sets the requested tracking target
+	 * @param target Target to track
+	 */
+	public void setTrackingTarget(Targets target) { 
+		m_trackingTarget = target; 
+		Helpers.Debug.debug("Tracking: Set Tracking Target ("+target.toString()+")");
+	}
+	/** Sets the tracking target to AMP (2024 Crescendo) */
+	public void setTrackingAmp() { setTrackingTarget(Targets.AMP); }
+	/** Sets the tracking target to SPEAKER (2024 Crescendo) */
+	public void setTrackingSpeaker() { setTrackingTarget(Targets.SPEAKER); }
+	////#endregion "Tracking"
+
 }
