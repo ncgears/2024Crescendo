@@ -162,43 +162,104 @@ public final class CTREConfigs {
         armCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         armCCConfig.MagnetSensor.MagnetOffset = Constants.Arm.kMagnetOffset;
 
+        Slot0Configs armSlot0Configs = new Slot0Configs()
+            .withKP(Constants.Arm.kP)
+            .withKI(Constants.Arm.kI)
+            .withKD(Constants.Arm.kD)
+            .withKS(Constants.Arm.kS)
+            .withKV(Constants.Arm.kV)
+            .withKA(Constants.Arm.kA);
+        armFXConfig.Slot0 = armSlot0Configs;
+        //Current Limits
+        CurrentLimitsConfigs armCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(Constants.Arm.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(Constants.Arm.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(Constants.Arm.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(Constants.Arm.kCurrentLimitEnable);
+        armFXConfig.CurrentLimits = armCurrentLimitsConfigs;
+        //Motion Magic
+        MotionMagicConfigs armMotionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(Constants.Arm.kMotionMagicCruise)
+            .withMotionMagicAcceleration(Constants.Arm.kMotionMagicAccel)
+            .withMotionMagicJerk(Constants.Arm.kMotionMagicJerk);
+        armFXConfig.MotionMagic = armMotionMagicConfigs;
+        //Mechanical Limits
+        //TODO: Move these to constants
+        HardwareLimitSwitchConfigs armHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+            .withReverseLimitEnable(true)
+            .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+            .withReverseLimitAutosetPositionEnable(true)
+            .withReverseLimitAutosetPositionValue(0.0)
+            .withForwardLimitEnable(true)
+            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
+        armFXConfig.HardwareLimitSwitch = armHardwareLimitsConfigs;
+        //Encoder
+        if(Constants.Aimer.kUseCANcoder) {
+            armFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.kCANcoderID;
+            armFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
+            armFXConfig.Feedback.RotorToSensorRatio = Constants.Arm.kGearRatio;
+            armFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
+        } else {
+            armFXConfig.Feedback.SensorToMechanismRatio = Constants.Arm.kGearRatio;
+        }
+        //Neutral and Direction
+        armFXConfig.MotorOutput.NeutralMode = Constants.Arm.kNeutralMode;
+        armFXConfig.MotorOutput.Inverted = (Constants.Arm.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        //Audio
+        armFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
+
+
         //Climber
         //CANcoder
         climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         climberCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         climberCCConfig.MagnetSensor.MagnetOffset = Constants.Climber.kMagnetOffset;
 
-        //Example for other TalonFX based systems
-        
-        // FeedForward Gains
-        // See https://api.ctr-electronics.com/phoenix6/release/java/com/ctre/phoenix6/configs/Slot0Configs.html#kG
-        // for more information on feedforward gain for elevators, arms, etc.
-        // Elevators use GravityType Elevator_Static where gravity is constant
-        // Arms use GravityType Arm_Cosine where it depends on mechanism position
-        // kG is the gravity gain -512..512
-        // kA is the Acceleration gain
-        // kV is the Velocity gain
-        // kS is the Static gain
-
-        // /* Elevator Left and Right Motor Configuration */
-        // Slot0Configs rightSlot0Configs = new Slot0Configs();
-        // rightSlot0Configs.kP = kP;
-        // rightSlot0Configs.kD = kD;
-        // rightSlot0Configs.kV = kV;
-        // rightConfig.Slot0 = rightSlot0Configs;
-
-        // rightConfig.SoftwareLimitSwitch.ForwardSoftLimitThreshold = kForwardLimit;
-        // rightConfig.SoftwareLimitSwitch.ReverseSoftLimitThreshold = kReverseLimit;
-        // rightConfig.SoftwareLimitSwitch.ForwardSoftLimitEnable = kEnableForwardLimit;
-        // rightConfig.SoftwareLimitSwitch.ReverseSoftLimitEnable = kEnableReverseLimit;
-
-        // CurrentLimitsConfigs elevCurrentLimitsConfigs = new CurrentLimitsConfigs();
-        // elevCurrentLimitsConfigs.SupplyCurrentLimit = kContinuousCurrentLimit;
-        // rightConfig.CurrentLimits = elevCurrentLimitsConfigs;
-        // leftConfig.CurrentLimits = elevCurrentLimitsConfigs;
-
-        // rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
-        // leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        Slot0Configs climberSlot0Configs = new Slot0Configs()
+            .withKP(Constants.Climber.kP)
+            .withKI(Constants.Climber.kI)
+            .withKD(Constants.Climber.kD)
+            .withKS(Constants.Climber.kS)
+            .withKV(Constants.Climber.kV)
+            .withKA(Constants.Climber.kA);
+        climberFXConfig.Slot0 = climberSlot0Configs;
+        //Current Limits
+        CurrentLimitsConfigs climberCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withSupplyCurrentLimit(Constants.Climber.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(Constants.Climber.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(Constants.Climber.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(Constants.Climber.kCurrentLimitEnable);
+        climberFXConfig.CurrentLimits = climberCurrentLimitsConfigs;
+        //Motion Magic
+        MotionMagicConfigs climberMotionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(Constants.Climber.kMotionMagicCruise)
+            .withMotionMagicAcceleration(Constants.Climber.kMotionMagicAccel)
+            .withMotionMagicJerk(Constants.Climber.kMotionMagicJerk);
+        climberFXConfig.MotionMagic = climberMotionMagicConfigs;
+        //Mechanical Limits
+        //TODO: Move these to constants
+        HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+            .withReverseLimitEnable(true)
+            .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+            .withReverseLimitAutosetPositionEnable(true)
+            .withReverseLimitAutosetPositionValue(0.0)
+            .withForwardLimitEnable(true)
+            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
+        climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
+        //Encoder
+        if(Constants.Aimer.kUseCANcoder) {
+            climberFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Climber.kCANcoderID;
+            climberFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
+            climberFXConfig.Feedback.RotorToSensorRatio = Constants.Climber.kGearRatio;
+            climberFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
+        } else {
+            climberFXConfig.Feedback.SensorToMechanismRatio = Constants.Climber.kGearRatio;
+        }
+        //Neutral and Direction
+        climberFXConfig.MotorOutput.NeutralMode = Constants.Climber.kNeutralMode;
+        climberFXConfig.MotorOutput.Inverted = (Constants.Climber.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        //Audio
+        climberFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
     }
 
