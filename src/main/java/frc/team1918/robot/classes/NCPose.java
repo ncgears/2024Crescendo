@@ -215,7 +215,9 @@ public class NCPose {
 			.transformBy(Constants.Shooter.kRobotToShooter);
 		// Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
         Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-		var shooterToTarget = shooterPose.minus(targetPose);
+		var shooterToTarget = targetPose.minus(shooterPose);
+		// Helpers.Debug.debug("shooter X distance "+shooterToTarget.getX());
+		// Helpers.Debug.debug("shooter z radians "+shooterToTarget.getZ());
 		var targetAngle = Math.atan(shooterToTarget.getZ()) / (shooterToTarget.getX()); // arctan(height / distance) = radians
 		return Math.toDegrees(targetAngle); //change radians to degrees
 	}
