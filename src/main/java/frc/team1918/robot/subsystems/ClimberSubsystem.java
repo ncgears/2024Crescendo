@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 
 /**
  * This subsystem handles managing the Climber.
@@ -40,6 +43,8 @@ public class ClimberSubsystem extends SubsystemBase {
     public int getRight() { return this.right; }
     public String getColor() { return this.color; }
   }
+  private CANcoder m_encoder;
+  private TalonFX m_motor1New;
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
   private LatchPosition m_curLatchPosition = LatchPosition.OUT;
@@ -59,6 +64,9 @@ public class ClimberSubsystem extends SubsystemBase {
   
   public ClimberSubsystem() {
     //initialize values for private and public variables, etc.
+    m_encoder = new CANcoder(Constants.Climber.kCANcoderID, Constants.Climber.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
+
     m_motor1 = new WPI_TalonSRX(Constants.Climber.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled

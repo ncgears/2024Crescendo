@@ -1,5 +1,8 @@
 package frc.team1918.robot.utils;
 
+import java.util.function.Supplier;
+
+import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.AudioConfigs;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 // import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -34,12 +37,16 @@ public final class CTREConfigs {
         return Container.INSTANCE;
     }
 
+    //TalonFX
     public final TalonFXConfiguration swerveDriveFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration shooterFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration aimerFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration armFXConfig = new TalonFXConfiguration();
     public final TalonFXConfiguration climberFXConfig = new TalonFXConfiguration();
+    //CANcoder
     public final CANcoderConfiguration aimerCCConfig = new CANcoderConfiguration();
+    public final CANcoderConfiguration armCCConfig = new CANcoderConfiguration();
+    public final CANcoderConfiguration climberCCConfig = new CANcoderConfiguration();
 
     public CTREConfigs() {
         /* Swerve Drive Motor Configuration */
@@ -149,6 +156,18 @@ public final class CTREConfigs {
         //Audio
         aimerFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
+        //Arm
+        //CANcoder
+        armCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        armCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        armCCConfig.MagnetSensor.MagnetOffset = Constants.Arm.kMagnetOffset;
+
+        //Climber
+        //CANcoder
+        climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        climberCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        climberCCConfig.MagnetSensor.MagnetOffset = Constants.Climber.kMagnetOffset;
+
         //Example for other TalonFX based systems
         
         // FeedForward Gains
@@ -181,5 +200,14 @@ public final class CTREConfigs {
         // rightConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
         // leftConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
 
+    }
+
+    public void retryConfigApply(Supplier<StatusCode> toApply) {
+        StatusCode finalCode = StatusCode.StatusCodeNotInitialized;
+        int triesLeftOver = 5;
+        do{
+            finalCode = toApply.get();
+        } while (!finalCode.isOK() && --triesLeftOver > 0);
+        assert(finalCode.isOK());
     }
 }

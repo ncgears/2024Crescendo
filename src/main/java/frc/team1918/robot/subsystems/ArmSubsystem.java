@@ -3,6 +3,8 @@ package frc.team1918.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 
 /**
  * This subsystem handles managing the Arm.
@@ -27,6 +30,8 @@ public class ArmSubsystem extends SubsystemBase {
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
+  private CANcoder m_encoder;
+  private TalonFX m_motor1New;
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
   
@@ -43,6 +48,9 @@ public class ArmSubsystem extends SubsystemBase {
   
   public ArmSubsystem() {
     //initialize values for private and public variables, etc.
+    m_encoder = new CANcoder(Constants.Arm.kCANcoderID, Constants.Arm.canBus);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.armCCConfig));
+
     m_motor1 = new WPI_TalonSRX(Constants.Arm.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled

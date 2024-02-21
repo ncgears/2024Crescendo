@@ -59,24 +59,15 @@ public class AimerSubsystem extends SubsystemBase {
 			instance = new AimerSubsystem();
 		return instance;
 	}
-  
-  private void retryConfigApply(Supplier<StatusCode> toApply) {
-    StatusCode finalCode = StatusCode.StatusCodeNotInitialized;
-    int triesLeftOver = 5;
-    do{
-        finalCode = toApply.get();
-    } while (!finalCode.isOK() && --triesLeftOver > 0);
-    assert(finalCode.isOK());
-  }
 
   public AimerSubsystem() {
     //initialize values for private and public variables, etc.
     m_encoder = new CANcoder(Constants.Aimer.kCANcoderID, Constants.Aimer.canBus);
-    retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.aimerCCConfig));
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.aimerCCConfig));
 
     m_motor1 = new TalonFX(Constants.Aimer.kMotorID, Constants.Aimer.canBus);
     m_motor1.setInverted(Constants.Aimer.kIsInverted);
-    retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.aimerFXConfig));
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.aimerFXConfig));
     // Helpers.Debug.debug("Could not initialize aimer motor, error: " + status1.toString());
 
     init();
