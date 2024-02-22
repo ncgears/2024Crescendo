@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -72,20 +73,24 @@ public class NCPose {
 	 */
     public enum Targets { //based on blue origin 0,0 (bottom left) field coordinates, North-East-Up
         SOURCE(0,0,0,120),  //TODO: determine positions
-        AMP(1.8415,8.2042,0.889,-90), 
+        AMP(1.8415,8.2042,0.889,-90),
         SPEAKER(0.23,5.547868,2.0447,180),
         STAGE_NORTH(0,0,0,-60),
         STAGE_SOUTH(0,0,0,60),
         STAGE_CENTER(0,0,0,180);
         private final double x,y,z,angle;
         Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
+		public Rotation2d getAngle() { return new Rotation2d(this.angle); }
+		public Rotation2d getMirrorAngle() { return new Rotation2d(this.angle).plus(new Rotation2d(-180)); }
         public Pose3d getPose() { return new Pose3d(
             new Translation3d(this.x, this.y, this.z),
-            new Rotation3d(0,0,Math.toRadians(this.angle))
+			new Rotation3d()
+            // new Rotation3d(0,0,Math.toRadians(this.angle))
         ); }
         public Pose3d getMirrorPose() { return new Pose3d(
             new Translation3d(16.54175 - this.x, this.y, this.z), //field is 16.54175 meters
-            new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
+			new Rotation3d()
+            // new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
         ); }
     }
 	/** State represents different tracking system states */
@@ -206,21 +211,46 @@ public class NCPose {
 		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
 	}
 
-    /**
-     * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
-     * @return the vertical angle of the target, relative to the shooter, in degrees
-     */
-	public double getAngleOfTarget(Targets target) {
+	/**
+	 * getShooterToTarget returns a Transform3d representing the delta between the shooter and the target
+	 * @param target
+	 * @return Transform3d of the delta
+	 */
+	public Transform3d getShooterToTarget(Targets target) {
 		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
 			.transformBy(Constants.Shooter.kRobotToShooter);
-		// Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
-        Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-		var shooterToTarget = shooterPose.minus(targetPose);
-		// Helpers.Debug.debug("shooter X distance "+shooterToTarget.getX());
-		// Helpers.Debug.debug("shooter z radians "+shooterToTarget.getZ());
-		// var targetAngle = Math.atan(shooterToTarget.getZ() / Math.hypot(shooterToTarget.getX(),shooterToTarget.getY())); // arctan(height / distance) = radians
-		var targetAngle = shooterToTarget.getRotation().getY();
-		return Math.toDegrees(targetAngle); //change radians to degrees
+		Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
+
+		// TESTING: these poses should result in a distance to target of 5 meters and a Z angle of 0.765rad (45 degrees)
+		// shooterPose = new Pose3d(3,4,0,new Rotation3d());
+		// targetPose = new Pose3d(0,0,5,new Rotation3d());
+
+		shooterPose = new Pose3d(0,5,0,new Rotation3d());
+		targetPose = new Pose3d(5,0,0,new Rotation3d());
+
+		return shooterPose.minus(targetPose);
+	}
+
+	/**
+     * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
+     * @return the vertical angle of the target, relative to the shooter, in degrees from the horizontal plane
+     */
+	public double getAngleOfTarget(Targets target) {
+		Transform3d shooterToTarget = getShooterToTarget(target);
+		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
+		// double angle = (Math.PI/2 - Math.atan2(Math.abs(shooterToTarget.getZ()),distance)); //complementary angle
+		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
+		return Math.toDegrees(angle);
+	}
+
+	/**
+	 * getDistanceOfTarget calculates the distance between the shooter and the target in 3d space
+	 * @param target
+	 * @return Distance between the shooter and the target in meters
+	 */
+	public double getDistanceOfTarget(Targets target) {
+		Transform3d shooterToTarget = getShooterToTarget(target);
+		return Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
 	}
 
     /**
@@ -228,13 +258,11 @@ public class NCPose {
      * @return the bearing (heading) of the target, relative to the shooter, in degrees
      */
 	public double getBearingOfTarget(Targets target) {
-		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter); //pose of the shooter
-		// Pose3d targetPose = mirrorPoseIfRed(target.getPose()); //pose of the target
-        Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-		Transform3d shooterToTarget = shooterPose.minus(targetPose); //delta from shooter to target
-		double targetBearing = shooterToTarget.getRotation().getZ(); //radians
-		return Math.toDegrees(targetBearing); //change radians to degrees
+		// Transform3d shooterToTarget = getShooterToTarget(target);
+		Pose3d shooterPose = new Pose3d(0,0,0,new Rotation3d());
+		var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
+		Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
+		return bearing.getAngle().getDegrees();
 	}
 
 	////#region "Tracking"
@@ -271,6 +299,7 @@ public class NCPose {
 			trackingList.addString("Target", this::getTrackingTargetName)
 				.withWidget("Text Display");
 			trackingList.addNumber("Bearing", this::getTrackingTargetBearing);
+			trackingList.addNumber("Distance", this::getTrackingTargetDistance);
 			trackingList.addNumber("Angle", this::getTrackingTargetAngle);
 		}
 	}
@@ -290,6 +319,8 @@ public class NCPose {
 	public String getTrackingTargetName() { return m_trackingTarget.toString(); }
 	/** Gets the relative bearing of the current tracking target */
 	public double getTrackingTargetBearing() { return Helpers.General.roundDouble(getBearingOfTarget(m_trackingTarget),2); }
+	/** Gets the relative distance from the shooter to the current tracking target */
+	public double getTrackingTargetDistance() { return Helpers.General.roundDouble(getDistanceOfTarget(m_trackingTarget),2); }
 	/** Gets the relative angle from the shooter to the current tracking target */
 	public double getTrackingTargetAngle() { return Helpers.General.roundDouble(getAngleOfTarget(m_trackingTarget),2); }
 	/** Enables target tracking */
