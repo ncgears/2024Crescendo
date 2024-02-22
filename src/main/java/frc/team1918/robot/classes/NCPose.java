@@ -225,8 +225,8 @@ public class NCPose {
 		// shooterPose = new Pose3d(3,4,0,new Rotation3d());
 		// targetPose = new Pose3d(0,0,5,new Rotation3d());
 
-		shooterPose = new Pose3d(0,5,0,new Rotation3d());
-		targetPose = new Pose3d(5,0,0,new Rotation3d());
+		// shooterPose = new Pose3d(0,5,0,new Rotation3d());
+		// targetPose = new Pose3d(5,0,0,new Rotation3d());
 
 		return shooterPose.minus(targetPose);
 	}
