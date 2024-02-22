@@ -11,7 +11,6 @@ import frc.team1918.robot.RobotContainer;
 import frc.team1918.lib.control.PIDController;
 import frc.team1918.lib.control.SwerveTrajectory;
 import frc.team1918.lib.control.SwerveTrajectory.State;
-import frc.team1918.paths.Path;
 //import subsystem
 import frc.team1918.robot.subsystems.DriveSubsystem;
 
@@ -31,10 +30,10 @@ public class drive_followTrajectory extends Command {
   /**
    * @param subsystem The drive subsystem this command will run on.
    */
-  public drive_followTrajectory(DriveSubsystem drive, Path path) {
+  public drive_followTrajectory(DriveSubsystem drive) { //}, Path path) {
     m_drive = drive;
     addRequirements(m_drive);
-    m_trajectory = path.getPath();
+    // m_trajectory = path.getPath();
   }
 
   @Override
