@@ -159,8 +159,8 @@ public class DriveSubsystem extends SubsystemBase {
 			.withSize(4,4)
 			.withPosition(6,6)
 			.withProperties(Map.of("Label position","LEFT"));
-		thetaList.addBoolean("Heading Lock", this::getHeadingLocked)
-			.withWidget("Boolean Box");
+		thetaList.addString("Heading Lock", this::getHeadingLockedColor)
+			.withWidget("Single Color View");
 		thetaList.addNumber("Target Heading", this::getTargetHeading);
 		thetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
 		thetaList.addNumber("Heading Error", this::getHeadingError);
@@ -170,8 +170,8 @@ public class DriveSubsystem extends SubsystemBase {
 			.withSize(4,4)
 			.withPosition(16,6)
 			.withProperties(Map.of("Label position","LEFT"));
-		systemThetaList.addBoolean("Heading Lock", this::getHeadingLocked)
-			.withWidget("Boolean Box");
+		systemThetaList.addString("Heading Lock", this::getHeadingLockedColor)
+			.withWidget("Single Color View");
 		systemThetaList.addNumber("Target Heading", this::getTargetHeading);
 		systemThetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
 		systemThetaList.addNumber("Heading Error", this::getHeadingError);
@@ -212,6 +212,11 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public boolean getHeadingLocked() { return heading_locked; }
+	public String getHeadingLockedColor() {
+		return (heading_locked) ?
+			(isTrackingTarget()) ? Constants.Dashboard.Colors.ORANGE : Constants.Dashboard.Colors.GREEN
+			: Constants.Dashboard.Colors.RED;
+	}
 	public double getTargetHeading() { return (isTrackingTarget()) ? RobotContainer.pose.getTrackingTargetBearing() : target_heading; }
 	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
 	public double getTrackingTargetHeading() { return RobotContainer.pose.getTrackingTargetBearing(); }
