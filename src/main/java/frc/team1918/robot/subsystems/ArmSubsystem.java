@@ -1,11 +1,15 @@
 
 package frc.team1918.robot.subsystems;
 
+import java.util.Map;
+
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -91,39 +95,50 @@ public class ArmSubsystem extends SubsystemBase {
       .withPosition(14, 8);  
 		if(Constants.Arm.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Arm");
-      debugTab.addString("Arm", this::getColor)
-        .withSize(2, 2)
-        .withWidget("Single Color View")
-        .withPosition(0, 0);  
-      debugTab.addString("State", this::getStateName)
-        .withSize(4,2)
-        .withPosition(2,0)
-        .withWidget("Text Display");
-      debugTab.addNumber("Target", this::getTargetPosition)
-        .withSize(2,2)
-        .withPosition(6,0);
-      debugTab.addNumber("Position", this::getPosition)
-        .withSize(2,2)
-        .withPosition(8,0)
-        .withWidget("Text Display");
-      debugTab.addNumber("Absolute", this::getPositionAbsolute)
-        .withSize(2,2)
-        .withPosition(10,0);
-      debugTab.addNumber("Error", this::getPositionError)
-        .withSize(2,2)
-        .withPosition(12,0);
-      debugTab.add("Arm Up", new InstantCommand(this::armUp))
-        .withSize(4, 2)
-        .withPosition(0, 2);  
-      debugTab.add("Arm Down", new InstantCommand(this::armDown))
-        .withSize(4, 2)
-        .withPosition(4, 2);  
-      debugTab.add("Arm Hold", new InstantCommand(this::armHold))
-        .withSize(4, 2)
-        .withPosition(8, 2);  
-      debugTab.add("Arm Stop", new InstantCommand(this::armStop))
-        .withSize(4, 2)
-        .withPosition(12, 2);  
+      // debugTab.addString("Arm", this::getColor)
+      //   .withSize(2, 2)
+      //   .withWidget("Single Color View")
+      //   .withPosition(0, 0);  
+      // debugTab.addString("State", this::getStateName)
+      //   .withSize(4,2)
+      //   .withPosition(2,0)
+      //   .withWidget("Text Display");
+      // debugTab.addNumber("Target", this::getTargetPosition)
+      //   .withSize(2,2)
+      //   .withPosition(6,0);
+      // debugTab.addNumber("Position", this::getPosition)
+      //   .withSize(2,2)
+      //   .withPosition(8,0)
+      //   .withWidget("Text Display");
+      // debugTab.addNumber("Absolute", this::getPositionAbsolute)
+      //   .withSize(2,2)
+      //   .withPosition(10,0);
+      // debugTab.addNumber("Error", this::getPositionError)
+      //   .withSize(2,2)
+      //   .withPosition(12,0);
+      // debugTab.add("Arm Up", new InstantCommand(this::armUp))
+      //   .withSize(4, 2)
+      //   .withPosition(0, 2);  
+      // debugTab.add("Arm Down", new InstantCommand(this::armDown))
+      //   .withSize(4, 2)
+      //   .withPosition(4, 2);  
+      // debugTab.add("Arm Hold", new InstantCommand(this::armHold))
+      //   .withSize(4, 2)
+      //   .withPosition(8, 2);  
+      // debugTab.add("Arm Stop", new InstantCommand(this::armStop))
+      //   .withSize(4, 2)
+      //   .withPosition(12, 2);
+			ShuffleboardLayout armList = debugTab.getLayout("Arm", BuiltInLayouts.kList)
+				.withSize(4,6)
+				.withPosition(0,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			armList.addString("Status", this::getColor)
+				.withWidget("Single Color View");
+			armList.addString("State", this::getStateName);
+			armList.addNumber("Target", this::getTargetPosition);
+			armList.addNumber("Position", this::getPosition);
+			armList.addNumber("Absolute", this::getPositionAbsolute);
+			armList.addNumber("Error", this::getPositionError);
     }
   }
 
