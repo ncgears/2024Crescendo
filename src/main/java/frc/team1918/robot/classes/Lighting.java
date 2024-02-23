@@ -82,12 +82,12 @@ public class Lighting {
       .withWidget("Single Color View")
       .withPosition(19, 0);  
 		if(Constants.Lighting.debugDashboard) {
-      ShuffleboardTab lightingTab = Shuffleboard.getTab("DBG:Lighting");
-      lightingTab.addString("LED Color", this::getColor)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Lighting");
+      debugTab.addString("LED Color", this::getColor)
         .withSize(6, 4)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      // lightingTab.addString("LED Hex", this::getColor)
+      // debugTab.addString("LED Hex", this::getColor)
       //   .withSize(6, 2)
       //   .withWidget("Text String")
       //   .withPosition(0, 4);  

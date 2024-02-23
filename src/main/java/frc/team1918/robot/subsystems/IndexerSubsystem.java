@@ -89,19 +89,19 @@ public class IndexerSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(10, 7);  
 		if(Constants.Indexer.debugDashboard) {
-      ShuffleboardTab indexerTab = Shuffleboard.getTab("DBG:Indexer");
-      indexerTab.addString("Indexer", this::getColor)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Indexer");
+      debugTab.addString("Indexer", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      indexerTab.addString("State", this::getStateName)
+      debugTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      indexerTab.addBoolean("Has Note", this::hasNote)
+      debugTab.addBoolean("Has Note", this::hasNote)
         .withSize(2,2)
         .withPosition(6,0);
-      indexerTab.add("DBG Toggle Note", new InstantCommand(this::toggleFull))
+      debugTab.add("DBG Toggle Note", new InstantCommand(this::toggleFull))
         .withSize(4, 2)
         .withPosition(0, 2) 
         .withProperties(Map.of("show_type",false));  

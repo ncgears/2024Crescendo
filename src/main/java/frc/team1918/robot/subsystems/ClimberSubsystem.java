@@ -105,56 +105,59 @@ public class ClimberSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(16, 7);  
 		if(Constants.Climber.debugDashboard) {
-      ShuffleboardTab climberTab = Shuffleboard.getTab("DBG:Climber");
-      climberTab.addString("Climber", this::getStateColor)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Climber");
+      debugTab.addString("Climber", this::getStateColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      climberTab.addString("State", this::getStateName)
+      debugTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      climberTab.addNumber("Position", this::getPosition)
+      debugTab.addNumber("Position", this::getPosition)
         .withSize(2,2)
         .withPosition(6,0)
         .withWidget("Text Display");
-      climberTab.add("Climber Up", new InstantCommand(this::climberUp))
+      debugTab.addNumber("Absolute", this::getPositionAbsolute)
+        .withSize(2,2)
+        .withPosition(8,0);
+      debugTab.add("Climber Up", new InstantCommand(this::climberUp))
         .withSize(4, 2)
         .withPosition(0, 2)
         .withProperties(Map.of("show_type",false));  
-      climberTab.add("Climber Down", new InstantCommand(this::climberDown))
+      debugTab.add("Climber Down", new InstantCommand(this::climberDown))
         .withSize(4, 2)
         .withPosition(4, 2)
         .withProperties(Map.of("show_type",false));  
-      climberTab.add("Climber Hold", new InstantCommand(this::climberHold))
+      debugTab.add("Climber Hold", new InstantCommand(this::climberHold))
         .withSize(4, 2)
         .withPosition(8, 2)  
         .withProperties(Map.of("show_type",false));  
-      climberTab.add("Climber Stop", new InstantCommand(this::climberStop))
+      debugTab.add("Climber Stop", new InstantCommand(this::climberStop))
         .withSize(4, 2)
         .withPosition(12, 2)
         .withProperties(Map.of("show_type",false));  
-      climberTab.addString("Latch", this::getLatchColor)
+      debugTab.addString("Latch", this::getLatchColor)
         .withSize(2, 2)
         .withPosition(0, 4)  
         .withWidget("Single Color View");
-      climberTab.addString("Latch Pos", this::getLatchPostionName)
+      debugTab.addString("Latch Pos", this::getLatchPostionName)
         .withSize(2,2)
         .withPosition(2,4)
         .withWidget("Text Display");
-      climberTab.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); })
+      debugTab.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); })
         .withSize(2,2)
         .withPosition(4,4)
         .withWidget("Text Display");
-      climberTab.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); })
+      debugTab.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); })
         .withSize(2,2)
         .withPosition(6,4)
         .withWidget("Text Display");
-      climberTab.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
+      debugTab.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(0,6)
         .withProperties(Map.of("show_type",false));  
-      climberTab.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
+      debugTab.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(4, 6)
         .withProperties(Map.of("show_type",false));  
@@ -183,8 +186,13 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public double getPosition() {
-    return 0.0; //TODO: position of climber
+    return m_motor1New.getPosition().getValue();
   }
+
+  public double getPositionAbsolute() {
+    return m_encoder.getPosition().getValue();
+  }
+
   /**
    * Sets the speed of the Climber
    * @param speed The speed of the Climber in percentage (-1.0 to 1.0)

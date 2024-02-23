@@ -121,8 +121,8 @@ public class Vision {
     //   .withWidget("Single Color View")
     //   .withPosition(19, 0);  
 		if(Constants.Vision.debugDashboard) {
-      ShuffleboardTab visionTab = Shuffleboard.getTab("DBG:Vision");
-      visionTab.addBoolean("hasTargets", () -> getLatestResult("front").hasTargets())
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
+      debugTab.addBoolean("hasTargets", () -> getLatestResult("front").hasTargets())
         .withSize(2, 2)
         .withWidget("Boolean Box")
         .withPosition(0, 0);  

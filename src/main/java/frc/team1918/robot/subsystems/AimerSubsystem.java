@@ -93,44 +93,44 @@ public class AimerSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(12, 7);  
 		if(Constants.Aimer.debugDashboard) {
-      ShuffleboardTab aimerTab = Shuffleboard.getTab("DBG:Aimer");
-      aimerTab.addString("Aimer", this::getColor)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Aimer");
+      debugTab.addString("Aimer", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      aimerTab.addString("State", this::getStateName)
+      debugTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      aimerTab.add("Update State", new InstantCommand(this::updateState).ignoringDisable(true))
+      debugTab.add("Update State", new InstantCommand(this::updateState).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(6, 0)
         .withProperties(Map.of("show_type",false));  
-      aimerTab.addNumber("Target", this::getTargetPosition)
+      debugTab.addNumber("Target", this::getTargetPosition)
         .withSize(2,2)
         .withPosition(0,2);
-      aimerTab.addNumber("Position", this::getPosition)
+      debugTab.addNumber("Position", this::getPosition)
         .withSize(2,2)
         .withPosition(2,2);
-      aimerTab.addNumber("Absolute", this::getPositionAbsolute)
+      debugTab.addNumber("Absolute", this::getPositionAbsolute)
         .withSize(2,2)
         .withPosition(4,2);
-      aimerTab.addNumber("Error", this::getPositionError)
+      debugTab.addNumber("Error", this::getPositionError)
         .withSize(2,2)
         .withPosition(6,2);
-      aimerTab.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
+      debugTab.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(8, 2)
         .withProperties(Map.of("show_type",false));  
-      aimerTab.addNumber("Target Position", this::getNewPosition)
+      debugTab.addNumber("Target Position", this::getNewPosition)
         .withSize(4,2)
         .withPosition(12,2)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",0,"max_value",0.125,"divisions",10));
-      aimerTab.addBoolean("Rev Lim", this::getReverseLimit)
+      debugTab.addBoolean("Rev Lim", this::getReverseLimit)
         .withSize(2,2)
         .withPosition(0,4);    
-      aimerTab.addBoolean("Fwd Lim", this::getForwardLimit)
+      debugTab.addBoolean("Fwd Lim", this::getForwardLimit)
         .withSize(2,2)
         .withPosition(2,4);    
 

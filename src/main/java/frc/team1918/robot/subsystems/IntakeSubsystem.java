@@ -75,24 +75,24 @@ public class IntakeSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(8, 7);  
 		if(Constants.Intake.debugDashboard) {
-      ShuffleboardTab intakeTab = Shuffleboard.getTab("DBG:Intake");
-      intakeTab.addString("Intake", this::getColor)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Intake");
+      debugTab.addString("Intake", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      intakeTab.addString("Direction", this::getDirectionName)
+      debugTab.addString("Direction", this::getDirectionName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      intakeTab.add("Intake In", new InstantCommand(this::intakeIn))
+      debugTab.add("Intake In", new InstantCommand(this::intakeIn))
         .withSize(4, 2)
         .withPosition(0, 2)
         .withProperties(Map.of("show_type",false));  
-      intakeTab.add("Intake Out", new InstantCommand(this::intakeOut))
+      debugTab.add("Intake Out", new InstantCommand(this::intakeOut))
         .withSize(4, 2)
         .withPosition(4, 2)
         .withProperties(Map.of("show_type",false));  
-      intakeTab.add("Intake Stop", new InstantCommand(this::intakeStop))
+      debugTab.add("Intake Stop", new InstantCommand(this::intakeStop))
         .withSize(4, 2)
         .withPosition(8, 2)
         .withProperties(Map.of("show_type",false));  

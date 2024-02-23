@@ -90,30 +90,30 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void createDashboards() {
 		if(Constants.Shooter.debugDashboard) {
-      ShuffleboardTab shooterTab = Shuffleboard.getTab("DBG:Shooter");
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Shooter");
       //This widget has a bug that Nadav is working on where it doesn't set value into NT when dropping the handle until next time
-      shooterTab.addNumber("New Target (RPS)", this::getNewSpeed)
+      debugTab.addNumber("New Target (RPS)", this::getNewSpeed)
         .withSize(4,2)
         .withPosition(0,0)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
-      shooterTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
+      debugTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(4, 0)
         .withProperties(Map.of("show_type",false));  
-      shooterTab.addNumber("Current Target (RPS)", this::getTargetSpeed)
+      debugTab.addNumber("Current Target (RPS)", this::getTargetSpeed)
         .withSize(4,2)
         .withPosition(8,0)
         .withWidget("Text Display");
-      shooterTab.addNumber("Current Speed (RPS)", this::getCurrentSpeed)
+      debugTab.addNumber("Current Speed (RPS)", this::getCurrentSpeed)
         .withSize(2,2)
         .withPosition(0,2)
         .withWidget("Text Display");
-      shooterTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)))
+      debugTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)))
         .withSize(4, 2)
         .withPosition(2, 2)
         .withProperties(Map.of("show_type",false));  
-      shooterTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)))
+      debugTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)))
         .withSize(4, 2)
         .withPosition(6, 2)
         .withProperties(Map.of("show_type",false));  

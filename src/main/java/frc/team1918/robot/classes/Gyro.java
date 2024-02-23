@@ -43,12 +43,12 @@ public class Gyro implements Sendable {
 
 	public void buildDashboards() {
 		if(Constants.Lighting.debugDashboard) {
-			ShuffleboardTab gyroTab = Shuffleboard.getTab("DBG:Gyro");
-			gyroTab.add("Value", this)
+			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Gyro");
+			debugTab.add("Value", this)
 				.withSize(5, 4)
 				.withPosition(0, 0)  
 				.withProperties(Map.of("counter_clockwise_positive",true));
-			gyroTab.addNumber("Pitch", this::getPitch)
+			debugTab.addNumber("Pitch", this::getPitch)
 				.withSize(5, 2)
 				.withPosition(0, 4)
 				.withWidget("Text Display");

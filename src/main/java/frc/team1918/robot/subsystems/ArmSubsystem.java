@@ -90,25 +90,25 @@ public class ArmSubsystem extends SubsystemBase {
       .withWidget("Single Color View")
       .withPosition(14, 7);  
 		if(Constants.Arm.debugDashboard) {
-      ShuffleboardTab armTab = Shuffleboard.getTab("DBG:Arm");
-      armTab.addString("Arm", this::getColor)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Arm");
+      debugTab.addString("Arm", this::getColor)
         .withSize(2, 2)
         .withWidget("Single Color View")
         .withPosition(0, 0);  
-      armTab.addString("State", this::getStateName)
+      debugTab.addString("State", this::getStateName)
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
-      armTab.add("Arm Up", new InstantCommand(this::armUp))
+      debugTab.add("Arm Up", new InstantCommand(this::armUp))
         .withSize(4, 2)
         .withPosition(0, 2);  
-      armTab.add("Arm Down", new InstantCommand(this::armDown))
+      debugTab.add("Arm Down", new InstantCommand(this::armDown))
         .withSize(4, 2)
         .withPosition(4, 2);  
-      armTab.add("Arm Hold", new InstantCommand(this::armHold))
+      debugTab.add("Arm Hold", new InstantCommand(this::armHold))
         .withSize(4, 2)
         .withPosition(8, 2);  
-      armTab.add("Arm Stop", new InstantCommand(this::armStop))
+      debugTab.add("Arm Stop", new InstantCommand(this::armStop))
         .withSize(4, 2)
         .withPosition(12, 2);  
     }
@@ -129,6 +129,15 @@ public class ArmSubsystem extends SubsystemBase {
   public void updateState() {
     
   }
+
+  public double getPosition() {
+    return m_motor1New.getPosition().getValue();
+  }
+
+  public double getPositionAbsolute() {
+    return m_encoder.getPosition().getValue();
+  }
+
 
   public void armUp() {
     m_curState = State.UP;
