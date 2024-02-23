@@ -11,7 +11,9 @@ import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -94,45 +96,26 @@ public class AimerSubsystem extends SubsystemBase {
       .withPosition(12, 7);  
 		if(Constants.Aimer.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Aimer");
-      debugTab.addString("Aimer", this::getColor)
-        .withSize(2, 2)
-        .withWidget("Single Color View")
-        .withPosition(0, 0);  
-      debugTab.addString("State", this::getStateName)
-        .withSize(4,2)
-        .withPosition(2,0)
-        .withWidget("Text Display");
-      debugTab.add("Update State", new InstantCommand(this::updateState).ignoringDisable(true))
-        .withSize(4, 2)
-        .withPosition(6, 0)
-        .withProperties(Map.of("show_type",false));  
-      debugTab.addNumber("Target", this::getTargetPosition)
-        .withSize(2,2)
-        .withPosition(0,2);
-      debugTab.addNumber("Position", this::getPosition)
-        .withSize(2,2)
-        .withPosition(2,2);
-      debugTab.addNumber("Absolute", this::getPositionAbsolute)
-        .withSize(2,2)
-        .withPosition(4,2);
-      debugTab.addNumber("Error", this::getPositionError)
-        .withSize(2,2)
-        .withPosition(6,2);
-      debugTab.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
-        .withSize(4, 2)
-        .withPosition(8, 2)
+			ShuffleboardLayout aimerList = debugTab.getLayout("Aimer", BuiltInLayouts.kList)
+				.withSize(4,6)
+				.withPosition(0,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			aimerList.addString("Status", this::getColor)
+				.withWidget("Single Color View");
+			aimerList.addString("State", this::getStateName);
+			aimerList.addNumber("Target", this::getTargetPosition);
+			aimerList.addNumber("Position", this::getPosition);
+			aimerList.addNumber("Absolute", this::getPositionAbsolute);
+			aimerList.addNumber("Error", this::getPositionError);
+      aimerList.addBoolean("Rev Lim", this::getReverseLimit);
+      aimerList.addBoolean("Fwd Lim", this::getReverseLimit);
+      aimerList.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
         .withProperties(Map.of("show_type",false));  
       debugTab.addNumber("Target Position", this::getNewPosition)
         .withSize(4,2)
-        .withPosition(12,2)
+        .withPosition(4,0)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",0,"max_value",0.125,"divisions",10));
-      debugTab.addBoolean("Rev Lim", this::getReverseLimit)
-        .withSize(2,2)
-        .withPosition(0,4);    
-      debugTab.addBoolean("Fwd Lim", this::getForwardLimit)
-        .withSize(2,2)
-        .withPosition(2,4);    
 
       new_position_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Aimer/Target Position").subscribe(0.0);
     }
