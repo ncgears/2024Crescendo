@@ -11,7 +11,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -94,29 +96,30 @@ public class ShooterSubsystem extends SubsystemBase {
       //This widget has a bug that Nadav is working on where it doesn't set value into NT when dropping the handle until next time
       debugTab.addNumber("New Target (RPS)", this::getNewSpeed)
         .withSize(4,2)
-        .withPosition(0,0)
+        .withPosition(4,0)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
       debugTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
-        .withPosition(4, 0)
+        .withPosition(4, 2)
         .withProperties(Map.of("show_type",false));  
-      debugTab.addNumber("Current Target (RPS)", this::getTargetSpeed)
-        .withSize(4,2)
-        .withPosition(8,0)
-        .withWidget("Text Display");
-      debugTab.addNumber("Current Speed (RPS)", this::getCurrentSpeed)
-        .withSize(2,2)
-        .withPosition(0,2)
-        .withWidget("Text Display");
-      debugTab.add("Shooter Stop", new InstantCommand(() -> setSpeedPercent(0)))
-        .withSize(4, 2)
-        .withPosition(2, 2)
+			ShuffleboardLayout shooterList = debugTab.getLayout("Shooter", BuiltInLayouts.kList)
+				.withSize(4,10)
+				.withPosition(0,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			shooterList.addBoolean("Status", this::isAtSpeed);
+			shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
+			shooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
+      shooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
         .withProperties(Map.of("show_type",false));  
-      debugTab.add("Shooter 100%", new InstantCommand(() -> setSpeedPercent(1)))
-        .withSize(4, 2)
-        .withPosition(6, 2)
+      shooterList.add("60 RPS", new InstantCommand(() -> setSpeed(60)))
         .withProperties(Map.of("show_type",false));  
+      shooterList.add("85 RPS", new InstantCommand(() -> setSpeed(85)))
+        .withProperties(Map.of("show_type",false));  
+      shooterList.add("90 RPS", new InstantCommand(() -> setSpeed(90)))
+        .withProperties(Map.of("show_type",false));  
+      shooterList.add("95 RPS", new InstantCommand(() -> setSpeed(95)))
+        .withProperties(Map.of("show_type",false)); 
       
       new_speed_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Shooter/New Target (RPS)").subscribe(0.0);
     }
