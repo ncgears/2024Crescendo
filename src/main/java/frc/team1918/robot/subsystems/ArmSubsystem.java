@@ -96,7 +96,7 @@ public class ArmSubsystem extends SubsystemBase {
 		if(Constants.Arm.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Arm");
 			ShuffleboardLayout armList = debugTab.getLayout("Arm", BuiltInLayouts.kList)
-				.withSize(4,6)
+				.withSize(4,8)
 				.withPosition(0,0)
 				.withProperties(Map.of("Label position","LEFT"));
 			armList.addString("Status", this::getColor)
