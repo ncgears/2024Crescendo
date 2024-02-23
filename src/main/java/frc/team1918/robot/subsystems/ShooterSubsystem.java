@@ -92,36 +92,47 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public void createDashboards() {
 		if(Constants.Shooter.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Shooter");
-      //This widget has a bug that Nadav is working on where it doesn't set value into NT when dropping the handle until next time
-      debugTab.addNumber("New Target (RPS)", this::getNewSpeed)
-        .withSize(4,2)
-        .withPosition(4,0)
-        .withWidget("Number Slider")
-        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
-      debugTab.add("Apply Target", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
-        .withSize(4, 2)
-        .withPosition(4, 2)
-        .withProperties(Map.of("show_type",false));  
-			ShuffleboardLayout shooterList = debugTab.getLayout("Shooter", BuiltInLayouts.kList)
-				.withSize(4,10)
-				.withPosition(0,0)
+      ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+      ShuffleboardLayout shooterList = systemTab.getLayout("Shooter", BuiltInLayouts.kList)
+				.withSize(4,4)
+				.withPosition(12,0)
 				.withProperties(Map.of("Label position","LEFT"));
 			shooterList.addBoolean("Status", this::isAtSpeed);
 			shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
 			shooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
       shooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
         .withProperties(Map.of("show_type",false));  
-      shooterList.add("60 RPS", new InstantCommand(() -> setSpeed(60)))
-        .withProperties(Map.of("show_type",false));  
-      shooterList.add("85 RPS", new InstantCommand(() -> setSpeed(85)))
-        .withProperties(Map.of("show_type",false));  
-      shooterList.add("90 RPS", new InstantCommand(() -> setSpeed(90)))
-        .withProperties(Map.of("show_type",false));  
-      shooterList.add("95 RPS", new InstantCommand(() -> setSpeed(95)))
-        .withProperties(Map.of("show_type",false)); 
       
-      new_speed_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Shooter/New Target (RPS)").subscribe(0.0);
+      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+      ShuffleboardLayout dbgShooterList = debugTab.getLayout("Shooter", BuiltInLayouts.kList)
+				.withSize(4,9)
+				.withPosition(4,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			dbgShooterList.addBoolean("Status", this::isAtSpeed);
+			dbgShooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
+			dbgShooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
+      dbgShooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
+        .withProperties(Map.of("show_type",false));  
+      dbgShooterList.add("60 RPS", new InstantCommand(() -> setSpeed(60)))
+        .withProperties(Map.of("show_type",false));  
+      dbgShooterList.add("85 RPS", new InstantCommand(() -> setSpeed(85)))
+        .withProperties(Map.of("show_type",false));  
+      dbgShooterList.add("90 RPS", new InstantCommand(() -> setSpeed(90)))
+        .withProperties(Map.of("show_type",false));  
+      dbgShooterList.add("95 RPS", new InstantCommand(() -> setSpeed(95)))
+        .withProperties(Map.of("show_type",false)); 
+
+      debugTab.addNumber("Shooter Target (RPS)", this::getNewSpeed)
+        .withSize(4,2)
+        .withPosition(8,0)
+        .withWidget("Number Slider")
+        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
+      debugTab.add("Apply Shooter Speed", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
+        .withSize(4, 2)
+        .withPosition(8, 2)
+        .withProperties(Map.of("show_type",false));  
+
+      new_speed_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/Debug/Shooter Target (RPS)").subscribe(0.0);
     }
   }
 

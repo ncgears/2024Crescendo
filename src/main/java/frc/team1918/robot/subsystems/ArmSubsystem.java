@@ -93,19 +93,21 @@ public class ArmSubsystem extends SubsystemBase {
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(14, 8);  
-		if(Constants.Arm.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Arm");
-			ShuffleboardLayout armList = debugTab.getLayout("Arm", BuiltInLayouts.kList)
-				.withSize(4,8)
-				.withPosition(0,0)
-				.withProperties(Map.of("Label position","LEFT"));
-			armList.addString("Status", this::getColor)
-				.withWidget("Single Color View");
-			armList.addString("State", this::getStateName);
-			armList.addNumber("Target", this::getTargetPosition);
-			armList.addNumber("Position", this::getPosition);
-			armList.addNumber("Absolute", this::getPositionAbsolute);
-			armList.addNumber("Error", this::getPositionError);
+
+    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+    ShuffleboardLayout armList = systemTab.getLayout("Arm", BuiltInLayouts.kList)
+      .withSize(4,5)
+      .withPosition(20,4)
+      .withProperties(Map.of("Label position","LEFT"));
+    armList.addString("Status", this::getColor)
+      .withWidget("Single Color View");
+    armList.addString("State", this::getStateName);
+    armList.addNumber("Target", this::getTargetPosition);
+    armList.addNumber("Position", this::getPosition);
+    armList.addNumber("Absolute", this::getPositionAbsolute);
+    armList.addNumber("Error", this::getPositionError);
+
+    if(Constants.Arm.debugDashboard) {
     }
   }
 

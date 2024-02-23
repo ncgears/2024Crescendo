@@ -94,30 +94,33 @@ public class AimerSubsystem extends SubsystemBase {
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(12, 7);  
+
+    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+    ShuffleboardLayout aimerList = systemTab.getLayout("Aimer", BuiltInLayouts.kList)
+      .withSize(4,7)
+      .withPosition(8,0)
+      .withProperties(Map.of("Label position","LEFT"));
+    aimerList.addString("Status", this::getColor)
+      .withWidget("Single Color View");
+    aimerList.addString("State", this::getStateName);
+    aimerList.addNumber("Target", this::getTargetPosition);
+    aimerList.addNumber("Position", this::getPosition);
+    aimerList.addNumber("Absolute", this::getPositionAbsolute);
+    aimerList.addNumber("Error", this::getPositionError);
+    aimerList.addBoolean("Rev Lim", this::getReverseLimit);
+    aimerList.addBoolean("Fwd Lim", this::getReverseLimit);
+    aimerList.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
+      .withProperties(Map.of("show_type",false));  
+
 		if(Constants.Aimer.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Aimer");
-			ShuffleboardLayout aimerList = debugTab.getLayout("Aimer", BuiltInLayouts.kList)
-				.withSize(4,6)
-				.withPosition(0,0)
-				.withProperties(Map.of("Label position","LEFT"));
-			aimerList.addString("Status", this::getColor)
-				.withWidget("Single Color View");
-			aimerList.addString("State", this::getStateName);
-			aimerList.addNumber("Target", this::getTargetPosition);
-			aimerList.addNumber("Position", this::getPosition);
-			aimerList.addNumber("Absolute", this::getPositionAbsolute);
-			aimerList.addNumber("Error", this::getPositionError);
-      aimerList.addBoolean("Rev Lim", this::getReverseLimit);
-      aimerList.addBoolean("Fwd Lim", this::getReverseLimit);
-      aimerList.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
-        .withProperties(Map.of("show_type",false));  
-      debugTab.addNumber("Target Position", this::getNewPosition)
+      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+      debugTab.addNumber("Aimer Target", this::getNewPosition)
         .withSize(4,2)
-        .withPosition(4,0)
+        .withPosition(0,0)
         .withWidget("Number Slider")
         .withProperties(Map.of("min_value",0,"max_value",0.125,"divisions",10));
 
-      new_position_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/DBG:Aimer/Target Position").subscribe(0.0);
+      new_position_sub = NetworkTableInstance.getDefault().getDoubleTopic("/Shuffleboard/Debug/Aimer Target").subscribe(0.0);
     }
   }
 

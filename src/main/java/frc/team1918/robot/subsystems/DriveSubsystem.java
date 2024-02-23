@@ -120,7 +120,7 @@ public class DriveSubsystem extends SubsystemBase {
 			.withPosition(19, 4)
 			.withProperties(Map.of("show_robot_rotation","true"));
 		if(Constants.Swerve.debugDashboard) {
-			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Swerve");
+			ShuffleboardTab debugTab = Shuffleboard.getTab("Swerve");
 			debugTab.add("Swerve Drive", this)
 				.withSize(6, 6)
 				.withPosition(0, 0)

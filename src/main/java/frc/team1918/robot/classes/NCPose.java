@@ -269,28 +269,10 @@ public class NCPose {
 	/** Creates the dashboard for the tracking system */
 	public void createDashboards() {
 		if(true) { //false to disable tracking dashboard
-			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Tracking");
-			// debugTab.addString("Tracking", this::getTrackingStateColor)
-			// 	.withSize(2, 2)
-			// 	.withWidget("Single Color View")
-			// 	.withPosition(0, 0);  
-			// debugTab.addString("State", this::getTrackingStateName)
-			// 	.withSize(2,2)
-			// 	.withPosition(2,0)
-			// 	.withWidget("Text Display");
-			// debugTab.addString("Target", this::getTrackingTargetName)
-			// 	.withSize(2,2)
-			// 	.withPosition(4,0)
-			// 	.withWidget("Text Display");
-			// debugTab.addNumber("Bearing", this::getTrackingTargetBearing)
-			// 	.withSize(2,2)
-			// 	.withPosition(0,2);
-			// debugTab.addNumber("Angle", this::getTrackingTargetAngle)
-			// 	.withSize(2,2)
-			// 	.withPosition(2,2);
-			ShuffleboardLayout trackingList = debugTab.getLayout("Target Tracking", BuiltInLayouts.kList)
-				.withSize(4,6)
-				.withPosition(0,0)
+			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
+				.withSize(4,5)
+				.withPosition(12,4)
 				.withProperties(Map.of("Label position","LEFT"));
 			trackingList.addString("Tracking", this::getTrackingStateColor)
 				.withWidget("Single Color View");

@@ -6,7 +6,9 @@ import java.util.Map;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -74,27 +76,29 @@ public class IntakeSubsystem extends SubsystemBase {
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(8, 7);  
-		if(Constants.Intake.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Intake");
-      debugTab.addString("Intake", this::getColor)
-        .withSize(2, 2)
-        .withWidget("Single Color View")
-        .withPosition(0, 0);  
-      debugTab.addString("Direction", this::getDirectionName)
-        .withSize(4,2)
-        .withPosition(2,0)
-        .withWidget("Text Display");
-      debugTab.add("Intake In", new InstantCommand(this::intakeIn))
-        .withSize(4, 2)
-        .withPosition(0, 2)
+      ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+			ShuffleboardLayout intakeList = systemTab.getLayout("Intake", BuiltInLayouts.kList)
+				.withSize(4,2)
+				.withPosition(4,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			intakeList.addString("Status", this::getColor)
+				.withWidget("Single Color View");
+			intakeList.addString("Direction", this::getDirectionName);
+
+      if(Constants.Intake.debugDashboard) {
+      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+			ShuffleboardLayout dbgIntakeList = debugTab.getLayout("Intake", BuiltInLayouts.kList)
+				.withSize(4,6)
+				.withPosition(8,4)
+				.withProperties(Map.of("Label position","LEFT"));
+			dbgIntakeList.addString("Status", this::getColor)
+				.withWidget("Single Color View");
+			dbgIntakeList.addString("Direction", this::getDirectionName);
+      dbgIntakeList.add("Intake In", new InstantCommand(this::intakeIn))
         .withProperties(Map.of("show_type",false));  
-      debugTab.add("Intake Out", new InstantCommand(this::intakeOut))
-        .withSize(4, 2)
-        .withPosition(4, 2)
+      dbgIntakeList.add("Intake Out", new InstantCommand(this::intakeOut))
         .withProperties(Map.of("show_type",false));  
-      debugTab.add("Intake Stop", new InstantCommand(this::intakeStop))
-        .withSize(4, 2)
-        .withPosition(8, 2)
+      dbgIntakeList.add("Intake Stop", new InstantCommand(this::intakeStop))
         .withProperties(Map.of("show_type",false));  
     }
   }

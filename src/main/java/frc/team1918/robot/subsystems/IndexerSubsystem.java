@@ -7,7 +7,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -88,22 +90,28 @@ public class IndexerSubsystem extends SubsystemBase {
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(10, 7);  
-		if(Constants.Indexer.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Indexer");
-      debugTab.addString("Indexer", this::getColor)
-        .withSize(2, 2)
-        .withWidget("Single Color View")
-        .withPosition(0, 0);  
-      debugTab.addString("State", this::getStateName)
-        .withSize(4,2)
-        .withPosition(2,0)
-        .withWidget("Text Display");
-      debugTab.addBoolean("Has Note", this::hasNote)
-        .withSize(2,2)
-        .withPosition(6,0);
-      debugTab.add("DBG Toggle Note", new InstantCommand(this::toggleFull))
-        .withSize(4, 2)
-        .withPosition(0, 2) 
+
+    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+    ShuffleboardLayout indexerList = systemTab.getLayout("Indexer", BuiltInLayouts.kList)
+      .withSize(4,3)
+      .withPosition(4,2)
+      .withProperties(Map.of("Label position","LEFT"));
+    indexerList.addString("Status", this::getColor)
+      .withWidget("Single Color View");
+    indexerList.addString("State", this::getStateName);
+    indexerList.addBoolean("Has Note", this::hasNote);
+
+    if(Constants.Indexer.debugDashboard) {
+      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+      ShuffleboardLayout dbgIndexerList = debugTab.getLayout("Indexer", BuiltInLayouts.kList)
+        .withSize(4,4)
+        .withPosition(12,0)
+        .withProperties(Map.of("Label position","LEFT"));
+      dbgIndexerList.addString("Status", this::getColor)
+        .withWidget("Single Color View");
+      dbgIndexerList.addString("State", this::getStateName);
+      dbgIndexerList.addBoolean("Has Note", this::hasNote);
+      dbgIndexerList.add("Debug: Note Toggle", new InstantCommand(this::toggleFull).ignoringDisable(true))
         .withProperties(Map.of("show_type",false));  
     }
   }

@@ -107,40 +107,66 @@ public class ClimberSubsystem extends SubsystemBase {
       .withSize(2, 2)
       .withWidget("Single Color View")
       .withPosition(16, 7);  
-		if(Constants.Climber.debugDashboard) {
-      ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Climber");
-			ShuffleboardLayout climberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
-				.withSize(5,10)
-				.withPosition(0,0)
+
+    ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+    ShuffleboardLayout climberList = systemTab.getLayout("Climber", BuiltInLayouts.kList)
+      .withSize(4,6)
+      .withPosition(16,0)
+      .withProperties(Map.of("Label position","LEFT"));
+    climberList.addString("Status", this::getStateColor)
+      .withWidget("Single Color View");
+    climberList.addString("State", this::getStateName);
+    climberList.addNumber("Target", this::getTargetPosition);
+    climberList.addNumber("Position", this::getPosition);
+    climberList.addNumber("Absolute", this::getPositionAbsolute);
+    climberList.addNumber("Error", this::getPositionError);
+    climberList.addBoolean("Rev Lim", this::getReverseLimit);
+
+    ShuffleboardLayout latchList = systemTab.getLayout("Latch", BuiltInLayouts.kList)
+      .withSize(4,4)
+      .withPosition(20,0)
+      .withProperties(Map.of("Label position","LEFT"));
+    latchList.addString("Status", this::getLatchColor)
+      .withWidget("Single Color View");
+    latchList.addString("State", this::getLatchPostionName);
+    latchList.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); });
+    latchList.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); });
+
+    if(Constants.Climber.debugDashboard) {
+      ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+			ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
+				.withSize(4,10)
+				.withPosition(16,0)
 				.withProperties(Map.of("Label position","LEFT"));
-      climberList.addString("Status", this::getStateColor)
+      dbgClimberList.addString("Status", this::getStateColor)
         .withWidget("Single Color View");
-      climberList.addString("State", this::getStateName);
-      climberList.addNumber("Target", this::getTargetPosition);
-      climberList.addNumber("Position", this::getPosition);
-      climberList.addNumber("Absolute", this::getPositionAbsolute);
-      climberList.addNumber("Error", this::getPositionError);
-      climberList.addBoolean("Rev Lim", this::getReverseLimit);
-      climberList.add("Climber Up", new InstantCommand(this::climberUp))
+      dbgClimberList.addString("State", this::getStateName);
+      dbgClimberList.addNumber("Target", this::getTargetPosition);
+      dbgClimberList.addNumber("Position", this::getPosition);
+      dbgClimberList.addNumber("Absolute", this::getPositionAbsolute);
+      dbgClimberList.addNumber("Error", this::getPositionError);
+      dbgClimberList.addBoolean("Rev Lim", this::getReverseLimit);
+      dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
         .withProperties(Map.of("show_type",false));  
-      climberList.add("Climber Down", new InstantCommand(this::climberDown))
+      dbgClimberList.add("Climber Down", new InstantCommand(this::climberDown))
         .withProperties(Map.of("show_type",false));  
-      climberList.add("Climber Hold", new InstantCommand(this::climberHold))
+      dbgClimberList.add("Climber Hold", new InstantCommand(this::climberHold))
         .withProperties(Map.of("show_type",false));  
-      climberList.add("Climber Stop", new InstantCommand(this::climberStop))
+      dbgClimberList.add("Climber Stop", new InstantCommand(this::climberStop))
         .withProperties(Map.of("show_type",false));  
-			ShuffleboardLayout latchList = debugTab.getLayout("Latch", BuiltInLayouts.kList)
-				.withSize(5,6)
-				.withPosition(5,0)
+
+      ShuffleboardLayout dbgLatchList = debugTab.getLayout("Latch", BuiltInLayouts.kList)
+				.withSize(4,6)
+				.withPosition(12,4)
 				.withProperties(Map.of("Label position","LEFT"));
-			latchList.addString("Status", this::getLatchColor)
+			dbgLatchList.addString("Status", this::getLatchColor)
 				.withWidget("Single Color View");
-			latchList.addString("State", this::getLatchPostionName);
-			latchList.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); });
-			latchList.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); });
-      latchList.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
+			dbgLatchList.addString("State", this::getLatchPostionName);
+			dbgLatchList.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); });
+			dbgLatchList.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); });
+      dbgLatchList.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
         .withProperties(Map.of("show_type",false)); 
-      latchList.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
+      dbgLatchList.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
         .withProperties(Map.of("show_type",false));  
     }
   }

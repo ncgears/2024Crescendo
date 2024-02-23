@@ -352,11 +352,12 @@ public class RobotContainer {
   }
 
   private void buildSystemTab(){ //This is where we add maintenance commands
-    ShuffleboardTab systemTab = Shuffleboard.getTab("DBG:System");
-    systemTab.add("Power", pdh)
+    ShuffleboardTab powerTab = Shuffleboard.getTab("DBG:Power");
+    powerTab.add("Power", pdh)
       .withPosition(0, 0);
       // .withSize(1, 1);
-    systemTab.add("Command Scheduler", CommandScheduler.getInstance())
-      .withPosition(6,0);      
+    ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+    debugTab.add("Command Scheduler", CommandScheduler.getInstance())
+      .withPosition(0,2);      
   }
 }
