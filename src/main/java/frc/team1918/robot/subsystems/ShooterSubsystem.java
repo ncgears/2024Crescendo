@@ -110,12 +110,13 @@ public class ShooterSubsystem extends SubsystemBase {
     if(Constants.Shooter.debugDashboard) {
       ShuffleboardTab systemTab = Shuffleboard.getTab("System");
       ShuffleboardLayout shooterList = systemTab.getLayout("Shooter", BuiltInLayouts.kList)
-				.withSize(4,4)
+				.withSize(4,5)
 				.withPosition(12,0)
 				.withProperties(Map.of("Label position","LEFT"));
 			shooterList.addString("Status", this::getColor)
         .withWidget("Single Color View");
       shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
+			shooterList.addNumber("Current", this::getCurrentSpeed);
 			shooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
       shooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
         .withProperties(Map.of("show_type",false));  

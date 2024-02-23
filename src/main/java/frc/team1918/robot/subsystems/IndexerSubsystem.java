@@ -95,7 +95,7 @@ public class IndexerSubsystem extends SubsystemBase {
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout indexerList = systemTab.getLayout("Indexer", BuiltInLayouts.kList)
       .withSize(4,3)
-      .withPosition(4,2)
+      .withPosition(8,0)
       .withProperties(Map.of("Label position","LEFT"));
     indexerList.addString("Status", this::getColor)
       .withWidget("Single Color View");

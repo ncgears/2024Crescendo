@@ -272,7 +272,7 @@ public class NCPose {
 			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
 			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
 				.withSize(4,5)
-				.withPosition(12,4)
+				.withPosition(12,5)
 				.withProperties(Map.of("Label position","LEFT"));
 			trackingList.addString("Tracking", this::getTrackingStateColor)
 				.withWidget("Single Color View");
