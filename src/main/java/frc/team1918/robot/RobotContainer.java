@@ -44,6 +44,7 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.subsystems.AimerSubsystem;
+import frc.team1918.robot.subsystems.ArmSubsystem;
 import frc.team1918.robot.subsystems.ClimberSubsystem;
 //Util imports
 import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
@@ -98,6 +99,7 @@ public class RobotContainer {
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
     public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
     public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
+    public static final ArmSubsystem arm = ArmSubsystem.getInstance();
 
     private static final Alert enabledAlert = new Alert("Robot is Enabled", AlertType.INFO);
 
@@ -176,6 +178,7 @@ public class RobotContainer {
     indexer.init();
     intake.init();
     shooter.init();
+    arm.init();
   }
 
   public static boolean isAllianceRed() {

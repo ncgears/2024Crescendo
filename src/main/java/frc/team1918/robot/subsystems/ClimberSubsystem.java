@@ -3,8 +3,8 @@ package frc.team1918.robot.subsystems;
 
 import java.util.Map;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
@@ -43,9 +43,9 @@ public class ClimberSubsystem extends SubsystemBase {
     public int getRight() { return this.right; }
     public String getColor() { return this.color; }
   }
+  private NeutralOut m_neutral = new NeutralOut();
   private CANcoder m_encoder;
-  private TalonFX m_motor1New;
-  private WPI_TalonSRX m_motor1;
+  private TalonFX m_motor1;
   private State m_curState = State.STOP;
   private LatchPosition m_curLatchPosition = LatchPosition.OUT;
   private Servo m_leftServo = new Servo(Constants.Climber.kLeftServoID);
@@ -67,11 +67,10 @@ public class ClimberSubsystem extends SubsystemBase {
     m_encoder = new CANcoder(Constants.Climber.kCANcoderID, Constants.Climber.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
 
-    m_motor1 = new WPI_TalonSRX(Constants.Climber.kMotorID);
-    m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
-    m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    // m_motor1.setNeutralMode(Constants.Climber.kNeutralMode); //Set controller to brake mode  
+    m_motor1 = new TalonFX(Constants.Climber.kMotorID, Constants.Climber.canBus);
     m_motor1.setInverted(Constants.Climber.kIsInverted);
+    RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));
+
     init();
     createDashboards();
   }
@@ -114,13 +113,19 @@ public class ClimberSubsystem extends SubsystemBase {
         .withSize(4,2)
         .withPosition(2,0)
         .withWidget("Text Display");
+        debugTab.addNumber("Target", this::getTargetPosition)
+        .withSize(2,2)
+        .withPosition(6,0);
       debugTab.addNumber("Position", this::getPosition)
         .withSize(2,2)
-        .withPosition(6,0)
+        .withPosition(8,0)
         .withWidget("Text Display");
       debugTab.addNumber("Absolute", this::getPositionAbsolute)
         .withSize(2,2)
-        .withPosition(8,0);
+        .withPosition(10,0);
+      debugTab.addNumber("Error", this::getPositionError)
+        .withSize(2,2)
+        .withPosition(12,0);
       debugTab.add("Climber Up", new InstantCommand(this::climberUp))
         .withSize(4, 2)
         .withPosition(0, 2)
@@ -185,21 +190,18 @@ public class ClimberSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Climber: Latch In");
   }
 
+  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
+  public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
+  // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
+
   public double getPosition() {
-    return m_motor1New.getPosition().getValue();
+    return m_motor1.getPosition().getValue();
   }
 
   public double getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
   }
 
-  /**
-   * Sets the speed of the Climber
-   * @param speed The speed of the Climber in percentage (-1.0 to 1.0)
-   */
-  public void setSpeedPercent(double speed) {
-    m_motor1.set(ControlMode.PercentOutput, speed);
-  }
   public void climberUp() {
     m_curState = State.UP;
     Helpers.Debug.debug("Climber: Up");
@@ -209,11 +211,12 @@ public class ClimberSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Climber: Down");
   }
   public void climberHold() {
+    m_motor1.setControl(new StaticBrake());
     m_curState = State.HOLD;
     Helpers.Debug.debug("Climber: Hold");
   }
   public void climberStop() {
-    m_motor1.set(ControlMode.PercentOutput,0);
+    m_motor1.setControl(m_neutral);
     m_curState = State.STOP;
     Helpers.Debug.debug("Climber: Stop");
   }
