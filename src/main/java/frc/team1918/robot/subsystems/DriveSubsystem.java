@@ -119,50 +119,64 @@ public class DriveSubsystem extends SubsystemBase {
 			.withSize(5, 5)
 			.withPosition(19, 4)
 			.withProperties(Map.of("show_robot_rotation","true"));
+
+		ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
+		swerveTab.add("Swerve Drive", this)
+			.withSize(6, 6)
+			.withPosition(0, 0)
+			.withProperties(Map.of("show_robot_rotation","true"));
+		swerveTab.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
+			.withSize(2, 2)
+			.withPosition(6, 0);
+		swerveTab.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
+			.withSize(2, 2)
+			.withPosition(12, 0);
+		swerveTab.addNumber("BL Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2))
+			.withSize(2, 2)
+			.withPosition(6, 4);
+		swerveTab.addNumber("BR Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2))
+			.withSize(2, 2)
+			.withPosition(12, 4);
+		swerveTab.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
+			.withSize(2, 2)
+			.withPosition(8, 1);
+		swerveTab.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
+			.withSize(2, 2)
+			.withPosition(10, 1);
+		swerveTab.addNumber("BL Speed", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3))
+			.withSize(2, 2)
+			.withPosition(8, 3);
+		swerveTab.addNumber("BR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
+			.withSize(2, 2)
+			.withPosition(10, 3);
+		swerveTab.add("Field", fieldSim)
+			.withSize(6,4)
+			.withPosition(0,6)
+			.withWidget("Field")
+			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+
+		ShuffleboardLayout thetaList = swerveTab.getLayout("theta Controller", BuiltInLayouts.kList)
+			.withSize(4,4)
+			.withPosition(6,6)
+			.withProperties(Map.of("Label position","LEFT"));
+		thetaList.addBoolean("Heading Lock", this::getHeadingLocked)
+			.withWidget("Boolean Box");
+		thetaList.addNumber("Target Heading", this::getTargetHeading);
+		thetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
+		thetaList.addNumber("Heading Error", this::getHeadingError);
+
+		ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
+			.withSize(4,4)
+			.withPosition(16,6)
+			.withProperties(Map.of("Label position","LEFT"));
+		systemThetaList.addBoolean("Heading Lock", this::getHeadingLocked)
+			.withWidget("Boolean Box");
+		systemThetaList.addNumber("Target Heading", this::getTargetHeading);
+		systemThetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
+		systemThetaList.addNumber("Heading Error", this::getHeadingError);
+
 		if(Constants.Swerve.debugDashboard) {
-			ShuffleboardTab debugTab = Shuffleboard.getTab("Swerve");
-			debugTab.add("Swerve Drive", this)
-				.withSize(6, 6)
-				.withPosition(0, 0)
-				.withProperties(Map.of("show_robot_rotation","true"));
-			debugTab.addNumber("FL Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2))
-				.withSize(2, 2)
-				.withPosition(6, 0);
-			debugTab.addNumber("FR Angle", () -> Helpers.General.roundDouble(m_frontRight.getAngle().getDegrees(),2))
-				.withSize(2, 2)
-				.withPosition(12, 0);
-			debugTab.addNumber("BL Angle", () -> Helpers.General.roundDouble(m_backLeft.getAngle().getDegrees(),2))
-				.withSize(2, 2)
-				.withPosition(6, 4);
-			debugTab.addNumber("BR Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2))
-				.withSize(2, 2)
-				.withPosition(12, 4);
-			debugTab.addNumber("FL Speed", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3))
-				.withSize(2, 2)
-				.withPosition(8, 1);
-			debugTab.addNumber("FR Speed", () -> Helpers.General.roundDouble(m_frontRight.getVelocity(),3))
-				.withSize(2, 2)
-				.withPosition(10, 1);
-			debugTab.addNumber("BL Speed", () -> Helpers.General.roundDouble(m_backLeft.getVelocity(),3))
-				.withSize(2, 2)
-				.withPosition(8, 3);
-			debugTab.addNumber("BR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
-				.withSize(2, 2)
-				.withPosition(10, 3);
-			debugTab.add("Field", fieldSim)
-				.withSize(6,4)
-				.withPosition(0,6)
-				.withWidget("Field")
-				.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
-			ShuffleboardLayout thetaList = debugTab.getLayout("theta Controller", BuiltInLayouts.kList)
-				.withSize(4,4)
-				.withPosition(6,6)
-				.withProperties(Map.of("Label position","LEFT"));
-			thetaList.addBoolean("Heading Lock", this::getHeadingLocked)
-				.withWidget("Boolean Box");
-			thetaList.addNumber("Target Heading", this::getTargetHeading);
-			thetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
-			thetaList.addNumber("Heading Error", this::getHeadingError);
 		}
 	}
 
