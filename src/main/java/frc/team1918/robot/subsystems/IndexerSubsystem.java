@@ -23,9 +23,9 @@ public class IndexerSubsystem extends SubsystemBase {
 	private static IndexerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP("#FFA500"),
-    DOWN("#00FF00"),
-    STOP("#000000");
+    UP(Constants.Dashboard.Colors.ORANGE),
+    DOWN(Constants.Dashboard.Colors.RED),
+    STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }

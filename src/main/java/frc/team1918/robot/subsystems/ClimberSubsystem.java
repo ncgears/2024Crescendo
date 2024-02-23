@@ -9,7 +9,9 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,17 +27,17 @@ public class ClimberSubsystem extends SubsystemBase {
 	private static ClimberSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP("#00FF00"),
-    DOWN("#FF0000"),
-    HOLD("#FFA500"),
-    STOP("#000000");
+    UP(Constants.Dashboard.Colors.GREEN),
+    DOWN(Constants.Dashboard.Colors.RED),
+    HOLD(Constants.Dashboard.Colors.ORANGE),
+    STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
   public enum LatchPosition {
-    OUT(0,0,"#00FF00"), //TODO set positions
-    IN(90,90,"#FF0000"); //TODO set positions
+    OUT(0,0,Constants.Dashboard.Colors.GREEN), //TODO set positions
+    IN(90,90,Constants.Dashboard.Colors.RED); //TODO set positions
     private final int left,right;
     private final String color;
     LatchPosition(int left, int right, String color) { this.left=left; this.right=right; this.color=color; }
@@ -105,66 +107,37 @@ public class ClimberSubsystem extends SubsystemBase {
       .withPosition(16, 7);  
 		if(Constants.Climber.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Climber");
-      debugTab.addString("Climber", this::getStateColor)
-        .withSize(2, 2)
-        .withWidget("Single Color View")
-        .withPosition(0, 0);  
-      debugTab.addString("State", this::getStateName)
-        .withSize(4,2)
-        .withPosition(2,0)
-        .withWidget("Text Display");
-        debugTab.addNumber("Target", this::getTargetPosition)
-        .withSize(2,2)
-        .withPosition(6,0);
-      debugTab.addNumber("Position", this::getPosition)
-        .withSize(2,2)
-        .withPosition(8,0)
-        .withWidget("Text Display");
-      debugTab.addNumber("Absolute", this::getPositionAbsolute)
-        .withSize(2,2)
-        .withPosition(10,0);
-      debugTab.addNumber("Error", this::getPositionError)
-        .withSize(2,2)
-        .withPosition(12,0);
-      debugTab.add("Climber Up", new InstantCommand(this::climberUp))
-        .withSize(4, 2)
-        .withPosition(0, 2)
-        .withProperties(Map.of("show_type",false));  
-      debugTab.add("Climber Down", new InstantCommand(this::climberDown))
-        .withSize(4, 2)
-        .withPosition(4, 2)
-        .withProperties(Map.of("show_type",false));  
-      debugTab.add("Climber Hold", new InstantCommand(this::climberHold))
-        .withSize(4, 2)
-        .withPosition(8, 2)  
-        .withProperties(Map.of("show_type",false));  
-      debugTab.add("Climber Stop", new InstantCommand(this::climberStop))
-        .withSize(4, 2)
-        .withPosition(12, 2)
-        .withProperties(Map.of("show_type",false));  
-      debugTab.addString("Latch", this::getLatchColor)
-        .withSize(2, 2)
-        .withPosition(0, 4)  
+			ShuffleboardLayout climberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
+				.withSize(5,10)
+				.withPosition(0,0)
+				.withProperties(Map.of("Label position","LEFT"));
+      climberList.addString("Status", this::getStateColor)
         .withWidget("Single Color View");
-      debugTab.addString("Latch Pos", this::getLatchPostionName)
-        .withSize(2,2)
-        .withPosition(2,4)
-        .withWidget("Text Display");
-      debugTab.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); })
-        .withSize(2,2)
-        .withPosition(4,4)
-        .withWidget("Text Display");
-      debugTab.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); })
-        .withSize(2,2)
-        .withPosition(6,4)
-        .withWidget("Text Display");
-      debugTab.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
-        .withSize(4, 2)
-        .withPosition(0,6)
+      climberList.addString("State", this::getStateName);
+      climberList.addNumber("Target", this::getTargetPosition);
+      climberList.addNumber("Position", this::getPosition);
+      climberList.addNumber("Absolute", this::getPositionAbsolute);
+      climberList.addNumber("Error", this::getPositionError);
+      climberList.add("Climber Up", new InstantCommand(this::climberUp))
         .withProperties(Map.of("show_type",false));  
-      debugTab.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
-        .withSize(4, 2)
-        .withPosition(4, 6)
+      climberList.add("Climber Down", new InstantCommand(this::climberDown))
+        .withProperties(Map.of("show_type",false));  
+      climberList.add("Climber Hold", new InstantCommand(this::climberHold))
+        .withProperties(Map.of("show_type",false));  
+      climberList.add("Climber Stop", new InstantCommand(this::climberStop))
+        .withProperties(Map.of("show_type",false));  
+			ShuffleboardLayout latchList = debugTab.getLayout("Latch", BuiltInLayouts.kList)
+				.withSize(5,6)
+				.withPosition(5,0)
+				.withProperties(Map.of("Label position","LEFT"));
+			latchList.addString("Status", this::getLatchColor)
+				.withWidget("Single Color View");
+			latchList.addString("State", this::getLatchPostionName);
+			latchList.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); });
+			latchList.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); });
+      latchList.add("Latch In", new InstantCommand(this::setLatchIn).ignoringDisable(true))
+        .withProperties(Map.of("show_type",false)); 
+      latchList.add("Latch Out", new InstantCommand(this::setLatchOut).ignoringDisable(true))
         .withProperties(Map.of("show_type",false));  
     }
   }

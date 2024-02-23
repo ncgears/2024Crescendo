@@ -25,10 +25,10 @@ public class ArmSubsystem extends SubsystemBase {
 	private static ArmSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP("#00FF00"),
-    DOWN("#FF0000"),
-    HOLD("#FFA500"),
-    STOP("#000000");
+    UP(Constants.Dashboard.Colors.GREEN),
+    DOWN(Constants.Dashboard.Colors.RED),
+    HOLD(Constants.Dashboard.Colors.ORANGE),
+    STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
@@ -95,39 +95,6 @@ public class ArmSubsystem extends SubsystemBase {
       .withPosition(14, 8);  
 		if(Constants.Arm.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Arm");
-      // debugTab.addString("Arm", this::getColor)
-      //   .withSize(2, 2)
-      //   .withWidget("Single Color View")
-      //   .withPosition(0, 0);  
-      // debugTab.addString("State", this::getStateName)
-      //   .withSize(4,2)
-      //   .withPosition(2,0)
-      //   .withWidget("Text Display");
-      // debugTab.addNumber("Target", this::getTargetPosition)
-      //   .withSize(2,2)
-      //   .withPosition(6,0);
-      // debugTab.addNumber("Position", this::getPosition)
-      //   .withSize(2,2)
-      //   .withPosition(8,0)
-      //   .withWidget("Text Display");
-      // debugTab.addNumber("Absolute", this::getPositionAbsolute)
-      //   .withSize(2,2)
-      //   .withPosition(10,0);
-      // debugTab.addNumber("Error", this::getPositionError)
-      //   .withSize(2,2)
-      //   .withPosition(12,0);
-      // debugTab.add("Arm Up", new InstantCommand(this::armUp))
-      //   .withSize(4, 2)
-      //   .withPosition(0, 2);  
-      // debugTab.add("Arm Down", new InstantCommand(this::armDown))
-      //   .withSize(4, 2)
-      //   .withPosition(4, 2);  
-      // debugTab.add("Arm Hold", new InstantCommand(this::armHold))
-      //   .withSize(4, 2)
-      //   .withPosition(8, 2);  
-      // debugTab.add("Arm Stop", new InstantCommand(this::armStop))
-      //   .withSize(4, 2)
-      //   .withPosition(12, 2);
 			ShuffleboardLayout armList = debugTab.getLayout("Arm", BuiltInLayouts.kList)
 				.withSize(4,6)
 				.withPosition(0,0)

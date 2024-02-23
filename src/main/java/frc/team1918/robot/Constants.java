@@ -563,6 +563,19 @@ public class Constants {
         // public static final double DT_DRIVE_CONVERSION_FACTOR = (DT_DRIVE_FIRST_GEARONE / DT_DRIVE_FIRST_GEARTWO) * (DT_DRIVE_SECOND_GEARONE / DT_DRIVE_SECOND_GEARTWO); //Conversion factor to cobrect RPM from SparkMax getVelocity()
     }
     
+    /** Constants for the Dashboard Interface */
+    public class Dashboard {
+        public class Colors {
+            public static final String NCGREEN = "#00B50F"; //approximate
+            public static final String NCBLUE = "#0077B5";
+            public static final String RED = "#FF0000";
+            public static final String GREEN = "#00FF00";
+            public static final String BLUE = "#0000FF";
+            public static final String ORANGE = "#FFA500";
+            public static final String BLACK = "#000000";
+        }
+    }
+
     /**
      * Constants for the Operator Interface
      * The OI is based on 2 Logitech Controllers, a driver and an operator, setup for swerve drive.

@@ -22,9 +22,9 @@ public class IntakeSubsystem extends SubsystemBase {
 	private static IntakeSubsystem instance;
   //private and public variables defined here
   public enum Direction {
-    IN("#00FF00"),
-    OUT("#FF0000"),
-    STOP("#000000");
+    IN(Constants.Dashboard.Colors.GREEN),
+    OUT(Constants.Dashboard.Colors.RED),
+    STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
     Direction(String color) { this.color = color; }
     public String getColor() { return this.color; }

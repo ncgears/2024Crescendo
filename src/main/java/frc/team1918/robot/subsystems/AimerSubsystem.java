@@ -27,10 +27,10 @@ public class AimerSubsystem extends SubsystemBase {
 	private static AimerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    READY("#00FF00"),
-    TRACKING("#FFA500"),
-    ERROR("#FF0000"),
-    STOP("#000000");
+    READY(Constants.Dashboard.Colors.GREEN),
+    TRACKING(Constants.Dashboard.Colors.ORANGE),
+    ERROR(Constants.Dashboard.Colors.RED),
+    STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
