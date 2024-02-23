@@ -193,7 +193,8 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public double getHeadingError() {
-		double error = target_heading - getHeading().getDegrees();
+		double desired_heading = (isTrackingTarget()) ? RobotContainer.pose.getTrackingTargetBearing() : target_heading;
+		double error = desired_heading - getHeading().getDegrees();
 		return error;
 	}
 
@@ -211,7 +212,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public boolean getHeadingLocked() { return heading_locked; }
-	public double getTargetHeading() { return target_heading; }
+	public double getTargetHeading() { return (isTrackingTarget()) ? RobotContainer.pose.getTrackingTargetBearing() : target_heading; }
 	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
 	public double getTrackingTargetHeading() { return RobotContainer.pose.getTrackingTargetBearing(); }
 
@@ -292,7 +293,6 @@ public class DriveSubsystem extends SubsystemBase {
 	/**
 	 * Method to drive the robot using calculated speed info.
 	 * @param speeds ChassisSpeeds object representing the x,y and rotational speed of the robot
-	 * @param normalize Boolean value indicating whether the speeds should be normalized such that none of them are over 100%
 	 */
 	@SuppressWarnings("unused")
 	public void driveRelative(ChassisSpeeds speeds) {
