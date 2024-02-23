@@ -7,6 +7,8 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.ForwardLimitValue;
+import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -118,6 +120,7 @@ public class ClimberSubsystem extends SubsystemBase {
       climberList.addNumber("Position", this::getPosition);
       climberList.addNumber("Absolute", this::getPositionAbsolute);
       climberList.addNumber("Error", this::getPositionError);
+      climberList.addBoolean("Rev Lim", this::getReverseLimit);
       climberList.add("Climber Up", new InstantCommand(this::climberUp))
         .withProperties(Map.of("show_type",false));  
       climberList.add("Climber Down", new InstantCommand(this::climberDown))
@@ -173,6 +176,16 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public double getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
+  }
+
+  public boolean getForwardLimit() {
+    //if using NormallyOpen, this should be ForwardLimitValue.ClosedToGround
+    return m_motor1.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
+  }
+
+  public boolean getReverseLimit() {
+    //if using NormallyOpen, this should be ReverseLimitValue.ClosedToGround
+    return m_motor1.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
   public void climberUp() {
