@@ -25,7 +25,7 @@ public class IndexerSubsystem extends SubsystemBase {
 	private static IndexerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP(Constants.Dashboard.Colors.ORANGE),
+    UP(Constants.Dashboard.Colors.GREEN),
     DOWN(Constants.Dashboard.Colors.RED),
     STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
@@ -36,6 +36,7 @@ public class IndexerSubsystem extends SubsystemBase {
   private State m_curState = State.STOP;
   private boolean m_hasnote = false;
   private DigitalInput m_beambreak = new DigitalInput(Constants.Indexer.kBeamBreakID);
+  private String m_overrideColor = null;
   
   /**
 	 * Returns the instance of the IndexerSubsystem subsystem.
@@ -126,7 +127,8 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public State getState() { return m_curState; }
   public String getStateName() { return m_curState.toString(); }
-  public String getColor() { return m_curState.getColor(); }
+  public String getColor() { return (m_overrideColor != null) ? m_overrideColor : m_curState.getColor(); }
+  public void setColor(String color) { m_overrideColor = color; }
 
   public State getDirection() { return m_curState; }
   public String getDirectionName() { return m_curState.toString(); }

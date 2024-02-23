@@ -106,7 +106,7 @@ public class ClimberSubsystem extends SubsystemBase {
     driverTab.addString("Climber", this::getStateColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(16, 7);  
+      .withPosition(18, 7);  
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout climberList = systemTab.getLayout("Climber", BuiltInLayouts.kList)

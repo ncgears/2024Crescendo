@@ -36,6 +36,16 @@ public class ShooterSubsystem extends SubsystemBase {
   private TalonFX m_motor1, m_motor2;
   private DoubleSubscriber new_speed_sub;
   private double new_speed = 95.0;
+  private enum State {
+    READY(Constants.Dashboard.Colors.GREEN),
+    START(Constants.Dashboard.Colors.ORANGE),
+    ERROR(Constants.Dashboard.Colors.RED),
+    STOP(Constants.Dashboard.Colors.BLACK);
+    private final String color;
+    State(String color) { this.color = color; }
+    public String getColor() { return this.color; }
+  }
+  private State m_curState = State.STOP;
   
   /**
 	 * Returns the instance of the ShooterSubsystem subsystem.
@@ -91,14 +101,21 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   public void createDashboards() {
-		if(Constants.Shooter.debugDashboard) {
+    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
+    driverTab.addString("Shooter", this::getColor)
+      .withSize(2, 2)
+      .withPosition(14, 8)
+      .withWidget("Single Color View");
+
+    if(Constants.Shooter.debugDashboard) {
       ShuffleboardTab systemTab = Shuffleboard.getTab("System");
       ShuffleboardLayout shooterList = systemTab.getLayout("Shooter", BuiltInLayouts.kList)
 				.withSize(4,4)
 				.withPosition(12,0)
 				.withProperties(Map.of("Label position","LEFT"));
-			shooterList.addBoolean("Status", this::isAtSpeed);
-			shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
+			shooterList.addString("Status", this::getColor)
+        .withWidget("Single Color View");
+      shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
 			shooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
       shooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
         .withProperties(Map.of("show_type",false));  
@@ -108,7 +125,8 @@ public class ShooterSubsystem extends SubsystemBase {
 				.withSize(4,9)
 				.withPosition(4,0)
 				.withProperties(Map.of("Label position","LEFT"));
-			dbgShooterList.addBoolean("Status", this::isAtSpeed);
+			dbgShooterList.addString("Status", this::getColor)
+        .withWidget("Single Color View");
 			dbgShooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
 			dbgShooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
       dbgShooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
@@ -139,10 +157,13 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / Constants.Shooter.kMaxRPS,2); }
   public double getNewSpeed() { return Helpers.General.roundDouble(new_speed,2); }
   public double getTargetSpeed() { return target_speed; }
+  public String getColor() { return m_curState.getColor(); }
   public boolean isAtSpeed() { 
     if(target_speed == 0.0) return false;
     double error = target_speed - m_motor1.getVelocity().getValue();
-    return (Math.abs(error) <= Constants.Shooter.kSpeedTolerance);
+    boolean ready = (Math.abs(error) <= Constants.Shooter.kSpeedTolerance);
+    if(ready && m_curState == State.START) m_curState = State.READY;
+    return ready;
   }
 
   /**
@@ -170,10 +191,12 @@ public class ShooterSubsystem extends SubsystemBase {
     speed = MathUtil.clamp(speed, -Constants.Shooter.kMaxRPS, Constants.Shooter.kMaxRPS);
     target_speed = speed;
     if(speed == 0.0) {
+      m_curState = State.STOP;
       Helpers.Debug.debug("Shooter Target RPS: 0.0");
       m_motor1.setControl(m_brake);
       m_motor2.setControl(m_brake);
     } else {
+      m_curState = State.START;
       Helpers.Debug.debug("Shooter Target RPS: " + Helpers.General.roundDouble(speed, 2));
       m_motor1.setControl(m_voltageVelocity.withVelocity(speed));
       m_motor2.setControl(m_voltageVelocity.withVelocity(speed));
@@ -183,12 +206,14 @@ public class ShooterSubsystem extends SubsystemBase {
   public void stopShooter() {
     // target_speed = 0.0;
     // if(Constants.Global.tuningMode) RobotContainer.dashboard.shooter_target.setDouble(0.0);
+    m_curState = State.STOP;
     m_motor1.setControl(m_brake);
     m_motor2.setControl(m_brake);
     Helpers.Debug.debug("Shooter: Stop");
   }
 
   public void startShooter() {
+    m_curState = State.START;
     setSpeed(target_speed);
     Helpers.Debug.debug("Shooter: Start");
   }

@@ -249,6 +249,9 @@ public class RobotContainer {
     dj.rightTrigger().and(shooter.isReady)
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
+    dj.rightTrigger().and(shooter.isReady.negate())
+      .onTrue(new InstantCommand(() -> indexer.setColor(Constants.Dashboard.Colors.RED)).ignoringDisable(true))
+      .onFalse(new InstantCommand(() -> indexer.setColor(null)).ignoringDisable(true));
     dj.leftBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
       .onFalse(intake.runOnce(intake::intakeStop));
@@ -306,7 +309,10 @@ public class RobotContainer {
     //List of Widgets: https://github.com/Gold872/elastic-dashboard/wiki/Widgets-List-&-Properties-Reference
     buildAutonChooser();
     buildDriverTab();
-    buildSystemTab();
+    buildTab("Swerve");
+    buildTab("System");
+    buildPowerTab();
+    buildDebugTab();
     gyro.buildDashboards();
   }
 
@@ -321,7 +327,7 @@ public class RobotContainer {
   }
 
   private void buildDriverTab(){
-    ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
+    ShuffleboardTab driverTab = buildTab("Driver");
     // Match Time - Cannot be programmatically placed, but we put it here for informative reasons
     driverTab.add("Match Time", "")
       .withPosition(0,2)
@@ -351,13 +357,21 @@ public class RobotContainer {
     //   .withWidget("Camera Stream");
   }
 
-  private void buildSystemTab(){ //This is where we add maintenance commands
-    ShuffleboardTab powerTab = Shuffleboard.getTab("DBG:Power");
-    powerTab.add("Power", pdh)
-      .withPosition(0, 0);
-      // .withSize(1, 1);
-    ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
+  private void buildDebugTab(){ //This is where we add maintenance commands
+    ShuffleboardTab debugTab = buildTab("Debug");
     debugTab.add("Command Scheduler", CommandScheduler.getInstance())
       .withPosition(0,2);      
   }
+
+  private void buildPowerTab(){
+    ShuffleboardTab powerTab = buildTab("Power");
+    powerTab.add("Power", pdh)
+      .withPosition(0, 0);
+      // .withSize(1, 1);
+  }
+
+  private ShuffleboardTab buildTab(String tabname) {
+    return Shuffleboard.getTab(tabname);
+  }
+
 }

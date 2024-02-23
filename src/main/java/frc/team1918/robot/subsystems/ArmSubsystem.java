@@ -92,7 +92,7 @@ public class ArmSubsystem extends SubsystemBase {
     driverTab.addString("Arm", this::getColor)
       .withSize(2, 2)
       .withWidget("Single Color View")
-      .withPosition(14, 8);  
+      .withPosition(16, 8);  
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout armList = systemTab.getLayout("Arm", BuiltInLayouts.kList)
