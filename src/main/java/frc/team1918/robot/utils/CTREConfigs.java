@@ -211,7 +211,7 @@ public final class CTREConfigs {
 
         //Climber
         //CANcoder
-        climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
+        climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
         climberCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         climberCCConfig.MagnetSensor.MagnetOffset = Constants.Climber.kMagnetOffset;
 
@@ -251,7 +251,7 @@ public final class CTREConfigs {
             climberFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Climber.kCANcoderID;
             climberFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
             climberFXConfig.Feedback.RotorToSensorRatio = Constants.Climber.kGearRatio;
-            climberFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
+            climberFXConfig.Feedback.SensorToMechanismRatio = Constants.Climber.kSensorGearRatio; //CANcoder is the same as mechanism
         } else {
             climberFXConfig.Feedback.SensorToMechanismRatio = Constants.Climber.kGearRatio;
         }
