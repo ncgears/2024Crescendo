@@ -97,9 +97,9 @@ public class RobotContainer {
     public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
     public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
-    public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
-    public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
-    public static final ArmSubsystem arm = ArmSubsystem.getInstance();
+    // public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
+    // public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
+    // public static final ArmSubsystem arm = ArmSubsystem.getInstance();
 
     private static final Alert enabledAlert = new Alert("Robot is Enabled", AlertType.INFO);
 
@@ -173,12 +173,12 @@ public class RobotContainer {
   private void resetRobot() {
     lighting.init();
     pose.init();
-    aimer.init();
+    // aimer.init();
     climber.init();
     indexer.init();
     intake.init();
-    shooter.init();
-    arm.init();
+    // shooter.init();
+    // arm.init();
   }
 
   public static boolean isAllianceRed() {
@@ -241,17 +241,17 @@ public class RobotContainer {
     dj.b()
       .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    dj.leftTrigger()
-      .onTrue(shooter.runOnce(shooter::startShooter))
-      //   .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
-      // )
-      .onFalse(shooter.runOnce(shooter::stopShooter));
-    dj.rightTrigger().and(shooter.isReady)
-      .onTrue(indexer.runOnce(indexer::indexerUp))
-      .onFalse(indexer.runOnce(indexer::indexerStop));
-    dj.rightTrigger().and(shooter.isReady.negate())
-      .onTrue(new InstantCommand(() -> indexer.setColor(Constants.Dashboard.Colors.RED)).ignoringDisable(true))
-      .onFalse(new InstantCommand(() -> indexer.setColor(null)).ignoringDisable(true));
+    // dj.leftTrigger()
+    //   .onTrue(shooter.runOnce(shooter::startShooter))
+    //   //   .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
+    //   // )
+    //   .onFalse(shooter.runOnce(shooter::stopShooter));
+    // dj.rightTrigger().and(shooter.isReady)
+    //   .onTrue(indexer.runOnce(indexer::indexerUp))
+    //   .onFalse(indexer.runOnce(indexer::indexerStop));
+    // dj.rightTrigger().and(shooter.isReady.negate())
+    //   .onTrue(new InstantCommand(() -> indexer.setColor(Constants.Dashboard.Colors.RED)).ignoringDisable(true))
+    //   .onFalse(new InstantCommand(() -> indexer.setColor(null)).ignoringDisable(true));
     dj.leftBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
       .onFalse(intake.runOnce(intake::intakeStop));
@@ -262,12 +262,12 @@ public class RobotContainer {
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
 
     /** OPERATOR JOYSTICK (oj) */
-    oj.leftTrigger()
-      .onTrue(shooter.runOnce(shooter::startShooter))
-      .onFalse(shooter.runOnce(shooter::stopShooter));
-    oj.rightTrigger().and(shooter.isReady)
-      .onTrue(indexer.runOnce(indexer::indexerUp))
-      .onFalse(indexer.runOnce(indexer::indexerStop));
+    // oj.leftTrigger()
+    //   .onTrue(shooter.runOnce(shooter::startShooter))
+    //   .onFalse(shooter.runOnce(shooter::stopShooter));
+    // oj.rightTrigger().and(shooter.isReady)
+    //   .onTrue(indexer.runOnce(indexer::indexerUp))
+    //   .onFalse(indexer.runOnce(indexer::indexerStop));
     oj.leftBumper()
       .onTrue(intake.runOnce(intake::intakeAuto))
       .onFalse(intake.runOnce(intake::intakeStop));

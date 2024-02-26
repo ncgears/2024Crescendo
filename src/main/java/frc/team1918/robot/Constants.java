@@ -91,7 +91,8 @@ public class Constants {
          * IDs of CANdles
          */
         public static final class CANdle {
-            public static int candle1 = 0;
+            public static int candle1 = 1;
+            public static int candle2 = 2;
         }
         /**
          * IDs of CANcoders
@@ -312,15 +313,16 @@ public class Constants {
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kCANcoderID = ID.CANcoder.climber;
-        public static final boolean kUseCANcoder = false;
-        public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
+        public static final boolean kUseCANcoder = true;
+        public static final double kMagnetOffset = -0.853244140625; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.climber;
-        public static final boolean kIsInverted = false;
-        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
+        public static final boolean kIsInverted = true;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kStowPosition = 0;
         public static final int kLeftServoID = ID.PWM.climber_leftServo;
         public static final int kRightServoID = ID.PWM.climber_rightServo;
-        public static final double kGearRatio = 1.0; // XXt:XXt
+        public static final double kGearRatio = 26.67; // 12:1 gearbox, 18t:40t -- this is between rotor and sensor
+        public static final double kSensorGearRatio = Math.PI * 2; // ~2*PI inches per rotation -- this is between sensor and spool
         //PID Control
         public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
