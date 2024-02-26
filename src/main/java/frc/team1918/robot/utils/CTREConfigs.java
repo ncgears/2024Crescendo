@@ -249,7 +249,7 @@ public final class CTREConfigs {
         //Encoder
         if(Constants.Aimer.kUseCANcoder) {
             climberFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Climber.kCANcoderID;
-            climberFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
+            climberFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
             climberFXConfig.Feedback.RotorToSensorRatio = Constants.Climber.kGearRatio;
             climberFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
         } else {
