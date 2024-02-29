@@ -72,15 +72,15 @@ public class Constants {
          * IDs of Falcons
          */
         public static final class Falcon {
-            public static int swerve_fl_drive = 33;
-            public static int swerve_fr_drive = 34;
-            public static int swerve_br_drive = 31;
-            public static int swerve_bl_drive = 32;
-            public static int shootertop = 41;
-            public static int shooterbottom = 42;
-            public static int aimer = 43;
-            public static int arm = 44;
-            public static int climber = 45;
+            public static int swerve_fl_drive = 5;
+            public static int swerve_fr_drive = 8;
+            public static int swerve_br_drive = 7;
+            public static int swerve_bl_drive = 6;
+            public static int shootertop = 12;
+            public static int shooterbottom = 13;
+            public static int aimer = 14;
+            public static int arm = 15;
+            public static int climber = 16;
         }
         /**
          * IDs of Krakens
@@ -91,16 +91,16 @@ public class Constants {
          * IDs of CANdles
          */
         public static final class CANdle {
-            public static int candle1 = 1;
-            public static int candle2 = 2;
+            public static int candle1 = 17;
+            public static int candle2 = 18;
         }
         /**
          * IDs of CANcoders
          */
         public static final class CANcoder {
-            public static int aimer = 0;
-            public static int arm = 1;
-            public static int climber = 2;
+            public static int aimer = 20;
+            public static int climber = 21;
+            public static int arm = 22;
         }
 
     }
@@ -155,7 +155,7 @@ public class Constants {
      * Constants for the Vision class
      */
     public static final class Vision {
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
         // The standard deviations of our vision estimated poses, which affect correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -198,11 +198,12 @@ public class Constants {
     public static final class Lighting {
         public static final String canBus = "rio";
         public static final boolean debugDashboard = false; //enable debugging dashboard
-        public static final int kCandleID = ID.CANdle.candle1;
+        public static final int kCandle1ID = ID.CANdle.candle1;
+        public static final int kCandle2ID = ID.CANdle.candle2;
     }
 
     public static final class Gyro {
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final boolean kGyroReversed = false;
     }
 
@@ -212,7 +213,7 @@ public class Constants {
     public static final class Intake {
         //Controller Setup
         public static final String canBus = "rio";
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final int kMotorID = ID.Talon.intake;
         public static final boolean kIsInverted = true;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
@@ -225,7 +226,7 @@ public class Constants {
     public static final class Indexer {
         //Controller Setup
         public static final String canBus = "rio";
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final int kMotorID = ID.Talon.indexer;
         public static final boolean kIsInverted = false;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
@@ -279,7 +280,7 @@ public class Constants {
     public static final class Arm {
         //Controller Setup
         public static final String canBus = "rio";
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final int kCANcoderID = ID.CANcoder.aimer;
         public static final boolean kUseCANcoder = false;
         public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
@@ -306,12 +307,12 @@ public class Constants {
     }
 
     /**
-     * Constants for the Aimer Subsystem
+     * Constants for the Climber Subsystem
      */
     public static final class Climber {
         //Controller Setup
         public static final String canBus = "rio";
-        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean debugDashboard = false; //enable debugging dashboard
         public static final int kCANcoderID = ID.CANcoder.climber;
         public static final boolean kUseCANcoder = true;
         public static final double kMagnetOffset = -0.853244140625; //Adjust magnet to sensor offset for CANcoder
@@ -450,7 +451,7 @@ public class Constants {
             public static final boolean isDisabled = false;
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_fl_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = true;
+            public static final boolean DRIVE_isInverted = false;
             public static final int TURN_MC_ID = ID.Talon.swerve_fl_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
@@ -468,7 +469,7 @@ public class Constants {
             public static final boolean isDisabled = false; 
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_fr_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = false;
+            public static final boolean DRIVE_isInverted = true;
             public static final int TURN_MC_ID = ID.Talon.swerve_fr_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
@@ -486,7 +487,7 @@ public class Constants {
             public static final boolean isDisabled = false;
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_bl_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = true;
+            public static final boolean DRIVE_isInverted = false;
             public static final int TURN_MC_ID = ID.Talon.swerve_bl_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
@@ -504,7 +505,7 @@ public class Constants {
             public static final boolean isDisabled = false;
             public static final int DRIVE_MC_ID = ID.Falcon.swerve_br_drive; //Falcon500 Motor Controller ID
             public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM;  //actual diameter of larger wheel in mm
-            public static final boolean DRIVE_isInverted = false;
+            public static final boolean DRIVE_isInverted = true;
             public static final int TURN_MC_ID = ID.Talon.swerve_br_turn; //TalonSRX Motor Controller ID
             public static final boolean TURN_sensorPhase = false; //When forward/reverse of controller doesn't match forward/reverse of sensor, set to true
             public static final boolean TURN_isInverted = true; //Once sensor phase is cobrect, we can invert these so fwd always is green, reverse is always is red
