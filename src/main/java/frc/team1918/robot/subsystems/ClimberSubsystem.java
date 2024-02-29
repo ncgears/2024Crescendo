@@ -47,6 +47,17 @@ public class ClimberSubsystem extends SubsystemBase {
     public int getRight() { return this.right; }
     public String getColor() { return this.color; }
   }
+  public enum Position {
+    TOP(Constants.Climber.Positions.kTop),
+    BOTTOM(Constants.Climber.Positions.kBottom),
+    TOPCLIMB(Constants.Climber.Positions.kTopHookClimb),
+    MIDCLEAR(Constants.Climber.Positions.kMidHookClear),
+    LATCHCLIMB(Constants.Climber.Positions.kLatchClimb),
+    LATCHCLEAR(Constants.Climber.Positions.kLatchClear);
+    private final double position;
+    Position(double position) { this.position = position; }
+    public double getAngularPositionRotations() { return this.position; }
+  }
   private NeutralOut m_neutral = new NeutralOut();
   private CANcoder m_encoder;
   private TalonFX m_motor1;

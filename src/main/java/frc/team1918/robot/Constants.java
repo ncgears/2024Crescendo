@@ -346,6 +346,15 @@ public class Constants {
         public static final double kCurrentLimitAmps = 30.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
+        public class Positions {
+            //TODO: Get position values
+            public static final double kTop = 0.0; //max height
+            public static final double kBottom = 0.0; //all the way down
+            public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
+            public static final double kMidHookClear = 0.0; //drive mid hook onto chain
+            public static final double kLatchClimb = 0.0; //chain is on latches
+            public static final double kLatchClear = 0.0; //chain is below latches
+        }
     }
 
     /**
