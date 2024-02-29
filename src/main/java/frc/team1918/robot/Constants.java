@@ -133,13 +133,6 @@ public class Constants {
     }
 
     /**
-     * Constants for the Air subsystem
-     */
-    public static final class Air {
-        public static final boolean isDisabled = true; //Disable Air
-    }
-
-    /**
      * Constants for the Autonomous subsystem
      */
     public static final class Auton {
