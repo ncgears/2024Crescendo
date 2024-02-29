@@ -3,6 +3,8 @@ package frc.team1918.robot.subsystems;
 
 import java.util.Map;
 
+import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.CANcoder;
@@ -58,10 +60,14 @@ public class ClimberSubsystem extends SubsystemBase {
     Position(double position) { this.position = position; }
     public double getAngularPositionRotations() { return this.position; }
   }
-  private NeutralOut m_neutral = new NeutralOut();
+  private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
+  private final DutyCycleOut m_DutyCycle = new DutyCycleOut(0);
+  private final NeutralOut m_neutral = new NeutralOut();
+  private final StaticBrake m_brake = new StaticBrake();
   private CANcoder m_encoder;
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
+  private Position m_targetPosition = Position.BOTTOM;
   private LatchPosition m_curLatchPosition = LatchPosition.OUT;
   private Servo m_leftServo = new Servo(Constants.Climber.kLeftServoID);
   private Servo m_rightServo = new Servo(Constants.Climber.kRightServoID);
@@ -94,6 +100,7 @@ public class ClimberSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
+    m_targetPosition = Position.BOTTOM;
     climberStop();
     setLatchOut();
     Helpers.Debug.debug("Climber: Initialized");
@@ -127,7 +134,8 @@ public class ClimberSubsystem extends SubsystemBase {
     climberList.addString("Status", this::getStateColor)
       .withWidget("Single Color View");
     climberList.addString("State", this::getStateName);
-    climberList.addNumber("Target", this::getTargetPosition);
+    climberList.addString("Target", this::getTargetPositionName);
+    climberList.addNumber("Target Pos", this::getTargetPosition);
     climberList.addNumber("Position", this::getPosition);
     climberList.addNumber("Absolute", this::getPositionAbsolute);
     climberList.addNumber("Error", this::getPositionError);
@@ -203,7 +211,8 @@ public class ClimberSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Climber: Latch In");
   }
 
-  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
+  public String getTargetPositionName() { return m_targetPosition.toString(); }
+  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
   // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
 
@@ -213,6 +222,10 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public double getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
+  }
+
+  public void setPosition(Position position) {
+    m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
   }
 
   public boolean getForwardLimit() {
@@ -225,8 +238,31 @@ public class ClimberSubsystem extends SubsystemBase {
     return m_motor1.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
+  public void climberMove(double power) {
+    if(power>0) {
+      if(m_curState != State.UP) {
+        Helpers.Debug.debug("Climber: Up ("+power+")");
+        m_curState = State.UP;
+      }
+      m_motor1.setControl(m_DutyCycle.withOutput(power));
+    } else if(power<0) {
+      if(m_curState != State.DOWN) {
+        Helpers.Debug.debug("Climber: Down ("+power+")");
+        m_curState = State.DOWN;
+      }
+      m_motor1.setControl(m_DutyCycle.withOutput(power));
+    } else { //0 power
+      if(m_curState != State.HOLD && m_curState != State.STOP) {
+        m_motor1.setControl(m_brake);
+        m_curState = State.HOLD;
+        Helpers.Debug.debug("Climber: Hold");
+      }
+    }
+  }
+
   public void climberUp() {
     m_curState = State.UP;
+    m_motor1.setControl(m_DutyCycle);
     Helpers.Debug.debug("Climber: Up");
   }
   public void climberDown() {
@@ -234,13 +270,17 @@ public class ClimberSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Climber: Down");
   }
   public void climberHold() {
-    m_motor1.setControl(new StaticBrake());
-    m_curState = State.HOLD;
-    Helpers.Debug.debug("Climber: Hold");
+    m_motor1.setControl(m_brake);
+    if(m_curState != State.HOLD) {
+      m_curState = State.HOLD;
+      Helpers.Debug.debug("Climber: Hold");
+    }
   }
   public void climberStop() {
     m_motor1.setControl(m_neutral);
-    m_curState = State.STOP;
-    Helpers.Debug.debug("Climber: Stop");
+    if(m_curState != State.HOLD) {
+      m_curState = State.STOP;
+      Helpers.Debug.debug("Climber: Stop");
+    }
   }
 }

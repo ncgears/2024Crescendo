@@ -16,6 +16,11 @@
       "window": {
         "visible": true
       }
+    },
+    "RoboRIO": {
+      "window": {
+        "visible": true
+      }
     }
   },
   "NTProvider": {
@@ -40,6 +45,13 @@
       "/Shuffleboard/DBG:Shooter/Shooter Stop": "Command",
       "/Shuffleboard/DBG:Swerve/Field": "Field2d",
       "/Shuffleboard/DBG:System/Command Scheduler": "Scheduler",
+      "/Shuffleboard/Debug/Apply Shooter Speed": "Command",
+      "/Shuffleboard/Debug/Command Scheduler": "Scheduler",
+      "/Shuffleboard/Debug/Shooter/60 RPS": "Command",
+      "/Shuffleboard/Debug/Shooter/85 RPS": "Command",
+      "/Shuffleboard/Debug/Shooter/90 RPS": "Command",
+      "/Shuffleboard/Debug/Shooter/95 RPS": "Command",
+      "/Shuffleboard/Debug/Shooter/Stop": "Command",
       "/Shuffleboard/Debug: Gyro/Value": "Gyro",
       "/Shuffleboard/Debug: Intake/Intake In": "Command",
       "/Shuffleboard/Debug: Intake/Intake Out": "Command",
@@ -53,6 +65,9 @@
       "/Shuffleboard/Driver/Field": "Field2d",
       "/Shuffleboard/Driver/Gyro": "Gyro",
       "/Shuffleboard/Shooter/Shooter 100%": "Command",
+      "/Shuffleboard/Swerve/Field": "Field2d",
+      "/Shuffleboard/System/Aimer/Set Zero": "Command",
+      "/Shuffleboard/System/Shooter/Stop": "Command",
       "/Shuffleboard/Tuning/Stop Shooter": "Command",
       "/SmartDashboard/Gyro": "Gyro",
       "/SmartDashboard/VisionSystemSim-llcam1/Sim Field": "Field2d",

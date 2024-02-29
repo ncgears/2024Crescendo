@@ -165,6 +165,12 @@ public class RobotContainer {
         )
       );
     }
+ 
+    if(!Constants.Climber.isDisabled) {
+      climber.setDefaultCommand(
+        climber.run(() -> climber.climberMove(Helpers.OI.ncdeadband(-dj.getRightY(),false)))
+      );
+    }
   }
 
   /**

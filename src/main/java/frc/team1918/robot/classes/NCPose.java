@@ -105,6 +105,7 @@ public class NCPose {
     }
     private State m_trackingState = State.STOP; //current Tracking state
 	private Targets m_trackingTarget = Targets.SPEAKER; //current Tracking target
+	private Pose3d m_shooterPose = new Pose3d();
 
     public NCPose() {
 		//Initialize the pose estimator
@@ -211,14 +212,19 @@ public class NCPose {
 		poseEstimator.addVisionMeasurement(visionMeasurement, timestampSeconds, stdDevs);
 	}
 
+	public Pose3d updateShooterPose() {
+		m_shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
+			.transformBy(Constants.Shooter.kRobotToShooter);
+		return m_shooterPose;
+	}
+
 	/**
 	 * getShooterToTarget returns a Transform3d representing the delta between the shooter and the target
 	 * @param target
 	 * @return Transform3d of the delta
 	 */
 	public Transform3d getShooterToTarget(Targets target) {
-		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter);
+		Pose3d shooterPose = updateShooterPose();
 		Pose3d targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
 
 		// TESTING: these poses should result in a distance to target of 5 meters and a Z angle of 0.765rad (45 degrees)
@@ -257,11 +263,11 @@ public class NCPose {
      * getBearingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
      * @return the bearing (heading) of the target, relative to the shooter, in degrees
      */
-	public double getBearingOfTarget(Targets target) {
+	public double getBearingOfTarget(Targets target) { 
+		// return 0.0;
 		// Transform3d shooterToTarget = getShooterToTarget(target);
 		// return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
-		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter);
+		Pose3d shooterPose = updateShooterPose();
 		var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
 		Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
 		return bearing.getAngle().getDegrees();

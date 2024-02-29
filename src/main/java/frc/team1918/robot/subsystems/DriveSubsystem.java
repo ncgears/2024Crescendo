@@ -194,6 +194,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public double getHeadingError() {
 		double desired_heading = (isTrackingTarget()) ? RobotContainer.pose.getTrackingTargetBearing() : target_heading;
+		// double desired_heading = target_heading;
 		double error = desired_heading - getHeading().getDegrees();
 		return error;
 	}
