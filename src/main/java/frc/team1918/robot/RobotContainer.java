@@ -180,6 +180,7 @@ public class RobotContainer {
   private void resetRobot() {
     lighting.init();
     pose.init();
+    drive.init();
     aimer.init();
     climber.init();
     indexer.init();

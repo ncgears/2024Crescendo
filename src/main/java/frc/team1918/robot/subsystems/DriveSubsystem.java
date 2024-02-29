@@ -91,6 +91,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 		PPHolonomicDriveController.setRotationTargetOverride(this::getAutoTrackedTarget);
 
+		init();
 		createDashboards();
 	}
 	
@@ -197,6 +198,12 @@ public class DriveSubsystem extends SubsystemBase {
 
 		if(Constants.Swerve.debugDashboard) {
 		}
+	}
+
+	public void init() {
+		brake(false);
+		homeSwerves();
+		Helpers.Debug.debug("Pose: Initialized");
 	}
 
 	public Rotation2d getHeading() {
