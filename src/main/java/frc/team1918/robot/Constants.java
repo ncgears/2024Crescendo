@@ -304,6 +304,13 @@ public class Constants {
         public static final double kCurrentLimitAmps = 30.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
+        //Positions
+        public class Positions {
+            //TODO: Get position values
+            public static final double kIntake = 0.0;
+            public static final double kAmp = 0.0;
+            public static final double kTrap = 0.0;
+        }
     }
 
     /**

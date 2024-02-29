@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
@@ -33,12 +32,21 @@ public class ArmSubsystem extends SubsystemBase {
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
+  public enum Position {
+    INTAKE(Constants.Arm.Positions.kIntake),
+    AMP(Constants.Arm.Positions.kAmp),
+    TRAP(Constants.Arm.Positions.kTrap);
+    private final double position;
+    Position(double position) { this.position = position; }
+    public double getAngularPositionRotations() { return this.position; }
+  }
+
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   // private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
   private CANcoder m_encoder;
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
-  private Double m_targetPosition = 0.0;
+  private Position m_targetPosition = Position.INTAKE;
   
   /**
 	 * Returns the instance of the ArmSubsystem subsystem.
@@ -69,7 +77,7 @@ public class ArmSubsystem extends SubsystemBase {
    */
   public void init() {
     m_curState = State.STOP;
-    m_targetPosition = 0.0;
+    m_targetPosition = Position.INTAKE;
     Helpers.Debug.debug("Arm: Initialized");
   }
   
@@ -96,13 +104,14 @@ public class ArmSubsystem extends SubsystemBase {
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout armList = systemTab.getLayout("Arm", BuiltInLayouts.kList)
-      .withSize(4,5)
+      .withSize(4,6)
       .withPosition(20,4)
       .withProperties(Map.of("Label position","LEFT"));
     armList.addString("Status", this::getColor)
       .withWidget("Single Color View");
     armList.addString("State", this::getStateName);
-    armList.addNumber("Target", this::getTargetPosition);
+    armList.addString("Target", this::getTargetPositionName);
+    armList.addNumber("Target Pos", this::getTargetPosition);
     armList.addNumber("Position", this::getPosition);
     armList.addNumber("Absolute", this::getPositionAbsolute);
     armList.addNumber("Error", this::getPositionError);
@@ -114,8 +123,8 @@ public class ArmSubsystem extends SubsystemBase {
   public State getState() { return m_curState; }
   public String getStateName() { return m_curState.toString(); }
   public String getColor() { return m_curState.getColor(); }
-
-  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
+  public String getTargetPositionName() { return m_targetPosition.toString(); }
+  public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
   // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
 
@@ -127,11 +136,23 @@ public class ArmSubsystem extends SubsystemBase {
     return m_encoder.getPosition().getValue();
   }
 
-  public void setPosition(double position) {
-    m_targetPosition = position;
-    m_motor1.setControl(m_mmVoltage.withPosition(position));
+  public void setPosition(Position position) {
+    m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
   }
 
+
+  public void armIntake() {
+    setPosition(Position.INTAKE);
+    Helpers.Debug.debug("Arm: Intake Position");
+  }
+  public void armAmp() {
+    setPosition(Position.AMP);
+    Helpers.Debug.debug("Arm: Amp Position");
+  }
+  public void armTrap() {
+    setPosition(Position.TRAP);
+    Helpers.Debug.debug("Arm: Trap Position");
+  }
   public void armUp() {
     m_curState = State.UP;
     Helpers.Debug.debug("Arm: Up");
