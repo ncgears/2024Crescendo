@@ -144,6 +144,7 @@ public class Constants {
      */
     public static final class Auton {
         public static final boolean isDisabled = false; //Disable autonomous
+        public static final boolean kUseTracking = false; //enable target tracking during auton pathing
         public static final double kMaxSpeedMetersPerSecond = 1.0;
         public static final double kMaxAccelMetersPerSecondSquared = 0.1;
         public static final double kMaxOmega = (kMaxSpeedMetersPerSecond / Math.hypot(0.584 / 2.0, 0.66 / 2.0));

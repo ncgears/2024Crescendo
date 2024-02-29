@@ -6,13 +6,17 @@ import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
 import frc.team1918.robot.RobotContainer;
+import frc.team1918.robot.classes.NCPose.Targets;
 import frc.team1918.robot.modules.SwerveModule;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Optional;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.sim.TalonFXSimState;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -84,7 +88,19 @@ public class DriveSubsystem extends SubsystemBase {
 		() -> { return RobotContainer.isAllianceRed(); },
 		this // Reference to this subsystem to set requirements
 		);
+
+		PPHolonomicDriveController.setRotationTargetOverride(this::getAutoTrackedTarget);
+
 		createDashboards();
+	}
+	
+	public Optional<Rotation2d> getAutoTrackedTarget() {
+		if(Constants.Auton.kUseTracking && RobotContainer.pose.getTracking()) {
+			Rotation2d hdg = Rotation2d.fromDegrees(RobotContainer.pose.getBearingOfTarget(Targets.SPEAKER));
+			return Optional.ofNullable(hdg);
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	// @SuppressWarnings("unused")
