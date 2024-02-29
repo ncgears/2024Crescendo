@@ -79,9 +79,9 @@ public class Lighting {
   public void createDashboards() {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("LED Color", this::getColor)
-      .withSize(5, 4)
+      .withSize(8, 2)
       .withWidget("Single Color View")
-      .withPosition(19, 0);  
+      .withPosition(0, 7);  
 		if(Constants.Lighting.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Lighting");
       debugTab.addString("LED Color", this::getColor)

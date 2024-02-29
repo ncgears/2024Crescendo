@@ -104,7 +104,7 @@ public class ShooterSubsystem extends SubsystemBase {
     ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
     driverTab.addString("Shooter", this::getColor)
       .withSize(2, 2)
-      .withPosition(14, 8)
+      .withPosition(14, 7)
       .withWidget("Single Color View");
 
     if(Constants.Shooter.debugDashboard) {

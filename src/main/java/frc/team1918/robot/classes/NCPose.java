@@ -259,7 +259,9 @@ public class NCPose {
      */
 	public double getBearingOfTarget(Targets target) {
 		// Transform3d shooterToTarget = getShooterToTarget(target);
-		Pose3d shooterPose = new Pose3d(0,0,0,new Rotation3d());
+		// return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
+		Pose3d shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
+			.transformBy(Constants.Shooter.kRobotToShooter);
 		var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
 		Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
 		return bearing.getAngle().getDegrees();

@@ -336,7 +336,7 @@ public class RobotContainer {
       .withWidget("Match Time");
     // Auton Chooser
     driverTab.add("Autonomous Chooser", m_auto_chooser)
-      .withPosition(0, 3)
+      .withPosition(0, 5)
       .withSize(8, 2)
       .withWidget("ComboBox Chooser");
     // FMS Info - Cannot be programmatically placed, but we put it here for informative reasons
