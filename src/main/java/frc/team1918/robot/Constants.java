@@ -322,7 +322,7 @@ public class Constants {
         public static final int kLeftServoID = ID.PWM.climber_leftServo;
         public static final int kRightServoID = ID.PWM.climber_rightServo;
         public static final double kGearRatio = 26.67; // 12:1 gearbox, 18t:40t -- this is between rotor and sensor
-        public static final double kSensorGearRatio = Math.PI * 2; // ~2*PI inches per rotation -- this is between sensor and spool
+        public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
         //PID Control
         public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
