@@ -97,9 +97,9 @@ public class RobotContainer {
     public static final IntakeSubsystem intake = IntakeSubsystem.getInstance();
     public static final IndexerSubsystem indexer = IndexerSubsystem.getInstance();
     public static final ClimberSubsystem climber = ClimberSubsystem.getInstance();
-    // public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
-    // public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
-    // public static final ArmSubsystem arm = ArmSubsystem.getInstance();
+    public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
+    public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
+    public static final ArmSubsystem arm = ArmSubsystem.getInstance();
 
     private static final Alert enabledAlert = new Alert("Robot is Enabled", AlertType.INFO);
 
@@ -173,12 +173,12 @@ public class RobotContainer {
   private void resetRobot() {
     lighting.init();
     pose.init();
-    // aimer.init();
+    aimer.init();
     climber.init();
     indexer.init();
     intake.init();
-    // shooter.init();
-    // arm.init();
+    shooter.init();
+    arm.init();
   }
 
   public static boolean isAllianceRed() {

@@ -16,7 +16,8 @@ import frc.team1918.robot.Helpers;
 @SuppressWarnings("unused")
 public class Lighting {
 	private static Lighting instance;
-  private final CANdle m_candle = new CANdle(Constants.Lighting.kCandleID, Constants.Lighting.canBus);
+  private final CANdle m_candle1 = new CANdle(Constants.Lighting.kCandle1ID, Constants.Lighting.canBus);
+  private final CANdle m_candle2 = new CANdle(Constants.Lighting.kCandle2ID, Constants.Lighting.canBus);
   private Colors m_currentColor, m_oldColor = Colors.OFF;
   private boolean m_blinking, m_oldBlinking = false;
   private int m_intensity, m_oldIntensity = 100;
@@ -102,7 +103,8 @@ public class Lighting {
   public void setColor(Colors color) {
     if(color != m_currentColor) { //change it
       m_currentColor = color;
-      m_candle.setLEDs(color.R(), color.G(), color.B());
+      m_candle1.setLEDs(color.R(), color.G(), color.B());
+      m_candle2.setLEDs(color.R(), color.G(), color.B());
     }
   }
 
