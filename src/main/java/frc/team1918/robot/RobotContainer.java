@@ -10,6 +10,7 @@ package frc.team1918.robot;
 //Global imports
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -75,6 +76,8 @@ import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule.DriveRequestType;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -104,10 +107,8 @@ public class RobotContainer {
 
     public static Optional<Alliance> m_alliance;
 
-  //Sendables definitions
+    //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
-    private static SendableChooser<String> m_auto_cone = new SendableChooser<>();
-    private static SendableChooser<String> m_auto_burner = new SendableChooser<>();
 
     private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
       enabledAlert.set(false);
@@ -127,6 +128,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     // Configure the bindings (buttons, triggers, etc.)
+    registerCommands();
     configureBindings();
     buildDashboards();
 
@@ -167,7 +169,7 @@ public class RobotContainer {
  
     if(!Constants.Climber.isDisabled) {
       climber.setDefaultCommand(
-        climber.run(() -> climber.climberMove(Helpers.OI.ncdeadband(-dj.getRightY(),false)))
+        climber.run(() -> climber.climberMove(Helpers.OI.ncdeadband(-oj.getRightY(),false)))
       );
     }
   }
@@ -292,7 +294,7 @@ public class RobotContainer {
    * @return command
    */
   public Command getAutonomousCommand() {
-    System.out.println("Shuffle: Selected auton routine is "+m_auto_chooser.getSelected().getName());
+    System.out.println("Robot: Selected auton routine is "+m_auto_chooser.getSelected().getName());
     return m_auto_chooser.getSelected();
   }
 
@@ -321,12 +323,31 @@ public class RobotContainer {
     gyro.buildDashboards();
   }
 
+    /**
+   * This method registers named commands to be used in PathPlanner autos
+   */
+  private void registerCommands() {
+    NamedCommands.registerCommand("shooterSpeed60", new InstantCommand(() -> shooter.setSpeed(60)));
+    NamedCommands.registerCommand("shooterSpeed95", new InstantCommand(() -> shooter.setSpeed(95)));
+    NamedCommands.registerCommand("shooterStart", shooter.runOnce(shooter::startShooter));
+    NamedCommands.registerCommand("shooterStop", shooter.runOnce(shooter::stopShooter));
+    NamedCommands.registerCommand("intakeIn", intake.runOnce(intake::intakeIn));
+    NamedCommands.registerCommand("intakeStop", intake.runOnce(intake::intakeStop));
+    NamedCommands.registerCommand("aimerTrackingStart", aimer.runOnce(aimer::aimerStartTracking));
+    NamedCommands.registerCommand("aimerTrackingStop", aimer.runOnce(aimer::aimerStopAndStow));
+    NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
+    NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
+    NamedCommands.registerCommand("waitShort", new WaitCommand(0.5));
+    NamedCommands.registerCommand("waitLong", new WaitCommand(1.0));
+  }
+
   public void buildAutonChooser() {
     //This builds the auton chooser, giving driver friendly names to the commands from above
     if(Constants.Auton.isDisabled) {
-      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
+      m_auto_chooser.setDefaultOption("None (Auto Disabled)", Commands.none());
     } else {
-      m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
+      // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
+      m_auto_chooser = AutoBuilder.buildAutoChooser();
     }
     //SmartDashboard.putData(m_auto_chooser); //put in the smartdash
   }
