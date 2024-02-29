@@ -10,6 +10,7 @@ import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.HardwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.SoftwareLimitSwitchConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -133,12 +134,18 @@ public final class CTREConfigs {
         aimerFXConfig.MotionMagic = aimerMotionMagicConfigs;
         //Mechanical Limits
         //TODO: Move these to constants
+        SoftwareLimitSwitchConfigs aimerSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(0)
+            .withForwardSoftLimitEnable(false)
+            .withForwardSoftLimitThreshold(0);
+        aimerFXConfig.SoftwareLimitSwitch = aimerSoftwareLimitSwitchConfigs;
         HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
-            .withReverseLimitEnable(true)
+            .withReverseLimitEnable(false)
             .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
             .withReverseLimitAutosetPositionEnable(true)
             .withReverseLimitAutosetPositionValue(0.0)
-            .withForwardLimitEnable(true)
+            .withForwardLimitEnable(false)
             .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
         aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
         //Encoder
@@ -185,12 +192,18 @@ public final class CTREConfigs {
         armFXConfig.MotionMagic = armMotionMagicConfigs;
         //Mechanical Limits
         //TODO: Move these to constants
+        SoftwareLimitSwitchConfigs armSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(0)
+            .withForwardSoftLimitEnable(false)
+            .withForwardSoftLimitThreshold(0);
+        armFXConfig.SoftwareLimitSwitch = armSoftwareLimitSwitchConfigs;
         HardwareLimitSwitchConfigs armHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
-            .withReverseLimitEnable(true)
+            .withReverseLimitEnable(false)
             .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
             .withReverseLimitAutosetPositionEnable(true)
             .withReverseLimitAutosetPositionValue(0.0)
-            .withForwardLimitEnable(true)
+            .withForwardLimitEnable(false)
             .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
         armFXConfig.HardwareLimitSwitch = armHardwareLimitsConfigs;
         //Encoder
@@ -238,12 +251,18 @@ public final class CTREConfigs {
         climberFXConfig.MotionMagic = climberMotionMagicConfigs;
         //Mechanical Limits
         //TODO: Move these to constants
+        SoftwareLimitSwitchConfigs climberSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
+            .withReverseSoftLimitEnable(true)
+            .withReverseSoftLimitThreshold(0)
+            .withForwardSoftLimitEnable(false)
+            .withForwardSoftLimitThreshold(0);
+        climberFXConfig.SoftwareLimitSwitch = climberSoftwareLimitSwitchConfigs;
         HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
-            .withReverseLimitEnable(true)
+            .withReverseLimitEnable(false)
             .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
             .withReverseLimitAutosetPositionEnable(true)
             .withReverseLimitAutosetPositionValue(0.0)
-            .withForwardLimitEnable(true)
+            .withForwardLimitEnable(false)
             .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
         climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
         //Encoder
