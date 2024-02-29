@@ -152,12 +152,12 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public boolean hasNote() {
-    return m_hasnote; //TODO: switch to beambreak
-    // return getBeamBreak();
+    // return m_hasnote; //TODO: switch to beambreak
+    return getBeamBreak();
   }
 
   private boolean getBeamBreak() {
-    return !m_beambreak.get();
+    return m_beambreak.get();
   }
 
   private void toggleFull() {
