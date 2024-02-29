@@ -125,6 +125,7 @@ public class NCPose {
 	public void init() {
 		m_trackingState = State.STOP;
 		m_trackingTarget = Targets.SPEAKER;
+		resetPose(new Pose2d());
 		Helpers.Debug.debug("Pose: Initialized");
 	}
 
