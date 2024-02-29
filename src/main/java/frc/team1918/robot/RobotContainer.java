@@ -47,7 +47,6 @@ import frc.team1918.robot.subsystems.AimerSubsystem;
 import frc.team1918.robot.subsystems.ArmSubsystem;
 import frc.team1918.robot.subsystems.ClimberSubsystem;
 //Util imports
-import frc.team1918.robot.subsystems.CommandSwerveDrivetrain;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 import frc.team1918.robot.subsystems.IndexerSubsystem;
 import frc.team1918.robot.subsystems.IntakeSubsystem;
