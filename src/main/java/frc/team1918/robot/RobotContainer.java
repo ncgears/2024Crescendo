@@ -280,7 +280,7 @@ public class RobotContainer {
     //   .onTrue(indexer.runOnce(indexer::indexerUp))
     //   .onFalse(indexer.runOnce(indexer::indexerStop));
     oj.leftBumper()
-      .onTrue(intake.runOnce(intake::intakeAuto))
+      .onTrue(intake.runOnce(intake::intakeIn))
       .onFalse(intake.runOnce(intake::intakeStop));
 
     /** AUTONOMOUS ACTIONS */
