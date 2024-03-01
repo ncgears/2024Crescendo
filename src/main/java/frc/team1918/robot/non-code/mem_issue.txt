@@ -1,0 +1,14 @@
+## See: https://www.chiefdelphi.com/t/huge-memory-usage-oom-crashes/456757
+
+#top to view mem status
+#free -m
+#cat /proc/meminfo
+#cat /proc/<pid>/status  ##where <pid> is the pid of FRCUserProgram (maybe can use pidof)
+#cat /proc/$(pidof FRCUserProgram)/status
+
+## Adjust kernel parameters (/etc/sysctl.conf)
+swappiness=100  #use as much swap as possible, default 60
+vfs_cache_pressure=1000   #avoid caching files, default is 100
+overcommit_memory=1  #always overcommit, default is 2=never
+
+remove -XX:_AlwaysPreTouch in the JVM

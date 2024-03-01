@@ -16,11 +16,6 @@ http://10.19.18.12:5800
 10.19.18.2
 #username: admin
 #password: blank
-#top to view mem status
-#free -m
-#cat /proc/meminfo
-#cat /proc/<pid>/status  ##where <pid> is the pid of FRCUserProgram (maybe can use pidof)
-#cat /proc/$(pidof FRCUserProgram)/status
 
 ## Limelight
 http://limelight.local:5800
