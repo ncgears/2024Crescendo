@@ -268,6 +268,9 @@ public class RobotContainer {
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
     dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
+    // dj.ellipses()
+    //   .onTrue(climber.runOnce(climber::setLatchIn))
+    //   .onFalse(climber.runOnce(climber::setLatchOut));
 
     /** OPERATOR JOYSTICK (oj) */
     // oj.leftTrigger()

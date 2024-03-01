@@ -40,8 +40,8 @@ public class ClimberSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   public enum LatchPosition {
-    OUT(0,0,Constants.Dashboard.Colors.GREEN), //TODO set positions
-    IN(90,90,Constants.Dashboard.Colors.RED); //TODO set positions
+    OUT(1,0,Constants.Dashboard.Colors.GREEN), //TODO set positions
+    IN(0,1,Constants.Dashboard.Colors.RED); //TODO set positions
     private final int left,right;
     private final String color;
     LatchPosition(int left, int right, String color) { this.left=left; this.right=right; this.color=color; }
@@ -199,8 +199,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   private void setLatchPosition(LatchPosition pos) {
     m_curLatchPosition = pos;
-    m_leftServo.setAngle(pos.getLeft());
-    m_rightServo.setAngle(pos.getRight());
+    m_leftServo.set(pos.getLeft());
+    m_rightServo.set(pos.getRight());
   }
   public void setLatchOut() {
     setLatchPosition(LatchPosition.OUT);
