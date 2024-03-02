@@ -216,11 +216,12 @@ public class RobotContainer {
 
     /** DRIVER JOYSTICK (dj) */
     if(Constants.Audio.isEnabled) {
-      // Manage Music
-          // Brawl-Theme.chrp
-          // Megalovania.chrp
-          // Rickroll.chrp
-          // Still-Alive.chrp
+      /** Manage Music - Song list
+        *  Brawl-Theme.chrp
+        *  Megalovania.chrp
+        *  Rickroll.chrp
+        *  Still-Alive.chrp
+        */
       dj.google().onTrue(new InstantCommand(() -> {
         if(m_orchestra.isPlaying()) {
           m_orchestra.stop();
