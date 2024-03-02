@@ -211,7 +211,10 @@ public class RobotContainer {
     */
 
     // bind to the disabled() trigger which happens any time the robot is disabled
-    disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true));
+    disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true)
+      .andThen(new WaitCommand(6))
+      .andThen(climber.runOnce(climber::setCoast).ignoringDisable(true))
+    );
     enabled().onTrue(new InstantCommand(m_orchestra::stop).ignoringDisable(true));
 
     /** DRIVER JOYSTICK (dj) */

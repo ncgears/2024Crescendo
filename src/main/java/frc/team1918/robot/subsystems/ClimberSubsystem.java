@@ -10,6 +10,7 @@ import com.ctre.phoenix6.controls.StaticBrake;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.wpilibj.Servo;
@@ -283,4 +284,10 @@ public class ClimberSubsystem extends SubsystemBase {
       Helpers.Debug.debug("Climber: Stop");
     }
   }
+
+  public void setCoast() {
+    m_motor1.setNeutralMode(NeutralModeValue.Coast);
+    Helpers.Debug.debug("Climber: Switch to Coast");
+  }
+
 }
