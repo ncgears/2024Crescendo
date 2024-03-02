@@ -264,18 +264,18 @@ public class RobotContainer {
     // dj.rightTrigger().and(shooter.isReady.negate())
     //   .onTrue(new InstantCommand(() -> indexer.setColor(Constants.Dashboard.Colors.RED)).ignoringDisable(true))
     //   .onFalse(new InstantCommand(() -> indexer.setColor(null)).ignoringDisable(true));
-    dj.leftBumper()
+    dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
+    dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
+    dj.leftBumper().and(arm.atIntake)
       .onTrue(intake.runOnce(intake::intakeIn))
       .onFalse(intake.runOnce(intake::intakeStop));
     dj.rightBumper()
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
-    dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
-    dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
     dj.leftTrigger()
       .onTrue(arm.runOnce(arm::armAmp))
       .onFalse(arm.runOnce(arm::armIntake));
-    dj.rightTrigger().and(arm.atTarget)
+    dj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
 
@@ -283,10 +283,10 @@ public class RobotContainer {
     oj.leftTrigger()
       .onTrue(shooter.runOnce(shooter::startShooter))
       .onFalse(shooter.runOnce(shooter::stopShooter));
-    oj.rightTrigger().and(shooter.isReady)
+    oj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
-    oj.leftBumper()
+    oj.leftBumper().and(arm.atIntake)
       .onTrue(intake.runOnce(intake::intakeIn))
       .onFalse(intake.runOnce(intake::intakeStop));
 

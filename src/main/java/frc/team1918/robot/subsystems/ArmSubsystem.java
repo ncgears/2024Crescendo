@@ -44,6 +44,10 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public final Trigger atTarget = new Trigger(this::atSetpoint);
+  public final Trigger atIntake = new Trigger(this::atIntake);
+  public final Trigger atTrap = new Trigger(this::atTrap);
+  public final Trigger atAmp = new Trigger(this::atAmp);
+
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   // private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
   private CANcoder m_encoder;
@@ -131,6 +135,9 @@ public class ArmSubsystem extends SubsystemBase {
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
   public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= Constants.Arm.kPositionThreshold); }
+  public boolean atIntake() { return m_targetPosition==Position.INTAKE && atSetpoint(); }
+  public boolean atAmp() { return m_targetPosition==Position.AMP && atSetpoint(); }
+  public boolean atTrap() { return m_targetPosition==Position.TRAP && atSetpoint(); }
 
   public double getPosition() {
     return m_motor1.getPosition().getValue();
