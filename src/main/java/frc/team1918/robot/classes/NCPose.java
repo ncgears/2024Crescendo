@@ -266,12 +266,12 @@ public class NCPose {
      */
 	public double getBearingOfTarget(Targets target) { 
 		// return 0.0;
-		// Transform3d shooterToTarget = getShooterToTarget(target);
-		// return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
-		Pose3d shooterPose = updateShooterPose();
-		var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-		Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
-		return bearing.getAngle().getDegrees();
+		Transform3d shooterToTarget = getShooterToTarget(target);
+		return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
+		// Pose3d shooterPose = updateShooterPose();
+		// var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
+		// Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
+		// return bearing.getAngle().getDegrees();
 	}
 
 	////#region "Tracking"
