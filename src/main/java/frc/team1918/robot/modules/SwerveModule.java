@@ -171,7 +171,7 @@ public class SwerveModule {
      * @return SwerveModulePosition object of the distance(meters) and angle(rotation2d)
      */
     public SwerveModulePosition getPosition() {
-        return new SwerveModulePosition(getDriveDistanceMeters(), getTurnPositionAsRotation2d());
+        return new SwerveModulePosition(getDriveDistanceMeters(), getTurnPositionAsRotation2d().unaryMinus());
     }
 
     /**
@@ -185,7 +185,10 @@ public class SwerveModule {
     }
 
     public Rotation2d getAngle() {
-        return getState().angle.unaryMinus();
+        // return getState().angle.unaryMinus();
+        var angle = getState().angle.unaryMinus().getDegrees();
+        angle = ((angle + 180) % 360 + 360) % 360 - 180;
+        return Rotation2d.fromDegrees(angle);
     }
     public double getVelocity() {
         return getState().speedMetersPerSecond;

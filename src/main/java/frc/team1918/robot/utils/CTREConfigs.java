@@ -103,7 +103,7 @@ public final class CTREConfigs {
         //Aimer Configuration
         //CANcoder
         aimerCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        aimerCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        aimerCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         aimerCCConfig.MagnetSensor.MagnetOffset = Constants.Aimer.kMagnetOffset;
         
         Slot0Configs aimerSlot0Configs = new Slot0Configs()
@@ -254,8 +254,8 @@ public final class CTREConfigs {
         SoftwareLimitSwitchConfigs climberSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
             .withReverseSoftLimitEnable(true)
             .withReverseSoftLimitThreshold(0)
-            .withForwardSoftLimitEnable(false)
-            .withForwardSoftLimitThreshold(0);
+            .withForwardSoftLimitEnable(true)
+            .withForwardSoftLimitThreshold(Constants.Climber.Positions.kFwdLimit);
         climberFXConfig.SoftwareLimitSwitch = climberSoftwareLimitSwitchConfigs;
         HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
             .withReverseLimitEnable(false)

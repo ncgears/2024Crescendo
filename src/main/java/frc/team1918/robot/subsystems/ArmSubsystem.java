@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
@@ -42,6 +43,7 @@ public class ArmSubsystem extends SubsystemBase {
     public double getAngularPositionRotations() { return this.position; }
   }
 
+  public final Trigger atTarget = new Trigger(this::atSetpoint);
   private final MotionMagicVoltage m_mmVoltage = new MotionMagicVoltage(0);
   // private final PositionVoltage m_voltagePosition = new PositionVoltage(0);
   private CANcoder m_encoder;
@@ -108,9 +110,10 @@ public class ArmSubsystem extends SubsystemBase {
       .withSize(4,6)
       .withPosition(20,4)
       .withProperties(Map.of("Label position","LEFT"));
-    armList.addString("Status", this::getColor)
-      .withWidget("Single Color View");
-    armList.addString("State", this::getStateName);
+    // armList.addString("Status", this::getColor)
+    //   .withWidget("Single Color View");
+    armList.addBoolean("Status", this::atSetpoint);
+    // armList.addString("State", this::getStateName);
     armList.addString("Target", this::getTargetPositionName);
     armList.addNumber("Target Pos", this::getTargetPosition);
     armList.addNumber("Position", this::getPosition);
@@ -127,7 +130,7 @@ public class ArmSubsystem extends SubsystemBase {
   public String getTargetPositionName() { return m_targetPosition.toString(); }
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
-  // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
+  public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= Constants.Arm.kPositionThreshold); }
 
   public double getPosition() {
     return m_motor1.getPosition().getValue();
@@ -138,6 +141,7 @@ public class ArmSubsystem extends SubsystemBase {
   }
 
   public void setPosition(Position position) {
+    m_targetPosition = position;
     m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
   }
 

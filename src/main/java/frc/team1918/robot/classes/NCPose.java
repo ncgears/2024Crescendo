@@ -164,7 +164,7 @@ public class NCPose {
      * @param pose New robot pose.
      */
 	public void resetPose(Pose2d pose) {
-		poseEstimator.resetPosition(Rotation2d.fromDegrees(RobotContainer.gyro.getYaw()), RobotContainer.drive.getSwerveModulePositions(), pose);
+		poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drive.getSwerveModulePositions(), pose);
 	}
 
 	/**

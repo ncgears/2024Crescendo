@@ -197,8 +197,8 @@ public class Constants {
     }
 
     public static final class Gyro {
-        public static final boolean debugDashboard = false; //enable debugging dashboard
-        public static final boolean kGyroReversed = false;
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean kGyroReversed = true;
     }
 
     /**
@@ -237,9 +237,9 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kCANcoderID = ID.CANcoder.aimer;
         public static final boolean kUseCANcoder = true;
-        public static final double kMagnetOffset = -0.17333984375; //Adjust magnet to sensor offset for CANcoder
+        public static final double kMagnetOffset = 0.17333984375; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.aimer;
-        public static final boolean kIsInverted = false;
+        public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
@@ -269,7 +269,7 @@ public class Constants {
     }
 
     /**
-     * Constants for the Aimer Subsystem
+     * Constants for the Arm Subsystem
      */
     public static final class Arm {
         //Controller Setup
@@ -283,6 +283,7 @@ public class Constants {
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0;
         public static final double kGearRatio = 49.08163; //9.816326; // 14t:26t -> 14t:74t
+        public static final double kPositionThreshold = 0.04; //close enough to target position
         //PID Control
         public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
@@ -290,9 +291,9 @@ public class Constants {
         public static final double kP = 24.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
         public static final double kI = 0.0; // no integral
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-        public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
-        public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
-        public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        public static final double kMotionMagicCruise = 30; // Motor Max / Gear Ratio
+        public static final double kMotionMagicAccel = 80; // Acceleration: Cruise / Accel = time to cruise
+        public static final double kMotionMagicJerk = 1200; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 30.0;
@@ -302,8 +303,8 @@ public class Constants {
         public class Positions {
             //TODO: Get position values
             public static final double kIntake = 0.0;
-            public static final double kAmp = 0.0;
-            public static final double kTrap = 0.0;
+            public static final double kAmp = 0.381;
+            public static final double kTrap = 0.3; //TODO: find position
         }
     }
 
@@ -343,8 +344,9 @@ public class Constants {
         public static final double kCurrentLimitThresholdSecs = 0.3;
         public class Positions {
             //TODO: Get position values
-            public static final double kArmLimit = 1.56591796875; //max height of climber when arm swings over
+            public static final double kArmLimit = 1.5732421875; //max height of climber when arm swings over
             public static final double kTop = 3.12158203125; //max height
+            public static final double kFwdLimit = 3.26; //absolute limit
             public static final double kBottom = 0.0; //all the way down
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
             public static final double kMidHookClear = 0.0; //drive mid hook onto chain

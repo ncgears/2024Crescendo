@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.DoubleSupplier;
 //import constants and subsystem
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 import frc.team1918.robot.subsystems.DriveSubsystem;
 
@@ -63,11 +64,13 @@ public class drive_defaultDrive extends Command {
         if(!m_drive.getHeadingLocked()) m_drive.lockHeading();
       }
       if(m_drive.isTrackingTarget()) { //if we are tracking a target
-        m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTrackingTargetHeading());
+        m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw().getDegrees(), m_drive.getTrackingTargetHeading());
       } else if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
         if(Constants.DriveTrain.thetaController.isEnabled) {
           // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTargetHeading());
-          m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTargetHeading());
+          var adjusted = -m_thetaController.calculate(RobotContainer.gyro.getYaw().getDegrees(), m_drive.getTargetHeading());
+          // Helpers.Debug.debug("theta g="+RobotContainer.gyro.getYaw().getDegrees()+" t="+m_drive.getTargetHeading()+" a="+adjusted);
+          m_rotation_adjusted = adjusted;
         }
       }
       double m_forward_adjusted = m_forward.getAsDouble();

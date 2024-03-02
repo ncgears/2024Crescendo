@@ -109,7 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void periodic() {
 		if(Robot.isSimulation()) updateSim();
 		RobotContainer.pose.updatePose();
-		RobotContainer.pose.correctPoseWithVision();
+		// RobotContainer.pose.correctPoseWithVision();
 		fieldSim.setRobotPose(RobotContainer.pose.getPose());
 	}
 
@@ -130,7 +130,8 @@ public class DriveSubsystem extends SubsystemBase {
 		builder.addDoubleProperty("Back Right Angle", () -> Helpers.General.roundDouble(m_backRight.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Back Right Velocity", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3), null);
 
-		builder.addDoubleProperty("Robot Angle", () -> RobotContainer.pose.getPose().getRotation().getDegrees(), null);
+		// builder.addDoubleProperty("Robot Angle", () -> RobotContainer.pose.getPose().getRotation().getDegrees(), null);
+		builder.addDoubleProperty("Robot Angle", () -> RobotContainer.gyro.getYaw().getDegrees(), null);
 	}
 
 	public void createDashboards() {
@@ -207,7 +208,8 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public Rotation2d getHeading() {
-		return RobotContainer.pose.getPose().getRotation();
+		return RobotContainer.gyro.getYaw();
+		// return RobotContainer.pose.getPose().getRotation();
 	}
 
 	public Pose2d getPose() {
@@ -226,7 +228,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void lockHeading() {
-		target_heading = RobotContainer.gyro.getYaw();
+		target_heading = RobotContainer.gyro.getYaw().getDegrees();
 		heading_locked = true;
 	}
 
@@ -317,7 +319,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 		ChassisSpeeds speeds = ChassisSpeeds.discretize(
 			(fieldRelative) 
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, RobotContainer.gyro.getHeading()) 
+				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, RobotContainer.gyro.getYaw()) 
 				: new ChassisSpeeds(xSpeed, ySpeed, rot),
 			Robot.kDefaultPeriod);
 			driveRelative(speeds);

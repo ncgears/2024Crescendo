@@ -242,7 +242,7 @@ public class RobotContainer {
     }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
-      .onTrue(drive.runOnce(drive::resetDistances).andThen(drive::resetOdometry));
+      .onTrue(drive.runOnce(drive::resetDistances).andThen(gyro::zeroHeading).andThen(drive::resetOdometry));
       // .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
@@ -265,24 +265,27 @@ public class RobotContainer {
     //   .onTrue(new InstantCommand(() -> indexer.setColor(Constants.Dashboard.Colors.RED)).ignoringDisable(true))
     //   .onFalse(new InstantCommand(() -> indexer.setColor(null)).ignoringDisable(true));
     dj.leftBumper()
-      .onTrue(intake.runOnce(intake::intakeAuto))
+      .onTrue(intake.runOnce(intake::intakeIn))
       .onFalse(intake.runOnce(intake::intakeStop));
     dj.rightBumper()
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
     dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
-    // dj.ellipses()
-    //   .onTrue(climber.runOnce(climber::setLatchIn))
-    //   .onFalse(climber.runOnce(climber::setLatchOut));
+    dj.leftTrigger()
+      .onTrue(arm.runOnce(arm::armAmp))
+      .onFalse(arm.runOnce(arm::armIntake));
+    dj.rightTrigger().and(arm.atTarget)
+      .onTrue(indexer.runOnce(indexer::indexerUp))
+      .onFalse(indexer.runOnce(indexer::indexerStop));
 
     /** OPERATOR JOYSTICK (oj) */
-    // oj.leftTrigger()
-    //   .onTrue(shooter.runOnce(shooter::startShooter))
-    //   .onFalse(shooter.runOnce(shooter::stopShooter));
-    // oj.rightTrigger().and(shooter.isReady)
-    //   .onTrue(indexer.runOnce(indexer::indexerUp))
-    //   .onFalse(indexer.runOnce(indexer::indexerStop));
+    oj.leftTrigger()
+      .onTrue(shooter.runOnce(shooter::startShooter))
+      .onFalse(shooter.runOnce(shooter::stopShooter));
+    oj.rightTrigger().and(shooter.isReady)
+      .onTrue(indexer.runOnce(indexer::indexerUp))
+      .onFalse(indexer.runOnce(indexer::indexerStop));
     oj.leftBumper()
       .onTrue(intake.runOnce(intake::intakeIn))
       .onFalse(intake.runOnce(intake::intakeStop));

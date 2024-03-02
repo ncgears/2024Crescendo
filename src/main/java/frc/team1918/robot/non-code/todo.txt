@@ -1,4 +1,6 @@
 ### PRIORITIES LIST ###
+- safety for intake when arm down
+
 1. DONE dashboard-integrated shooter speed tuner functional (slider for speed tuning, button to stop/set0, button to start/set100)
 2. DONE basic swerve drivetrain functioning on 2024 roborio
 3. DONE Intake functional code (dashboard start/stop toggle)

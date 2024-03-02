@@ -72,22 +72,19 @@ public class Gyro implements Sendable {
 		if (0.0 > raw_yaw) { //yaw is negative
 			calc_yaw += 360.0;
 		}
-		calc_yaw *= (Constants.Gyro.kGyroReversed ? -1.0 : 1.0);
+		// calc_yaw *= (Constants.Gyro.kGyroReversed ? -1.0 : 1.0);
 		return Rotation2d.fromDegrees(calc_yaw);
 	}
 
     public void zeroHeading() {
 		m_gyro.zeroYaw();
+		// setYawOffset(0);
 		yawOffset = 0;
 	}
 
 	public AHRS getGyro() {
         return m_gyro;
 	}
-
-    public void setYawOffset(double offset) {
-        yawOffset = offset;
-    }
 
    	/**
      * Returns the pitch of the robot.
@@ -97,13 +94,17 @@ public class Gyro implements Sendable {
 		return m_gyro.getPitch();
 	}
 
+	public void setYawOffset(double offset) {
+        yawOffset = offset;
+    }
+
    	/**
      * Returns the yaw/heading of the robot.
      * @return the robot's yaw as a double in degrees, from -180 to 180
      */
-	public double getYaw() {
+	public Rotation2d getYaw() {
 		// return m_gyro.getYaw();
-		return m_gyro.getYaw() * (Constants.Gyro.kGyroReversed ? -1.0 : 1.0); //invert to CCW Positive
+		return Rotation2d.fromDegrees(m_gyro.getYaw() * (Constants.Gyro.kGyroReversed ? -1.0 : 1.0)); //invert to CCW Positive
 	}
 
    	/**
