@@ -284,12 +284,15 @@ public class RobotContainer {
       .onFalse(intake.runOnce(intake::intakeStop));
 
     /** AUTONOMOUS ACTIONS */
-    //run the indexer if it's not full. This should also be combined with a location based trigger
-    indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
-        .andThen(new WaitCommand(3))
-        .andThen(intake.runOnce(intake::intakeStop))
-      )
-      .onFalse(intake.runOnce(intake::intakeIn));
+    /** 
+     * run the indexer if it's not full. This should also be combined with a location based trigger
+     * This needs some work as it is also triggering when we move the climber/arm across the beam break
+     */
+    // indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
+    //     .andThen(new WaitCommand(3))
+    //     .andThen(intake.runOnce(intake::intakeStop))
+    //   )
+    //   .onFalse(intake.runOnce(intake::intakeIn));
 
   }
 
