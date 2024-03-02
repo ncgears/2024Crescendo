@@ -290,4 +290,9 @@ public class ClimberSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Climber: Switch to Coast");
   }
 
+  public void setBrake() {
+    m_motor1.setNeutralMode(NeutralModeValue.Brake);
+    Helpers.Debug.debug("Climber: Switch to Brake");
+  }
+
 }

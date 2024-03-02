@@ -6,6 +6,7 @@ import java.util.Map;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -168,5 +169,15 @@ public class ArmSubsystem extends SubsystemBase {
   public void armStop() {
     m_curState = State.STOP;
     Helpers.Debug.debug("Arm: Stop");
+  }
+
+  public void setCoast() {
+    m_motor1.setNeutralMode(NeutralModeValue.Coast);
+    Helpers.Debug.debug("Arm: Switch to Coast");
+  }
+
+  public void setBrake() {
+    m_motor1.setNeutralMode(NeutralModeValue.Brake);
+    Helpers.Debug.debug("Arm: Switch to Brake");
   }
 }

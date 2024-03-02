@@ -240,7 +240,7 @@ public class Constants {
         public static final double kMagnetOffset = -0.17333984375; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.aimer;
         public static final boolean kIsInverted = false;
-        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
         //PID Control
