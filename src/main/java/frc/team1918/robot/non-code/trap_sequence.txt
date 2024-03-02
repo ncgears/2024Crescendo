@@ -1,0 +1,28 @@
+Operation Sequence for Trap Scoring:
+
+0.0  1. Align Robot to the chain. Activate the latch release servo. Arm fully         in home position.
+1.5  2.Raise elevator to full height (may be concurrent with aligning bot)
+2.5  3. Drive in until chain is against the elevator rail. (Would be good to         have some means of knowing when to stop. Perhaps when guide wheels         contact stage face. Perhaps when gyro senses chassis tilt.)
+5.0  4. Retract elevator (lift the robot) fully to allow ladder hooks to snap         into place.
+5.5  5. Raise elevator a few inches. If gyro senses sideways tilt (i.e.: one         of the ladder hooks not engaged), then proceed to step 5a. If robot         remains level side-to-side, then proceed to step 6.
+    5a. If one ladder hook is not engaged, retract the elevator. Raise it               again to see if the hook is engaged. 
+    5b. If ladder hooks did not engage, retract the elevator, retract the         ladder hooks, raise the elevator, back out.
+6.0  6. Rotate the arms approx 126 degrees (value TBD - Should be ~vertical)
+6.5  7. Retract the elevator (raise bot) approx 10 inches (value TBD). 
+7.0  8. Actuate the indexer to score the note.
+8.0  9. Rotate the arm back to home position. Maybe perform 9&10 concurrently.
+8.5 10. Retract the elevator to home position (elevator fully down, robot fully         raised).
+9.0 11. Actuate ladder hook retraction servos.
+10.0 12. Raise the elevator fully to bring the chassis to the floor.
+10.5 13. Back out (perhaps with some chassis oscillation to free the chain?).
+Resume playing. 
+
+
+Operation and Action for Ratchet:
+Default setting is latched. To disengage the latch, it needs to be actuated while not under reversing load. This is accomplished by one side or pulling the other side of the latch. For us, we need the "latched position" to prevent the elevator from climbing.
+
+1. Actuate latch release mechanism.
+2. Raise the elevator.
+3. Disengage the latch release (engage the ratchet) and retract the elevator to climb. 
+4. Stop at full retract (elevator home). Done.
+
