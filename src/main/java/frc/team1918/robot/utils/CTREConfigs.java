@@ -166,7 +166,7 @@ public final class CTREConfigs {
         //Arm
         //CANcoder
         armCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
-        armCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+        armCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
         armCCConfig.MagnetSensor.MagnetOffset = Constants.Arm.kMagnetOffset;
 
         Slot0Configs armSlot0Configs = new Slot0Configs()
@@ -207,7 +207,7 @@ public final class CTREConfigs {
             .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
         armFXConfig.HardwareLimitSwitch = armHardwareLimitsConfigs;
         //Encoder
-        if(Constants.Aimer.kUseCANcoder) {
+        if(Constants.Arm.kUseCANcoder) {
             armFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.kCANcoderID;
             armFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
             armFXConfig.Feedback.RotorToSensorRatio = Constants.Arm.kGearRatio;

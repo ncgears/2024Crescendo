@@ -159,7 +159,7 @@ public class Constants {
             public static final String kCameraName = "llcam1";
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
-                new Translation3d(0.36,0.29,0.23), //x,y,z location of camera on robot in meters
+                new Translation3d(0.34,0.195,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
             );
         }
@@ -167,7 +167,7 @@ public class Constants {
             public static final String kCameraName = "llcam2";
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
-                new Translation3d(-0.36,0.29,0.23), //x,y,z location of camera on robot in meters
+                new Translation3d(-0.34,-0.19,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
             );
         }
@@ -236,8 +236,8 @@ public class Constants {
         public static final String canBus = "rio";
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kCANcoderID = ID.CANcoder.aimer;
-        public static final boolean kUseCANcoder = false;
-        public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
+        public static final boolean kUseCANcoder = true;
+        public static final double kMagnetOffset = -0.17333984375; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.aimer;
         public static final boolean kIsInverted = false;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
@@ -275,14 +275,14 @@ public class Constants {
         //Controller Setup
         public static final String canBus = "rio";
         public static final boolean debugDashboard = false; //enable debugging dashboard
-        public static final int kCANcoderID = ID.CANcoder.aimer;
-        public static final boolean kUseCANcoder = false;
-        public static final double kMagnetOffset = 0.0; //Adjust magnet to sensor offset for CANcoder
+        public static final int kCANcoderID = ID.CANcoder.arm;
+        public static final boolean kUseCANcoder = true;
+        public static final double kMagnetOffset = -0.098876953125; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.arm;
-        public static final boolean kIsInverted = false;
+        public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0;
-        public static final double kGearRatio = 1.0; // XXt:XXt
+        public static final double kGearRatio = 49.08163; //9.816326; // 14t:26t -> 14t:74t
         //PID Control
         public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
@@ -317,7 +317,7 @@ public class Constants {
         public static final boolean isDisabled = false; //disable climber default command
         public static final int kCANcoderID = ID.CANcoder.climber;
         public static final boolean kUseCANcoder = true;
-        public static final double kMagnetOffset = -0.853244140625; //Adjust magnet to sensor offset for CANcoder
+        public static final double kMagnetOffset = -0.694091796875; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.climber;
         public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
@@ -343,7 +343,8 @@ public class Constants {
         public static final double kCurrentLimitThresholdSecs = 0.3;
         public class Positions {
             //TODO: Get position values
-            public static final double kTop = 0.0; //max height
+            public static final double kArmLimit = 1.56591796875; //max height of climber when arm swings over
+            public static final double kTop = 3.12158203125; //max height
             public static final double kBottom = 0.0; //all the way down
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
             public static final double kMidHookClear = 0.0; //drive mid hook onto chain
@@ -380,8 +381,8 @@ public class Constants {
 		public static final double kClosedLoopRamp = 0.0;
         public static final Transform3d kRobotToShooter = new Transform3d(
             //TODO: Measure and set proper locations
-            new Translation3d(0.0,0.0,0.5), //x,y,z location of shooter on robot in meters
-            new Rotation3d(0,0,0) //yaw,pitch,roll of shooter on robot in radians
+            new Translation3d(0.0,0.0,0.32), //x,y,z location of shooter on robot in meters
+            new Rotation3d() //yaw,pitch,roll of shooter on robot in radians
         );
         public static final class Top {
             public static final int kMotorID = ID.Falcon.shootertop;
