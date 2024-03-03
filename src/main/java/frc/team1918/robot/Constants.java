@@ -160,7 +160,7 @@ public class Constants {
             public static final String kCameraName = "llcam1";
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
-                new Translation3d(0.34,0.195,0.23), //x,y,z location of camera on robot in meters
+                new Translation3d(0.34,-0.195,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
             );
         }
@@ -168,7 +168,7 @@ public class Constants {
             public static final String kCameraName = "llcam2";
             public static final Transform3d kRobotToCam = new Transform3d(
                 //TODO: Measure and set proper locations
-                new Translation3d(-0.34,-0.19,0.23), //x,y,z location of camera on robot in meters
+                new Translation3d(-0.34,0.19,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
             );
         }
@@ -245,6 +245,7 @@ public class Constants {
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
         public static final double kPositionThreshold = 0.02; //close enough to target position
+        public static final double kGravityMultiplier = 1.1; //multiplier for aimer position to account for gravity
         //PID Control
         public static final double kS = 0.10; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
@@ -555,7 +556,7 @@ public class Constants {
         public static final class trackingController {
             public static final boolean isEnabled = true;
             public static final double kP = 0.03; //0.02
-            public static final double kI = 0.001; //0.0001
+            public static final double kI = 0.0018; //0.0001
             public static final double kD = 0.001; //0.002
             public static final double kIZone = 2.0;
             public static final double kToleranceDegrees = 1.0;

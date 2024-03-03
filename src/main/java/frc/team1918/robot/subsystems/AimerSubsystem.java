@@ -145,7 +145,7 @@ public class AimerSubsystem extends SubsystemBase {
    * @param position Position to set aimer in rotations
    */
   public void setPositionRotations(double position) {
-    m_targetPosition = MathUtil.clamp(position, Constants.Aimer.Positions.kRevLimit, Constants.Aimer.Positions.kFwdLimit);
+    m_targetPosition = MathUtil.clamp(position * Constants.Aimer.kGravityMultiplier, Constants.Aimer.Positions.kRevLimit, Constants.Aimer.Positions.kFwdLimit);
   }
 
   public void updateState() {
