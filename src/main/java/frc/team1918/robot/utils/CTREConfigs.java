@@ -80,8 +80,6 @@ public final class CTREConfigs {
             .withKD(Constants.Shooter.kD)
             .withKV(Constants.Shooter.kV);
         shooterFXConfig.Slot0 = shooterSlot0Configs;
-        shooterFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
-        shooterFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
         //Current Limits
         CurrentLimitsConfigs shooterCurrentLimitsConfigs = new CurrentLimitsConfigs()
             .withSupplyCurrentLimit(Constants.Shooter.kCurrentLimitAmps)
@@ -89,9 +87,17 @@ public final class CTREConfigs {
             .withSupplyTimeThreshold(Constants.Shooter.kCurrentLimitThresholdSecs)
             .withSupplyCurrentLimitEnable(Constants.Shooter.kCurrentLimitEnable);
         shooterFXConfig.CurrentLimits = shooterCurrentLimitsConfigs;
+        // shooterFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
+        // shooterFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
         //Ramping (spinup/spindown)
-        shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Shooter.kOpenLoopRamp;
-        shooterFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Shooter.kClosedLoopRamp;
+        // shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Shooter.kOpenLoopRamp;
+        // shooterFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Shooter.kClosedLoopRamp;
+        //Motion Magic
+        MotionMagicConfigs shooterMotionMagicConfigs = new MotionMagicConfigs()
+            .withMotionMagicCruiseVelocity(Constants.Shooter.kMotionMagicCruise)
+            .withMotionMagicAcceleration(Constants.Shooter.kMotionMagicAccel)
+            .withMotionMagicJerk(Constants.Shooter.kMotionMagicJerk);
+        shooterFXConfig.MotionMagic = shooterMotionMagicConfigs;
         //Neutral and Direction
         shooterFXConfig.MotorOutput.NeutralMode = Constants.Shooter.kNeutralMode;
         shooterFXConfig.MotorOutput.Inverted = (Constants.Shooter.isInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;

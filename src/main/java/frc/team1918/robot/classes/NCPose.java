@@ -299,10 +299,10 @@ public class NCPose {
 			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
 			systemTab.addNumber("Bot Pose Hdg", () -> getPose().getRotation().getDegrees())
 				.withSize(4,2)
-				.withPosition(4,2);
+				.withPosition(0,2);
 			systemTab.addNumber("Shooter Hdg", () -> { return getPose().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(); })
 				.withSize(4,2)
-				.withPosition(0,8);
+				.withPosition(4,2);
 			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
 				.withSize(4,5)
 				.withPosition(12,5)

@@ -255,7 +255,7 @@ public class Constants {
         public static final double kD = 0.01; // 0.1 = velocity error of 1rps results in 0.1v output
         public static final double kMotionMagicCruise = 10; // Motor Max / Gear Ratio
         public static final double kMotionMagicAccel = 10; // Acceleration: Cruise / Accel = time to cruise
-        public static final double kMotionMagicJerk = 6000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        public static final double kMotionMagicJerk = 2000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         // Review https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-vertical-arm.html
         // Using motionMagic: https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/motion-magic.html
 
@@ -300,7 +300,7 @@ public class Constants {
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
         public static final double kMotionMagicCruise = 30; // Motor Max / Gear Ratio
         public static final double kMotionMagicAccel = 80; // Acceleration: Cruise / Accel = time to cruise
-        public static final double kMotionMagicJerk = 1200; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        public static final double kMotionMagicJerk = 1600; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 30.0;
@@ -375,15 +375,21 @@ public class Constants {
         public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
         public static final double kMaxRPS = Global.kFalconMaxRPS * kGearRatio; //The Maximum free speed of the shooter
         public static final double kSpeedTolerance = 4.0; //How close in RPS is considered at speed
-        public static final double kP = 0.11; //PID P // ebror of 1 rotation per second result in 2V output
-        public static final double kI = 0.0; //PID I // ebror of 1 rotation per second increases output by 0.5V every second
-        public static final double kD = 0.0; //PID D // change of 1 rotation per second squared results in 0.01V output
-        public static final double kV = 0.12; //PID V // Falcon500 is 500kV motor, 500rpm per V = 8.33 rps per V, 1/8.33 = 0.12 V per rotation per second
+        //PID Control
+        public static final double kS = 0.18; // add kS to overcome static friction: adjust first to start moving
+        public static final double kV = 0.12; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
+        public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
+        public static final double kP = 0.13; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+        public static final double kI = 0.0; // no integral
+        public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
+        public static final double kMotionMagicCruise = 30; // Motor Max / Gear Ratio
+        public static final double kMotionMagicAccel = 60; // Acceleration: Cruise / Accel = time to cruise
+        public static final double kMotionMagicJerk = 1200; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        //Current Limiting
         public static final double kPeakFwdVoltage = 12.0;
         public static final double kPeakRevVoltage = -12.0;
-        //Current Limiting
         public static final boolean kCurrentLimitEnable = false;
-        public static final double kCurrentLimitAmps = 30.0;
+        public static final double kCurrentLimitAmps = 40.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
         //Ramping (0.0 by default)

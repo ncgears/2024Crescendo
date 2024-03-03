@@ -101,7 +101,7 @@ public class AimerSubsystem extends SubsystemBase {
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout aimerList = systemTab.getLayout("Aimer", BuiltInLayouts.kList)
-      .withSize(4,6)
+      .withSize(4,5)
       .withPosition(8,3)
       .withProperties(Map.of("Label position","LEFT"));
     aimerList.addString("Status", this::getColor)
@@ -111,8 +111,6 @@ public class AimerSubsystem extends SubsystemBase {
     aimerList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
     aimerList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     aimerList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
-    aimerList.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
-      .withProperties(Map.of("show_type",false));  
 
 		if(Constants.Aimer.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");

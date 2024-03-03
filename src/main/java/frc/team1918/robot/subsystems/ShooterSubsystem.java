@@ -4,6 +4,8 @@ package frc.team1918.robot.subsystems;
 import java.util.Map;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -31,7 +33,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
   //private and public variables defined here
   public double target_speed = 90.0;
-  private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
+  private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0);
+  private final MotionMagicVelocityVoltage m_mmVelocityVoltage = new MotionMagicVelocityVoltage(0);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1, m_motor2;
   private DoubleSubscriber new_speed_sub;
@@ -46,7 +49,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   private State m_curState = State.STOP;
-  
   /**
 	 * Returns the instance of the ShooterSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -115,11 +117,10 @@ public class ShooterSubsystem extends SubsystemBase {
 				.withProperties(Map.of("Label position","LEFT"));
 			shooterList.addString("Status", this::getColor)
         .withWidget("Single Color View");
+      shooterList.addString("State", this::getStateName);
       shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
 			shooterList.addNumber("Current", this::getCurrentSpeed);
 			shooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
-      shooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
-        .withProperties(Map.of("show_type",false));  
       
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgShooterList = debugTab.getLayout("Shooter", BuiltInLayouts.kList)
@@ -155,6 +156,8 @@ public class ShooterSubsystem extends SubsystemBase {
     }
   }
 
+  public State getState() { return m_curState; }
+  public String getStateName() { return m_curState.toString(); }
   public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / Constants.Shooter.kMaxRPS,2); }
   public double getNewSpeed() { return Helpers.General.roundDouble(new_speed,2); }
   public double getTargetSpeed() { return target_speed; }
@@ -163,7 +166,7 @@ public class ShooterSubsystem extends SubsystemBase {
     if(target_speed == 0.0) return false;
     double error = target_speed - m_motor1.getVelocity().getValue();
     boolean ready = (Math.abs(error) <= Constants.Shooter.kSpeedTolerance);
-    if(ready && m_curState == State.START) m_curState = State.READY;
+    m_curState = (ready && m_curState == State.START) ? State.READY : State.START;
     return ready;
   }
 
@@ -199,8 +202,8 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       m_curState = State.START;
       Helpers.Debug.debug("Shooter Target RPS: " + Helpers.General.roundDouble(speed, 2));
-      m_motor1.setControl(m_voltageVelocity.withVelocity(speed));
-      m_motor2.setControl(m_voltageVelocity.withVelocity(speed));
+      m_motor1.setControl(m_mmVelocityVoltage.withVelocity(speed));
+      m_motor2.setControl(m_mmVelocityVoltage.withVelocity(speed));
     }
   }
 
