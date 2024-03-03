@@ -120,18 +120,29 @@ public class NCPose {
 			RobotContainer.gyro.getYaw(),
 			RobotContainer.drive.getSwerveModulePositions(),
 			new Pose2d(),
-			//stateStdDevs Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust your state estimate less.
-			VecBuilder.fill(0.2, 0.2, 0.2),
-			//visionMeasurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust the vision pose measurement less.
-			VecBuilder.fill(0.7, 0.7, 0.7)
+			/** stateStdDevs 
+			 * Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). 
+			 * Increase these numbers to trust your state estimate less.
+			 */
+			VecBuilder.fill(0.2, 0.2, 0.1),
+			/** visionMeasurementStdDevs 
+			 * Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). 
+			 * Increase these numbers to trust the vision pose measurement less.
+			 */
+			VecBuilder.fill(0.5, 0.5, 0.9)
 		);
+		init();
 		createDashboards();
     }
 
 	public void init() {
 		m_trackingState = State.STOP;
 		m_trackingTarget = Targets.SPEAKER;
-		resetPose(new Pose2d());
+		resetPose(
+			(RobotContainer.isAllianceRed()) //more realistic starting position
+				? new Pose2d(16.54175 - 1.5,5.547868,new Rotation2d(Math.PI)) 
+				: new Pose2d(1.5,5.547868,new Rotation2d())
+		);
 		Helpers.Debug.debug("Pose: Initialized");
 	}
 

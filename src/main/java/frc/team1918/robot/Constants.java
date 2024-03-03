@@ -238,7 +238,7 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final int kCANcoderID = ID.CANcoder.aimer;
         public static final boolean kUseCANcoder = true;
-        public static final double kMagnetOffset = 0.17333984375; //Adjust magnet to sensor offset for CANcoder
+        public static final double kMagnetOffset = 0.1623535; //0.17333984375; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.aimer;
         public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
@@ -270,8 +270,8 @@ public class Constants {
         public static final double kOpenLoopRamp = 0.0;
 		public static final double kClosedLoopRamp = 0.0;
         public class Positions {
-            public static final double kRevLimit = 0.08;
-            public static final double kFwdLimit = 0.122;
+            public static final double kRevLimit = -0.08;
+            public static final double kFwdLimit = 0.147;
         }
     }
 
