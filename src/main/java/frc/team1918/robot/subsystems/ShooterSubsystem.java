@@ -30,12 +30,12 @@ import frc.team1918.robot.RobotContainer;
 public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
   //private and public variables defined here
-  public double target_speed = 95.0;
+  public double target_speed = 90.0;
   private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0,0,true,0,0,false,false,false);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1, m_motor2;
   private DoubleSubscriber new_speed_sub;
-  private double new_speed = 95.0;
+  private double new_speed = 90.0;
   private enum State {
     READY(Constants.Dashboard.Colors.GREEN),
     START(Constants.Dashboard.Colors.ORANGE),

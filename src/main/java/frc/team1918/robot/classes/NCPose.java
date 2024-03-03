@@ -111,7 +111,8 @@ public class NCPose {
 	public final Trigger isTargetAmp = new Trigger(() -> { return (m_trackingTarget==Targets.AMP); });
 	public final Trigger isTargetSource = new Trigger(() -> { return (m_trackingTarget==Targets.SOURCE); });
 	public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
-
+	public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
+  
     public NCPose() {
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(
@@ -349,6 +350,10 @@ public class NCPose {
 	public void setTrackingAmp() { setTrackingTarget(Targets.AMP); }
 	/** Sets the tracking target to SPEAKER (2024 Crescendo) */
 	public void setTrackingSpeaker() { setTrackingTarget(Targets.SPEAKER); }
+
+	public void setTrackingReady(boolean ready) {
+		m_trackingState = (ready) ? State.READY : State.TRACKING;
+	}
 	////#endregion "Tracking"
 
 }

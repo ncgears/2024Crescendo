@@ -75,12 +75,21 @@ public class drive_defaultDrive extends Command {
       }
       if(m_drive.isTrackingTarget()) { //if we are tracking a target
         var target = Rotation2d.fromDegrees(m_drive.getTrackingTargetHeading()).rotateBy(new Rotation2d(Math.PI)).getDegrees();
-        m_rotation_adjusted = -m_trackingController.calculate(RobotContainer.gyro.getYaw().getDegrees(), target);
-        // Helpers.Debug.debug("m_rotation_adjusted="+m_rotation_adjusted);
+          double adjusted = m_rotation_adjusted;
+          if(!m_trackingController.atSetpoint()) {
+            adjusted = -m_trackingController.calculate(RobotContainer.gyro.getYaw().getDegrees(), target);
+            RobotContainer.pose.setTrackingReady(false);
+          } else {
+            RobotContainer.pose.setTrackingReady(true);
+          }
+          // adjusted = -m_trackingController.calculate(RobotContainer.gyro.getYaw().getDegrees(), target);
+          // Helpers.Debug.debug("m_rotation_adjusted="+m_rotation_adjusted);
+          m_rotation_adjusted = adjusted;
       } else if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
         if(Constants.DriveTrain.thetaController.isEnabled) {
-          // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTargetHeading());
-          var adjusted = -m_thetaController.calculate(RobotContainer.gyro.getYaw().getDegrees(), m_drive.getTargetHeading());
+          double adjusted = m_rotation_adjusted;
+          // if(!m_thetaController.atSetpoint()) adjusted = -m_thetaController.calculate(RobotContainer.gyro.getYaw().getDegrees(), m_drive.getTargetHeading());
+          adjusted = -m_thetaController.calculate(RobotContainer.gyro.getYaw().getDegrees(), m_drive.getTargetHeading());
           // Helpers.Debug.debug("theta g="+RobotContainer.gyro.getYaw().getDegrees()+" t="+m_drive.getTargetHeading()+" a="+adjusted);
           m_rotation_adjusted = adjusted;
         }

@@ -18,9 +18,11 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
+import frc.team1918.robot.classes.Lighting.Colors;
 
 /**
  * This subsystem handles managing the Aimer.
@@ -48,7 +50,10 @@ public class AimerSubsystem extends SubsystemBase {
   private boolean m_suppressTracking = false; //do not allow tracking while true
   private DoubleSubscriber new_position_sub;
   private double new_position = 0.0;
-  
+
+  public final Trigger isTracking = new Trigger(() -> { return (m_curState==State.READY || m_curState==State.TRACKING); });
+  public final Trigger isReady = new Trigger(() -> { return (m_curState==State.READY); });
+
   /**
 	 * Returns the instance of the AimerSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
