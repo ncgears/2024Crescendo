@@ -5,9 +5,7 @@ import java.util.Map;
 
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.MathUtil;
@@ -33,7 +31,6 @@ public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
   //private and public variables defined here
   public double target_speed = 90.0;
-  private VelocityVoltage m_voltageVelocity = new VelocityVoltage(0);
   private final MotionMagicVelocityVoltage m_mmVelocityVoltage = new MotionMagicVelocityVoltage(0);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1, m_motor2;
@@ -88,7 +85,7 @@ public class ShooterSubsystem extends SubsystemBase {
     createDashboards();
   }
 
-  public final Trigger isReady = new Trigger(this::isAtSpeed);
+  public final Trigger isReady = new Trigger(this::atSetpoint);
 
   /**
    * The init function resets and operational state of the subsystem
@@ -100,6 +97,7 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     new_speed = new_speed_sub.get(0.0);
+    updateState();
   }
 
   public void createDashboards() {
@@ -119,8 +117,8 @@ public class ShooterSubsystem extends SubsystemBase {
         .withWidget("Single Color View");
       shooterList.addString("State", this::getStateName);
       shooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
-			shooterList.addNumber("Current", this::getCurrentSpeed);
-			shooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
+			shooterList.addNumber("Speed (Top)", this::getCurrentTopSpeed);
+			shooterList.addNumber("Speed (Bottom)", this::getCurrentBottomSpeed);
       
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgShooterList = debugTab.getLayout("Shooter", BuiltInLayouts.kList)
@@ -130,7 +128,7 @@ public class ShooterSubsystem extends SubsystemBase {
 			dbgShooterList.addString("Status", this::getColor)
         .withWidget("Single Color View");
 			dbgShooterList.addNumber("Target Speed (RPS)", this::getTargetSpeed);
-			dbgShooterList.addNumber("Current Speed (RPS)", this::getCurrentSpeed);
+			dbgShooterList.addNumber("Current Speed (RPS)", this::getCurrentTopSpeed);
       dbgShooterList.add("Stop", new InstantCommand(() -> setSpeed(0)))
         .withProperties(Map.of("show_type",false));  
       dbgShooterList.add("60 RPS", new InstantCommand(() -> setSpeed(60)))
@@ -162,20 +160,24 @@ public class ShooterSubsystem extends SubsystemBase {
   public double getNewSpeed() { return Helpers.General.roundDouble(new_speed,2); }
   public double getTargetSpeed() { return target_speed; }
   public String getColor() { return m_curState.getColor(); }
-  public boolean isAtSpeed() { 
-    if(target_speed == 0.0) return false;
-    double error = target_speed - m_motor1.getVelocity().getValue();
-    boolean ready = (Math.abs(error) <= Constants.Shooter.kSpeedTolerance);
-    m_curState = (ready && m_curState == State.START) ? State.READY : State.START;
-    return ready;
+
+  private void updateState() {
+    if(m_curState == State.START || m_curState == State.READY)
+      m_curState = (atSetpoint()) ? State.READY : State.START;
+  }
+
+  private boolean atSetpoint() {
+    double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
+    double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
+    return (Math.abs(error1) <= Constants.Shooter.kSpeedTolerance) && (Math.abs(error2) <= Constants.Shooter.kSpeedTolerance);
   }
 
   /**
    * Gets the speed of the shooter
    * @return The speed of the shooter in revolutions per second
    */
-  public double getCurrentSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
-  public double getCurrentSpeedPercent() { return getCurrentSpeed() / Constants.Shooter.kMaxRPS; }
+  public double getCurrentTopSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
+  public double getCurrentBottomSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
 
   /**
    * Sets the speed of the shooter

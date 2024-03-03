@@ -265,40 +265,9 @@ public class RobotContainer {
         .andThen(gyro::zeroHeading).ignoringDisable(true)
         .andThen(drive::resetOdometry).ignoringDisable(true)
       );
-      // .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
     // Test the lighting system
-    dj.a()
-      .onTrue(
-        new RepeatCommand(
-          new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true)
-          .andThen(new WaitCommand(0.5))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
-          .andThen(new WaitCommand(0.5))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
-          .andThen(new WaitCommand(0.15))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true))
-          .andThen(new WaitCommand(0.15))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
-          .andThen(new WaitCommand(0.15))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
-          .andThen(new WaitCommand(0.25))
-        )
-        .until(dj.a().negate())
-      )
-      .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    // dj.leftTrigger()
-    //   .onTrue(shooter.runOnce(shooter::startShooter))
-    //   //   .andThen(aimer.runOnce(() -> aimer.setPosition(0.1)))
-    //   // )
-    //   .onFalse(shooter.runOnce(shooter::stopShooter));
-    // dj.rightTrigger().and(shooter.isReady)
-    //   .onTrue(indexer.runOnce(indexer::indexerUp))
-    //   .onFalse(indexer.runOnce(indexer::indexerStop));
-    // dj.rightTrigger().and(shooter.isReady.negate())
-    //   .onTrue(new InstantCommand(() -> indexer.setColor(Constants.Dashboard.Colors.RED)).ignoringDisable(true))
-    //   .onFalse(new InstantCommand(() -> indexer.setColor(null)).ignoringDisable(true));
     dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
     dj.leftBumper().and(arm.atIntake)
@@ -309,12 +278,6 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.5))
         .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
       );
-    dj.rightBumper()
-      .onTrue(new InstantCommand(() -> pose.trackingStart()))
-      .onFalse(new InstantCommand(() -> pose.trackingStop()));
-    dj.rightBumper().and(pose.isTargetSpeaker)
-      .onTrue(aimer.runOnce(aimer::aimerStartTracking))
-      .onFalse(aimer.runOnce(aimer::aimerStopAndStow));
     dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
       .onFalse(arm.runOnce(arm::armIntake));
@@ -323,10 +286,10 @@ public class RobotContainer {
       .onFalse(indexer.runOnce(indexer::indexerStop));
 
     /** OPERATOR JOYSTICK (oj) */
-    oj.leftTrigger()
+    oj.leftTrigger().or(dj.rightBumper())
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
-    oj.leftTrigger().and(pose.isTargetSpeaker)
+    pose.isTargetSpeaker.and(oj.leftTrigger().or(dj.rightBumper()))
       .onTrue(
         aimer.runOnce(aimer::aimerStartTracking)
         .andThen(shooter.runOnce(shooter::startShooter))
