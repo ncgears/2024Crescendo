@@ -6,8 +6,6 @@ import com.ctre.phoenix6.controls.MotionMagicVoltage;
 // import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.ForwardLimitValue;
-import com.ctre.phoenix6.signals.ReverseLimitValue;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoubleSubscriber;
@@ -22,7 +20,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
-import frc.team1918.robot.classes.Lighting.Colors;
 
 /**
  * This subsystem handles managing the Aimer.
@@ -114,8 +111,6 @@ public class AimerSubsystem extends SubsystemBase {
     aimerList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
     aimerList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     aimerList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
-    aimerList.addBoolean("Rev Lim", this::getReverseLimit);
-    aimerList.addBoolean("Fwd Lim", this::getReverseLimit);
     aimerList.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))
       .withProperties(Map.of("show_type",false));  
 
@@ -177,16 +172,6 @@ public class AimerSubsystem extends SubsystemBase {
 
   public double getPositionAbsolute() {
     return m_encoder.getPosition().getValue();
-  }
-
-  public boolean getForwardLimit() {
-    //if using NormallyOpen, this should be ForwardLimitValue.ClosedToGround
-    return m_motor1.getForwardLimit().getValue() == ForwardLimitValue.ClosedToGround;
-  }
-
-  public boolean getReverseLimit() {
-    //if using NormallyOpen, this should be ReverseLimitValue.ClosedToGround
-    return m_motor1.getReverseLimit().getValue() == ReverseLimitValue.ClosedToGround;
   }
 
   public void aimerStopAndStow() {
