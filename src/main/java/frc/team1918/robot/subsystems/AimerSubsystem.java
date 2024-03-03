@@ -47,7 +47,7 @@ public class AimerSubsystem extends SubsystemBase {
   private TalonFX m_motor1;
   private State m_curState = State.STOP;
   private Double m_targetPosition = 0.0;
-  private boolean m_suppressTracking = false; //do not allow tracking while true
+  private boolean m_suppressTracking = true; //do not allow tracking while true
   private DoubleSubscriber new_position_sub;
   private double new_position = 0.0;
 
@@ -83,6 +83,7 @@ public class AimerSubsystem extends SubsystemBase {
    * The init function resets and operational state of the subsystem
    */
   public void init() {
+    m_curState = State.STOP;
     Helpers.Debug.debug("Aimer: Initialized");
     setPosition(0.0);
   }
@@ -91,7 +92,7 @@ public class AimerSubsystem extends SubsystemBase {
   public void periodic() {
     new_position = new_position_sub.get(0.0);
     updateSetpoint();
-    // updateState();
+    updateState();
   }
 
   public void createDashboards() {
@@ -153,8 +154,7 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public void updateState() {
-    //TODO: If the closed loop error is under threshold, then consider the aimer "READY"
-    if(true) m_curState = State.READY;
+    if(!m_suppressTracking) m_curState = (atSetpoint()) ? State.READY : State.TRACKING;
   }
 
   public void setPosition(double position) {
@@ -169,7 +169,7 @@ public class AimerSubsystem extends SubsystemBase {
 
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
-  // public double atSetpoint() { return m_motor1.getClosedLoopError().getValue() <= Constants.Aimer.kPositionThreshold; }
+  public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= Constants.Aimer.kPositionThreshold); }
 
   public double getPosition() {
     return m_motor1.getPosition().getValue();

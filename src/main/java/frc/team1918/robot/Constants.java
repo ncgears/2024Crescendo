@@ -243,6 +243,7 @@ public class Constants {
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
+        public static final double kPositionThreshold = 0.02; //close enough to target position
         //PID Control
         public static final double kS = 0.10; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
@@ -552,10 +553,10 @@ public class Constants {
         public static final class trackingController {
             public static final boolean isEnabled = true;
             public static final double kP = 0.03; //0.02
-            public static final double kI = 0.0001; //0.0001
+            public static final double kI = 0.001; //0.0001
             public static final double kD = 0.001; //0.002
             public static final double kIZone = 2.0;
-            public static final double kToleranceDegrees = 1;
+            public static final double kToleranceDegrees = 1.5;
         }
         public static final class xController {
             public static final double kP = 0.05;

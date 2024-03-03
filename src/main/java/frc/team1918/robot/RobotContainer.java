@@ -297,9 +297,13 @@ public class RobotContainer {
       .onFalse(intake.runOnce(intake::intakeStop));
 
     /** AUTONOMOUS ACTIONS */
-    aimer.isTracking.or(pose.isTracking)
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.ORANGE)))
-      .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)));
+    aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
+      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.ORANGE)));
+    aimer.isTracking.or(pose.isTracking).and(aimer.isReady.and(pose.isReady))
+      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.GREEN)));
+    aimer.isTracking.negate().and(pose.isTracking.negate())
+      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.OFF)));
+
     /** 
      * run the indexer if it's not full. This should also be combined with a location based trigger
      * This needs some work as it is also triggering when we move the climber/arm across the beam break
