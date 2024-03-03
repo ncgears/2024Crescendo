@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
@@ -211,11 +212,29 @@ public class RobotContainer {
     */
 
     // bind to the disabled() trigger which happens any time the robot is disabled
-    disabled().onTrue(new InstantCommand(this::resetRobot).ignoringDisable(true)
-      .andThen(new WaitCommand(10))
-      .andThen(climber.runOnce(climber::setCoast).ignoringDisable(true))
+    disabled().onTrue(
+      new InstantCommand(this::resetRobot).ignoringDisable(true)
+      .alongWith(
+        new RepeatCommand(
+          new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true)
+          .andThen(new WaitCommand(0.5))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.5))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.15))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.15))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.15))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.25))
+        ).until(disabled().negate())
+      )
     );
-    enabled().onTrue(new InstantCommand(m_orchestra::stop).ignoringDisable(true));
+    enabled().onTrue(
+      new InstantCommand(m_orchestra::stop).ignoringDisable(true)
+      .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true))
+    );
 
     /** DRIVER JOYSTICK (dj) */
     if(Constants.Audio.isEnabled) {
@@ -251,10 +270,23 @@ public class RobotContainer {
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
     // Test the lighting system
     dj.a()
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
-      .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
-    dj.b()
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+      .onTrue(
+        new RepeatCommand(
+          new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true)
+          .andThen(new WaitCommand(0.5))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.5))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.15))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.15))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.15))
+          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+          .andThen(new WaitCommand(0.25))
+        )
+        .until(dj.a().negate())
+      )
       .onFalse(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true));
     // dj.leftTrigger()
     //   .onTrue(shooter.runOnce(shooter::startShooter))

@@ -337,6 +337,7 @@ public class NCPose {
 	/** Disables target tracking */
     public void trackingStop() {
         m_trackingState = State.STOP;
+		RobotContainer.drive.lockHeading();
 		Helpers.Debug.debug("Tracking: Stop Tracking");
 	}
 	/** Sets the requested tracking target
