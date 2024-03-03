@@ -270,8 +270,13 @@ public class RobotContainer {
     dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
     dj.leftBumper().and(arm.atIntake)
-      .onTrue(intake.runOnce(intake::intakeIn))
-      .onFalse(new WaitCommand(0.5).andThen(intake.runOnce(intake::intakeStop)));
+      .onTrue(intake.runOnce(intake::intakeIn).andThen(() -> lighting.setColor(Colors.YELLOW)))
+      .onFalse(
+        new WaitCommand(0.5)
+        .andThen(intake.runOnce(intake::intakeStop))
+        .andThen(new WaitCommand(0.5))
+        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+      );
     dj.rightBumper()
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
@@ -293,8 +298,13 @@ public class RobotContainer {
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
     oj.leftBumper().and(arm.atIntake)
-      .onTrue(intake.runOnce(intake::intakeIn))
-      .onFalse(new WaitCommand(0.5).andThen(intake.runOnce(intake::intakeStop)));
+      .onTrue(intake.runOnce(intake::intakeIn).andThen(() -> lighting.setColor(Colors.YELLOW)))
+      .onFalse(
+        new WaitCommand(0.5)
+        .andThen(intake.runOnce(intake::intakeStop))
+        .andThen(new WaitCommand(0.5))
+        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+      );
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
@@ -308,6 +318,15 @@ public class RobotContainer {
      * run the indexer if it's not full. This should also be combined with a location based trigger
      * This needs some work as it is also triggering when we move the climber/arm across the beam break
      */
+    intake.isRunning.and(indexer.isFull)
+      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.GREEN))
+        .andThen(new WaitCommand(0.25))
+        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+        .andThen(new WaitCommand(0.15))
+        .andThen(new InstantCommand(() -> lighting.setColor(Colors.GREEN)))
+        .andThen(new WaitCommand(0.20))
+        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+    );
     // indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
     //     .andThen(new WaitCommand(3))
     //     .andThen(intake.runOnce(intake::intakeStop))

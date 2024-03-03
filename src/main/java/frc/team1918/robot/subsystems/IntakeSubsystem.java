@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
@@ -34,6 +35,8 @@ public class IntakeSubsystem extends SubsystemBase {
   private WPI_TalonSRX m_motor1;
   private Direction m_curDirection = Direction.STOP;
  
+  public final Trigger isRunning = new Trigger(() -> { return (m_curDirection == Direction.IN);});
+
   /**
 	 * Returns the instance of the IntakeSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
