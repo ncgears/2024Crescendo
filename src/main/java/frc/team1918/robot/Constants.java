@@ -384,7 +384,7 @@ public class Constants {
         public static final Transform3d kRobotToShooter = new Transform3d(
             //TODO: Measure and set proper locations
             new Translation3d(0.0,0.0,0.32), //x,y,z location of shooter on robot in meters
-            new Rotation3d() //yaw,pitch,roll of shooter on robot in radians
+            new Rotation3d(Math.PI,0,0) //yaw,pitch,roll of shooter on robot in radians
         );
         public static final class Top {
             public static final int kMotorID = ID.Falcon.shootertop;
@@ -539,9 +539,9 @@ public class Constants {
         public static final boolean isDisabled = false; 
         public static final class thetaController {
             public static final boolean isEnabled = true;
-            public static final double kP = 0.02;
-            public static final double kI = 0.0001;
-            public static final double kD = 0.002;
+            public static final double kP = 0.0005; //0.02
+            public static final double kI = 0.0; //0.0001
+            public static final double kD = 0.0; //0.002
             public static final double kIZone = 3.0;
             public static final double kToleranceDegrees = 0.5;
         }

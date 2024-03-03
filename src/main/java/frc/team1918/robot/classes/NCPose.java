@@ -111,13 +111,13 @@ public class NCPose {
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(
 			Constants.Swerve.kDriveKinematics,
-			RobotContainer.gyro.getHeading(),
+			RobotContainer.gyro.getYaw(),
 			RobotContainer.drive.getSwerveModulePositions(),
 			new Pose2d(),
 			//stateStdDevs Standard deviations of the pose estimate (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust your state estimate less.
-			VecBuilder.fill(0.1, 0.1, 0.1),
+			VecBuilder.fill(0.2, 0.2, 0.2),
 			//visionMeasurementStdDevs Standard deviations of the vision pose measurement (x position in meters, y position in meters, and heading in radians). Increase these numbers to trust the vision pose measurement less.
-			VecBuilder.fill(0.9, 0.9, 0.9)
+			VecBuilder.fill(0.7, 0.7, 0.7)
 		);
 		createDashboards();
     }
@@ -155,7 +155,7 @@ public class NCPose {
      * @param pose New robot pose.
      */
 	public void resetPose(double heading, Pose2d pose) {
-		poseEstimator.resetPosition(Rotation2d.fromDegrees(heading), RobotContainer.drive.getSwerveModulePositions(), pose);
+		poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drive.getSwerveModulePositions(), pose);
 	}
 	/**
      * Reset the estimated pose of the swerve drive on the field.
@@ -172,7 +172,7 @@ public class NCPose {
 	 */
 	public void updatePose() {
 		poseEstimator.update(
-			RobotContainer.gyro.getHeading(),
+			RobotContainer.gyro.getYaw(),
 			RobotContainer.drive.getSwerveModulePositions()
 		);
 	}
@@ -266,12 +266,13 @@ public class NCPose {
      */
 	public double getBearingOfTarget(Targets target) { 
 		// return 0.0;
-		Transform3d shooterToTarget = getShooterToTarget(target);
-		return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
-		// Pose3d shooterPose = updateShooterPose();
-		// var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
-		// Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
+		// Transform3d shooterToTarget = getShooterToTarget(target);
+		// return shooterToTarget.getTranslation().toTranslation2d().getAngle().getDegrees();
+		Pose3d shooterPose = updateShooterPose();
+		var targetPose = (RobotContainer.isAllianceRed()) ? target.getMirrorPose() : target.getPose();
+		Translation2d bearing = targetPose.getTranslation().toTranslation2d().minus(shooterPose.getTranslation().toTranslation2d());
 		// return bearing.getAngle().getDegrees();
+		return bearing.getAngle().getDegrees();
 	}
 
 	////#region "Tracking"
@@ -279,6 +280,12 @@ public class NCPose {
 	public void createDashboards() {
 		if(true) { //false to disable tracking dashboard
 			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+			systemTab.addNumber("Bot Pose Hdg", () -> getPose().getRotation().getDegrees())
+				.withSize(4,2)
+				.withPosition(4,2);
+			systemTab.addNumber("Shooter Hdg", () -> { return getPose().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(); })
+				.withSize(4,2)
+				.withPosition(0,8);
 			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
 				.withSize(4,5)
 				.withPosition(12,5)

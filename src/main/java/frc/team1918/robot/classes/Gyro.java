@@ -13,12 +13,12 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.team1918.robot.Constants;
+import frc.team1918.robot.Helpers;
 
 public class Gyro implements Sendable {
 	private static Gyro instance;
 
 	private static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
-    private static double yawOffset = 0;
 
     int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
@@ -42,7 +42,7 @@ public class Gyro implements Sendable {
     }
 
 	public void buildDashboards() {
-		if(Constants.Lighting.debugDashboard) {
+		if(Constants.Gyro.debugDashboard) {
 			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Gyro");
 			debugTab.add("Value", this)
 				.withSize(5, 4)
@@ -59,44 +59,19 @@ public class Gyro implements Sendable {
 	public void initSendable(SendableBuilder builder) {
 		builder.setSmartDashboardType("Gyro");
 		builder.setActuator(false);
-		builder.addDoubleProperty("Value", () -> getHeading().getDegrees(), null);
-	}
-
-	/**
-     * Returns the heading of the robot.
-     * @return the robot's heading as a Rotation2d
-     */
-	public Rotation2d getHeading() {
-		double raw_yaw = m_gyro.getYaw() - (double)yawOffset;  //always subtract the offset
-		double calc_yaw = raw_yaw;
-		if (0.0 > raw_yaw) { //yaw is negative
-			calc_yaw += 360.0;
-		}
-		// calc_yaw *= (Constants.Gyro.kGyroReversed ? -1.0 : 1.0);
-		return Rotation2d.fromDegrees(calc_yaw);
+		builder.addDoubleProperty("Value", () -> getYaw().getDegrees(), null);
 	}
 
     public void zeroHeading() {
+		m_gyro.reset();
 		m_gyro.zeroYaw();
 		// setYawOffset(0);
-		yawOffset = 0;
+		Helpers.Debug.debug("Gyro: Reset Gyro");
 	}
 
 	public AHRS getGyro() {
         return m_gyro;
 	}
-
-   	/**
-     * Returns the pitch of the robot.
-     * @return the robot's pitch as a double in degrees
-     */
-	public double getPitch() {
-		return m_gyro.getPitch();
-	}
-
-	public void setYawOffset(double offset) {
-        yawOffset = offset;
-    }
 
    	/**
      * Returns the yaw/heading of the robot.
@@ -108,17 +83,18 @@ public class Gyro implements Sendable {
 	}
 
    	/**
+     * Returns the pitch of the robot.
+     * @return the robot's pitch as a double in degrees
+     */
+	public double getPitch() {
+		return m_gyro.getPitch();
+	}
+
+   	/**
      * Returns the roll of the robot.
      * @return the robot's roll as a double in degrees
      */
 	public double getRoll() {
 		return m_gyro.getRoll();
 	}
-
-	/**
-	 * This handles updating the dashboard with data from this subsystem
-	 */
-    public void updateDashboard() {
-    }
-
 }

@@ -104,9 +104,9 @@ public class AimerSubsystem extends SubsystemBase {
       .withWidget("Single Color View");
     aimerList.addString("State", this::getStateName);
     aimerList.addNumber("Target", this::getTargetPosition);
-    aimerList.addNumber("Position", this::getPosition);
-    aimerList.addNumber("Absolute", this::getPositionAbsolute);
-    aimerList.addNumber("Error", this::getPositionError);
+    aimerList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
+    aimerList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
+    aimerList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
     aimerList.addBoolean("Rev Lim", this::getReverseLimit);
     aimerList.addBoolean("Fwd Lim", this::getReverseLimit);
     aimerList.add("Set Zero", new InstantCommand(this::setZero).ignoringDisable(true))

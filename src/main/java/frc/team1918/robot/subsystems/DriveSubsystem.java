@@ -109,7 +109,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void periodic() {
 		if(Robot.isSimulation()) updateSim();
 		RobotContainer.pose.updatePose();
-		// RobotContainer.pose.correctPoseWithVision();
+		RobotContainer.pose.correctPoseWithVision();
 		fieldSim.setRobotPose(RobotContainer.pose.getPose());
 	}
 
@@ -182,9 +182,9 @@ public class DriveSubsystem extends SubsystemBase {
 			.withProperties(Map.of("Label position","LEFT"));
 		thetaList.addString("Heading Lock", this::getHeadingLockedColor)
 			.withWidget("Single Color View");
-		thetaList.addNumber("Target Heading", this::getTargetHeading);
-		thetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
-		thetaList.addNumber("Heading Error", this::getHeadingError);
+		thetaList.addNumber("Target Heading", () -> Helpers.General.roundDouble(getTargetHeading(),4));
+		thetaList.addNumber("Current Heading", () -> Helpers.General.roundDouble(getHeading().getDegrees(),4));
+		thetaList.addNumber("Heading Error", () -> Helpers.General.roundDouble(getHeadingError(),4));
 
 		ShuffleboardTab systemTab = Shuffleboard.getTab("System");
 		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
@@ -193,9 +193,9 @@ public class DriveSubsystem extends SubsystemBase {
 			.withProperties(Map.of("Label position","LEFT"));
 		systemThetaList.addString("Heading Lock", this::getHeadingLockedColor)
 			.withWidget("Single Color View");
-		systemThetaList.addNumber("Target Heading", this::getTargetHeading);
-		systemThetaList.addNumber("Current Heading", () -> getHeading().getDegrees());
-		systemThetaList.addNumber("Heading Error", this::getHeadingError);
+		systemThetaList.addNumber("Target Heading", () -> Helpers.General.roundDouble(getTargetHeading(),4));
+		systemThetaList.addNumber("Current Heading", () -> Helpers.General.roundDouble(getHeading().getDegrees(),4));
+		systemThetaList.addNumber("Heading Error", () -> Helpers.General.roundDouble(getHeadingError(),4));
 
 		if(Constants.Swerve.debugDashboard) {
 		}
@@ -246,9 +246,11 @@ public class DriveSubsystem extends SubsystemBase {
 			(isTrackingTarget()) ? Constants.Dashboard.Colors.ORANGE : Constants.Dashboard.Colors.GREEN
 			: Constants.Dashboard.Colors.RED;
 	}
-	public double getTargetHeading() { return (isTrackingTarget()) ? RobotContainer.pose.getTrackingTargetBearing() : target_heading; }
+	public double getTargetHeading() { return (isTrackingTarget()) ? getTrackingTargetHeading() : target_heading; }
 	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
-	public double getTrackingTargetHeading() { return RobotContainer.pose.getTrackingTargetBearing(); }
+	public double getTrackingTargetHeading() { 
+		return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).rotateBy(new Rotation2d(Math.PI)).getDegrees(); 
+	}
 
 	/**
 	 * Resets the odometry to the specified pose. Requires the current heading to account for starting position other than 0.
@@ -258,7 +260,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void resetOdometry() { //double heading, Pose2d pose
 		RobotContainer.gyro.zeroHeading();
-		RobotContainer.gyro.setYawOffset(RobotContainer.isAllianceRed() ? 180 : 0); //set offset to 180 if red
+		// RobotContainer.gyro.setYawOffset(RobotContainer.isAllianceRed() ? 180 : 0); //set offset to 180 if red
 		// RobotContainer.gyro.setYawOffset(heading);
 	}
 

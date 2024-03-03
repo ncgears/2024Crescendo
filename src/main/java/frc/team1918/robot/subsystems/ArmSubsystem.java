@@ -119,10 +119,9 @@ public class ArmSubsystem extends SubsystemBase {
     armList.addBoolean("Status", this::atSetpoint);
     // armList.addString("State", this::getStateName);
     armList.addString("Target", this::getTargetPositionName);
-    armList.addNumber("Target Pos", this::getTargetPosition);
-    armList.addNumber("Position", this::getPosition);
-    armList.addNumber("Absolute", this::getPositionAbsolute);
-    armList.addNumber("Error", this::getPositionError);
+    armList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
+    armList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
+    armList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
 
     if(Constants.Arm.debugDashboard) {
     }

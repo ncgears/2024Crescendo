@@ -238,11 +238,14 @@ public class RobotContainer {
       Random rand = new Random(1918);
       var trf = new Transform2d(new Translation2d(rand.nextDouble() * 10 - 2, rand.nextDouble() * 8 - 2),
         new Rotation2d(rand.nextDouble() * 2 * Math.PI));
-      pose.resetPose(gyro.getHeading().getDegrees(), pose.getPose().plus(trf));
+      pose.resetPose(gyro.getYaw().getDegrees(), pose.getPose().plus(trf));
     }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
-      .onTrue(drive.runOnce(drive::resetDistances).andThen(gyro::zeroHeading).andThen(drive::resetOdometry));
+      .onTrue(drive.runOnce(drive::resetDistances).ignoringDisable(true)
+        .andThen(gyro::zeroHeading).ignoringDisable(true)
+        .andThen(drive::resetOdometry).ignoringDisable(true)
+      );
       // .onTrue(new gyro_resetGyro().andThen(new drive_resetOdometry(drive, new Pose2d(new Translation2d(0, 0), Rotation2d.fromDegrees(0.0)))));
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));

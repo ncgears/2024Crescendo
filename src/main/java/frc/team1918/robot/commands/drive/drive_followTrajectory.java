@@ -69,7 +69,7 @@ public class drive_followTrajectory extends Command {
     double omega = -m_thetaController.calculate(currentPose.getRotation().getRadians(), dt) - refState.velocity.z;
 
     // m_drive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, m_drive.getHeading().minus(m_offset)));
-    m_drive.driveRelative(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, RobotContainer.gyro.getHeading()));
+    m_drive.driveRelative(ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, omega, RobotContainer.gyro.getYaw()));
     m_lastTime = time;
   }
 

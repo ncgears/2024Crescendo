@@ -137,9 +137,9 @@ public class ClimberSubsystem extends SubsystemBase {
     climberList.addString("State", this::getStateName);
     climberList.addString("Target", this::getTargetPositionName);
     climberList.addNumber("Target Pos", this::getTargetPosition);
-    climberList.addNumber("Position", this::getPosition);
-    climberList.addNumber("Absolute", this::getPositionAbsolute);
-    climberList.addNumber("Error", this::getPositionError);
+    climberList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
+    climberList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
+    climberList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
     climberList.addBoolean("Rev Lim", this::getReverseLimit);
 
     ShuffleboardLayout latchList = systemTab.getLayout("Latch", BuiltInLayouts.kList)
