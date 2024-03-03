@@ -101,7 +101,7 @@ public class AimerSubsystem extends SubsystemBase {
 
     ShuffleboardTab systemTab = Shuffleboard.getTab("System");
     ShuffleboardLayout aimerList = systemTab.getLayout("Aimer", BuiltInLayouts.kList)
-      .withSize(4,7)
+      .withSize(4,6)
       .withPosition(8,3)
       .withProperties(Map.of("Label position","LEFT"));
     aimerList.addString("Status", this::getColor)
@@ -182,6 +182,7 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public void aimerStartTracking() {
+    new_position = Constants.Aimer.kStowPosition;
     m_suppressTracking = false;
     m_curState = State.TRACKING;
     Helpers.Debug.debug("Aimer: Start Tracking");
