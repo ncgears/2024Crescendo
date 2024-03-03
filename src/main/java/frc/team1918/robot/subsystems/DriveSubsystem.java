@@ -249,7 +249,8 @@ public class DriveSubsystem extends SubsystemBase {
 	public double getTargetHeading() { return (isTrackingTarget()) ? getTrackingTargetHeading() : target_heading; }
 	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
 	public double getTrackingTargetHeading() { 
-		return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).rotateBy(new Rotation2d(Math.PI)).getDegrees(); 
+		// return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).rotateBy(new Rotation2d(Math.PI)).getDegrees(); 
+		return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).getDegrees(); 
 	}
 
 	/**
@@ -321,7 +322,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
 		ChassisSpeeds speeds = ChassisSpeeds.discretize(
 			(fieldRelative) 
-				? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, RobotContainer.gyro.getYaw()) 
+				? ChassisSpeeds.fromRobotRelativeSpeeds(xSpeed, ySpeed, rot, RobotContainer.gyro.getYaw()) 
 				: new ChassisSpeeds(xSpeed, ySpeed, rot),
 			Robot.kDefaultPeriod);
 			driveRelative(speeds);

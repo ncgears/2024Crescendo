@@ -539,11 +539,19 @@ public class Constants {
         public static final boolean isDisabled = false; 
         public static final class thetaController {
             public static final boolean isEnabled = true;
-            public static final double kP = 0.0005; //0.02
-            public static final double kI = 0.0; //0.0001
-            public static final double kD = 0.0; //0.002
-            public static final double kIZone = 3.0;
+            public static final double kP = 0.02; //0.02
+            public static final double kI = 0.0001; //0.0001
+            public static final double kD = 0.002; //0.002
+            public static final double kIZone = 2.0;
             public static final double kToleranceDegrees = 0.5;
+        }
+        public static final class trackingController {
+            public static final boolean isEnabled = true;
+            public static final double kP = 0.03; //0.02
+            public static final double kI = 0.0001; //0.0001
+            public static final double kD = 0.001; //0.002
+            public static final double kIZone = 2.0;
+            public static final double kToleranceDegrees = 1;
         }
         public static final class xController {
             public static final double kP = 0.05;

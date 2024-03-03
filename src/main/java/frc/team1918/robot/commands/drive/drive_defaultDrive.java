@@ -2,6 +2,7 @@
 package frc.team1918.robot.commands.drive;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.function.DoubleSupplier;
 //import constants and subsystem
@@ -20,7 +21,7 @@ public class drive_defaultDrive extends Command {
   private final DoubleSupplier m_forward;
   private final DoubleSupplier m_strafe;
   private final DoubleSupplier m_rotation;
-  private final PIDController m_thetaController;
+  private final PIDController m_thetaController, m_trackingController;
   // private final PIDController m_xController, m_yController;
 
 
@@ -47,6 +48,15 @@ public class drive_defaultDrive extends Command {
     m_thetaController.setIZone(Constants.DriveTrain.thetaController.kIZone);
     m_thetaController.setTolerance(Constants.DriveTrain.thetaController.kToleranceDegrees);
     m_thetaController.setIntegratorRange(-0.5, 0.5);
+    m_trackingController = new PIDController(
+      Constants.DriveTrain.trackingController.kP, 
+      Constants.DriveTrain.trackingController.kI, 
+      Constants.DriveTrain.trackingController.kD
+    );
+    m_trackingController.enableContinuousInput(-180, 180);
+    m_trackingController.setIZone(Constants.DriveTrain.trackingController.kIZone);
+    m_trackingController.setTolerance(Constants.DriveTrain.trackingController.kToleranceDegrees);
+    m_trackingController.setIntegratorRange(-0.5, 0.5);
     // m_xController = new PIDController(Constants.DriveTrain.xController.kP, Constants.DriveTrain.xController.kI, Constants.DriveTrain.xController.kD);
     // m_yController = new PIDController(Constants.DriveTrain.yController.kP, Constants.DriveTrain.yController.kI, Constants.DriveTrain.yController.kD);
 
@@ -56,7 +66,7 @@ public class drive_defaultDrive extends Command {
 
   @Override
   public void execute() {
-    if (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0 || m_rotation.getAsDouble() != 0) { //any commanded movements
+    if (m_forward.getAsDouble() != 0 || m_strafe.getAsDouble() != 0 || m_rotation.getAsDouble() != 0 || m_drive.isTrackingTarget()) { //any commanded movements
       double m_rotation_adjusted = m_rotation.getAsDouble();
       if(m_rotation.getAsDouble() != 0) { //turn requested, unlock heading
         m_drive.unlockHeading();
@@ -64,7 +74,9 @@ public class drive_defaultDrive extends Command {
         if(!m_drive.getHeadingLocked()) m_drive.lockHeading();
       }
       if(m_drive.isTrackingTarget()) { //if we are tracking a target
-        m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw().getDegrees(), m_drive.getTrackingTargetHeading());
+        var target = Rotation2d.fromDegrees(m_drive.getTrackingTargetHeading()).rotateBy(new Rotation2d(Math.PI)).getDegrees();
+        m_rotation_adjusted = -m_trackingController.calculate(RobotContainer.gyro.getYaw().getDegrees(), target);
+        // Helpers.Debug.debug("m_rotation_adjusted="+m_rotation_adjusted);
       } else if(m_drive.getHeadingLocked()) { //locked heading, calculate adjustment
         if(Constants.DriveTrain.thetaController.isEnabled) {
           // if(!m_thetaController.atSetpoint()) m_rotation_adjusted = m_thetaController.calculate(RobotContainer.gyro.getYaw(), m_drive.getTargetHeading());

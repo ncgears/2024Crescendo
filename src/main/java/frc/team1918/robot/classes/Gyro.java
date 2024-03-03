@@ -69,7 +69,7 @@ public class Gyro implements Sendable {
 		Helpers.Debug.debug("Gyro: Reset Gyro");
 	}
 
-	public AHRS getGyro() {
+	private AHRS getGyro() {
         return m_gyro;
 	}
 
