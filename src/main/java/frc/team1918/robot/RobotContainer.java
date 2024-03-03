@@ -271,7 +271,7 @@ public class RobotContainer {
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
     dj.leftBumper().and(arm.atIntake)
       .onTrue(intake.runOnce(intake::intakeIn))
-      .onFalse(intake.runOnce(intake::intakeStop));
+      .onFalse(new WaitCommand(0.5).andThen(intake.runOnce(intake::intakeStop)));
     dj.rightBumper()
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
@@ -294,7 +294,7 @@ public class RobotContainer {
       .onFalse(indexer.runOnce(indexer::indexerStop));
     oj.leftBumper().and(arm.atIntake)
       .onTrue(intake.runOnce(intake::intakeIn))
-      .onFalse(intake.runOnce(intake::intakeStop));
+      .onFalse(new WaitCommand(0.5).andThen(intake.runOnce(intake::intakeStop)));
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
