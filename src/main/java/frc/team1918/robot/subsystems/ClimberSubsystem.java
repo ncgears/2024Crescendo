@@ -70,8 +70,10 @@ public class ClimberSubsystem extends SubsystemBase {
   private State m_curState = State.STOP;
   private Position m_targetPosition = Position.BOTTOM;
   private LatchPosition m_curLatchPosition = LatchPosition.OUT;
+  private boolean m_ratchetEngaged = false;
   private Servo m_leftServo = new Servo(Constants.Climber.kLeftServoID);
   private Servo m_rightServo = new Servo(Constants.Climber.kRightServoID);
+  private Servo m_ratchetServo = new Servo(Constants.Climber.kRatchetServoID);
   
   /**
 	 * Returns the instance of the ClimberSubsystem subsystem.
@@ -165,7 +167,7 @@ public class ClimberSubsystem extends SubsystemBase {
       dbgClimberList.addNumber("Position", this::getPosition);
       dbgClimberList.addNumber("Absolute", this::getPositionAbsolute);
       dbgClimberList.addNumber("Error", this::getPositionError);
-      dbgClimberList.addBoolean("Rev Lim", this::getReverseLimit);
+      dbgClimberList.addBoolean("Ratchet Engaged", this::getRatchet);
       dbgClimberList.add("Climber Up", new InstantCommand(this::climberUp))
         .withProperties(Map.of("show_type",false));  
       dbgClimberList.add("Climber Down", new InstantCommand(this::climberDown))
@@ -197,6 +199,13 @@ public class ClimberSubsystem extends SubsystemBase {
   public LatchPosition getLatchPosition() { return m_curLatchPosition; }
   public String getLatchPostionName() { return m_curLatchPosition.toString(); }
   public String getLatchColor() { return m_curLatchPosition.getColor(); }
+
+
+  public void setRatchet(boolean engaged) {
+    m_ratchetEngaged = engaged;
+    m_ratchetServo.set(engaged ? 1.0 : 0.0);
+  }
+  private boolean getRatchet() { return m_ratchetEngaged; }
 
   private void setLatchPosition(LatchPosition pos) {
     m_curLatchPosition = pos;

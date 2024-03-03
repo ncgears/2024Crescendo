@@ -182,7 +182,6 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   public void aimerStartTracking() {
-    new_position = Constants.Aimer.kStowPosition;
     m_suppressTracking = false;
     m_curState = State.TRACKING;
     Helpers.Debug.debug("Aimer: Start Tracking");

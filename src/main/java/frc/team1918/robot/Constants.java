@@ -51,6 +51,7 @@ public class Constants {
         public static final class PWM {
             public static int climber_leftServo = 0;
             public static int climber_rightServo = 1;
+            public static int climber_ratchetServo = 2;
         }
         /**
          * IDs of RoboRio Relays
@@ -330,6 +331,7 @@ public class Constants {
         public static final double kStowPosition = 0;
         public static final int kLeftServoID = ID.PWM.climber_leftServo;
         public static final int kRightServoID = ID.PWM.climber_rightServo;
+        public static final int kRatchetServoID = ID.PWM.climber_ratchetServo;
         public static final double kGearRatio = 26.67; // 12:1 gearbox, 18t:40t -- this is between rotor and sensor
         public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
         //PID Control
