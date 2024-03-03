@@ -324,8 +324,17 @@ public class RobotContainer {
 
     /** OPERATOR JOYSTICK (oj) */
     oj.leftTrigger()
-      .onTrue(shooter.runOnce(shooter::startShooter))
-      .onFalse(shooter.runOnce(shooter::stopShooter));
+      .onTrue(new InstantCommand(() -> pose.trackingStart()))
+      .onFalse(new InstantCommand(() -> pose.trackingStop()));
+    oj.leftTrigger().and(pose.isTargetSpeaker)
+      .onTrue(
+        aimer.runOnce(aimer::aimerStartTracking)
+        .andThen(shooter.runOnce(shooter::startShooter))
+      )
+      .onFalse(
+        aimer.runOnce(aimer::aimerStopAndStow)
+        .andThen(shooter.runOnce(shooter::stopShooter))
+      );
     oj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
@@ -337,6 +346,9 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.5))
         .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
       );
+    oj.povDown()
+      .onTrue(intake.runOnce(intake::intakeOut))
+      .onFalse(intake.runOnce(intake::intakeStop));
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
