@@ -278,6 +278,11 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.5))
         .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
       );
+    // FIRE!
+    dj.a().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
+      .onTrue(indexer.runOnce(indexer::indexerUp))
+      .onFalse(indexer.runOnce(indexer::indexerStop));
+    // Arm Amp
     dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
       .onFalse(arm.runOnce(arm::armIntake));
@@ -286,9 +291,11 @@ public class RobotContainer {
       .onFalse(indexer.runOnce(indexer::indexerStop));
 
     /** OPERATOR JOYSTICK (oj) */
+    // Pose Tracking
     oj.leftTrigger().or(dj.rightBumper())
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
+    // Aimer Tracking
     pose.isTargetSpeaker.and(oj.leftTrigger().or(dj.rightBumper()))
       .onTrue(
         aimer.runOnce(aimer::aimerStartTracking)
@@ -298,6 +305,7 @@ public class RobotContainer {
         aimer.runOnce(aimer::aimerStopAndStow)
         .andThen(shooter.runOnce(shooter::stopShooter))
       );
+    // FIRE!
     oj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
