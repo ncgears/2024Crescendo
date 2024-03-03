@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
@@ -106,6 +107,10 @@ public class NCPose {
     private State m_trackingState = State.STOP; //current Tracking state
 	private Targets m_trackingTarget = Targets.SPEAKER; //current Tracking target
 	private Pose3d m_shooterPose = new Pose3d();
+	public final Trigger isTargetSpeaker = new Trigger(() -> { return (m_trackingTarget==Targets.SPEAKER); });
+	public final Trigger isTargetAmp = new Trigger(() -> { return (m_trackingTarget==Targets.AMP); });
+	public final Trigger isTargetSource = new Trigger(() -> { return (m_trackingTarget==Targets.SOURCE); });
+	public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
 
     public NCPose() {
 		//Initialize the pose estimator
@@ -242,12 +247,12 @@ public class NCPose {
      * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
      * @return the vertical angle of the target, relative to the shooter, in degrees from the horizontal plane
      */
-	public double getAngleOfTarget(Targets target) {
+	public Rotation2d getAngleOfTarget(Targets target) {
 		Transform3d shooterToTarget = getShooterToTarget(target);
 		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
 		// double angle = (Math.PI/2 - Math.atan2(Math.abs(shooterToTarget.getZ()),distance)); //complementary angle
 		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
-		return Math.toDegrees(angle);
+		return Rotation2d.fromRadians(angle);
 	}
 
 	/**
@@ -320,7 +325,9 @@ public class NCPose {
 	/** Gets the relative distance from the shooter to the current tracking target */
 	public double getTrackingTargetDistance() { return Helpers.General.roundDouble(getDistanceOfTarget(m_trackingTarget),2); }
 	/** Gets the relative angle from the shooter to the current tracking target */
-	public double getTrackingTargetAngle() { return Helpers.General.roundDouble(getAngleOfTarget(m_trackingTarget),2); }
+	public double getTrackingTargetAngle() { return Helpers.General.roundDouble(getAngleOfTarget(m_trackingTarget).getDegrees(),2); }
+	/** Gets the relative angle from the shooter to the current tracking target as rotations from 0.0 */
+	public double getTrackingTargetAngleAsRotations() { return getAngleOfTarget(m_trackingTarget).getRotations(); }
 	/** Enables target tracking */
 	public void trackingStart() {
 		m_trackingState = State.TRACKING;

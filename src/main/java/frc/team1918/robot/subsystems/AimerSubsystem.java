@@ -9,6 +9,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.ForwardLimitValue;
 import com.ctre.phoenix6.signals.ReverseLimitValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
@@ -78,7 +79,7 @@ public class AimerSubsystem extends SubsystemBase {
    */
   public void init() {
     Helpers.Debug.debug("Aimer: Initialized");
-    m_targetPosition = 0.0;
+    setPosition(0.0);
   }
 
   @Override
@@ -131,12 +132,19 @@ public class AimerSubsystem extends SubsystemBase {
 
   public void updateSetpoint() {
     if(!m_suppressTracking) { //allowed to track
-      //determine the proper setpoint from vision and set it as the closed loop target
-      // RobotContainer.vision.getTarget()
+      new_position = RobotContainer.pose.getTrackingTargetAngleAsRotations();
       if(new_position != m_targetPosition) setPosition(new_position);
     } else {
       setPosition(m_targetPosition);
     }
+  }
+
+  /** Sets the position of the aimer, but is restricted to the safe range defined by
+   * Constants.Aimer.Positions.kRevLimit and kFwdLimit
+   * @param position Position to set aimer in rotations
+   */
+  public void setPositionRotations(double position) {
+    m_targetPosition = MathUtil.clamp(position, Constants.Aimer.Positions.kRevLimit, Constants.Aimer.Positions.kFwdLimit);
   }
 
   public void updateState() {

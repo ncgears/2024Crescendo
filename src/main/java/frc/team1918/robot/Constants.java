@@ -244,15 +244,15 @@ public class Constants {
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
         //PID Control
-        public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
+        public static final double kS = 0.10; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
         public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
         public static final double kP = 24.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
         public static final double kI = 0.0; // no integral
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-        public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
-        public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
-        public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        public static final double kMotionMagicCruise = 10; // Motor Max / Gear Ratio
+        public static final double kMotionMagicAccel = 30; // Acceleration: Cruise / Accel = time to cruise
+        public static final double kMotionMagicJerk = 5000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         // Review https://docs.wpilib.org/en/stable/docs/software/advanced-controls/introduction/tuning-vertical-arm.html
         // Using motionMagic: https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/motion-magic.html
 
@@ -266,6 +266,10 @@ public class Constants {
         //Ramping (0.0 by default)
         public static final double kOpenLoopRamp = 0.0;
 		public static final double kClosedLoopRamp = 0.0;
+        public class Positions {
+            public static final double kRevLimit = 0.08;
+            public static final double kFwdLimit = 0.122;
+        }
     }
 
     /**

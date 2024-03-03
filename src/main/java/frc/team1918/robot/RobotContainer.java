@@ -275,7 +275,10 @@ public class RobotContainer {
     dj.rightBumper()
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
-    dj.leftTrigger()
+    dj.rightBumper().and(pose.isTargetSpeaker)
+      .onTrue(aimer.runOnce(aimer::aimerStartTracking))
+      .onFalse(aimer.runOnce(aimer::aimerStopAndStow));
+    dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
       .onFalse(arm.runOnce(arm::armIntake));
     dj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
