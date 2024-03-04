@@ -74,6 +74,7 @@ public class NCPose {
 	/**
 	 * Targets represents different locations on the field that we might be interested in tracking
 	 */
+	private static final double m_fieldLength = Constants.Vision.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
         SOURCE(0,0,0,120),  //TODO: determine positions
         AMP(1.8415,8.2042,0.889,-90),
@@ -91,7 +92,7 @@ public class NCPose {
             // new Rotation3d(0,0,Math.toRadians(this.angle))
         ); }
         public Pose3d getMirrorPose() { return new Pose3d(
-            new Translation3d(16.54175 - this.x, this.y, this.z), //field is 16.54175 meters
+            new Translation3d(m_fieldLength - this.x, this.y, this.z), //field is 16.54175 meters
 			new Rotation3d()
             // new Rotation3d(0,0,Math.PI - Math.toRadians(this.angle))
         ); }
@@ -142,7 +143,7 @@ public class NCPose {
 		m_trackingTarget = Targets.SPEAKER;
 		resetPose(
 			(RobotContainer.isAllianceRed()) //more realistic starting position
-				? new Pose2d(16.54175 - 1.5,5.547868,new Rotation2d(Math.PI)) 
+				? new Pose2d(m_fieldLength - 1.5,5.547868,new Rotation2d(Math.PI)) 
 				: new Pose2d(1.5,5.547868,new Rotation2d())
 		);
 		Helpers.Debug.debug("Pose: Initialized");
