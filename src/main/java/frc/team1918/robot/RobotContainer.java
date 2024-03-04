@@ -279,14 +279,11 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.5))
         .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
       );
-    // FIRE!
-    dj.a().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
-      .onTrue(indexer.runOnce(indexer::indexerUp))
-      .onFalse(indexer.runOnce(indexer::indexerStop));
     // Arm Amp
     dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
       .onFalse(arm.runOnce(arm::armIntake));
+    // FIRE!
     dj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
