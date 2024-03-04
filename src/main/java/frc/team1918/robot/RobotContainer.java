@@ -217,7 +217,7 @@ public class RobotContainer {
     disabled().onTrue(
       new InstantCommand(this::resetRobot).ignoringDisable(true)
       .alongWith(
-        new RepeatCommand(
+        new RepeatCommand(  //Lighting Disco Party!
           new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true)
           .andThen(new WaitCommand(0.5))
           .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
