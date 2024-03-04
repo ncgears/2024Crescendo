@@ -74,7 +74,7 @@ public class NCPose {
 	/**
 	 * Targets represents different locations on the field that we might be interested in tracking
 	 */
-    public enum Targets { //based on blue origin 0,0 (bottom left) field coordinates, North-East-Up
+    public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
         SOURCE(0,0,0,120),  //TODO: determine positions
         AMP(1.8415,8.2042,0.889,-90),
         SPEAKER(0.23,5.547868,2.0447,180),
