@@ -137,11 +137,11 @@ public class DriveSubsystem extends SubsystemBase {
 			.withSize(4, 4)
 			.withPosition(20, 0)
 			.withProperties(Map.of("show_robot_rotation","true"));
-		driverTab.add("Field", getField())
-			.withSize(12,7)
-			.withPosition(8,0)
-			.withWidget("Field")
-			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+		// driverTab.add("Field", getField())
+		// 	.withSize(12,7)
+		// 	.withPosition(8,0)
+		// 	.withWidget("Field")
+		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
 
 		ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
 		swerveTab.add("Swerve Drive", this)
@@ -172,11 +172,11 @@ public class DriveSubsystem extends SubsystemBase {
 		swerveTab.addNumber("BR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
 			.withSize(2, 2)
 			.withPosition(10, 3);
-		swerveTab.add("Field", getField())
-			.withSize(6,4)
-			.withPosition(0,6)
-			.withWidget("Field")
-			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+		// swerveTab.add("Field", getField())
+		// 	.withSize(6,4)
+		// 	.withPosition(0,6)
+		// 	.withWidget("Field")
+		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
 
 		ShuffleboardLayout thetaList = swerveTab.getLayout("theta Controller", BuiltInLayouts.kList)
 			.withSize(4,4)
