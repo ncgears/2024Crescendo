@@ -428,7 +428,7 @@ public class Constants {
         public static final int kTurnEncoderFullRotation = 1024; //lamprey2 //was 1023, why?
         public static final double kTurnGearRatio = 10.3846154; //The output of the turn gearbox turns 10 times for one module rotation
         public static final double kRotationsPerWheelRotation = 6.0; //(32/16*45/15); or 6.75 //(44/16*45/15)
-        public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Coast;
+        public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Brake;
         public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
         // Current limits
         // Swerve Current limiting //TODO: Needs tuning, this was bobrowed from Team364 example
