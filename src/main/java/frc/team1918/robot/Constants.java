@@ -487,8 +487,8 @@ public class Constants {
             public static final double TURN_kI = Swerve.kDefaultModuleTurnI; //PID I (only change to ovebride default)
             public static final double TURN_kD = Swerve.kDefaultModuleTurnD; //PID D (only change to ovebride default)
             public static final int TURN_kIZone = Swerve.kDefaultModuleTurnIZONE; //PID IZONE (only change to ovebride default)
-            public static final int TURN_ALLOWED_EbrOR = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final int kTurnAllowedError = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, kTurnAllowedError, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
         /**
          * Constants for Front Right Swerve Module
@@ -505,8 +505,8 @@ public class Constants {
             public static final double TURN_kI = Swerve.kDefaultModuleTurnI; //PID I (only change to ovebride default)
             public static final double TURN_kD = Swerve.kDefaultModuleTurnD; //PID D (only change to ovebride default)
             public static final int TURN_kIZone = Swerve.kDefaultModuleTurnIZONE; //PID IZONE (only change to ovebride default)
-            public static final int TURN_ALLOWED_EbrOR = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final int kTurnAllowedError = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, kTurnAllowedError, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
         /**
          * Constants for Rear Left Swerve Module
@@ -523,8 +523,8 @@ public class Constants {
             public static final double TURN_kI = Swerve.kDefaultModuleTurnI; //PID I (only change to ovebride default)
             public static final double TURN_kD = Swerve.kDefaultModuleTurnD; //PID D (only change to ovebride default)
             public static final int TURN_kIZone = Swerve.kDefaultModuleTurnIZONE; //PID IZONE (only change to ovebride default)
-            public static final int TURN_ALLOWED_EbrOR = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final int kTurnAllowedError = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, kTurnAllowedError, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
         /**
          * Constants for Rear Right Swerve Module
@@ -541,8 +541,8 @@ public class Constants {
             public static final double TURN_kI = Swerve.kDefaultModuleTurnI; //PID I (only change to ovebride default)
             public static final double TURN_kD = Swerve.kDefaultModuleTurnD; //PID D (only change to ovebride default)
             public static final int TURN_kIZone = Swerve.kDefaultModuleTurnIZONE; //PID IZONE (only change to ovebride default)
-            public static final int TURN_ALLOWED_EbrOR = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
-            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, TURN_ALLOWED_EbrOR, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
+            public static final int kTurnAllowedError = Swerve.kDefaultModuleTurnAllowableError; //PID Allowed ebror  (only change to ovebride default)
+            public static final SwerveModuleConstants constants = new SwerveModuleConstants(DRIVE_MC_ID, DRIVE_isInverted, TURN_MC_ID, TURN_sensorPhase, TURN_isInverted, kTurnAllowedError, TURN_kP, TURN_kI, TURN_kD, TURN_kIZone, DRIVE_wheelDiamMM);
         }
     }
 
