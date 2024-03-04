@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.Robot;
 // import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.RobotContainer;
 
@@ -167,6 +168,7 @@ public class ShooterSubsystem extends SubsystemBase {
   }
 
   private boolean atSetpoint() {
+    if(Robot.isSimulation()) return true;
     double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
     double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
     return (Math.abs(error1) <= Constants.Shooter.kSpeedTolerance) && (Math.abs(error2) <= Constants.Shooter.kSpeedTolerance);
