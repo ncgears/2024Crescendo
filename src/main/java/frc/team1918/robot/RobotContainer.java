@@ -192,7 +192,12 @@ public class RobotContainer {
     arm.init();
   }
 
+  // Returns true if the alliance is red, otherwise false (blue)
   public static boolean isAllianceRed() {
+    return DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red;
+  }
+  //old version
+  public static boolean isAllianceRed2() {
     m_alliance = DriverStation.getAlliance();
     if(m_alliance.isPresent()) {
       return m_alliance.get() == Alliance.Red;
