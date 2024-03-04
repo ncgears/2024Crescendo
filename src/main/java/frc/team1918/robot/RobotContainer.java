@@ -22,6 +22,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -38,6 +39,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardContainer;
 // import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardComponent;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.button.CommandStadiaController;
 //import edu.wpi.first.wpilibj.PowerDistribution;
@@ -263,7 +265,6 @@ public class RobotContainer {
     dj.hamburger()
       .onTrue(drive.runOnce(drive::resetDistances).ignoringDisable(true)
         .andThen(gyro::zeroHeading).ignoringDisable(true)
-        .andThen(drive::resetOdometry).ignoringDisable(true)
       );
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
@@ -388,18 +389,18 @@ public class RobotContainer {
    * This method registers named commands to be used in PathPlanner autos
    */
   private void registerCommands() {
-    NamedCommands.registerCommand("shooterSpeed60", new InstantCommand(() -> shooter.setSpeed(60)));
-    NamedCommands.registerCommand("shooterSpeed95", new InstantCommand(() -> shooter.setSpeed(95)));
+    NamedCommands.registerCommand("shooterSpeed80", new InstantCommand(() -> shooter.setSpeed(80)));
+    NamedCommands.registerCommand("shooterSpeed90", new InstantCommand(() -> shooter.setSpeed(90)));
     NamedCommands.registerCommand("shooterStart", shooter.runOnce(shooter::startShooter));
     NamedCommands.registerCommand("shooterStop", shooter.runOnce(shooter::stopShooter));
     NamedCommands.registerCommand("intakeIn", intake.runOnce(intake::intakeIn));
     NamedCommands.registerCommand("intakeStop", intake.runOnce(intake::intakeStop));
     NamedCommands.registerCommand("aimerTrackingStart", aimer.runOnce(aimer::aimerStartTracking));
     NamedCommands.registerCommand("aimerTrackingStop", aimer.runOnce(aimer::aimerStopAndStow));
+    NamedCommands.registerCommand("poseTrackingStart", new InstantCommand(() -> pose.trackingStart()));
+    NamedCommands.registerCommand("poseTrackingStop", new InstantCommand(() -> pose.trackingStop()));
     NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
     NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
-    NamedCommands.registerCommand("waitShort", new WaitCommand(0.5));
-    NamedCommands.registerCommand("waitLong", new WaitCommand(1.0));
   }
 
   public void buildAutonChooser() {
@@ -410,7 +411,6 @@ public class RobotContainer {
       // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));
       m_auto_chooser = AutoBuilder.buildAutoChooser();
     }
-    //SmartDashboard.putData(m_auto_chooser); //put in the smartdash
   }
 
   private void buildDriverTab(){
@@ -444,7 +444,7 @@ public class RobotContainer {
     //   .withWidget("Camera Stream");
   }
 
-  private void buildDebugTab(){ //This is where we add maintenance commands
+  private void buildDebugTab(){
     ShuffleboardTab debugTab = buildTab("Debug");
     debugTab.add("Command Scheduler", CommandScheduler.getInstance())
       .withPosition(0,2);      

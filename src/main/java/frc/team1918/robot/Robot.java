@@ -140,8 +140,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-    m_disableCommand = m_robotContainer.getRobotCommand("resetRobot");
-    if (m_disableCommand != null) m_disableCommand.schedule();
+    // m_disableCommand = m_robotContainer.getRobotCommand("resetRobot");
+    // if (m_disableCommand != null) m_disableCommand.schedule();
     // m_dc1 = m_robotContainer.getDisableCommand(1);
     // if (m_dc1 != null) m_dc1.schedule();
     // m_dc2 = m_robotContainer.getDisableCommand(2);
@@ -168,7 +168,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null && !Constants.Auton.isDisabled) m_autonomousCommand.schedule();
 
     //start the fsm
-    fsm.start();
+    // fsm.start();
   }
 
   /**
@@ -177,7 +177,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     //update the fsm
-    fsm.update();
+    // fsm.update();
   }
 
   @Override

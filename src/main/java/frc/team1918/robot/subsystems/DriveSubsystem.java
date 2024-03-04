@@ -46,6 +46,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
  */
 public class DriveSubsystem extends SubsystemBase {
 	private static DriveSubsystem instance;
+	public Field2d field = new Field2d();
 
 	//initialize 4 swerve modules
 	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
@@ -53,8 +54,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private static SwerveModule m_backLeft = new SwerveModule("RL", Constants.Swerve.BL.constants); // Rear Left
 	private static SwerveModule m_backRight = new SwerveModule("RR", Constants.Swerve.BR.constants); // Rear Right
 	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
-
-	private Field2d fieldSim;
 
 	private int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
     SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(m_simgyro,"Yaw"));
@@ -71,8 +70,6 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public DriveSubsystem() { //initialize the class
-		fieldSim = new Field2d();
-
 		AutoBuilder.configureHolonomic(
 		this::getPose, // Robot pose supplier
 		this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -110,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
 		if(Robot.isSimulation()) updateSim();
 		RobotContainer.pose.updatePose();
 		RobotContainer.pose.correctPoseWithVision();
-		fieldSim.setRobotPose(RobotContainer.pose.getPose());
+		field.setRobotPose(RobotContainer.pose.getPose());
 	}
 
 	@Override
@@ -138,8 +135,13 @@ public class DriveSubsystem extends SubsystemBase {
 		ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
 		driverTab.add("Swerve Drive", this)
 			.withSize(4, 4)
-			.withPosition(16, 3)
+			.withPosition(20, 0)
 			.withProperties(Map.of("show_robot_rotation","true"));
+		driverTab.add("Field", getField())
+			.withSize(12,7)
+			.withPosition(8,0)
+			.withWidget("Field")
+			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
 
 		ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
 		swerveTab.add("Swerve Drive", this)
@@ -170,7 +172,7 @@ public class DriveSubsystem extends SubsystemBase {
 		swerveTab.addNumber("BR Speed", () -> Helpers.General.roundDouble(m_backRight.getVelocity(),3))
 			.withSize(2, 2)
 			.withPosition(10, 3);
-		swerveTab.add("Field", fieldSim)
+		swerveTab.add("Field", getField())
 			.withSize(6,4)
 			.withPosition(0,6)
 			.withWidget("Field")
@@ -187,6 +189,11 @@ public class DriveSubsystem extends SubsystemBase {
 		thetaList.addNumber("Heading Error", () -> Helpers.General.roundDouble(getHeadingError(),4));
 
 		ShuffleboardTab systemTab = Shuffleboard.getTab("System");
+		systemTab.add("Field", getField())
+			.withSize(8,4)
+			.withPosition(0,4)
+			.withWidget("Field")
+			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
 		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
 			.withSize(4,4)
 			.withPosition(16,6)
@@ -207,9 +214,8 @@ public class DriveSubsystem extends SubsystemBase {
 		Helpers.Debug.debug("Pose: Initialized");
 	}
 
-	public Rotation2d getHeading() {
-		return RobotContainer.gyro.getYaw();
-		// return RobotContainer.pose.getPose().getRotation();
+	public Field2d getField() {
+		return field;
 	}
 
 	public Pose2d getPose() {
@@ -218,6 +224,11 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public void resetPose(Pose2d pose) {
 		RobotContainer.pose.resetPose(pose);
+	}
+
+	public Rotation2d getHeading() {
+		return RobotContainer.gyro.getYaw();
+		// return RobotContainer.pose.getPose().getRotation();
 	}
 
 	public double getHeadingError() {
@@ -236,10 +247,6 @@ public class DriveSubsystem extends SubsystemBase {
 		heading_locked = false;
 	}
 
-	public Field2d getField2d() {
-		return fieldSim;
-	}
-
 	public boolean getHeadingLocked() { return heading_locked; }
 	public String getHeadingLockedColor() {
 		return (heading_locked) ?
@@ -251,18 +258,6 @@ public class DriveSubsystem extends SubsystemBase {
 	public double getTrackingTargetHeading() { 
 		// return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).rotateBy(new Rotation2d(Math.PI)).getDegrees(); 
 		return Rotation2d.fromDegrees(RobotContainer.pose.getTrackingTargetBearing()).getDegrees(); 
-	}
-
-	/**
-	 * Resets the odometry to the specified pose. Requires the current heading to account for starting position other than 0.
-	 * 
-	 * @param heading The current heading of the robot to offset the zero position
-	 * @param pose The pose to which to set the odometry.
-	 */
-	public void resetOdometry() { //double heading, Pose2d pose
-		RobotContainer.gyro.zeroHeading();
-		// RobotContainer.gyro.setYawOffset(RobotContainer.isAllianceRed() ? 180 : 0); //set offset to 180 if red
-		// RobotContainer.gyro.setYawOffset(heading);
 	}
 
 	public void updateSim() {

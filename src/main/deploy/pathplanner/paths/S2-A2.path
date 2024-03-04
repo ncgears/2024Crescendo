@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.071455914991601,
-        "y": 7.425788070949362
+        "x": 1.4259262722800992,
+        "y": 5.557362183607978
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.4015018394512655,
-        "y": 7.246504585941596
-      },
-      "isLocked": false,
-      "linkedName": "Center1"
-    },
-    {
-      "anchor": {
-        "x": 6.972810267459616,
-        "y": 5.208657038003731
-      },
-      "prevControl": {
-        "x": 6.991682213249484,
-        "y": 6.50138532460973
-      },
-      "nextControl": {
-        "x": 6.956144120363864,
-        "y": 4.067025961944628
+        "x": 2.4259262722800985,
+        "y": 5.557362183607978
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.487588133796957,
-        "y": 4.000852507452142
+        "x": 3.736618969674995,
+        "y": 5.557362183607978
       },
       "prevControl": {
-        "x": 5.798975239329789,
-        "y": 4.010288480347076
+        "x": 2.736618969674995,
+        "y": 5.557362183607978
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Trap2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -55,7 +39,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -3.50643448219915e-10,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,

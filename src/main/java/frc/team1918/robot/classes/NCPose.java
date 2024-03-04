@@ -14,10 +14,12 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
@@ -297,10 +299,10 @@ public class NCPose {
 	public void createDashboards() {
 		if(true) { //false to disable tracking dashboard
 			ShuffleboardTab systemTab = Shuffleboard.getTab("System");
-			systemTab.addNumber("Bot Pose Hdg", () -> getPose().getRotation().getDegrees())
+			systemTab.addNumber("Bot Pose Hdg", () -> Helpers.General.roundDouble(getPose().getRotation().getDegrees(),2))
 				.withSize(4,2)
 				.withPosition(0,2);
-			systemTab.addNumber("Shooter Hdg", () -> { return getPose().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(); })
+			systemTab.addNumber("Shooter Hdg", () -> Helpers.General.roundDouble(getPose().rotateBy(new Rotation2d(Math.PI)).getRotation().getDegrees(),2))
 				.withSize(4,2)
 				.withPosition(4,2);
 			ShuffleboardLayout trackingList = systemTab.getLayout("Target Tracking", BuiltInLayouts.kList)
