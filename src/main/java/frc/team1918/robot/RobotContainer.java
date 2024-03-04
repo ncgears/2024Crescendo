@@ -218,24 +218,24 @@ public class RobotContainer {
       new InstantCommand(this::resetRobot).ignoringDisable(true)
       .alongWith(
         new RepeatCommand(  //Lighting Disco Party!
-          new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true)
+          lighting.setColorCommand(Colors.NCBLUE)
           .andThen(new WaitCommand(0.5))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+          .andThen(lighting.setColorCommand(Colors.NCGREEN))
           .andThen(new WaitCommand(0.5))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+          .andThen(lighting.setColorCommand(Colors.NCBLUE))
           .andThen(new WaitCommand(0.15))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true))
+          .andThen(lighting.setColorCommand(Colors.OFF))
           .andThen(new WaitCommand(0.15))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCBLUE)).ignoringDisable(true))
+          .andThen(lighting.setColorCommand(Colors.NCBLUE))
           .andThen(new WaitCommand(0.15))
-          .andThen(new InstantCommand(() -> lighting.setColor(Colors.NCGREEN)).ignoringDisable(true))
+          .andThen(lighting.setColorCommand(Colors.NCGREEN))
           .andThen(new WaitCommand(0.25))
         ).until(disabled().negate())
       )
     );
     enabled().onTrue(
       new InstantCommand(m_orchestra::stop).ignoringDisable(true)
-      .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)).ignoringDisable(true))
+      .andThen(lighting.setColorCommand(Colors.OFF))
     );
 
     /** DRIVER JOYSTICK (dj) */
@@ -272,12 +272,12 @@ public class RobotContainer {
     dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
     dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
     dj.leftBumper().and(arm.atIntake)
-      .onTrue(intake.runOnce(intake::intakeIn).andThen(() -> lighting.setColor(Colors.YELLOW)))
+      .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
       .onFalse(
         new WaitCommand(0.5)
         .andThen(intake.runOnce(intake::intakeStop))
         .andThen(new WaitCommand(0.5))
-        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+        .andThen(lighting.setColorCommand(Colors.OFF))
       );
     // Arm Amp
     dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
@@ -308,12 +308,12 @@ public class RobotContainer {
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
     oj.leftBumper().and(arm.atIntake)
-      .onTrue(intake.runOnce(intake::intakeIn).andThen(() -> lighting.setColor(Colors.YELLOW)))
+      .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
       .onFalse(
         new WaitCommand(0.5)
         .andThen(intake.runOnce(intake::intakeStop))
         .andThen(new WaitCommand(0.5))
-        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+        .andThen(lighting.setColorCommand(Colors.OFF))
       );
     oj.povDown()
       .onTrue(intake.runOnce(intake::intakeOut))
@@ -321,24 +321,24 @@ public class RobotContainer {
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.ORANGE)));
+      .onTrue(lighting.setColorCommand(Colors.ORANGE));
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.and(pose.isReady))
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.GREEN)));
+      .onTrue(lighting.setColorCommand(Colors.GREEN));
     aimer.isTracking.negate().and(pose.isTracking.negate())
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.OFF)));
+      .onTrue(lighting.setColorCommand(Colors.OFF));
 
     /** 
      * run the indexer if it's not full. This should also be combined with a location based trigger
      * This needs some work as it is also triggering when we move the climber/arm across the beam break
      */
     intake.isRunning.and(indexer.isFull)
-      .onTrue(new InstantCommand(() -> lighting.setColor(Colors.GREEN))
+      .onTrue(lighting.setColorCommand(Colors.GREEN)
         .andThen(new WaitCommand(0.25))
-        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+        .andThen(lighting.setColorCommand(Colors.OFF))
         .andThen(new WaitCommand(0.15))
-        .andThen(new InstantCommand(() -> lighting.setColor(Colors.GREEN)))
+        .andThen(lighting.setColorCommand(Colors.GREEN))
         .andThen(new WaitCommand(0.20))
-        .andThen(new InstantCommand(() -> lighting.setColor(Colors.OFF)))
+        .andThen(lighting.setColorCommand(Colors.OFF))
     );
     // indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
     //     .andThen(new WaitCommand(3))

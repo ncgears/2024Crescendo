@@ -6,6 +6,8 @@ import com.ctre.phoenix.led.CANdle;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 
@@ -106,6 +108,10 @@ public class Lighting {
       m_candle1.setLEDs(color.R(), color.G(), color.B());
       m_candle2.setLEDs(color.R(), color.G(), color.B());
     }
+  }
+
+  public Command setColorCommand(Colors color) {
+    return new InstantCommand(() -> setColor(color)).ignoringDisable(true);
   }
 
 }
