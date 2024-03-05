@@ -349,7 +349,7 @@ public class Constants {
         public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
         public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         //Current Limiting
-        public static final boolean kCurrentLimitEnable = false;
+        public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
         public static final double kCurrentLimitAmps = 30.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
