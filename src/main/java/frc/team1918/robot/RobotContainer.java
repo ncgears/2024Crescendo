@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
@@ -380,8 +382,8 @@ public class RobotContainer {
    * This method registers named commands to be used in PathPlanner autos
    */
   private void registerCommands() {
-    NamedCommands.registerCommand("shooterSpeed80", new InstantCommand(() -> shooter.setSpeed(80)));
-    NamedCommands.registerCommand("shooterSpeed90", new InstantCommand(() -> shooter.setSpeed(90)));
+    NamedCommands.registerCommand("shooterSpeed80", new InstantCommand(() -> shooter.setTarget(80)));
+    NamedCommands.registerCommand("shooterSpeed90", new InstantCommand(() -> shooter.setTarget(90)));
     NamedCommands.registerCommand("shooterStart", shooter.runOnce(shooter::startShooter));
     NamedCommands.registerCommand("shooterStop", shooter.runOnce(shooter::stopShooter));
     NamedCommands.registerCommand("intakeIn", intake.runOnce(intake::intakeIn));
@@ -392,6 +394,24 @@ public class RobotContainer {
     NamedCommands.registerCommand("poseTrackingStop", new InstantCommand(() -> pose.trackingStop()));
     NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
     NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
+    NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
+      aimer.runOnce(aimer::aimerStartTracking),
+      new InstantCommand(() -> shooter.setTarget(80)),
+      shooter.runOnce(shooter::startShooter),
+      new WaitCommand(0.5),
+      indexer.runOnce(indexer::indexerUp),
+      intake.runOnce(intake::intakeIn),
+      new WaitCommand(0.25),
+      intake.runOnce(intake::intakeStop),
+      new WaitCommand(1.0)
+    ));
+    NamedCommands.registerCommand("autonStop", new SequentialCommandGroup(
+      indexer.runOnce(indexer::indexerStop),
+      intake.runOnce(intake::intakeStop),
+      shooter.runOnce(shooter::stopShooter),
+      new WaitCommand(0.5),
+      aimer.runOnce(aimer::aimerStopAndStow)
+    ));
   }
 
   public void buildAutonChooser() {
@@ -416,6 +436,7 @@ public class RobotContainer {
     driverTab.add("Autonomous Chooser", m_auto_chooser)
       .withPosition(0, 5)
       .withSize(8, 2)
+      .withProperties(Map.of("sort_options",true))
       .withWidget("ComboBox Chooser");
     // FMS Info - Cannot be programmatically placed, but we put it here for informative reasons
     // driverTab.add("FMS Info", "")
