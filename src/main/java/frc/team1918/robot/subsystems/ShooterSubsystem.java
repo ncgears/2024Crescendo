@@ -226,7 +226,7 @@ public class ShooterSubsystem extends SubsystemBase {
     Helpers.Debug.debug("Shooter: Start");
   }
 
-  private void setTarget(double speed) {
+  public void setTarget(double speed) {
     target_speed = speed;
   }
 
