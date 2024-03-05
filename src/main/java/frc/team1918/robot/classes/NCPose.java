@@ -292,10 +292,10 @@ public class NCPose {
 		return Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
 	}
 
-    /**
-     * getBearingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
-     * @return the bearing (heading) of the target, relative to the shooter, in degrees
-     */
+	/**
+	 * getBearingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
+	 * @return the bearing (heading) of the target, relative to the shooter, in degrees
+	 */
 	public double getBearingOfTarget(Targets target) { 
 		// return 0.0;
 		// Transform3d shooterToTarget = getShooterToTarget(target);
