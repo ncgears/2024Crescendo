@@ -158,11 +158,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_alliance = DriverStation.getAlliance(); //Put Alliance.Red or Alliance.Blue in Robot.m_alliance
-    // m_resetGyro = m_robotContainer.getResetGyroCommand();
-    // if (m_resetGyro != null) m_resetGyro.schedule();
-
-    // m_initOdom = m_robotContainer.getInitOdomCommand(); 
-    // if (m_initOdom != null) m_initOdom.schedule();
+    var resetGyro = m_robotContainer.getRobotCommand("yawFromPose");
+    if (resetGyro != null) resetGyro.schedule();
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (m_autonomousCommand != null && !Constants.Auton.isDisabled) m_autonomousCommand.schedule();
@@ -187,9 +184,6 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_autonomousCommand != null) m_autonomousCommand.cancel();
-
-    // m_resetGyro = m_robotContainer.getResetGyroCommand();
-    // if (m_resetGyro != null) m_resetGyro.schedule();
   }
 
   /**
