@@ -47,6 +47,7 @@ public class Robot extends TimedRobot {
   }
 
   private RobotContainer m_robotContainer;
+  private boolean m_yawOffsetHasBeenSet = false;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -158,8 +159,10 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_alliance = DriverStation.getAlliance(); //Put Alliance.Red or Alliance.Blue in Robot.m_alliance
+
+    //Set the yaw offset based on the current robot pose
     var resetGyro = m_robotContainer.getRobotCommand("yawFromPose");
-    if (resetGyro != null) resetGyro.schedule();
+    if (!m_yawOffsetHasBeenSet && resetGyro != null) { resetGyro.schedule(); m_yawOffsetHasBeenSet=true; }
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     if (m_autonomousCommand != null && !Constants.Auton.isDisabled) m_autonomousCommand.schedule();
@@ -184,6 +187,11 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_autonomousCommand != null) m_autonomousCommand.cancel();
+
+    //Set the yaw offset based on the current robot pose
+    var resetGyro = m_robotContainer.getRobotCommand("yawFromPose");
+    if (!m_yawOffsetHasBeenSet && resetGyro != null) { resetGyro.schedule(); m_yawOffsetHasBeenSet=true; }
+
   }
 
   /**
