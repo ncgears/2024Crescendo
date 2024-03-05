@@ -271,7 +271,7 @@ public class RobotContainer {
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
     // AIMER TRACKING
-    pose.isTargetSpeaker.and(oj.leftTrigger().or(dj.leftTrigger()))
+    (pose.isTargetSpeaker.or(pose.isTargetAmpDump)).and(oj.leftTrigger().or(dj.leftTrigger()))
       .onTrue(
         aimer.runOnce(aimer::aimerStartTracking)
         .andThen(shooter.runOnce(shooter::startShooter))
@@ -297,9 +297,14 @@ public class RobotContainer {
     oj.povDown().or(dj.povDown())
       .onTrue(intake.runOnce(intake::intakeOut))
       .onFalse(intake.runOnce(intake::intakeStop));
+    // QUICK CLIMB
     oj.a().or(dj.a())
       .onTrue(climber.runOnce(climber::climberTopCapture))
       .onFalse(climber.runOnce(climber::climberTopClimb));
+    // AMP DUMP TRACKING
+    oj.b().or(dj.b())
+      .onTrue(new InstantCommand(pose::setTrackingAmpDump))
+      .onFalse(new InstantCommand(pose::setTrackingSpeaker));
     // ARM UP
     (oj.rightBumper().or(dj.rightBumper())).and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))

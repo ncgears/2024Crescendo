@@ -77,6 +77,7 @@ public class NCPose {
 	private static final double m_fieldLength = Constants.Vision.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
         SOURCE(0,0,0,120),  //TODO: determine positions
+		AMPDUMP(5.4,5.0,2.1,0),
         AMP(1.8415,8.2042,0.889,-90),
         SPEAKER(0.23,5.547868,2.0447,180),
         STAGE_NORTH(0,0,0,-60),
@@ -112,6 +113,7 @@ public class NCPose {
 	private Pose3d m_shooterPose = new Pose3d();
 	public final Trigger isTargetSpeaker = new Trigger(() -> { return (m_trackingTarget==Targets.SPEAKER); });
 	public final Trigger isTargetAmp = new Trigger(() -> { return (m_trackingTarget==Targets.AMP); });
+	public final Trigger isTargetAmpDump = new Trigger(() -> { return (m_trackingTarget==Targets.AMPDUMP); });
 	public final Trigger isTargetSource = new Trigger(() -> { return (m_trackingTarget==Targets.SOURCE); });
 	public final Trigger isTracking = new Trigger(() -> { return (m_trackingState==State.READY || m_trackingState==State.TRACKING); });
 	public final Trigger isReady = new Trigger(() -> { return (m_trackingState==State.READY); });
@@ -363,8 +365,11 @@ public class NCPose {
 	}
 	/** Sets the tracking target to AMP (2024 Crescendo) */
 	public void setTrackingAmp() { setTrackingTarget(Targets.AMP); }
+	/** Sets the tracking target to AMPDUMP (2024 Crescendo) */
+	public void setTrackingAmpDump() { setTrackingTarget(Targets.AMPDUMP); }
 	/** Sets the tracking target to SPEAKER (2024 Crescendo) */
 	public void setTrackingSpeaker() { setTrackingTarget(Targets.SPEAKER); }
+
 
 	public void setTrackingReady(boolean ready) {
 		m_trackingState = (ready) ? State.READY : State.TRACKING;
