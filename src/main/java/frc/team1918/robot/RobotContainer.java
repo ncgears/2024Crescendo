@@ -61,10 +61,8 @@ import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.utils.Alert.AlertType;
 //Commands imports
 // import frc.team1918.robot.commands.helpers.helpers_debugMessage;
-import frc.team1918.robot.commands.gyro.gyro_resetGyro;
 import frc.team1918.robot.modules.SwerveModule;
 import frc.team1918.robot.commands.drive.*;
-import frc.team1918.robot.commands.gyro.*;
 import frc.team1918.robot.classes.Gyro;
 import frc.team1918.robot.classes.Lighting;
 import frc.team1918.robot.classes.NCOrchestra;
@@ -261,8 +259,11 @@ public class RobotContainer {
     // Reset Gyro
     dj.hamburger()
       .onTrue(drive.runOnce(drive::resetDistances).ignoringDisable(true)
-        .andThen(gyro::zeroHeading).ignoringDisable(true)
+        .andThen(gyro::zeroYaw).ignoringDisable(true)
       );
+    dj.frame()
+      .onTrue(gyro.zeroYawFromPoseCommand());
+
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
 
@@ -356,6 +357,8 @@ public class RobotContainer {
   public Command getRobotCommand(String name) {
     //This selects a command (or command group) to return
     switch (name) {
+      case "yawFromPose":
+        return gyro.zeroYawFromPoseCommand();
       default:
         return null;
     }

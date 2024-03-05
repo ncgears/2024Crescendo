@@ -12,11 +12,15 @@ import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
+import frc.team1918.robot.RobotContainer;
 
 public class Gyro implements Sendable {
 	private static Gyro instance;
+	private static double m_yawOffset = 0.0;
 
 	private static AHRS m_gyro = new AHRS(SPI.Port.kMXP);
 
@@ -62,24 +66,37 @@ public class Gyro implements Sendable {
 		builder.addDoubleProperty("Value", () -> getYaw().getDegrees(), null);
 	}
 
-    public void zeroHeading() {
-		m_gyro.reset();
+    public void zeroYaw() {
+		// m_gyro.reset();
 		m_gyro.zeroYaw();
-		// setYawOffset(0);
+		m_yawOffset = 0.0;
 		Helpers.Debug.debug("Gyro: Reset Gyro");
 	}
+    public void zeroYaw(double offset) {
+		zeroYaw();
+		setYawOffset(offset);
+	}
 
-	private AHRS getGyro() {
-        return m_gyro;
+	public Command zeroYawFromPoseCommand() {
+		var angle = RobotContainer.pose.getPose().getRotation().getDegrees();
+		return new InstantCommand(() -> zeroYaw(angle)).ignoringDisable(true);
+	}
+
+
+	public void setYawOffset(double offset) {
+		m_yawOffset = offset;
+		Helpers.Debug.debug("Gyro: Yaw offset set to "+offset+" degrees");
 	}
 
    	/**
      * Returns the yaw/heading of the robot.
-     * @return the robot's yaw as a double in degrees, from -180 to 180
+     * @return the robot's yaw as a Rotation2d
      */
 	public Rotation2d getYaw() {
-		// return m_gyro.getYaw();
-		return Rotation2d.fromDegrees(m_gyro.getYaw() * (Constants.Gyro.kGyroReversed ? -1.0 : 1.0)); //invert to CCW Positive
+		double yaw = m_gyro.getYaw() - m_yawOffset; //subtract the offset
+		yaw += (yaw < 0) ? 360.0 : 0; //make it positive
+		yaw *= (Constants.Gyro.kGyroReversed) ? -1.0 : 1.0; //invert to CCW Positive
+		return Rotation2d.fromDegrees(yaw);
 	}
 
    	/**
