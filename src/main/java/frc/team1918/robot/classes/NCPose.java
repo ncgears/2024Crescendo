@@ -241,7 +241,7 @@ public class NCPose {
 
 	/**
 	 * getShooterToTarget returns a Transform3d representing the delta between the shooter and the target
-	 * @param target
+	 * @param target The target for which we want to calculate from
 	 * @return Transform3d of the delta
 	 */
 	public Transform3d getShooterToTarget(Targets target) {
@@ -260,6 +260,7 @@ public class NCPose {
 
 	/**
      * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
+	 * @param target The target for which we want to calculate from
      * @return the vertical angle of the target, relative to the shooter, as a Rotation2d from the horizontal plane
      */
 	public Rotation2d getAngleOfTarget(Targets target) {
@@ -273,6 +274,7 @@ public class NCPose {
 	/**
 	 * getGravityAdjustmentOfTarget calculates a distance based gravity adjustment to the angle of the target to compensate
 	 * for the drop over distance.
+	 * @param target The target for which we want to calculate from
 	 * @return the vertical adjustment for the angle, relative to the shooter, as a Rotation2d from the horizontal plane
 	 */
 	public Rotation2d getGravityAdjustmentOfTarget(Targets target) {
@@ -285,7 +287,7 @@ public class NCPose {
 
 	/**
 	 * getDistanceOfTarget calculates the distance between the shooter and the target in 3d space
-	 * @param target
+	 * @param target The target for which we want to calculate from
 	 * @return Distance between the shooter and the target in meters
 	 */
 	public double getDistanceOfTarget(Targets target) {
@@ -295,6 +297,7 @@ public class NCPose {
 
 	/**
 	 * getBearingOfTarget calculates the bearing of the target based on the position of the shooter in the field space
+	 * @param target The target for which we want to calculate from
 	 * @return the bearing (heading) of the target, relative to the shooter, in degrees
 	 */
 	public double getBearingOfTarget(Targets target) { 
