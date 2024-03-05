@@ -53,6 +53,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public enum Position {
     TOP(Constants.Climber.Positions.kTop),
     BOTTOM(Constants.Climber.Positions.kBottom),
+    TOPCAPTURE(Constants.Climber.Positions.kTopHookCapture),
     TOPCLIMB(Constants.Climber.Positions.kTopHookClimb),
     MIDCLEAR(Constants.Climber.Positions.kMidHookClear),
     LATCHCLIMB(Constants.Climber.Positions.kLatchClimb),
@@ -236,6 +237,7 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public void setPosition(Position position) {
     m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
+    Helpers.Debug.debug("Climber: Move to "+position.toString());
   }
 
   public boolean getForwardLimit() {
@@ -269,6 +271,10 @@ public class ClimberSubsystem extends SubsystemBase {
       }
     }
   }
+
+  public void climberTopCapture() { setPosition(Position.TOPCAPTURE); }
+  public void climberTopClimb() { setPosition(Position.TOPCLIMB); }
+  public void climberMidCapture() { setPosition(Position.MIDCLEAR); }
 
   public void climberUp() {
     m_curState = State.UP;

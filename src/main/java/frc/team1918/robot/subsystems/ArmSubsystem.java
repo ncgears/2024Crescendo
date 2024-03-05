@@ -37,7 +37,8 @@ public class ArmSubsystem extends SubsystemBase {
   public enum Position {
     INTAKE(Constants.Arm.Positions.kIntake),
     AMP(Constants.Arm.Positions.kAmp),
-    TRAP(Constants.Arm.Positions.kTrap);
+    TRAP(Constants.Arm.Positions.kTrap),
+    TRAPCLIMB(Constants.Arm.Positions.kTrapClimb);
     private final double position;
     Position(double position) { this.position = position; }
     public double getAngularPositionRotations() { return this.position; }
@@ -159,6 +160,10 @@ public class ArmSubsystem extends SubsystemBase {
   public void armAmp() {
     setPosition(Position.AMP);
     Helpers.Debug.debug("Arm: Amp Position");
+  }
+  public void armTrapClimb() {
+    setPosition(Position.TRAPCLIMB);
+    Helpers.Debug.debug("Arm: TrapClimb Position");
   }
   public void armTrap() {
     setPosition(Position.TRAP);

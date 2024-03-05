@@ -265,17 +265,6 @@ public class RobotContainer {
       );
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
-    // Test the lighting system
-    dj.x().onTrue(new InstantCommand(pose::setTrackingAmp).ignoringDisable(true));
-    dj.y().onTrue(new InstantCommand(pose::setTrackingSpeaker).ignoringDisable(true));
-    dj.leftBumper().and(arm.atIntake)
-      .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
-      .onFalse(
-        new WaitCommand(0.5)
-        .andThen(intake.runOnce(intake::intakeStop))
-        .andThen(new WaitCommand(0.5))
-        .andThen(lighting.setColorCommand(Colors.OFF))
-      );
     // Arm Amp
     dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
@@ -304,7 +293,7 @@ public class RobotContainer {
     oj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
-    oj.leftBumper().and(arm.atIntake)
+    arm.atIntake.and(oj.leftBumper().or(dj.leftBumper()))
       .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
       .onFalse(
         new WaitCommand(0.5)
@@ -315,6 +304,9 @@ public class RobotContainer {
     oj.povDown()
       .onTrue(intake.runOnce(intake::intakeOut))
       .onFalse(intake.runOnce(intake::intakeStop));
+    oj.a()
+      .onTrue(climber.runOnce(climber::climberTopCapture))
+      .onFalse(climber.runOnce(climber::climberTopClimb));
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))

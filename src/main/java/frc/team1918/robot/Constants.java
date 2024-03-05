@@ -270,7 +270,8 @@ public class Constants {
         public static final double kOpenLoopRamp = 0.0;
 		public static final double kClosedLoopRamp = 0.0;
         public class Positions {
-            public static final double kRevLimit = -0.08;
+            public static final double kTrapClimb = -0.1030273;
+            public static final double kRevLimit = -0.104;
             public static final double kFwdLimit = 0.147;
         }
     }
@@ -310,7 +311,8 @@ public class Constants {
         public class Positions {
             //TODO: Get position values
             public static final double kIntake = 0.0;
-            public static final double kAmp = 0.381;
+            public static final double kTrapClimb = 0.0932617; //position to prepare for trap climbing
+            public static final double kAmp = 0.381; //amp scoring position
             public static final double kTrap = 0.3; //TODO: find position
         }
     }
@@ -356,6 +358,7 @@ public class Constants {
             public static final double kTop = 3.12158203125; //max height
             public static final double kFwdLimit = 3.26; //absolute limit
             public static final double kBottom = 0.0; //all the way down
+            public static final double kTopHookCapture = 1.440918; //robot climber to capture top hook
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
             public static final double kMidHookClear = 0.0; //drive mid hook onto chain
             public static final double kLatchClimb = 0.0; //chain is on latches
