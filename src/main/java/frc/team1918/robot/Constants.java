@@ -327,7 +327,7 @@ public class Constants {
         public static final boolean isDisabled = false; //disable climber default command
         public static final int kCANcoderID = ID.CANcoder.climber;
         public static final boolean kUseCANcoder = true;
-        public static final double kMagnetOffset = -0.694091796875; //Adjust magnet to sensor offset for CANcoder
+        public static final double kMagnetOffset = -1.5773926; //-0.694091796875; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.climber;
         public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
