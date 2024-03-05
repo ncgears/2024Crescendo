@@ -277,6 +277,7 @@ public class NCPose {
 	 */
 	public Rotation2d getGravityAdjustmentOfTarget(Targets target) {
 		double distance = getDistanceOfTarget(target);
+		distance -= (distance > Constants.Aimer.kGravityDistanceOffset) ? Constants.Aimer.kGravityDistanceOffset : 0;
 		double adjustment = distance * Constants.Aimer.kGravityMultiplier;
 		return Rotation2d.fromRadians(adjustment);
 
