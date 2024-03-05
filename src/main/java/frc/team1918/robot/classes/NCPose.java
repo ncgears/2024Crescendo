@@ -262,7 +262,7 @@ public class NCPose {
 
 	/**
      * getAngleOfTarget calculates the vertical angle of the target based on the position of the shooter in the field space
-     * @return the vertical angle of the target, relative to the shooter, in degrees from the horizontal plane
+     * @return the vertical angle of the target, relative to the shooter, as a Rotation2d from the horizontal plane
      */
 	public Rotation2d getAngleOfTarget(Targets target) {
 		Transform3d shooterToTarget = getShooterToTarget(target);
@@ -270,6 +270,18 @@ public class NCPose {
 		// double angle = (Math.PI/2 - Math.atan2(Math.abs(shooterToTarget.getZ()),distance)); //complementary angle
 		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
 		return Rotation2d.fromRadians(angle);
+	}
+
+	/**
+	 * getGravityAdjustmentOfTarget calculates a distance based gravity adjustment to the angle of the target to compensate
+	 * for the drop over distance.
+	 * @return the vertical adjustment for the angle, relative to the shooter, as a Rotation2d from the horizontal plane
+	 */
+	public Rotation2d getGravityAdjustmentOfTarget(Targets target) {
+		double distance = getDistanceOfTarget(target);
+		double adjustment = distance * Constants.Aimer.kGravityMultiplier;
+		return Rotation2d.fromRadians(adjustment);
+
 	}
 
 	/**
@@ -344,7 +356,7 @@ public class NCPose {
 	/** Gets the relative angle from the shooter to the current tracking target */
 	public double getTrackingTargetAngle() { return Helpers.General.roundDouble(getAngleOfTarget(m_trackingTarget).getDegrees(),2); }
 	/** Gets the relative angle from the shooter to the current tracking target as rotations from 0.0 */
-	public double getTrackingTargetAngleAsRotations() { return getAngleOfTarget(m_trackingTarget).getRotations(); }
+	public double getTrackingTargetAngleAsRotations() { return getAngleOfTarget(m_trackingTarget).plus(getGravityAdjustmentOfTarget(m_trackingTarget)).getRotations(); }
 	/** Enables target tracking */
 	public void trackingStart() {
 		m_trackingState = State.TRACKING;
