@@ -302,8 +302,8 @@ public class RobotContainer {
       .onFalse(intake.runOnce(intake::intakeStop));
     // QUICK CLIMB
     oj.a().or(dj.a())
-      .onTrue(climber.runOnce(climber::climberTopCapture))
-      .onFalse(climber.runOnce(climber::climberTopClimb));
+      .onTrue(climber.runOnce(climber::ratchetFree).andThen(climber.runOnce(climber::climberTopCapture)))
+      .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
       .onTrue(new InstantCommand(pose::setTrackingAmpDump))
