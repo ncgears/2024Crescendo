@@ -171,6 +171,13 @@ public class AimerSubsystem extends SubsystemBase {
     return m_encoder.getPosition().getValue();
   }
 
+  public void aimerTrapClimb() {
+    m_suppressTracking = true;
+    m_curState = State.STOP;
+    setPosition(Constants.Aimer.Positions.kTrapClimb);
+    Helpers.Debug.debug("Aimer: Trap Climb");
+  }
+
   public void aimerStopAndStow() {
     m_suppressTracking = true;
     m_curState = State.STOP;

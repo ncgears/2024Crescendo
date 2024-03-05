@@ -265,22 +265,13 @@ public class RobotContainer {
       );
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
-    // Arm Amp
-    dj.leftTrigger().and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
-      .onTrue(arm.runOnce(arm::armAmp))
-      .onFalse(arm.runOnce(arm::armIntake));
-    // FIRE!
-    dj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
-      .onTrue(indexer.runOnce(indexer::indexerUp))
-      .onFalse(indexer.runOnce(indexer::indexerStop));
 
-    /** OPERATOR JOYSTICK (oj) */
-    // Pose Tracking
-    oj.leftTrigger().or(dj.rightBumper())
+    // POSE TRACKING
+    oj.leftTrigger().or(dj.leftTrigger())
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
-    // Aimer Tracking
-    pose.isTargetSpeaker.and(oj.leftTrigger().or(dj.rightBumper()))
+    // AIMER TRACKING
+    pose.isTargetSpeaker.and(oj.leftTrigger().or(dj.leftTrigger()))
       .onTrue(
         aimer.runOnce(aimer::aimerStartTracking)
         .andThen(shooter.runOnce(shooter::startShooter))
@@ -290,9 +281,10 @@ public class RobotContainer {
         .andThen(shooter.runOnce(shooter::stopShooter))
       );
     // FIRE!
-    oj.rightTrigger().and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
+    (oj.rightTrigger().or(dj.rightTrigger())).and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
       .onTrue(indexer.runOnce(indexer::indexerUp))
       .onFalse(indexer.runOnce(indexer::indexerStop));
+    // INTAKE
     arm.atIntake.and(oj.leftBumper().or(dj.leftBumper()))
       .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
       .onFalse(
@@ -301,12 +293,17 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.5))
         .andThen(lighting.setColorCommand(Colors.OFF))
       );
-    oj.povDown()
+    // INTAKE-REVERSE
+    oj.povDown().or(dj.povDown())
       .onTrue(intake.runOnce(intake::intakeOut))
       .onFalse(intake.runOnce(intake::intakeStop));
-    oj.a()
+    oj.a().or(dj.a())
       .onTrue(climber.runOnce(climber::climberTopCapture))
       .onFalse(climber.runOnce(climber::climberTopClimb));
+    // ARM UP
+    (oj.rightBumper().or(dj.rightBumper())).and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
+      .onTrue(arm.runOnce(arm::armAmp))
+      .onFalse(arm.runOnce(arm::armIntake));
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
