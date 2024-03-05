@@ -55,7 +55,7 @@ public final class CTREConfigs {
             .withKP(Constants.Swerve.kDriveKP)
             .withKI(Constants.Swerve.kDriveKI)
             .withKD(Constants.Swerve.kDriveKD);
-        // TODO: figure out kV (again)
+        // figure out kV (again)
         // driveSlot0Configs.kV = Constants.SwerveK.kDriveKF;
         swerveDriveFXConfig.Slot0 = driveSlot0Configs;
         swerveDriveFXConfig.MotorOutput.NeutralMode = Constants.Swerve.kDriveNeutralMode;
@@ -69,7 +69,6 @@ public final class CTREConfigs {
             .withSupplyTimeThreshold(Constants.Swerve.kDriveCurrentThresholdSecs)
             .withSupplyCurrentLimitEnable(Constants.Swerve.kDriveCurrentLimitEnabled);
         swerveDriveFXConfig.CurrentLimits = driveCurrentLimitsConfigs;
-        // TODO: check whether it is duty cycle or smtg else
         swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.kOpenLoopRamp;
         swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.kClosedLoopRamp;
 
@@ -146,14 +145,14 @@ public final class CTREConfigs {
             .withForwardSoftLimitEnable(false)
             .withForwardSoftLimitThreshold(0);
         aimerFXConfig.SoftwareLimitSwitch = aimerSoftwareLimitSwitchConfigs;
-        HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
-            .withReverseLimitEnable(false)
-            .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
-            .withReverseLimitAutosetPositionEnable(true)
-            .withReverseLimitAutosetPositionValue(0.0)
-            .withForwardLimitEnable(false)
-            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
-        aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
+        // HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+        //     .withReverseLimitEnable(false)
+        //     .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+        //     .withReverseLimitAutosetPositionEnable(true)
+        //     .withReverseLimitAutosetPositionValue(0.0)
+        //     .withForwardLimitEnable(false)
+        //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
+        // aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
         //Encoder
         if(Constants.Aimer.kUseCANcoder) {
             aimerFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Aimer.kCANcoderID;
@@ -204,14 +203,14 @@ public final class CTREConfigs {
             .withForwardSoftLimitEnable(false)
             .withForwardSoftLimitThreshold(0);
         armFXConfig.SoftwareLimitSwitch = armSoftwareLimitSwitchConfigs;
-        HardwareLimitSwitchConfigs armHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
-            .withReverseLimitEnable(false)
-            .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
-            .withReverseLimitAutosetPositionEnable(true)
-            .withReverseLimitAutosetPositionValue(0.0)
-            .withForwardLimitEnable(false)
-            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
-        armFXConfig.HardwareLimitSwitch = armHardwareLimitsConfigs;
+        // HardwareLimitSwitchConfigs armHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+        //     .withReverseLimitEnable(false)
+        //     .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+        //     .withReverseLimitAutosetPositionEnable(true)
+        //     .withReverseLimitAutosetPositionValue(0.0)
+        //     .withForwardLimitEnable(false)
+        //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
+        // armFXConfig.HardwareLimitSwitch = armHardwareLimitsConfigs;
         //Encoder
         if(Constants.Arm.kUseCANcoder) {
             armFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.kCANcoderID;
@@ -263,14 +262,14 @@ public final class CTREConfigs {
             .withForwardSoftLimitEnable(true)
             .withForwardSoftLimitThreshold(Constants.Climber.Positions.kFwdLimit);
         climberFXConfig.SoftwareLimitSwitch = climberSoftwareLimitSwitchConfigs;
-        HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
-            .withReverseLimitEnable(false)
-            .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
-            .withReverseLimitAutosetPositionEnable(true)
-            .withReverseLimitAutosetPositionValue(0.0)
-            .withForwardLimitEnable(false)
-            .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //TODO: Add autoset position on forward limit to appropriate number also.
-        climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
+        // HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
+        //     .withReverseLimitEnable(false)
+        //     .withReverseLimitType(ReverseLimitTypeValue.NormallyOpen)
+        //     .withReverseLimitAutosetPositionEnable(true)
+        //     .withReverseLimitAutosetPositionValue(0.0)
+        //     .withForwardLimitEnable(false)
+        //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
+        // climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
         //Encoder
         if(Constants.Aimer.kUseCANcoder) {
             climberFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Climber.kCANcoderID;

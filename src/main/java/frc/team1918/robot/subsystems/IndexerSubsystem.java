@@ -152,7 +152,7 @@ public class IndexerSubsystem extends SubsystemBase {
   }
 
   public boolean hasNote() {
-    // return m_hasnote; //TODO: switch to beambreak
+    // return m_hasnote;
     return getBeamBreak();
   }
 

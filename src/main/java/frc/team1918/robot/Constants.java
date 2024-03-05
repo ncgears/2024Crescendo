@@ -159,7 +159,6 @@ public class Constants {
         public static final class Front { //forward facing camera
             public static final String kCameraName = "llcam1";
             public static final Transform3d kRobotToCam = new Transform3d(
-                //TODO: Measure and set proper locations
                 new Translation3d(0.34,-0.195,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
             );
@@ -167,7 +166,6 @@ public class Constants {
         public static final class Back { //backwards facing camera
             public static final String kCameraName = "llcam2";
             public static final Transform3d kRobotToCam = new Transform3d(
-                //TODO: Measure and set proper locations
                 new Translation3d(-0.34,0.19,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),Math.toRadians(180)) //yaw,pitch/roll of camera on robot in radians
             );
@@ -310,7 +308,6 @@ public class Constants {
         public static final double kCurrentLimitThresholdSecs = 0.3;
         //Positions
         public class Positions {
-            //TODO: Get position values
             public static final double kIntake = 0.0;
             public static final double kTrapClimb = 0.0932617; //position to prepare for trap climbing
             public static final double kAmp = 0.381; //amp scoring position
@@ -354,13 +351,13 @@ public class Constants {
         public static final double kCurrentLimitThresholdAmps = 60.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
         public class Positions {
-            //TODO: Get position values
             public static final double kArmLimit = 1.5732421875; //max height of climber when arm swings over
             public static final double kTop = 3.12158203125; //max height
             public static final double kFwdLimit = 3.26; //absolute limit
             public static final double kBottom = 0.0; //all the way down
             public static final double kTopHookCapture = 1.440918; //robot climber to capture top hook
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
+            //TODO: Get trap climb position values
             public static final double kMidHookClear = 0.0; //drive mid hook onto chain
             public static final double kLatchClimb = 0.0; //chain is on latches
             public static final double kLatchClear = 0.0; //chain is below latches
@@ -400,7 +397,6 @@ public class Constants {
         public static final double kOpenLoopRamp = 0.0;
 		public static final double kClosedLoopRamp = 0.0;
         public static final Transform3d kRobotToShooter = new Transform3d(
-            //TODO: Measure and set proper locations
             new Translation3d(0.0,0.0,0.32), //x,y,z location of shooter on robot in meters
             new Rotation3d(Math.PI,0,0) //yaw,pitch,roll of shooter on robot in radians
         );
@@ -435,7 +431,7 @@ public class Constants {
         public static final NeutralModeValue kAngleNeutralMode = NeutralModeValue.Brake;
         public static final NeutralModeValue kDriveNeutralMode = NeutralModeValue.Brake;
         // Current limits
-        // Swerve Current limiting //TODO: Needs tuning, this was bobrowed from Team364 example
+        // Swerve Current limiting -- Needs tuning, this was bobrowed from Team364 example
         // See {@link https://github.com/Team364/BaseFalconSwerve/blob/main/src/main/java/frc/robot/CTREConfigs.java}
         public static final boolean kTurnEnableCurrentLimit = true;
         public static final int kTurnCurrentLimitAmps = 25;

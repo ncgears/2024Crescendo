@@ -41,8 +41,8 @@ public class ClimberSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   public enum LatchPosition {
-    OUT(1,0,Constants.Dashboard.Colors.GREEN), //TODO set positions
-    IN(0,1,Constants.Dashboard.Colors.RED); //TODO set positions
+    OUT(1,0,Constants.Dashboard.Colors.GREEN), 
+    IN(0,1,Constants.Dashboard.Colors.RED); 
     private final int left,right;
     private final String color;
     LatchPosition(int left, int right, String color) { this.left=left; this.right=right; this.color=color; }
