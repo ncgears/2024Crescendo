@@ -71,7 +71,7 @@ public class ClimberSubsystem extends SubsystemBase {
   private State m_curState = State.STOP;
   private Position m_targetPosition = Position.BOTTOM;
   private LatchPosition m_curLatchPosition = LatchPosition.OUT;
-  private boolean m_ratchetEngaged = false;
+  private boolean m_ratchetLocked = false;
   private Servo m_leftServo = new Servo(Constants.Climber.kLeftServoID);
   private Servo m_rightServo = new Servo(Constants.Climber.kRightServoID);
   private Servo m_ratchetServo = new Servo(Constants.Climber.kRatchetServoID);
@@ -144,7 +144,7 @@ public class ClimberSubsystem extends SubsystemBase {
     climberList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
     climberList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     climberList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
-    climberList.addBoolean("Ratchet Engaged", this::getRatchet);
+    climberList.addBoolean("Ratchet Locked", this::getRatchet);
 
     ShuffleboardLayout latchList = systemTab.getLayout("Latch", BuiltInLayouts.kList)
       .withSize(4,4)
@@ -202,16 +202,19 @@ public class ClimberSubsystem extends SubsystemBase {
   public String getLatchPostionName() { return m_curLatchPosition.toString(); }
   public String getLatchColor() { return m_curLatchPosition.getColor(); }
 
-  public void ratchetLock() { setRatchet(true);
+  public void ratchetLock() { 
+    if(!m_ratchetLocked) setRatchet(true);
   }
-  public void ratchetFree() { setRatchet(false); }
-  public void setRatchet(boolean engaged) {
-    m_ratchetEngaged = engaged;
-    String eng = (engaged) ? "engaged" : "disengaged";
+  public void ratchetFree() { 
+    if(m_ratchetLocked) setRatchet(false); 
+  }
+  public void setRatchet(boolean locked) {
+    m_ratchetLocked = locked;
+    String eng = (locked) ? "locked" : "unlocked";
     Helpers.Debug.debug("Climber: Ratchet "+eng);
-    m_ratchetServo.set(engaged ? 1.0 : 0.0 );
+    m_ratchetServo.set(locked ? 1.0 : 0.0 );
   }
-  private boolean getRatchet() { return m_ratchetEngaged; }
+  private boolean getRatchet() { return m_ratchetLocked; }
 
   private void setLatchPosition(LatchPosition pos) {
     m_curLatchPosition = pos;
@@ -258,14 +261,15 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void climberMove(double power) {
-    ratchetFree();
     if(power>0) {
+      ratchetFree();
       if(m_curState != State.UP) {
         Helpers.Debug.debug("Climber: Up ("+power+")");
         m_curState = State.UP;
       }
       m_motor1.setControl(m_DutyCycle.withOutput(power));
     } else if(power<0) {
+      ratchetFree();
       if(m_curState != State.DOWN) {
         Helpers.Debug.debug("Climber: Down ("+power+")");
         m_curState = State.DOWN;
