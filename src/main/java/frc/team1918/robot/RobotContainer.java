@@ -289,7 +289,7 @@ public class RobotContainer {
       );
     // FIRE!
     (oj.rightTrigger().or(dj.rightTrigger())).and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
-      .onTrue(intake.runOnce(intake::intakeIn).andThen(indexer.runOnce(indexer::indexerUp)))
+      .onTrue(intake.runOnce(intake::intakeFeed).andThen(indexer.runOnce(indexer::indexerUp)))
       .onFalse(intake.runOnce(intake::intakeStop).andThen(indexer.runOnce(indexer::indexerStop)));
     // INTAKE
     arm.atIntake.and(oj.leftBumper().or(dj.leftBumper()))
