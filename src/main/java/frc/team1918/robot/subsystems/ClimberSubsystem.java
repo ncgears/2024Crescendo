@@ -206,7 +206,7 @@ public class ClimberSubsystem extends SubsystemBase {
   public void ratchetFree() { setRatchet(false); }
   public void setRatchet(boolean engaged) {
     m_ratchetEngaged = engaged;
-    m_ratchetServo.set(engaged ? 1.0 : 0.0);
+    m_ratchetServo.set(engaged ? 1.0 : 0.0 );
   }
   private boolean getRatchet() { return m_ratchetEngaged; }
 

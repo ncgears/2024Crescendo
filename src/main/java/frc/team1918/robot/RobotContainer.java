@@ -268,6 +268,10 @@ public class RobotContainer {
 
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
+    oj.google()
+      .onTrue(climber.runOnce(climber::ratchetLock))
+      .onFalse(climber.runOnce(climber::ratchetFree));
+
 
     // POSE TRACKING
     oj.leftTrigger().or(dj.leftTrigger())
