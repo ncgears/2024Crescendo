@@ -1,6 +1,14 @@
-### PRIORITIES LIST ###
-- safety for intake when arm down
+### TODO ###
+- CBA test 2024 batteries
+- Label PDH port for SPM
+- Mount Roborio 2.0 (button guard, pin covers, glue canbus, right angle cables)
+- Test climber servo on SPM
+- Spare SD Card for Rio2
+- Connectorize, Upgrade, and License spare Falcons and Krakens
+- Connectorize, Upgrade spare TalonSRX
+- Repack electronics/programming tools/spares
 
+### PRIORITIES LIST ###
 1. DONE dashboard-integrated shooter speed tuner functional (slider for speed tuning, button to stop/set0, button to start/set100)
 2. DONE basic swerve drivetrain functioning on 2024 roborio
 3. DONE Intake functional code (dashboard start/stop toggle)
