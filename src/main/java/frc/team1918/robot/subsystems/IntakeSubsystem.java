@@ -26,6 +26,7 @@ public class IntakeSubsystem extends SubsystemBase {
   //private and public variables defined here
   public enum Direction {
     IN(Constants.Dashboard.Colors.GREEN),
+    FEED(Constants.Dashboard.Colors.ORANGE),
     OUT(Constants.Dashboard.Colors.RED),
     STOP(Constants.Dashboard.Colors.BLACK);
     private final String color;
@@ -130,6 +131,12 @@ public class IntakeSubsystem extends SubsystemBase {
     m_curDirection = Direction.IN;
     Helpers.Debug.debug("Intake: In");
     setSpeedPercent(Constants.Intake.kSpeed);
+  }
+
+  public void intakeFeed() {
+    m_curDirection = Direction.FEED;
+    Helpers.Debug.debug("Intake: Feed");
+    setSpeedPercent(Constants.Intake.kSpeed/2);
   }
 
   public void intakeOut() {

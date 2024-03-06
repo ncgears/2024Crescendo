@@ -105,6 +105,7 @@ public class ClimberSubsystem extends SubsystemBase {
    */
   public void init() {
     m_targetPosition = Position.BOTTOM;
+    ratchetFree();
     climberStop();
     setLatchOut();
     Helpers.Debug.debug("Climber: Initialized");
@@ -143,7 +144,7 @@ public class ClimberSubsystem extends SubsystemBase {
     climberList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
     climberList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     climberList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
-    climberList.addBoolean("Rev Lim", this::getReverseLimit);
+    climberList.addBoolean("Ratchet Engaged", this::getRatchet);
 
     ShuffleboardLayout latchList = systemTab.getLayout("Latch", BuiltInLayouts.kList)
       .withSize(4,4)
@@ -201,10 +202,11 @@ public class ClimberSubsystem extends SubsystemBase {
   public String getLatchPostionName() { return m_curLatchPosition.toString(); }
   public String getLatchColor() { return m_curLatchPosition.getColor(); }
 
-
+  public void ratchetLock() { setRatchet(true); }
+  public void ratchetFree() { setRatchet(false); }
   public void setRatchet(boolean engaged) {
     m_ratchetEngaged = engaged;
-    m_ratchetServo.set(engaged ? 1.0 : 0.0);
+    m_ratchetServo.set(engaged ? 1.0 : 0.0 );
   }
   private boolean getRatchet() { return m_ratchetEngaged; }
 
@@ -236,6 +238,8 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void setPosition(Position position) {
+    // if(getPosition() <= position.getAngularPositionRotations()) ratchetFree();
+    // if(getPosition() > position.getAngularPositionRotations()) ratchetLock();
     m_motor1.setControl(m_mmVoltage.withPosition(position.getAngularPositionRotations()));
     Helpers.Debug.debug("Climber: Move to "+position.toString());
   }
@@ -251,6 +255,7 @@ public class ClimberSubsystem extends SubsystemBase {
   }
 
   public void climberMove(double power) {
+    ratchetFree();
     if(power>0) {
       if(m_curState != State.UP) {
         Helpers.Debug.debug("Climber: Up ("+power+")");
@@ -267,6 +272,7 @@ public class ClimberSubsystem extends SubsystemBase {
       if(m_curState != State.HOLD && m_curState != State.STOP) {
         m_motor1.setControl(m_brake);
         m_curState = State.HOLD;
+        ratchetLock();
         Helpers.Debug.debug("Climber: Hold");
       }
     }

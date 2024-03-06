@@ -268,6 +268,10 @@ public class RobotContainer {
 
     // Defensive Lock (brake + rotate wheels 45 degrees in an X pattern)
     // dj.rightTrigger().whileTrue(new drive_defLock(drive));
+    oj.google()
+      .onTrue(climber.runOnce(climber::ratchetLock))
+      .onFalse(climber.runOnce(climber::ratchetFree));
+
 
     // POSE TRACKING
     oj.leftTrigger().or(dj.leftTrigger())
@@ -285,8 +289,8 @@ public class RobotContainer {
       );
     // FIRE!
     (oj.rightTrigger().or(dj.rightTrigger())).and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
-      .onTrue(indexer.runOnce(indexer::indexerUp))
-      .onFalse(indexer.runOnce(indexer::indexerStop));
+      .onTrue(intake.runOnce(intake::intakeFeed).andThen(indexer.runOnce(indexer::indexerUp)))
+      .onFalse(intake.runOnce(intake::intakeStop).andThen(indexer.runOnce(indexer::indexerStop)));
     // INTAKE
     arm.atIntake.and(oj.leftBumper().or(dj.leftBumper()))
       .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
@@ -302,8 +306,8 @@ public class RobotContainer {
       .onFalse(intake.runOnce(intake::intakeStop));
     // QUICK CLIMB
     oj.a().or(dj.a())
-      .onTrue(climber.runOnce(climber::climberTopCapture))
-      .onFalse(climber.runOnce(climber::climberTopClimb));
+      .onTrue(climber.runOnce(climber::ratchetFree).andThen(climber.runOnce(climber::climberTopCapture)))
+      .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
       .onTrue(new InstantCommand(pose::setTrackingAmpDump))
