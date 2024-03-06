@@ -1,0 +1,85 @@
+###This is for reference later.. Also could turn into bitfield rather than byte fields
+
+package frc.team1918.robot.non-code;
+
+public class bytebuffer_save {
+    public record VisionEstimateFault(
+            boolean outOfBounds,
+            boolean outOfRange,
+            boolean tooAmbiguous,
+            boolean extremeJitter,
+            boolean noTags,
+            boolean infeasibleZValue,
+            boolean infeasiblePitchValue,
+            boolean infeasibleRollValue,
+            boolean isDisabled) implements StructSerializable {
+
+        public static VisionEstimateFault empty() {
+            return new VisionEstimateFault(false, false, false, false, false, false, false, false, false);
+        }
+
+        public boolean isFaulty() {
+            return outOfBounds || outOfRange || tooAmbiguous || extremeJitter || noTags || isDisabled;
+            // || infeasibleZValue || infeasiblePitchValue || infeasibleRollValue ;
+        }
+
+        public static class VisionEstimateFaultStruct implements Struct<VisionEstimateFault> {
+            @Override
+            public Class<VisionEstimateFault> getTypeClass() {
+                return VisionEstimateFault.class;
+            }
+
+            @Override
+            public int getSize() {
+                return 9;
+            }
+
+            @Override
+            public String getSchema() {
+                return "boolean outOfBounds; "
+                + "boolean outOfRange; "
+                + "boolean tooAmbiguous; "
+                + "boolean extremeJitter; "
+                + "boolean noTags; "
+                + "boolean infeasibleZValue; "
+                + "boolean infeasiblePitchValue; "
+                + "boolean infeasibleRollValue; "
+                + "boolean isDisabled; ";
+            }
+
+            @Override
+            public String getTypeString() {
+                return "struct:VisionEstimateFault";
+            }
+
+            @Override
+            public void pack(ByteBuffer bb, VisionEstimateFault value) {
+                bb.put(value.outOfBounds ? (byte) 1 : (byte) 0);
+                bb.put(value.outOfRange ? (byte) 1 : (byte) 0);
+                bb.put(value.tooAmbiguous ? (byte) 1 : (byte) 0);
+                bb.put(value.extremeJitter ? (byte) 1 : (byte) 0);
+                bb.put(value.noTags ? (byte) 1 : (byte) 0);
+                bb.put(value.infeasibleZValue ? (byte) 1 : (byte) 0);
+                bb.put(value.infeasiblePitchValue ? (byte) 1 : (byte) 0);
+                bb.put(value.infeasibleRollValue ? (byte) 1 : (byte) 0);
+                bb.put(value.isDisabled ? (byte) 1 : (byte) 0);
+            }
+
+            @Override
+            public VisionEstimateFault unpack(ByteBuffer bb) {
+                return new VisionEstimateFault(
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1,
+                        bb.get() == 1);
+            }
+        }
+
+        public static final VisionEstimateFaultStruct struct = new VisionEstimateFaultStruct();
+    }
+}
