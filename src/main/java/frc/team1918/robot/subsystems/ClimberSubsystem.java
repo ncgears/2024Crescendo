@@ -202,10 +202,13 @@ public class ClimberSubsystem extends SubsystemBase {
   public String getLatchPostionName() { return m_curLatchPosition.toString(); }
   public String getLatchColor() { return m_curLatchPosition.getColor(); }
 
-  public void ratchetLock() { setRatchet(true); }
+  public void ratchetLock() { setRatchet(true);
+  }
   public void ratchetFree() { setRatchet(false); }
   public void setRatchet(boolean engaged) {
     m_ratchetEngaged = engaged;
+    String eng = (engaged) ? "engaged" : "disengaged";
+    Helpers.Debug.debug("Climber: Ratchet "+eng);
     m_ratchetServo.set(engaged ? 1.0 : 0.0 );
   }
   private boolean getRatchet() { return m_ratchetEngaged; }
