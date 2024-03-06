@@ -144,7 +144,7 @@ public class ClimberSubsystem extends SubsystemBase {
     climberList.addNumber("Position", () -> Helpers.General.roundDouble(getPosition(),7));
     climberList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     climberList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
-    climberList.addBoolean("Rev Lim", this::getReverseLimit);
+    climberList.addBoolean("Ratchet Engaged", this::getRatchet);
 
     ShuffleboardLayout latchList = systemTab.getLayout("Latch", BuiltInLayouts.kList)
       .withSize(4,4)
