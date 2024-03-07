@@ -328,7 +328,7 @@ public class Constants {
         public static final double kMagnetOffset = -1.5773926; //-0.694091796875; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.climber;
         public static final boolean kIsInverted = true;
-        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
+        public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
         public static final double kStowPosition = 0;
         public static final int kLeftServoID = ID.PWM.climber_leftServo;
         public static final int kRightServoID = ID.PWM.climber_rightServo;

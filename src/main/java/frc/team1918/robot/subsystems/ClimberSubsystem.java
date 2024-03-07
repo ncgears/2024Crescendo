@@ -279,7 +279,6 @@ public class ClimberSubsystem extends SubsystemBase {
       if(m_curState != State.HOLD && m_curState != State.STOP) {
         m_motor1.setControl(m_brake);
         m_curState = State.HOLD;
-        ratchetLock();
         Helpers.Debug.debug("Climber: Hold");
       }
     }
