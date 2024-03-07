@@ -168,15 +168,15 @@ public class NCPose {
 		return poseEstimator.getEstimatedPosition();
 	}
 
-	/**
-     * Reset the estimated pose of the swerve drive on the field.
-     *
-	 * @param heading Heading to reset robot to (for configuring a yaw offset)
-     * @param pose New robot pose.
-     */
-	public void resetPose(double heading, Pose2d pose) {
-		poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drive.getSwerveModulePositions(), pose);
-	}
+	// /**
+    //  * Reset the estimated pose of the swerve drive on the field.
+    //  *
+	//  * @param heading Heading to reset robot to (for configuring a yaw offset)
+    //  * @param pose New robot pose.
+    //  */
+	// public void resetPose(double heading, Pose2d pose) {
+	// 	poseEstimator.resetPosition(RobotContainer.gyro.getYaw(), RobotContainer.drive.getSwerveModulePositions(), pose);
+	// }
 	/**
      * Reset the estimated pose of the swerve drive on the field.
      *

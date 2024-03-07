@@ -256,7 +256,7 @@ public class RobotContainer {
       Random rand = new Random(1918);
       var trf = new Transform2d(new Translation2d(rand.nextDouble() * 10 - 2, rand.nextDouble() * 8 - 2),
         new Rotation2d(rand.nextDouble() * 2 * Math.PI));
-      pose.resetPose(gyro.getYaw().getDegrees(), pose.getPose().plus(trf));
+      pose.resetPose(pose.getPose().plus(trf));
     }).ignoringDisable(true));
     // Reset Gyro
     dj.hamburger()
