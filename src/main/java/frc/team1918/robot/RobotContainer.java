@@ -402,12 +402,12 @@ public class RobotContainer {
       aimer.runOnce(aimer::aimerStartTracking),
       new InstantCommand(() -> shooter.setTarget(80)),
       shooter.runOnce(shooter::startShooter),
-      new WaitCommand(0.5),
+      new WaitCommand(0.75),
       indexer.runOnce(indexer::indexerUp),
-      intake.runOnce(intake::intakeIn),
+      intake.runOnce(intake::intakeFeed),
       new WaitCommand(0.25),
       intake.runOnce(intake::intakeStop),
-      new WaitCommand(1.0)
+      new WaitCommand(0.75)
     ));
     NamedCommands.registerCommand("autonStop", new SequentialCommandGroup(
       indexer.runOnce(indexer::indexerStop),
