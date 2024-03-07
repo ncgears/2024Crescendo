@@ -243,7 +243,7 @@ public class Constants {
         public static final double kStowPosition = 0.0;
         public static final double kGearRatio = 5.0; // 16t:80t
         public static final double kPositionThreshold = 0.02; //close enough to target position
-        public static final double kGravityDistanceOffset = 1.5; //remove from distance before calculating gravity adjustment
+        public static final double kGravityDistanceOffset = 2.5; //remove from distance before calculating gravity adjustment
         public static final double kGravityMultiplier = 0.025; //multiplied by distance to get adjustment to aim
         //PID Control
         public static final double kS = 0.10; // add kS to overcome static friction: adjust first to start moving
