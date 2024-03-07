@@ -266,7 +266,7 @@ public class NCPose {
 	public Rotation2d getAngleOfTarget(Targets target) {
 		Transform3d shooterToTarget = getShooterToTarget(target);
 		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
-		// double angle = (Math.PI/2 - Math.atan2(Math.abs(shooterToTarget.getZ()),distance)); //complementary angle
+		distance += (distance > Constants.Aimer.kDistanceMinimumForOffset) ? Constants.Aimer.kDistanceOffset : 0;
 		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
 		return Rotation2d.fromRadians(angle);
 	}
@@ -279,7 +279,10 @@ public class NCPose {
 	 */
 	public Rotation2d getGravityAdjustmentOfTarget(Targets target) {
 		double distance = getDistanceOfTarget(target);
-		distance -= (distance > Constants.Aimer.kGravityDistanceOffset) ? Constants.Aimer.kGravityDistanceOffset : 0;
+		// distance -= (distance > Constants.Aimer.kGravityDistanceOffset) ? Constants.Aimer.kGravityDistanceOffset : 0;
+		if(distance > Constants.Aimer.kGravityDistanceOffset) {
+			distance -= Constants.Aimer.kGravityDistanceOffset;
+		}
 		double adjustment = distance * Constants.Aimer.kGravityMultiplier;
 		return Rotation2d.fromRadians(adjustment);
 
@@ -358,7 +361,7 @@ public class NCPose {
 	/** Gets the relative angle from the shooter to the current tracking target */
 	public double getTrackingTargetAngle() { return Helpers.General.roundDouble(getAngleOfTarget(m_trackingTarget).getDegrees(),2); }
 	/** Gets the relative angle from the shooter to the current tracking target as rotations from 0.0 */
-	public double getTrackingTargetAngleAsRotations() { return getAngleOfTarget(m_trackingTarget).plus(getGravityAdjustmentOfTarget(m_trackingTarget)).getRotations(); }
+	public double getTrackingTargetAngleAsRotations() { return getAngleOfTarget(m_trackingTarget).getRotations(); } //.plus(getGravityAdjustmentOfTarget(m_trackingTarget))
 	/** Enables target tracking */
 	public void trackingStart() {
 		m_trackingState = State.TRACKING;
