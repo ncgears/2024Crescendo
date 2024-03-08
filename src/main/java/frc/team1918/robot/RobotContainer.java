@@ -307,7 +307,7 @@ public class RobotContainer {
     // QUICK CLIMB
     oj.a().or(dj.a())
       .onTrue(climber.runOnce(climber::ratchetFree).andThen(climber.runOnce(climber::climberTopCapture)))
-      .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
+      .onFalse(climber.runOnce(climber::ratchetLock).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::climberTopClimb)));
     // // TRAP CLIMB
     // oj.povLeft().or(dj.povLeft())
     //   .onTrue(
