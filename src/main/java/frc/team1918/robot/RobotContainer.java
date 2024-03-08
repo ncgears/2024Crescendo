@@ -301,13 +301,33 @@ public class RobotContainer {
         .andThen(lighting.setColorCommand(Colors.OFF))
       );
     // INTAKE-REVERSE
-    oj.povDown().or(dj.povDown())
+    oj.x().or(dj.x())
       .onTrue(intake.runOnce(intake::intakeOut))
       .onFalse(intake.runOnce(intake::intakeStop));
     // QUICK CLIMB
     oj.a().or(dj.a())
       .onTrue(climber.runOnce(climber::ratchetFree).andThen(climber.runOnce(climber::climberTopCapture)))
       .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
+    // // TRAP CLIMB
+    // oj.povLeft().or(dj.povLeft())
+    //   .onTrue(
+    //     climber.runOnce(climber::ratchetFree)
+    //       .andThen(arm.runOnce(arm::armTrapClimb))
+    //       .andThen(aimer.runOnce(aimer::aimerTrapClimb))
+    //       .andThen(climber.runOnce(climber::climberMidCapture))
+    //   )
+    //   .onFalse(
+    //     climber.runOnce(climber::climberLatchClear)
+    //   );
+    // oj.povUp().or(dj.povUp())
+    //   .onTrue(
+    //     arm.runOnce(arm::armTrap)
+    //     .andThen(climber.runOnce(climber::climberTrapClimb))
+    //   )
+    //   .onFalse(
+    //     arm.runOnce(arm::armTrapClimb)
+    //     .andThen(climber.runOnce(climber::climberLatchClear))
+    //   );
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
       .onTrue(new InstantCommand(pose::setTrackingAmpDump))

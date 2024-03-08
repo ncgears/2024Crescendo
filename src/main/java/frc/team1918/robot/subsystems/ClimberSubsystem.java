@@ -56,6 +56,7 @@ public class ClimberSubsystem extends SubsystemBase {
     TOPCAPTURE(Constants.Climber.Positions.kTopHookCapture),
     TOPCLIMB(Constants.Climber.Positions.kTopHookClimb),
     MIDCLEAR(Constants.Climber.Positions.kMidHookClear),
+    TRAPCLIMB(Constants.Climber.Positions.kArmLimit),
     LATCHCLIMB(Constants.Climber.Positions.kLatchClimb),
     LATCHCLEAR(Constants.Climber.Positions.kLatchClear);
     private final double position;
@@ -287,6 +288,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public void climberTopCapture() { setPosition(Position.TOPCAPTURE); }
   public void climberTopClimb() { setPosition(Position.TOPCLIMB); }
   public void climberMidCapture() { setPosition(Position.MIDCLEAR); }
+  public void climberLatchClear() { setPosition(Position.LATCHCLEAR); }
+  public void climberTrapClimb() { setPosition(Position.TRAPCLIMB); }
 
   public void climberUp() {
     m_curState = State.UP;

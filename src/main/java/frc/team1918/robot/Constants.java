@@ -338,11 +338,11 @@ public class Constants {
         public static final double kGearRatio = 26.67; // 12:1 gearbox, 18t:40t -- this is between rotor and sensor
         public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
         //PID Control
-        public static final double kS = 0.15; // add kS to overcome static friction: adjust first to start moving
+        public static final double kS = 0.22; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
         public static final double kA = 0.0; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-        public static final double kP = 24.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
-        public static final double kI = 0.0; // no integral
+        public static final double kP = 32.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+        public static final double kI = 0.01; // no integral
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
         public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
         public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
@@ -351,7 +351,7 @@ public class Constants {
         public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
         public static final double kCurrentLimitAmps = 30.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
-        public static final double kCurrentLimitThresholdSecs = 0.3;
+        public static final double kCurrentLimitThresholdSecs = 0.345;
         public class Positions {
             public static final double kArmLimit = 1.5732421875; //max height of climber when arm swings over
             public static final double kTop = 3.12158203125; //max height
@@ -360,7 +360,7 @@ public class Constants {
             public static final double kTopHookCapture = 1.440918; //robot climber to capture top hook
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
             //TODO: Get trap climb position values
-            public static final double kMidHookClear = 0.0; //drive mid hook onto chain
+            public static final double kMidHookClear = kTop; //drive mid hook onto chain
             public static final double kLatchClimb = 0.0; //chain is on latches
             public static final double kLatchClear = 0.0; //chain is below latches
         }
