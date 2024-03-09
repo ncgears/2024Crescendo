@@ -20,13 +20,31 @@
         {
           "type": "named",
           "data": {
+            "name": "indexerStop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveA3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "poseTrackingStart"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "S3-A3"
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
           }
         },
         {
