@@ -331,6 +331,9 @@ public class RobotContainer {
     //     arm.runOnce(arm::armTrapClimb)
     //     .andThen(climber.runOnce(climber::climberLatchClear))
     //   );
+
+    oj.povDown().onTrue(climber.runOnce(climber::ratchetLock));
+    oj.povUp().onTrue(climber.runOnce(climber::ratchetFree));
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
       .onTrue(new InstantCommand(pose::setTrackingAmpDump))

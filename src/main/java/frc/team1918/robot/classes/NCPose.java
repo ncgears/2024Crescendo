@@ -266,7 +266,8 @@ public class NCPose {
 	public Rotation2d getAngleOfTarget(Targets target) {
 		Transform3d shooterToTarget = getShooterToTarget(target);
 		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
-		distance += (distance > Constants.Aimer.kDistanceMinimumForOffset) ? Constants.Aimer.kDistanceOffset : 0;
+		// distance += (distance > Constants.Aimer.kDistanceMinimumForOffset) ? Constants.Aimer.kDistanceOffset : 0;
+		distance += 0.5;
 		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
 		return Rotation2d.fromRadians(angle);
 	}
