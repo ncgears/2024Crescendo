@@ -421,13 +421,37 @@ public class RobotContainer {
     NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
     NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
     NamedCommands.registerCommand("driveA2", new ParallelDeadlineGroup(
-        new WaitCommand(3.0), //how long to drive
+        new WaitCommand(2.0), //how long to drive
         new RepeatCommand(
           new drive_defaultDrive(
             drive,
-            () -> { return 0.25; },
+            () -> { return 0.15; },
             () -> { return 0.0; },
             () -> { return 0.0; }
+          )
+        )
+      )
+    );
+    NamedCommands.registerCommand("driveA1", new ParallelDeadlineGroup(
+        new WaitCommand(2.0), //how long to drive
+        new RepeatCommand(
+          new drive_defaultDrive(
+            drive,
+            () -> { return 0.15; },
+            () -> { return 0.0; },
+            () -> { return RobotContainer.isAllianceRed() ? -0.25 : 0.25; }
+          )
+        )
+      )
+    );
+    NamedCommands.registerCommand("driveA3", new ParallelDeadlineGroup(
+        new WaitCommand(2.0), //how long to drive
+        new RepeatCommand(
+          new drive_defaultDrive(
+            drive,
+            () -> { return 0.15; },
+            () -> { return 0.0; },
+            () -> { return RobotContainer.isAllianceRed() ? 0.25 : -0.25; }
           )
         )
       )
