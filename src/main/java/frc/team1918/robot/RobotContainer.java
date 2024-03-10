@@ -283,11 +283,16 @@ public class RobotContainer {
     // POSE TRACKING
     oj.y()
       .onTrue(
-        new InstantCommand(() -> pose.trackingStart())
-        .andThen(aimer.runOnce(aimer::aimerAimShort))
+        // new InstantCommand(() -> pose.trackingStart())
+        // .andThen(aimer.runOnce(aimer::aimerAimShort))
+        aimer.runOnce(aimer::aimerAimShort)
         .andThen(shooter.runOnce(shooter::startShooter))
       )
-      .onFalse(new InstantCommand(() -> pose.trackingStop()));
+      .onFalse(
+        new InstantCommand(() -> pose.trackingStop())
+        .andThen(aimer.runOnce(aimer::aimerStopAndStow))
+        .andThen(shooter.runOnce(shooter::stopShooter))
+      );
     // AIMER TRACKING
     (pose.isTargetSpeaker.or(pose.isTargetAmpDump)).and(oj.leftTrigger().or(dj.leftTrigger()))
       .onTrue(
@@ -317,7 +322,7 @@ public class RobotContainer {
       .onFalse(intake.runOnce(intake::intakeStop));
     // QUICK CLIMB
     oj.a().or(dj.a())
-      .onTrue(climber.runOnce(climber::ratchetFree).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::climberTopCapture)))
+      .onTrue(climber.runOnce(climber::ratchetFree).andThen(new WaitCommand(0.75)).andThen(climber.runOnce(climber::climberTopCapture)))
       .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
     // // TRAP CLIMB
     // oj.povLeft().or(dj.povLeft())
@@ -439,7 +444,7 @@ public class RobotContainer {
         new RepeatCommand(
           new drive_defaultDrive(
             drive,
-            () -> { return 0.15; },
+            () -> { return RobotContainer.isAllianceRed() ? -0.15 : 0.15; },
             () -> { return 0.0; },
             () -> { return 0.0; }
           )
@@ -473,9 +478,9 @@ public class RobotContainer {
       )
     );
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
-      new InstantCommand(() -> shooter.setTarget(80)),
+      new InstantCommand(() -> shooter.setTarget(90)),
       shooter.runOnce(shooter::startShooter),
-      new WaitCommand(0.75),
+      new WaitCommand(2.75),
       indexer.runOnce(indexer::indexerUp),
       intake.runOnce(intake::intakeFeed),
       new WaitCommand(0.25),
