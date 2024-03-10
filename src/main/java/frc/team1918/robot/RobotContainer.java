@@ -424,10 +424,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("poseTrackingStop", new InstantCommand(() -> pose.trackingStop()));
     NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
     NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
-    NamedCommands.registerCommand("aimerAimShort", new InstantCommand(() -> aimer.setPositionRotations(0.0))); //TODO: Get position from S1-S2-S3
-    NamedCommands.registerCommand("aimerAimLong", new InstantCommand(() -> aimer.setPositionRotations(0.0))); //TODO: Get position from A1-A2-A3
+    NamedCommands.registerCommand("aimerAimShort", new InstantCommand(() -> aimer.setPositionRotations(0.1620)));
+    NamedCommands.registerCommand("aimerAimLong", new InstantCommand(() -> aimer.setPositionRotations(0.1010))); //TODO: Get position from A1-A2-A3
     NamedCommands.registerCommand("driveA2", new ParallelDeadlineGroup(
-        new WaitCommand(2.0), //how long to drive
+        new WaitCommand(1.60), //how long to drive
         new RepeatCommand(
           new drive_defaultDrive(
             drive,
@@ -439,27 +439,27 @@ public class RobotContainer {
       )
     );
     NamedCommands.registerCommand("driveA1", new ParallelDeadlineGroup(
-        new WaitCommand(2.0), //how long to drive
+        new WaitCommand(1.6), //how long to drive
         new RepeatCommand(
           new drive_defaultDrive(
             drive,
-            () -> { return 0.15; },
-            () -> { return 0.0; },
-            () -> { return 0.0; }
-            // () -> { return RobotContainer.isAllianceRed() ? -0.25 : 0.25; }
+            () -> { return RobotContainer.isAllianceRed() ? 0.15 : -0.15; },
+            () -> { return RobotContainer.isAllianceRed() ? 0.10 : -0.10; },
+            // () -> { return 0.0; }
+            () -> { return RobotContainer.isAllianceRed() ? -0.075 : 0.075; }
           )
         )
       )
     );
     NamedCommands.registerCommand("driveA3", new ParallelDeadlineGroup(
-        new WaitCommand(2.0), //how long to drive
+        new WaitCommand(1.6), //how long to drive
         new RepeatCommand(
           new drive_defaultDrive(
             drive,
-            () -> { return 0.15; },
-            () -> { return 0.0; },
-            () -> { return 0.0; }
-            // () -> { return RobotContainer.isAllianceRed() ? 0.25 : -0.25; }
+            () -> { return RobotContainer.isAllianceRed() ? -0.15 : 0.15; },
+            () -> { return RobotContainer.isAllianceRed() ? -0.10 : 0.10; },
+            // () -> { return 0.0; }
+            () -> { return RobotContainer.isAllianceRed() ? 0.075 : -0.075; }
           )
         )
       )

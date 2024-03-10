@@ -32,6 +32,12 @@
         {
           "type": "named",
           "data": {
+            "name": "intakeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "driveA2"
           }
         },
