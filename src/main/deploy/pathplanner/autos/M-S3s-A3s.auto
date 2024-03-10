@@ -8,7 +8,7 @@
         {
           "type": "named",
           "data": {
-            "name": "aimerTrackingStart"
+            "name": "aimerAimShort"
           }
         },
         {
@@ -27,6 +27,12 @@
           "type": "named",
           "data": {
             "name": "indexerStop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "aimerAimLong"
           }
         },
         {

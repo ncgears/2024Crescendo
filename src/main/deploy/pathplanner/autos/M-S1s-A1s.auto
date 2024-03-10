@@ -8,6 +8,12 @@
         {
           "type": "named",
           "data": {
+            "name": "aimerAimShort"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autonStart"
           }
         },
@@ -20,13 +26,25 @@
         {
           "type": "named",
           "data": {
-            "name": "poseTrackingStart"
+            "name": "indexerStop"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "S1-A1"
+            "name": "aimerAimLong"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveA1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
           }
         },
         {

@@ -1,6 +1,12 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.3803113320512361,
+      "y": 5.541275082550166
+    },
+    "rotation": 0.0
+  },
   "command": {
     "type": "sequential",
     "data": {
@@ -8,25 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autonStart"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "aimerAimShort"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "poseTrackingStart"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "S2-A2"
+            "name": "autonStart"
           }
         },
         {

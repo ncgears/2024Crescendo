@@ -14,6 +14,12 @@
         {
           "type": "named",
           "data": {
+            "name": "aimerTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autonStart"
           }
         },

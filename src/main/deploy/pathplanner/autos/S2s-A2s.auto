@@ -8,6 +8,12 @@
         {
           "type": "named",
           "data": {
+            "name": "aimerTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autonStart"
           }
         },
@@ -27,18 +33,6 @@
           "type": "named",
           "data": {
             "name": "driveA2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "poseTrackingStart"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
           }
         },
         {

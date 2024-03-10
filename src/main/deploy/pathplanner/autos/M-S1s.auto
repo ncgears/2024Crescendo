@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.3803113320512361,
-      "y": 5.541275082550166
+      "x": 0.7352951848760846,
+      "y": 6.7580100874487465
     },
-    "rotation": 0.0
+    "rotation": 60.0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "aimerTrackingStart"
+            "name": "aimerAimShort"
           }
         },
         {
