@@ -285,6 +285,7 @@ public class RobotContainer {
       .onTrue(
         new InstantCommand(() -> pose.trackingStart())
         .andThen(aimer.runOnce(aimer::aimerAimShort))
+        .andThen(shooter.runOnce(shooter::startShooter))
       )
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
     // AIMER TRACKING
