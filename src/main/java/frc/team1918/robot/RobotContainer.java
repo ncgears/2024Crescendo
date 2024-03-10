@@ -280,6 +280,13 @@ public class RobotContainer {
     oj.leftTrigger().or(dj.leftTrigger())
       .onTrue(new InstantCommand(() -> pose.trackingStart()))
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
+    // POSE TRACKING
+    oj.y()
+      .onTrue(
+        new InstantCommand(() -> pose.trackingStart())
+        .andThen(aimer.runOnce(aimer::aimerAimShort))
+      )
+      .onFalse(new InstantCommand(() -> pose.trackingStop()));
     // AIMER TRACKING
     (pose.isTargetSpeaker.or(pose.isTargetAmpDump)).and(oj.leftTrigger().or(dj.leftTrigger()))
       .onTrue(
@@ -424,8 +431,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("poseTrackingStop", new InstantCommand(() -> pose.trackingStop()));
     NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
     NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
-    NamedCommands.registerCommand("aimerAimShort", new InstantCommand(() -> aimer.setPositionRotations(0.1620)));
-    NamedCommands.registerCommand("aimerAimLong", new InstantCommand(() -> aimer.setPositionRotations(0.1010))); //TODO: Get position from A1-A2-A3
+    NamedCommands.registerCommand("aimerAimShort", new InstantCommand(() -> aimer.setPositionRotations(Constants.Aimer.Positions.kShotShort)));
+    NamedCommands.registerCommand("aimerAimLong", new InstantCommand(() -> aimer.setPositionRotations(Constants.Aimer.Positions.kShotLong)));
     NamedCommands.registerCommand("driveA2", new ParallelDeadlineGroup(
         new WaitCommand(1.60), //how long to drive
         new RepeatCommand(

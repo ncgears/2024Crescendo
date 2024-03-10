@@ -274,6 +274,8 @@ public class Constants {
             public static final double kTrapClimb = -0.1030273;
             public static final double kRevLimit = -0.104;
             public static final double kFwdLimit = 0.147;
+            public static final double kShotShort = 0.1620;
+            public static final double kShotLong = 0.1010;
         }
     }
 

@@ -171,6 +171,20 @@ public class AimerSubsystem extends SubsystemBase {
     return m_encoder.getPosition().getValue();
   }
 
+  public void aimerAimShort() {
+    m_suppressTracking = true;
+    m_curState = State.STOP;
+    setPositionRotations(Constants.Aimer.Positions.kShotShort);
+    Helpers.Debug.debug("Aimer: Shot Shot");
+  }
+
+  public void aimerAimLong() {
+    m_suppressTracking = true;
+    m_curState = State.STOP;
+    setPositionRotations(Constants.Aimer.Positions.kShotLong);
+    Helpers.Debug.debug("Aimer: Long Shot");
+  }
+
   public void aimerTrapClimb() {
     m_suppressTracking = true;
     m_curState = State.STOP;
