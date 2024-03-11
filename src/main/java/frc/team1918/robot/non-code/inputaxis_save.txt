@@ -1,0 +1,14 @@
+### https://github.com/frc6995/Robot-2024/blob/main/src/main/java/frc/robot/util/InputAxis.java
+
+## create an input axis wrapper for analog joysticks, then use them like
+
+private InputAxis m_fwdYAxis = new InputAxis('Forward',dj::getLeftY)
+    .withDeadband(0.10)
+    .withSquaring(true)
+    .withInvert(true);
+private InputAxis m_fwdXAxis = new InputAxis('Strafe',dj::getLeftX)
+    .withDeadband(0.10)
+    .withSquaring(true)
+    .withInvert(true);
+private InputAxis m_fwdYAxis = new InputAxis('Rotate',dj::getRightX)
+    .withDeadband(0.10);
