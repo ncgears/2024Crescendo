@@ -2,6 +2,7 @@
 package frc.team1918.robot.subsystems;
 
 import java.util.Map;
+import java.util.function.DoubleSupplier;
 
 import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
@@ -18,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.team1918.robot.Constants;
@@ -283,6 +285,10 @@ public class ClimberSubsystem extends SubsystemBase {
         Helpers.Debug.debug("Climber: Hold");
       }
     }
+  }
+
+  public Command climberMoveC(DoubleSupplier power) {
+    return run(() -> climberMove(power.getAsDouble()));
   }
 
   public void climberTopCapture() { setPosition(Position.TOPCAPTURE); }

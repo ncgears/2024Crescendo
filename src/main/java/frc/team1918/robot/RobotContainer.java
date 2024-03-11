@@ -61,6 +61,7 @@ import frc.team1918.robot.subsystems.IntakeSubsystem;
 import frc.team1918.robot.subsystems.ShooterSubsystem;
 import frc.team1918.robot.utils.Alert;
 import frc.team1918.robot.utils.CTREConfigs;
+import frc.team1918.robot.utils.InputAxis;
 import frc.team1918.robot.utils.TunableNumber;
 import frc.team1918.robot.utils.Alert.AlertType;
 //Commands imports
@@ -107,7 +108,7 @@ public class RobotContainer {
     public static final AimerSubsystem aimer = AimerSubsystem.getInstance();
     public static final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
     public static final ArmSubsystem arm = ArmSubsystem.getInstance();
-
+    
     private static final Alert enabledAlert = new Alert("Robot is Enabled", AlertType.INFO);
 
     public static Optional<Alliance> m_alliance;
@@ -132,6 +133,19 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    final InputAxis m_fwdXAxis = new InputAxis("Forward",dj::getLeftY)
+      .withDeadband(Constants.OI.kMinDeadband)
+      .withSquaring(true);
+    final InputAxis m_fwdYAxis = new InputAxis("Strafe",dj::getLeftX)
+      .withDeadband(Constants.OI.kMinDeadband)
+      .withSquaring(true);
+    final InputAxis m_rotAxis = new InputAxis("Rotate",dj::getRightX)
+      .withDeadband(Constants.OI.kMinDeadband);
+    final InputAxis m_climbAxis = new InputAxis("Climb", oj::getRightY)
+      .withDeadband(Constants.OI.kMinDeadband)
+      .withSquaring(true)
+      .withInvert(true);
+
     // Configure the bindings (buttons, triggers, etc.)
     registerCommands();
     configureBindings();
@@ -163,19 +177,15 @@ public class RobotContainer {
     // Set the default command that is run for the robot. Normally, this is the drive command
     if(!Constants.DriveTrain.isDisabled) {
       drive.setDefaultCommand(
-        new drive_defaultDrive(
-          drive,
-          () -> Helpers.OI.ncdeadband(dj.getLeftY(),false),
-          () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
-          () -> Helpers.OI.ncdeadband(dj.getRightX(),true)
-        )
+        new drive_defaultDrive(drive, m_fwdXAxis, m_fwdYAxis, m_rotAxis)
       );
     }
  
     if(!Constants.Climber.isDisabled) {
-      climber.setDefaultCommand(
-        climber.run(() -> climber.climberMove(Helpers.OI.ncdeadband(-oj.getRightY(),false)))
-      );
+      climber.setDefaultCommand(climber.climberMoveC(m_climbAxis));
+      // climber.setDefaultCommand(
+      //   climber.run(() -> climber.climberMove(Helpers.OI.ncdeadband(-oj.getRightY(),false)))
+      // );
     }
   }
 
