@@ -230,6 +230,11 @@ public class ShooterSubsystem extends SubsystemBase {
     target_speed = speed;
   }
 
+  public void updateTarget(double speed) {
+    setTarget(speed);
+    startShooter();
+  }
+
   public TalonFX[] getMotors() {
     TalonFX[] motors = {m_motor1, m_motor2};
     return motors;
