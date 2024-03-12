@@ -501,9 +501,9 @@ public class RobotContainer {
       )
     );
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
-      new InstantCommand(() -> shooter.setTarget(90)),
+      new InstantCommand(() -> shooter.setTarget(80)),
       shooter.runOnce(shooter::startShooter),
-      new WaitCommand(2.75),
+      new WaitCommand(0.5),
       indexer.runOnce(indexer::indexerUp),
       intake.runOnce(intake::intakeFeed),
       new WaitCommand(0.25),

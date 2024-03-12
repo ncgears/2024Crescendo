@@ -38,7 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "driveA2"
+            "name": "shooterSpeed90"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S2-A2"
           }
         },
         {
