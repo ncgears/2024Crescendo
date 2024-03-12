@@ -448,8 +448,8 @@ public class RobotContainer {
    * This method registers named commands to be used in PathPlanner autos
    */
   private void registerCommands() {
-    NamedCommands.registerCommand("shooterSpeed80", new InstantCommand(() -> shooter.setTarget(80)));
-    NamedCommands.registerCommand("shooterSpeed90", new InstantCommand(() -> shooter.setTarget(90)));
+    NamedCommands.registerCommand("shooterSpeed80", new InstantCommand(() -> shooter.updateTarget(80)));
+    NamedCommands.registerCommand("shooterSpeed90", new InstantCommand(() -> shooter.updateTarget(90)));
     NamedCommands.registerCommand("shooterStart", shooter.runOnce(shooter::startShooter));
     NamedCommands.registerCommand("shooterStop", shooter.runOnce(shooter::stopShooter));
     NamedCommands.registerCommand("intakeIn", intake.runOnce(intake::intakeIn));
