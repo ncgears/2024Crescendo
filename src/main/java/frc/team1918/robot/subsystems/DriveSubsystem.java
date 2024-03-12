@@ -340,9 +340,10 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void autonDriveRelative(ChassisSpeeds speeds) {
+		Helpers.Debug.debug("Auton Driving: X: "+ speeds.vxMetersPerSecond + " Y: "+ speeds.vyMetersPerSecond + " Omega: " + speeds.omegaRadiansPerSecond);
 		if (speeds.vxMetersPerSecond != 0 || speeds.vyMetersPerSecond != 0 || speeds.omegaRadiansPerSecond != 0) {
-			speeds = new ChassisSpeeds(0.5,0.0,0.0);
-		}
+			speeds = new ChassisSpeeds(0.0,0.5,0.0);
+		};
 		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
 		if(!Constants.Swerve.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
