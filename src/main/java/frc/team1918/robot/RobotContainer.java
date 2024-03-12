@@ -329,7 +329,7 @@ public class RobotContainer {
       .onFalse(intake.runOnce(intake::intakeStop).andThen(indexer.runOnce(indexer::indexerStop)));
     // INTAKE
     arm.atIntake.and(oj.leftBumper().or(dj.leftBumper()))
-      .onTrue(intake.runOnce(intake::intakeIn).andThen(lighting.setColorCommand(Colors.YELLOW)))
+      .onTrue(intake.runOnce(intake::intakeIn))
       .onFalse(
         new WaitCommand(0.5)
         .andThen(intake.runOnce(intake::intakeStop))
@@ -388,15 +388,18 @@ public class RobotContainer {
      * run the indexer if it's not full. This should also be combined with a location based trigger
      * This needs some work as it is also triggering when we move the climber/arm across the beam break
      */
+    intake.isRunning.and(indexer.isFull.negate())
+      .whileTrue(lighting.setColorCommand(Colors.YELLOW));
     intake.isRunning.and(indexer.isFull)
-      .onTrue(lighting.setColorCommand(Colors.GREEN)
-        .andThen(new WaitCommand(0.25))
-        .andThen(lighting.setColorCommand(Colors.OFF))
-        .andThen(new WaitCommand(0.15))
-        .andThen(lighting.setColorCommand(Colors.GREEN))
-        .andThen(new WaitCommand(0.20))
-        .andThen(lighting.setColorCommand(Colors.OFF))
-    );
+      .whileTrue(lighting.setColorCommand(Colors.GREEN));
+      // .onTrue(lighting.setColorCommand(Colors.GREEN)
+      //   .andThen(new WaitCommand(0.25))
+      //   .andThen(lighting.setColorCommand(Colors.OFF))
+      //   .andThen(new WaitCommand(0.15))
+      //   .andThen(lighting.setColorCommand(Colors.GREEN))
+      //   .andThen(new WaitCommand(0.20))
+      //   .andThen(lighting.setColorCommand(Colors.OFF))
+      // );
     // indexer.isFull.onTrue(intake.runOnce(intake::intakeOut)
     //     .andThen(new WaitCommand(3))
     //     .andThen(intake.runOnce(intake::intakeStop))
