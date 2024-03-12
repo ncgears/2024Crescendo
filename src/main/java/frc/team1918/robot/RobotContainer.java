@@ -180,7 +180,17 @@ public class RobotContainer {
         new drive_defaultDrive(drive, m_fwdXAxis, m_fwdYAxis, m_rotAxis)
       );
     }
- 
+    // if(!Constants.DriveTrain.isDisabled) {
+    //   drive.setDefaultCommand(
+    //     new drive_defaultDrive(
+    //       drive,
+    //       () -> Helpers.OI.ncdeadband(dj.getLeftY(),false),
+    //       () -> Helpers.OI.ncdeadband(dj.getLeftX(),false),
+    //       () -> Helpers.OI.ncdeadband(dj.getRightX(),true)
+    //     )
+    //   );
+    // }
+
     if(!Constants.Climber.isDisabled) {
       climber.setDefaultCommand(climber.climberMoveC(m_climbAxis));
       // climber.setDefaultCommand(

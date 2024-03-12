@@ -74,7 +74,7 @@ public class DriveSubsystem extends SubsystemBase {
 		this::getPose, // Robot pose supplier
 		this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
 		this::getSpeeds,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-		this::driveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+		this::autonDriveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
 		new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
 			new PIDConstants(Constants.Auton.kPTranslationController, 0.0, 0.0), // Translation PID constants
 			new PIDConstants(Constants.Auton.kPThetaController, 0.0, 0.0), // Rotation PID constants
@@ -330,6 +330,18 @@ public class DriveSubsystem extends SubsystemBase {
 	public void driveRelative(ChassisSpeeds speeds) {
 		if (Constants.DriveTrain.useBrakeWhenStopped && (speeds.vxMetersPerSecond == 0 && speeds.vyMetersPerSecond == 0 && speeds.omegaRadiansPerSecond == 0)) {
 			brake(false);
+		}
+		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
+		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
+		if(!Constants.Swerve.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
+		if(!Constants.Swerve.FR.isDisabled) m_frontRight.setDesiredState(swerveModuleStates[1]);
+		if(!Constants.Swerve.BL.isDisabled) m_backLeft.setDesiredState(swerveModuleStates[2]);
+		if(!Constants.Swerve.BR.isDisabled) m_backRight.setDesiredState(swerveModuleStates[3]);
+	}
+
+	public void autonDriveRelative(ChassisSpeeds speeds) {
+		if (speeds.vxMetersPerSecond != 0 || speeds.vyMetersPerSecond != 0 || speeds.omegaRadiansPerSecond != 0) {
+			speeds = new ChassisSpeeds(0.5,0.0,0.0);
 		}
 		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
