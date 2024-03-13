@@ -341,17 +341,14 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void autonDriveRelative(ChassisSpeeds speeds) {
-		speeds = new ChassisSpeeds(speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, -speeds.omegaRadiansPerSecond);
+		speeds = new ChassisSpeeds(speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, -speeds.omegaRadiansPerSecond); //correct path planner inversions
 		// Helpers.Debug.debug("Auton Driving: X: "+ speeds.vxMetersPerSecond + " Y: "+ speeds.vyMetersPerSecond + " Omega: " + speeds.omegaRadiansPerSecond);
-		// if (speeds.vxMetersPerSecond != 0 || speeds.vyMetersPerSecond != 0 || speeds.omegaRadiansPerSecond != 0) {
-		// 	// speeds = new ChassisSpeeds(0.0,0.0,-0.25 * Math.PI);
-		// };
 		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
-		if(!Constants.Swerve.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
-		if(!Constants.Swerve.FR.isDisabled) m_frontRight.setDesiredState(swerveModuleStates[1]);
-		if(!Constants.Swerve.BL.isDisabled) m_backLeft.setDesiredState(swerveModuleStates[2]);
-		if(!Constants.Swerve.BR.isDisabled) m_backRight.setDesiredState(swerveModuleStates[3]);
+		m_frontLeft.setDesiredState(swerveModuleStates[0]);
+		m_frontRight.setDesiredState(swerveModuleStates[1]);
+		m_backLeft.setDesiredState(swerveModuleStates[2]);
+		m_backRight.setDesiredState(swerveModuleStates[3]);
 	}
 
 	//Stops all modules
