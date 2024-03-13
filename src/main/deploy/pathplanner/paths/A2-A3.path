@@ -16,28 +16,28 @@
     },
     {
       "anchor": {
-        "x": 2.595897258302831,
-        "y": 4.114397967513275
+        "x": 2.6543958076039678,
+        "y": 4.280143857199829
       },
       "prevControl": {
-        "x": 1.2991794154609702,
+        "x": -0.11453552598316458,
         "y": 4.153397000380699
       },
       "nextControl": {
-        "x": 3.0065543781468285,
-        "y": 4.102047377442779
+        "x": 3.0648088606168216,
+        "y": 4.298930370189854
       },
       "isLocked": false,
       "linkedName": "A3 score"
     },
     {
       "anchor": {
-        "x": 2.166907896761163,
-        "y": 4.114397967513275
+        "x": 1.8159166009543433,
+        "y": 3.9876511106941464
       },
       "prevControl": {
-        "x": 2.166907896761163,
-        "y": 4.124147725730131
+        "x": 1.8159166009543433,
+        "y": 3.997400868911002
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,25 +46,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "New Event Marker",
-      "waypointRelativePos": 1.25,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "poseTrackingStart"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 1.0,
     "maxAcceleration": 3.0,
@@ -73,7 +55,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -39.3693172423648,
     "rotateFast": false
   },
   "reversed": false,
