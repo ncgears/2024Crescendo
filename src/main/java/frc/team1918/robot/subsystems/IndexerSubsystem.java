@@ -135,19 +135,19 @@ public class IndexerSubsystem extends SubsystemBase {
 
   public void indexerUp() {
     m_curState = State.UP;
-    Helpers.Debug.debug("Intake: In");
+    Helpers.Debug.debug("Indexer: Up");
     setSpeedPercent(Constants.Indexer.kSpeed);
   }
 
   public void indexerDown() {
     m_curState = State.DOWN;
-    Helpers.Debug.debug("Intake: Out");
+    Helpers.Debug.debug("Indexer: Down");
     setSpeedPercent(-Constants.Indexer.kSpeed);
   }
 
   public void indexerStop() {
     m_curState = State.STOP;
-    Helpers.Debug.debug("Intake: Stop");
+    Helpers.Debug.debug("Indexer: Stop");
     setSpeedPercent(0.0);
   }
 
