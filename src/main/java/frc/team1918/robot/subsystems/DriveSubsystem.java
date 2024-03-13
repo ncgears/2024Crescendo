@@ -95,7 +95,8 @@ public class DriveSubsystem extends SubsystemBase {
 	public Optional<Rotation2d> getAutoTrackedTarget() {
 		if(Constants.Auton.kUseTracking && RobotContainer.pose.getTracking()) {
 			Rotation2d hdg = Rotation2d.fromDegrees(RobotContainer.pose.getBearingOfTarget(Targets.SPEAKER));
-			return Optional.ofNullable(hdg);
+			Helpers.Debug.debug("Tracking: auton heading "+hdg.getDegrees());
+			return Optional.of(hdg);
 		} else {
 			return Optional.empty();
 		}
