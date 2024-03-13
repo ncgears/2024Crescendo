@@ -47,6 +47,9 @@ public class ShooterSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   private State m_curState = State.STOP;
+  public final Trigger isReady = new Trigger(this::atSetpoint);
+  public final Trigger isAcceptable = new Trigger(this::atShootable);
+
   /**
 	 * Returns the instance of the ShooterSubsystem subsystem.
 	 * The purpose of this is to only create an instance if one does not already exist.
@@ -85,8 +88,6 @@ public class ShooterSubsystem extends SubsystemBase {
     init();
     createDashboards();
   }
-
-  public final Trigger isReady = new Trigger(this::atSetpoint);
 
   /**
    * The init function resets and operational state of the subsystem
@@ -171,7 +172,14 @@ public class ShooterSubsystem extends SubsystemBase {
     if(Robot.isSimulation()) return true;
     double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
     double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
-    return (Math.abs(error1) <= Constants.Shooter.kSpeedTolerance) && (Math.abs(error2) <= Constants.Shooter.kSpeedTolerance);
+    return (Math.abs(error1) <= Constants.Shooter.kSpeedToleranceOptimal) && (Math.abs(error2) <= Constants.Shooter.kSpeedToleranceOptimal);
+  }
+
+  private boolean atShootable() {
+    if(Robot.isSimulation()) return true;
+    double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
+    double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
+    return (Math.abs(error1) <= Constants.Shooter.kSpeedToleranceAcceptable) && (Math.abs(error2) <= Constants.Shooter.kSpeedToleranceAcceptable);
   }
 
   /**

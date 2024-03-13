@@ -379,7 +379,8 @@ public class Constants {
         public static final boolean isInverted = false;
         public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
         public static final double kMaxRPS = Global.kFalconMaxRPS * kGearRatio; //The Maximum free speed of the shooter
-        public static final double kSpeedTolerance = 2.0; //How close in RPS is considered at speed
+        public static final double kSpeedToleranceOptimal = 2.0; //How close in RPS is considered at speed
+        public static final double kSpeedToleranceAcceptable = 5.0; //How close in RPS is considered close enough to shoot
         //PID Control
         public static final double kS = 0.2; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.12; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output

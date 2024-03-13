@@ -324,7 +324,7 @@ public class RobotContainer {
         .andThen(shooter.runOnce(shooter::stopShooter))
       );
     // FIRE!
-    (oj.rightTrigger().or(dj.rightTrigger())).and(shooter.isReady.or(arm.atAmp).or(arm.atTrap))
+    (oj.rightTrigger().or(dj.rightTrigger())).and(shooter.isAcceptable.or(arm.atAmp).or(arm.atTrap))
       .onTrue(intake.runOnce(intake::intakeFeed).andThen(indexer.runOnce(indexer::indexerUp)))
       .onFalse(intake.runOnce(intake::intakeStop).andThen(indexer.runOnce(indexer::indexerStop)));
     // INTAKE
@@ -378,9 +378,11 @@ public class RobotContainer {
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
-      .onTrue(lighting.setColorCommand(Colors.ORANGE));
-    aimer.isTracking.or(pose.isTracking).and(aimer.isReady.and(pose.isReady))
+      .onTrue(lighting.setColorCommand(Colors.RED));
+    aimer.isTracking.or(pose.isTracking).and(aimer.isReady.and(pose.isReady).and(shooter.isReady))
       .onTrue(lighting.setColorCommand(Colors.GREEN));
+    aimer.isTracking.or(pose.isTracking).and(aimer.isReady.and(pose.isReady).and(shooter.isAcceptable.and(shooter.isReady.negate())))
+      .onTrue(lighting.setColorCommand(Colors.ORANGE));
     aimer.isTracking.negate().and(pose.isTracking.negate())
       .onTrue(lighting.setColorCommand(Colors.OFF));
 
