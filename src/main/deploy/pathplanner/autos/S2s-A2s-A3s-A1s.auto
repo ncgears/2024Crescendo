@@ -86,6 +86,30 @@
         {
           "type": "named",
           "data": {
+            "name": "indexerStop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A3s-A1-A1s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autonStop"
           }
         }

@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.888390004808514,
-        "y": 5.557362183607978
+        "x": 8.071455914991601,
+        "y": 7.425788070949362
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1571581385443066,
-        "y": 5.6743592822102515
+        "x": 7.4015018394512655,
+        "y": 7.246504585941596
       },
       "isLocked": false,
-      "linkedName": "A2 score"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.6543958076039678,
-        "y": 4.280143857199829
+        "x": 6.972810267459616,
+        "y": 5.208657038003731
       },
       "prevControl": {
-        "x": -0.11453552598316458,
-        "y": 4.153397000380699
+        "x": 6.991682213249484,
+        "y": 6.50138532460973
       },
       "nextControl": {
-        "x": 3.0648088606168216,
-        "y": 4.298930370189854
+        "x": 6.956144120363864,
+        "y": 4.067025961944628
       },
       "isLocked": false,
-      "linkedName": "A3 score"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.8159166009543433,
-        "y": 3.9876511106941464
+        "x": 5.487588133796957,
+        "y": 4.000852507452142
       },
       "prevControl": {
-        "x": 1.8159166009543433,
-        "y": 3.997400868911002
+        "x": 5.798975239329789,
+        "y": 4.010288480347076
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,18 +48,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 1.25,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -39.3693172423648,
+    "rotation": -3.50643448219915e-10,
     "rotateFast": false
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": null,
+  "previewStartingState": {
+    "rotation": 0,
+    "velocity": 0
+  },
   "useDefaultConstraints": true
 }

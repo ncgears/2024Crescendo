@@ -12,7 +12,7 @@
         "y": 6.008082421763587
       },
       "isLocked": false,
-      "linkedName": "A2 score"
+      "linkedName": null
     },
     {
       "anchor": {
@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "C score"
+      "linkedName": null
     }
   ],
   "rotationTargets": [

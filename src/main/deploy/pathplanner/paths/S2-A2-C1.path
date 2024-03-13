@@ -3,52 +3,52 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.071455914991601,
-        "y": 7.425788070949362
+        "x": 1.5571384928158751,
+        "y": 5.5474513582293925
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.4015018394512655,
-        "y": 7.246504585941596
+        "x": 2.3114396573620737,
+        "y": 5.548352062225379
       },
-      "isLocked": false,
-      "linkedName": "Center1"
+      "isLocked": true,
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.972810267459616,
-        "y": 5.208657038003731
+        "x": 2.8681620581631972,
+        "y": 5.5474513582293925
       },
       "prevControl": {
-        "x": 6.991682213249484,
-        "y": 6.50138532460973
+        "x": 2.311448379605303,
+        "y": 5.544207451943511
       },
       "nextControl": {
-        "x": 6.956144120363864,
-        "y": 4.067025961944628
+        "x": 4.642124962410844,
+        "y": 5.557788035120313
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.487588133796957,
-        "y": 4.000852507452142
+        "x": 8.071455914991601,
+        "y": 7.425788070949362
       },
       "prevControl": {
-        "x": 5.798975239329789,
-        "y": 4.010288480347076
+        "x": 6.5239563602223765,
+        "y": 7.472967935424033
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Trap2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 1.25,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 180.0,
     "maxAngularAcceleration": 720.0
@@ -60,9 +60,6 @@
   },
   "reversed": false,
   "folder": null,
-  "previewStartingState": {
-    "rotation": 0,
-    "velocity": 0
-  },
+  "previewStartingState": null,
   "useDefaultConstraints": true
 }
