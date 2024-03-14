@@ -50,19 +50,7 @@
         {
           "type": "named",
           "data": {
-            "name": "indexerUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "indexerStop"
+            "name": "trackedShot"
           }
         },
         {
@@ -74,19 +62,7 @@
         {
           "type": "named",
           "data": {
-            "name": "indexerUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "indexerStop"
+            "name": "trackedShot"
           }
         },
         {
@@ -98,13 +74,7 @@
         {
           "type": "named",
           "data": {
-            "name": "indexerUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "name": "trackedShot"
           }
         },
         {
