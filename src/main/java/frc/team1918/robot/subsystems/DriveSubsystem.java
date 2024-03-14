@@ -62,6 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 	private double target_heading = 0.0;
 	private boolean heading_locked = false;
+	private boolean m_suppressVision = false;
 	
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
@@ -107,7 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void periodic() {
 		if(Robot.isSimulation()) updateSim();
 		RobotContainer.pose.updatePose();
-		RobotContainer.pose.correctPoseWithVision();
+		if(!m_suppressVision) RobotContainer.pose.correctPoseWithVision();
 		field.setRobotPose(RobotContainer.pose.getPose());
 	}
 
@@ -246,6 +247,19 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public void unlockHeading() {
 		heading_locked = false;
+	}
+
+	public void setSuppressVision(boolean suppress) { 
+		m_suppressVision = suppress; 
+		Helpers.Debug.debug((m_suppressVision) ? "Drive: Vision Suppressed" : "Drive: Vision Unsuppressed");
+	}
+
+	public Command suppressVisionC() {
+		return runOnce(() -> setSuppressVision(true));
+	}
+
+	public Command unsuppressVisionC() {
+		return runOnce(() -> setSuppressVision(false));
 	}
 
 	public boolean getHeadingLocked() { return heading_locked; }
