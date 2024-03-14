@@ -502,6 +502,8 @@ public class RobotContainer {
         )
       )
     );
+    NamedCommands.registerCommand("suppressVision", drive.suppressVisionC());
+    NamedCommands.registerCommand("unsupressVision", drive.unsuppressVisionC());
     NamedCommands.registerCommand("defaultShot", new SequentialCommandGroup(
       indexer.runOnce(indexer::indexerUp),
       new WaitCommand(0.5),
