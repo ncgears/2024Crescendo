@@ -1,0 +1,91 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.6690561529271205,
+      "y": 4.350225452587657
+    },
+    "rotation": -61.073574164746326
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "aimerTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStart"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerStop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S3s-C5-Ss"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "trackedShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ss-C4-Ss"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "trackedShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ss-C3-Ss"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "trackedShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStop"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
