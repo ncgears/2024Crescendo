@@ -509,7 +509,7 @@ public class RobotContainer {
       )
     );
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
-      new InstantCommand(() -> shooter.setTarget(80)),
+      new InstantCommand(() -> shooter.setTarget(70)),
       drive.runOnce(drive::unlockHeading),
       shooter.runOnce(shooter::startShooter),
       new WaitCommand(0.5),
