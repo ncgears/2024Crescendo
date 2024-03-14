@@ -64,6 +64,8 @@ public final class CTREConfigs {
 
         //current limits
         CurrentLimitsConfigs driveCurrentLimitsConfigs = new CurrentLimitsConfigs()
+            .withStatorCurrentLimit(Constants.Swerve.kDriveStatorCurrentLimitAmps)
+            .withStatorCurrentLimitEnable(Constants.Swerve.kDriveStatorCurrentLimitEnable)
             .withSupplyCurrentLimit(Constants.Swerve.kDriveCurrentLimitAmps)
             .withSupplyCurrentThreshold(Constants.Swerve.kDriveCurrentThresholdAmps)
             .withSupplyTimeThreshold(Constants.Swerve.kDriveCurrentThresholdSecs)
