@@ -502,15 +502,22 @@ public class RobotContainer {
         )
       )
     );
+    NamedCommands.registerCommand("defaultShot", new SequentialCommandGroup(
+      indexer.runOnce(indexer::indexerUp),
+      new WaitCommand(0.5),
+      indexer.runOnce(indexer::indexerStop)
+      )
+    );
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
       new InstantCommand(() -> shooter.setTarget(80)),
+      drive.runOnce(drive::unlockHeading),
       shooter.runOnce(shooter::startShooter),
       new WaitCommand(0.5),
       indexer.runOnce(indexer::indexerUp),
       intake.runOnce(intake::intakeFeed),
-      new WaitCommand(0.25),
-      intake.runOnce(intake::intakeStop),
-      new WaitCommand(0.75)
+      new WaitCommand(0.25)
+      // intake.runOnce(intake::intakeStop)
+      // new WaitCommand(0.75)
     ));
     NamedCommands.registerCommand("autonStop", new SequentialCommandGroup(
       indexer.runOnce(indexer::indexerStop),
