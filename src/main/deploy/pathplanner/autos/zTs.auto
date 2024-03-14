@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4259262722800992,
-      "y": 5.557362183607978
+      "x": 2,
+      "y": 2
     },
     "rotation": 0
   },
@@ -20,37 +20,31 @@
         {
           "type": "named",
           "data": {
-            "name": "autonStart"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "indexerStop"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeIn"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "shooterSpeed90"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "S2-A2"
+            "name": "poseTrackingStart"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "trackedShot"
+            "name": "indexerUp"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
