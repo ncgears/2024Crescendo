@@ -1,0 +1,115 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7294015605842917,
+      "y": 4.365758146274563
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "aimerTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStart"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterSpeed90"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S3-A3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A3s-C5s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerStop"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C5s-C6s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerStop"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStop"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}

@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7502903555425433,
+      "y": 6.715747579077855
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "aimerTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterSpeed90"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S1-A1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "defaultShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A1s-C1-A1s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "defaultShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C1s-C2s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "defaultShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStop"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
