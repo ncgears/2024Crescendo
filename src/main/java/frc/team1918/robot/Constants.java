@@ -246,7 +246,7 @@ public class Constants {
         public static final double kGravityDistanceOffset = 1.25; //remove from distance before calculating gravity adjustment
         public static final double kGravityMultiplier = 0.008; //multiplied by distance to get adjustment to aim
         public static final double kDistanceOffset = 0.25; //offset distance for angle calculations
-        public static final double kDistanceMinimumForOffset = 2.0;
+        public static final double kDistanceMinimumForOffset = 0.0;
         //PID Control
         public static final double kS = 0.10; // add kS to overcome static friction: adjust first to start moving
         public static final double kV = 0.0; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
