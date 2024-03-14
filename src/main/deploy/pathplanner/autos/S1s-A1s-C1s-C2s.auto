@@ -5,7 +5,7 @@
       "x": 0.7502903555425433,
       "y": 6.715747579077855
     },
-    "rotation": 0
+    "rotation": 59.42801151008818
   },
   "command": {
     "type": "sequential",
@@ -68,7 +68,7 @@
         {
           "type": "named",
           "data": {
-            "name": "defaultShot"
+            "name": "trackedShot"
           }
         },
         {
