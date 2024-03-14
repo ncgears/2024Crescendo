@@ -341,7 +341,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void autonDriveRelative(ChassisSpeeds speeds) {
-		speeds = ChassisSpeeds.fromRobotRelativeSpeeds(speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, -speeds.omegaRadiansPerSecond, RobotContainer.gyro.getYaw()); //correct path planner inversions
+		speeds = new ChassisSpeeds(speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, -speeds.omegaRadiansPerSecond); //correct path planner inversions
 		Helpers.Debug.debug("Auton Driving: X: "+ speeds.vxMetersPerSecond + " Y: "+ speeds.vyMetersPerSecond + " Omega: " + speeds.omegaRadiansPerSecond);
 		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
 		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
