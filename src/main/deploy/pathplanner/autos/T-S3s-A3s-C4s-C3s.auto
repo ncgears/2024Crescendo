@@ -50,55 +50,31 @@
         {
           "type": "named",
           "data": {
-            "name": "indexerUp"
+            "name": "trackedShot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "A3s-C5s"
+            "pathName": "A3s-C3-Ss"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "indexerUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "indexerStop"
+            "name": "trackedShot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "C5s-C6s"
+            "pathName": "Ss-C4-Ss"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "indexerUp"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "indexerStop"
+            "name": "trackedShot"
           }
         },
         {
