@@ -508,6 +508,15 @@ public class RobotContainer {
       indexer.runOnce(indexer::indexerStop)
       )
     );
+    NamedCommands.registerCommand("trackedShot", new SequentialCommandGroup(
+      new InstantCommand(() -> pose.trackingStart()),
+      new WaitCommand(0.5),
+      indexer.runOnce(indexer::indexerUp),
+      new WaitCommand(0.5),
+      indexer.runOnce(indexer::indexerStop),
+      new InstantCommand(() -> pose.trackingStop())
+      )
+    );
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
       new InstantCommand(() -> shooter.setTarget(70)),
       drive.runOnce(drive::unlockHeading),

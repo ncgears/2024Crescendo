@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6513651260920754,
-        "y": 5.391005197964812
+        "x": 1.8852482149408742,
+        "y": 5.557362183607978
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1047241112866975,
-        "y": 5.867293924424372
+        "x": 1.3386072001354963,
+        "y": 6.0336509100675375
       },
       "isLocked": false,
       "linkedName": "A3s"
@@ -46,18 +46,13 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6,
-      "rotationDegrees": 0.0,
-      "rotateFast": false
-    },
-    {
       "waypointRelativePos": 2.0,
       "rotationDegrees": 38.15722658736919,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 0.85,
-      "rotationDegrees": 39.30960342003127,
+      "rotationDegrees": 10.0,
       "rotateFast": false
     }
   ],

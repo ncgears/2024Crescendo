@@ -74,6 +74,12 @@
         {
           "type": "named",
           "data": {
+            "name": "poseTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "indexerUp"
           }
         },
