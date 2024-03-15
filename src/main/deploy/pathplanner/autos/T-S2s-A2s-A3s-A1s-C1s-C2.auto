@@ -1,0 +1,144 @@
+{
+  "version": 1.0,
+  "startingPose": null,
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "aimerTrackingStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStart"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "indexerUp"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intakeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shooterSpeed90"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "S2-A2"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A2-A3-A3s"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 0.25
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "indexerStop"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A3s-A1s"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "quickTrackedShot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A1s-C1-A1s"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "quickTrackedShot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "A1-C2-A1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "quickTrackedShot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autonStop"
+          }
+        }
+      ]
+    }
+  },
+  "folder": null,
+  "choreoAuto": false
+}
