@@ -1,12 +1,6 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 0.6690561529271205,
-      "y": 4.350225452587657
-    },
-    "rotation": -61.073574164746326
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
@@ -24,9 +18,15 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "shooterSpeed90"
+            "name": "indexerStop"
           }
         },
         {
@@ -38,19 +38,37 @@
         {
           "type": "named",
           "data": {
-            "name": "supressVision"
+            "name": "shooterSpeed90"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "S3s-C5-Ss"
+            "pathName": "S2-A2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "unsupressVision"
+            "name": "trackedShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A2-A3-A3s"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "trackedShot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "A3s-A1-A1s"
           }
         },
         {
@@ -68,31 +86,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Ss-C4-Ss"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "unsupressVision"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "trackedShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "supressVision"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Ss-C3-Ss"
+            "pathName": "A1s-C1-A1s"
           }
         },
         {

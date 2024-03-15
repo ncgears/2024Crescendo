@@ -534,6 +534,7 @@ public class RobotContainer {
       indexer.runOnce(indexer::indexerStop),
       intake.runOnce(intake::intakeStop),
       shooter.runOnce(shooter::stopShooter),
+      drive.unsuppressVisionC(),
       new WaitCommand(0.5),
       aimer.runOnce(aimer::aimerStopAndStow)
     ));
