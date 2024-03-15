@@ -443,11 +443,11 @@ public class Constants {
         public static final int kTurnCurrentThresholdAmps = 40;
         public static final double kTurnCurrentThresholdSecs = 0.1;
         public static final boolean kDriveCurrentLimitEnabled = true;
-        public static final int kDriveCurrentLimitAmps = 40;
-        public static final int kDriveCurrentThresholdAmps = 60;
+        public static final int kDriveCurrentLimitAmps = 38;
+        public static final int kDriveCurrentThresholdAmps = 45;
         public static final double kDriveCurrentThresholdSecs = 0.3;
         public static final boolean kDriveStatorCurrentLimitEnable = true;
-        public static final int kDriveStatorCurrentLimitAmps = 120;
+        public static final int kDriveStatorCurrentLimitAmps = 100;
 
         /*
 		 * These values are used by the drive falcon to ramp in open loop and closed
