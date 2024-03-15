@@ -512,9 +512,9 @@ public class RobotContainer {
     );
     NamedCommands.registerCommand("trackedShot", new SequentialCommandGroup(
       new InstantCommand(() -> pose.trackingStart()),
-      new WaitCommand(0.5),
+      new WaitCommand(0.25),
       indexer.runOnce(indexer::indexerUp),
-      new WaitCommand(0.5),
+      new WaitCommand(0.25),
       indexer.runOnce(indexer::indexerStop),
       new InstantCommand(() -> pose.trackingStop())
       )
