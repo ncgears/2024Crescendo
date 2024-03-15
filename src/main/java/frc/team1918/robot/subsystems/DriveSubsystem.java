@@ -63,7 +63,9 @@ public class DriveSubsystem extends SubsystemBase {
 	private double target_heading = 0.0;
 	private boolean heading_locked = false;
 	private boolean m_suppressVision = false;
-	
+	//TODO: write trigger for speed to auto supress vision
+
+
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
 			instance = new DriveSubsystem();
