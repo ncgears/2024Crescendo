@@ -59,18 +59,18 @@
           "data": {
             "commands": [
               {
+                "type": "named",
+                "data": {
+                  "name": "quickTrackedShot"
+                }
+              },
+              {
                 "type": "path",
                 "data": {
                   "pathName": "A1-C2-A1"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "quickTrackedShot"
           }
         },
         {

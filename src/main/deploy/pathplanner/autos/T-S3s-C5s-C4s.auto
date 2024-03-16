@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.6690561529271205,
-      "y": 4.350225452587657
+      "x": 1.4047871526673117,
+      "y": 3.9456583742905447
     },
-    "rotation": -61.073574164746326
+    "rotation": -0.8789322341219716
   },
   "command": {
     "type": "sequential",
@@ -69,30 +69,6 @@
           "type": "path",
           "data": {
             "pathName": "Ss-C4-Ss"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "unsupressVision"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "trackedShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "supressVision"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Ss-C3-Ss"
           }
         },
         {
