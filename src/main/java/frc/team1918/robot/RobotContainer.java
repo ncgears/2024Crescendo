@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -51,6 +52,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.team1918.robot.subsystems.AimerSubsystem;
 import frc.team1918.robot.subsystems.ArmSubsystem;
 import frc.team1918.robot.subsystems.ClimberSubsystem;
@@ -77,6 +79,7 @@ import frc.team1918.robot.classes.Lighting.Colors;
 //CommandGroup imports
 // import frc.team1918.robot.commandgroups.*;
 
+import com.ctre.phoenix6.SignalLogger;
 //Phoenix6
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -128,6 +131,7 @@ public class RobotContainer {
     //init joysticks
     private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
     private final CommandStadiaController oj = new CommandStadiaController(Constants.OI.OI_JOY_OPER);
+    private final CommandStadiaController pj = new CommandStadiaController(5); //Programmer Controller
 
    /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -364,7 +368,6 @@ public class RobotContainer {
     //     arm.runOnce(arm::armTrapClimb)
     //     .andThen(climber.runOnce(climber::climberLatchClear))
     //   );
-
     oj.povDown().onTrue(climber.runOnce(climber::ratchetLock));
     oj.povUp().onTrue(climber.runOnce(climber::ratchetFree));
     // AMP DUMP TRACKING
@@ -375,6 +378,14 @@ public class RobotContainer {
     (oj.rightBumper().or(dj.rightBumper())).and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
       .onFalse(arm.runOnce(arm::armIntake));
+
+    //** PROGRAMMER STUFF */
+    shooter.setDefaultCommand(shooter.joystickDriveCommand(pj::getLeftY));
+    pj.y().whileTrue(shooter.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    pj.a().whileTrue(shooter.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    pj.b().whileTrue(shooter.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    pj.x().whileTrue(shooter.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    pj.leftBumper().onTrue(new RunCommand(SignalLogger::stop));
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))

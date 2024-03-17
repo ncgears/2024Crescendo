@@ -2,22 +2,33 @@
 package frc.team1918.robot.subsystems;
 
 import java.util.Map;
+import java.util.function.DoubleSupplier;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.SignalLogger;
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.controls.DutyCycleOut;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
+import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import com.ctre.phoenix6.SignalLogger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Voltage;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.team1918.robot.Constants;
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
@@ -32,11 +43,12 @@ public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
   //private and public variables defined here
   public double target_speed = 90.0;
-  private final MotionMagicVelocityVoltage m_mmVelocityVoltage = new MotionMagicVelocityVoltage(0);
+  // private final MotionMagicVelocityVoltage m_mmVelocityVoltage = new MotionMagicVelocityVoltage(0);
+  private final VelocityVoltage m_mmVelocityVoltage = new VelocityVoltage(0);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1, m_motor2;
   private DoubleSubscriber new_speed_sub;
-  private double new_speed = 90.0;
+  private double new_speed = 95.0;
   private enum State {
     READY(Constants.Dashboard.Colors.GREEN),
     START(Constants.Dashboard.Colors.ORANGE),
@@ -60,8 +72,33 @@ public class ShooterSubsystem extends SubsystemBase {
 			instance = new ShooterSubsystem();
 		return instance;
 	}
-  
+
+  private final VoltageOut m_sysidControl = new VoltageOut(0);
+  private final DutyCycleOut m_joystickControl = new DutyCycleOut(0);
+  private SysIdRoutine m_SysIdRoutine =
+    new SysIdRoutine(
+        new SysIdRoutine.Config(
+            null,         // Default ramp rate is acceptable
+            Volts.of(4), // Reduce dynamic voltage to 4 to prevent motor brownout
+            null,          // Default timeout is acceptable
+                                    // Log state with Phoenix SignalLogger class
+            (state)->SignalLogger.writeString("state", state.toString())),
+        new SysIdRoutine.Mechanism(
+            (Measure<Voltage> volts)-> m_motor1.setControl(m_sysidControl.withOutput(volts.in(Volts))),
+            null,
+            this));
+  public Command joystickDriveCommand(DoubleSupplier output) {
+      return run(()->m_motor1.setControl(m_joystickControl.withOutput(output.getAsDouble())));
+  }
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+      return m_SysIdRoutine.quasistatic(direction);
+  }
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+      return m_SysIdRoutine.dynamic(direction);
+  }
+
   public ShooterSubsystem() {
+    setName("Shooter");
     //initialize values for private and public variables, etc.
     m_motor1 = new TalonFX(Constants.Shooter.Top.kMotorID, Constants.Shooter.canBus);
     StatusCode status1 = StatusCode.StatusCodeNotInitialized;
@@ -84,6 +121,22 @@ public class ShooterSubsystem extends SubsystemBase {
     m_motor2.setInverted(Constants.Shooter.Bottom.kIsInverted);
     // Dont use a follower for disconnected mechanical systems
     // m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
+
+    BaseStatusSignal.setUpdateFrequencyForAll(250,
+      m_motor1.getPosition(),
+      m_motor1.getVelocity(),
+      m_motor1.getMotorVoltage());
+    BaseStatusSignal.setUpdateFrequencyForAll(250,
+      m_motor2.getPosition(),
+      m_motor2.getVelocity(),
+      m_motor2.getMotorVoltage());
+
+    /* Optimize out the other signals, since they're not particularly helpful for us */
+    m_motor1.optimizeBusUtilization();
+    m_motor2.optimizeBusUtilization();
+    
+    SignalLogger.setPath("/home/lvuser/logs/");
+    SignalLogger.start();
 
     init();
     createDashboards();
