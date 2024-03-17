@@ -138,7 +138,7 @@ public class DriveSubsystem extends SubsystemBase {
 		ShuffleboardTab driverTab = Shuffleboard.getTab("Driver");
 		driverTab.add("Swerve Drive", this)
 			.withSize(4, 4)
-			.withPosition(20, 0)
+			.withPosition(20, 5)
 			.withProperties(Map.of("show_robot_rotation","true"));
 		// driverTab.add("Field", getField())
 		// 	.withSize(12,7)

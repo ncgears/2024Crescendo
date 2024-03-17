@@ -583,11 +583,11 @@ public class RobotContainer {
     //   .withSize(11,7)
     //   .withWidget("Alerts");
     // Camera
-    // driverTab.add("Camera", Robot.camera)
-    //   .withPosition(8,0)
-    //   .withSize(11,7)
-    //   // .withProperties(Map.of("Glyph","CAMERA_RETRO","Show Glyph",true,"Show crosshair",true,"Crosshair color","#CCCCCC","Show controls",false))
-    //   .withWidget("Camera Stream");
+    driverTab.add("Camera", Robot.camera)
+      .withPosition(18,0)
+      .withSize(6,5)
+      // .withProperties(Map.of("Glyph","CAMERA_RETRO","Show Glyph",true,"Show crosshair",true,"Crosshair color","#CCCCCC","Show controls",false))
+      .withWidget("Camera Stream");
   }
 
   private void buildDebugTab(){

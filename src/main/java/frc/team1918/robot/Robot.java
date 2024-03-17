@@ -7,6 +7,7 @@
 
 package frc.team1918.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
 import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.PixelFormat;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -66,10 +68,10 @@ public class Robot extends TimedRobot {
     DriverStation.silenceJoystickConnectionWarning(true);
 
     //Setup camera
-    // camera = CameraServer.startAutomaticCapture();
+    camera = CameraServer.startAutomaticCapture();
+    camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 15);
     // camera.setResolution(640, 480);
     // camera.setFPS(20);
-    // camera.setVideoMode(PixelFormat.kMJPEG, 320, 240, 30);
 
     //Create forwarder
     //ll3 (photonvision)
