@@ -266,8 +266,8 @@ public class DriveSubsystem extends SubsystemBase {
 	public void autoSuppressVision() {
 		if(Constants.Vision.kUseAutosuppress) {
 			ChassisSpeeds speeds = getSpeeds();
-			//TODO: Proper calculation for speed of robot on field
-			m_suppressVision = (speeds.vxMetersPerSecond >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
+			//if the speed is over threshold, suppress vision measurements from being added to pose
+			m_suppressVision = (speeds.vxMetersPerSecond+speeds.vyMetersPerSecond >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
 		}
 	}
 
