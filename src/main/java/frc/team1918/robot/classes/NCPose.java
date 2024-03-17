@@ -74,13 +74,13 @@ public class NCPose {
 	 */
 	private static final double m_fieldLength = Constants.Vision.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
-        SOURCE(0,0,0,120),  //TODO: determine positions
+        SOURCE(0,0,0,120),  //determine positions
 		AMPDUMP(5.4,5.0,2.1,0),
         AMP(1.8415,8.2042,0.889,-90),
         SPEAKER(0.23,5.547868,2.0447,180),
-        STAGE_NORTH(0,0,0,-60),
-        STAGE_SOUTH(0,0,0,60),
-        STAGE_CENTER(0,0,0,180);
+        STAGE_NORTH(0,0,0,-60), //determine positions
+        STAGE_SOUTH(0,0,0,60), //determine positions
+        STAGE_CENTER(0,0,0,180); //determine positions
         private final double x,y,z,angle;
         Targets(double x, double y, double z, double angle) { this.x=x; this.y=y; this.z=z; this.angle=angle; }
 		public Rotation2d getAngle() { return new Rotation2d(this.angle); }

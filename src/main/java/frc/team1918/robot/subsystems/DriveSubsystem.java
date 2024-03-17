@@ -63,8 +63,6 @@ public class DriveSubsystem extends SubsystemBase {
 	private double target_heading = 0.0;
 	private boolean heading_locked = false;
 	private boolean m_suppressVision = false;
-	//TODO: write trigger for speed to auto supress vision
-
 
 	public static DriveSubsystem getInstance() {
 		if (instance == null)
@@ -110,6 +108,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void periodic() {
 		if(Robot.isSimulation()) updateSim();
 		RobotContainer.pose.updatePose();
+		autoSuppressVision(); //automatically suppress vision addition based on speed (if enabled)
 		if(!m_suppressVision) RobotContainer.pose.correctPoseWithVision();
 		field.setRobotPose(RobotContainer.pose.getPose());
 	}
@@ -118,7 +117,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public void initSendable(SendableBuilder builder) {
 		builder.setSmartDashboardType("SwerveDrive");
 		builder.setActuator(true);
-		//builder.setSafeState(this::disable); //function for safe state to  make sure things dont move
+		//builder.setSafeState(this::disable); //function for safe state to make sure things dont move
 		builder.addDoubleProperty("Front Left Angle", () -> Helpers.General.roundDouble(m_frontLeft.getAngle().getDegrees(),2), null);
 		builder.addDoubleProperty("Front Left Velocity", () -> Helpers.General.roundDouble(m_frontLeft.getVelocity(),3), null);
 
@@ -262,6 +261,14 @@ public class DriveSubsystem extends SubsystemBase {
 
 	public Command unsuppressVisionC() {
 		return runOnce(() -> setSuppressVision(false));
+	}
+
+	public void autoSuppressVision() {
+		if(Constants.Vision.kUseAutosuppress) {
+			ChassisSpeeds speeds = getSpeeds();
+			//TODO: Proper calculation for speed of robot on field
+			m_suppressVision = (speeds.vxMetersPerSecond >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
+		}
 	}
 
 	public boolean getHeadingLocked() { return heading_locked; }
