@@ -29,9 +29,9 @@ public class InputAxis implements DoubleSupplier {
   //     return name;
   // }
 
-  private double inputValue() {
-    return m_supplier.getAsDouble();
-  }
+  // private double inputValue() {
+  //   return m_supplier.getAsDouble();
+  // }
 
   public InputAxis withSlewRate(double forward, double back) {
     // limiter = new AsymmetricSlewRateLimiter(forward, back);
