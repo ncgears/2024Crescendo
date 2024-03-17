@@ -209,6 +209,14 @@ public class DriveSubsystem extends SubsystemBase {
 
 		if(Constants.Swerve.debugDashboard) {
 		}
+
+		if(Constants.Vision.debugDashboard) {
+			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
+			debugTab.addBoolean("Suppressed", this::isVisionSuppressed)
+			  .withSize(2, 2)
+			  .withWidget("Boolean Box")
+			  .withPosition(0, 2);  
+		}
 	}
 
 	public void init() {
@@ -264,12 +272,13 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void autoSuppressVision() {
-		if(Constants.Vision.kUseAutosuppress) {
+		if(Constants.Vision.kUseAutoSuppress) {
 			ChassisSpeeds speeds = getSpeeds();
 			//if the speed is over threshold, suppress vision measurements from being added to pose
 			m_suppressVision = (speeds.vxMetersPerSecond+speeds.vyMetersPerSecond >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
 		}
 	}
+	public boolean isVisionSuppressed() { return m_suppressVision; }
 
 	public boolean getHeadingLocked() { return heading_locked; }
 	public String getHeadingLockedColor() {
