@@ -140,12 +140,11 @@ public final class CTREConfigs {
             .withMotionMagicJerk(Constants.Aimer.kMotionMagicJerk);
         aimerFXConfig.MotionMagic = aimerMotionMagicConfigs;
         //Mechanical Limits
-        //TODO: Move these to constants
         SoftwareLimitSwitchConfigs aimerSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
-            .withReverseSoftLimitEnable(true)
-            .withReverseSoftLimitThreshold(0)
-            .withForwardSoftLimitEnable(false)
-            .withForwardSoftLimitThreshold(0);
+            .withReverseSoftLimitEnable(Constants.Aimer.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(Constants.Aimer.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(Constants.Aimer.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(Constants.Aimer.kSoftForwardLimit);
         aimerFXConfig.SoftwareLimitSwitch = aimerSoftwareLimitSwitchConfigs;
         // HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)
@@ -198,12 +197,11 @@ public final class CTREConfigs {
             .withMotionMagicJerk(Constants.Arm.kMotionMagicJerk);
         armFXConfig.MotionMagic = armMotionMagicConfigs;
         //Mechanical Limits
-        //TODO: Move these to constants
         SoftwareLimitSwitchConfigs armSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
-            .withReverseSoftLimitEnable(true)
-            .withReverseSoftLimitThreshold(0)
-            .withForwardSoftLimitEnable(false)
-            .withForwardSoftLimitThreshold(0);
+            .withReverseSoftLimitEnable(Constants.Arm.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(Constants.Arm.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(Constants.Arm.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(Constants.Arm.kSoftForwardLimit);
         armFXConfig.SoftwareLimitSwitch = armSoftwareLimitSwitchConfigs;
         // HardwareLimitSwitchConfigs armHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)
@@ -257,12 +255,11 @@ public final class CTREConfigs {
             .withMotionMagicJerk(Constants.Climber.kMotionMagicJerk);
         climberFXConfig.MotionMagic = climberMotionMagicConfigs;
         //Mechanical Limits
-        //TODO: Move these to constants
         SoftwareLimitSwitchConfigs climberSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
-            .withReverseSoftLimitEnable(true)
-            .withReverseSoftLimitThreshold(0)
-            .withForwardSoftLimitEnable(true)
-            .withForwardSoftLimitThreshold(Constants.Climber.Positions.kFwdLimit);
+            .withReverseSoftLimitEnable(Constants.Climber.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(Constants.Climber.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(Constants.Climber.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(Constants.Climber.kSoftForwardLimit);
         climberFXConfig.SoftwareLimitSwitch = climberSoftwareLimitSwitchConfigs;
         // HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)

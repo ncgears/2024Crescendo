@@ -151,6 +151,8 @@ public class Constants {
      */
     public static final class Vision {
         public static final boolean debugDashboard = false; //enable debugging dashboard
+        public static final boolean kUseAutosuppress = false; //enable suppressing vision measurements based on speed
+        public static final double kAutosuppressSpeedMetersPerSecond = 2.5; //speed at which to suppress vision addition
         public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
         // The standard deviations of our vision estimated poses, which affect correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)
@@ -277,6 +279,10 @@ public class Constants {
             public static final double kShotShort = 0.1620;
             public static final double kShotLong = 0.1010;
         }
+        public static final boolean kSoftForwardLimitEnable = true;
+        public static final double kSoftForwardLimit = Positions.kFwdLimit;
+        public static final boolean kSoftReverseLimitEnable = true;
+        public static final double kSoftReverseLimit = Positions.kRevLimit;
     }
 
     /**
@@ -315,8 +321,12 @@ public class Constants {
             public static final double kIntake = 0.0;
             public static final double kTrapClimb = 0.0932617; //position to prepare for trap climbing
             public static final double kAmp = 0.381; //amp scoring position
-            public static final double kTrap = 0.3; //TODO: find position
+            public static final double kTrap = 0.345; //position to put note in trap
         }
+        public static final boolean kSoftForwardLimitEnable = true;
+        public static final double kSoftForwardLimit = 0.4;
+        public static final boolean kSoftReverseLimitEnable = true;
+        public static final double kSoftReverseLimit = -0.01;
     }
 
     /**
@@ -353,7 +363,7 @@ public class Constants {
         public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
         public static final double kCurrentLimitAmps = 30.0;
         public static final double kCurrentLimitThresholdAmps = 60.0;
-        public static final double kCurrentLimitThresholdSecs = 0.345;
+        public static final double kCurrentLimitThresholdSecs = 0.3;
         public class Positions {
             public static final double kArmLimit = 1.5732421875; //max height of climber when arm swings over
             public static final double kTop = 3.12158203125; //max height
@@ -361,11 +371,14 @@ public class Constants {
             public static final double kBottom = 0.0; //all the way down
             public static final double kTopHookCapture = 1.440918; //robot climber to capture top hook
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
-            //TODO: Get trap climb position values
             public static final double kMidHookClear = kTop; //drive mid hook onto chain
             public static final double kLatchClimb = 0.0; //chain is on latches
             public static final double kLatchClear = 0.0; //chain is below latches
         }
+        public static final boolean kSoftForwardLimitEnable = true;
+        public static final double kSoftForwardLimit = Positions.kFwdLimit;
+        public static final boolean kSoftReverseLimitEnable = true;
+        public static final double kSoftReverseLimit = -0.01;
     }
 
     /**
