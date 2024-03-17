@@ -150,8 +150,8 @@ public class Constants {
      * Constants for the Vision class
      */
     public static final class Vision {
-        public static final boolean debugDashboard = false; //enable debugging dashboard
-        public static final boolean kUseAutoSuppress = false; //enable suppressing vision measurements based on speed
+        public static final boolean debugDashboard = true; //enable debugging dashboard
+        public static final boolean kUseAutoSuppress = true; //enable suppressing vision measurements based on speed
         public static final double kAutosuppressSpeedMetersPerSecond = 2.5; //speed at which to suppress vision addition
         public static final AprilTagFieldLayout kTagLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
         // The standard deviations of our vision estimated poses, which affect correction rate
