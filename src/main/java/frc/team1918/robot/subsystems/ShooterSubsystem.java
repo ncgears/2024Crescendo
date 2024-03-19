@@ -240,7 +240,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * @return The speed of the shooter in revolutions per second
    */
   public double getCurrentTopSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
-  public double getCurrentBottomSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
+  public double getCurrentBottomSpeed() { return Helpers.General.roundDouble(m_motor2.getVelocity().getValue(),2); }
 
   /**
    * Sets the speed of the shooter
