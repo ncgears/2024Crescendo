@@ -366,11 +366,11 @@ public class RobotContainer {
         .andThen(climber.runOnce(climber::climberTrapClimb))
         .andThen(new WaitCommand(0.5))
         .andThen(arm.runOnce(arm::armTrap))
-      )
-      .onFalse(
-        arm.runOnce(arm::armTrapClimb)
-        .andThen(climber.runOnce(climber::climberLatchClear))
       );
+      // .onFalse(
+      //   arm.runOnce(arm::armTrapClimb)
+      //   .andThen(climber.runOnce(climber::climberLatchClear))
+      // );
     // oj.povDown().onTrue(climber.runOnce(climber::ratchetLock));
     // oj.povUp().onTrue(climber.runOnce(climber::ratchetFree));
     // AMP DUMP TRACKING
