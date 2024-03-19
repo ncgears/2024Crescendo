@@ -122,21 +122,31 @@ public class ShooterSubsystem extends SubsystemBase {
     // Dont use a follower for disconnected mechanical systems
     // m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
 
+    /** All this is for cleaning CANbus utilization
+    // This changes the frequency of updates from signals we are interested in 
     BaseStatusSignal.setUpdateFrequencyForAll(250,
       m_motor1.getPosition(),
       m_motor1.getVelocity(),
-      m_motor1.getMotorVoltage());
+      m_motor1.getMotorVoltage(),
+      m_motor2.getClosedLoopReference()
+      );
     BaseStatusSignal.setUpdateFrequencyForAll(250,
       m_motor2.getPosition(),
       m_motor2.getVelocity(),
-      m_motor2.getMotorVoltage());
-
-    /* Optimize out the other signals, since they're not particularly helpful for us */
+      m_motor2.getMotorVoltage(),
+      m_motor2.getClosedLoopReference()
+      );
+    
+    // Optimize out the other signals, since they're not particularly helpful for us 
     m_motor1.optimizeBusUtilization();
     m_motor2.optimizeBusUtilization();
-    
+    */
+
+    /**
+    //Sets the save location for signal logger and starts it, needed for sysid
     SignalLogger.setPath("/home/lvuser/logs/");
     SignalLogger.start();
+    */
 
     init();
     createDashboards();
@@ -240,7 +250,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * @return The speed of the shooter in revolutions per second
    */
   public double getCurrentTopSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
-  public double getCurrentBottomSpeed() { return Helpers.General.roundDouble(m_motor1.getVelocity().getValue(),2); }
+  public double getCurrentBottomSpeed() { return Helpers.General.roundDouble(m_motor2.getVelocity().getValue(),2); }
 
   /**
    * Sets the speed of the shooter

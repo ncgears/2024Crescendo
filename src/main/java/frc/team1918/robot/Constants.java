@@ -390,15 +390,16 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast; 
         public static final boolean isInverted = false;
-        public static final double kGearRatio = 1.0; //Adjust for gearing on output of Falcon
+        public static final double kGearRatio = 1.0; //0.66667; //36:24 pulley //Adjust for gearing on output of Falcon
         public static final double kMaxRPS = Global.kFalconMaxRPS * kGearRatio; //The Maximum free speed of the shooter
         public static final double kSpeedToleranceOptimal = 2.0; //How close in RPS is considered at speed
         public static final double kSpeedToleranceAcceptable = 5.0; //How close in RPS is considered close enough to shoot
         //PID Control
-        public static final double kS = 0.24; // add kS to overcome static friction: adjust first to start moving
-        public static final double kV = 0.24; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
-        public static final double kA = 0.01; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
-        public static final double kP = 0.14; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
+        //these are based on SysId characterization with 1:1 pulleys on 3/17/2024
+        public static final double kS = 0.1367; // add kS to overcome static friction: adjust first to start moving
+        public static final double kV = 0.12189; // add kV for velocity target: voltage(12) / velocity target.. 1 rps results in 0.12v output
+        public static final double kA = 0.0080711; // add kA for acceleration: 0.01 = 1 rps/s requires 0.01v output
+        public static final double kP = 0.18331; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
         public static final double kI = 0.0; // no integral
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
         public static final double kMotionMagicCruise = 40; // Motor Max / Gear Ratio

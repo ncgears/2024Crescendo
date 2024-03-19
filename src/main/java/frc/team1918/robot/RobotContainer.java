@@ -380,12 +380,14 @@ public class RobotContainer {
       .onFalse(arm.runOnce(arm::armIntake));
 
     //** PROGRAMMER STUFF */
+    /** Bindings for SysId 
     shooter.setDefaultCommand(shooter.joystickDriveCommand(pj::getLeftY));
     pj.y().whileTrue(shooter.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     pj.a().whileTrue(shooter.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     pj.b().whileTrue(shooter.sysIdDynamic(SysIdRoutine.Direction.kForward));
     pj.x().whileTrue(shooter.sysIdDynamic(SysIdRoutine.Direction.kReverse));
     pj.leftBumper().onTrue(new RunCommand(SignalLogger::stop));
+    */
 
     /** AUTONOMOUS ACTIONS */
     aimer.isTracking.or(pose.isTracking).and(aimer.isReady.negate().or(pose.isReady.negate()))
@@ -523,7 +525,7 @@ public class RobotContainer {
     );
     NamedCommands.registerCommand("trackedShot", new SequentialCommandGroup(
       new InstantCommand(() -> pose.trackingStart()),
-      new WaitCommand(0.25),
+      new WaitCommand(0.5),
       indexer.runOnce(indexer::indexerUp),
       new WaitCommand(0.25),
       indexer.runOnce(indexer::indexerStop),
