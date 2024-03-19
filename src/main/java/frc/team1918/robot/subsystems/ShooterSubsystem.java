@@ -122,6 +122,7 @@ public class ShooterSubsystem extends SubsystemBase {
     // Dont use a follower for disconnected mechanical systems
     // m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
 
+    /**  This changes the frequency of updates from signals
     BaseStatusSignal.setUpdateFrequencyForAll(250,
       m_motor1.getPosition(),
       m_motor1.getVelocity(),
@@ -130,6 +131,7 @@ public class ShooterSubsystem extends SubsystemBase {
       m_motor2.getPosition(),
       m_motor2.getVelocity(),
       m_motor2.getMotorVoltage());
+    */
 
     /* Optimize out the other signals, since they're not particularly helpful for us */
     m_motor1.optimizeBusUtilization();
