@@ -349,27 +349,30 @@ public class RobotContainer {
       .onTrue(climber.runOnce(climber::ratchetFree).andThen(new WaitCommand(0.75)).andThen(climber.runOnce(climber::climberTopCapture)))
       .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
     // // TRAP CLIMB
-    // oj.povLeft().or(dj.povLeft())
-    //   .onTrue(
-    //     climber.runOnce(climber::ratchetFree)
-    //       .andThen(arm.runOnce(arm::armTrapClimb))
-    //       .andThen(aimer.runOnce(aimer::aimerTrapClimb))
-    //       .andThen(climber.runOnce(climber::climberMidCapture))
-    //   )
-    //   .onFalse(
-    //     climber.runOnce(climber::climberLatchClear)
-    //   );
-    // oj.povUp().or(dj.povUp())
-    //   .onTrue(
-    //     arm.runOnce(arm::armTrap)
-    //     .andThen(climber.runOnce(climber::climberTrapClimb))
-    //   )
-    //   .onFalse(
-    //     arm.runOnce(arm::armTrapClimb)
-    //     .andThen(climber.runOnce(climber::climberLatchClear))
-    //   );
-    oj.povDown().onTrue(climber.runOnce(climber::ratchetLock));
-    oj.povUp().onTrue(climber.runOnce(climber::ratchetFree));
+    oj.povLeft().or(dj.povLeft())
+      .onTrue(
+        climber.runOnce(climber::ratchetFree)
+          .andThen(arm.runOnce(arm::armTrapClimb))
+          .andThen(aimer.runOnce(aimer::aimerTrapClimb))
+          .andThen(climber.runOnce(climber::climberMidCapture))
+      )
+      .onFalse(
+        climber.runOnce(climber::climberLatchClear)
+      );
+    oj.povUp().or(dj.povUp())
+      .onTrue(
+        arm.runOnce(arm::armTrapBalance)
+        .andThen(new WaitCommand(0.5))
+        .andThen(climber.runOnce(climber::climberTrapClimb))
+        .andThen(new WaitCommand(0.5))
+        .andThen(arm.runOnce(arm::armTrap))
+      )
+      .onFalse(
+        arm.runOnce(arm::armTrapClimb)
+        .andThen(climber.runOnce(climber::climberLatchClear))
+      );
+    // oj.povDown().onTrue(climber.runOnce(climber::ratchetLock));
+    // oj.povUp().onTrue(climber.runOnce(climber::ratchetFree));
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
       .onTrue(new InstantCommand(pose::setTrackingAmpDump))

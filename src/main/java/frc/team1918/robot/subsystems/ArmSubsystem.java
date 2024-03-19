@@ -38,6 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
     INTAKE(Constants.Arm.Positions.kIntake),
     AMP(Constants.Arm.Positions.kAmp),
     TRAP(Constants.Arm.Positions.kTrap),
+    TRAPBAL(Constants.Arm.Positions.kTrapBalance),
     TRAPCLIMB(Constants.Arm.Positions.kTrapClimb);
     private final double position;
     Position(double position) { this.position = position; }
@@ -164,6 +165,10 @@ public class ArmSubsystem extends SubsystemBase {
   public void armTrapClimb() {
     setPosition(Position.TRAPCLIMB);
     Helpers.Debug.debug("Arm: TrapClimb Position");
+  }
+  public void armTrapBalance() {
+    setPosition(Position.TRAPBAL);
+    Helpers.Debug.debug("Arm: TrapBalance Position");
   }
   public void armTrap() {
     setPosition(Position.TRAP);

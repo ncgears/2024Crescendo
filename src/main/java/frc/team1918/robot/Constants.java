@@ -319,6 +319,7 @@ public class Constants {
         //Positions
         public class Positions {
             public static final double kIntake = 0.0;
+            public static final double kTrapBalance = 0.2751465; //position for balancing for trap climb
             public static final double kTrapClimb = 0.0932617; //position to prepare for trap climbing
             public static final double kAmp = 0.381; //amp scoring position
             public static final double kTrap = 0.345; //position to put note in trap
@@ -339,7 +340,7 @@ public class Constants {
         public static final boolean isDisabled = false; //disable climber default command
         public static final int kCANcoderID = ID.CANcoder.climber;
         public static final boolean kUseCANcoder = true;
-        public static final double kMagnetOffset = -0.5476074; //Adjust magnet to sensor offset for CANcoder
+        public static final double kMagnetOffset = -0.769873; //Adjust magnet to sensor offset for CANcoder
         public static final int kMotorID = ID.Falcon.climber;
         public static final boolean kIsInverted = true;
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast;
@@ -366,8 +367,8 @@ public class Constants {
         public static final double kCurrentLimitThresholdSecs = 0.3;
         public class Positions {
             public static final double kArmLimit = 1.5732421875; //max height of climber when arm swings over
-            public static final double kTop = 3.492678; //max height
-            public static final double kFwdLimit = 3.492678; //absolute limit
+            public static final double kTop = 3.3008; //max height
+            public static final double kFwdLimit = 3.3008; //absolute limit
             public static final double kBottom = 0.0; //all the way down
             public static final double kTopHookCapture = 1.440918; //robot climber to capture top hook
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
