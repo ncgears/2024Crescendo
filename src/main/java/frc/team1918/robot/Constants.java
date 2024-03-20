@@ -410,7 +410,7 @@ public class Constants {
         //Current Limiting
         public static final double kPeakFwdVoltage = 12.0;
         public static final double kPeakRevVoltage = -12.0;
-        public static final boolean kCurrentLimitEnable = true;
+        public static final boolean kCurrentLimitEnable = false;
         public static final double kCurrentLimitAmps = 10.0;
         public static final double kCurrentLimitThresholdAmps = 15.0;
         public static final double kCurrentLimitThresholdSecs = 0.3;
@@ -462,7 +462,7 @@ public class Constants {
         public static final int kDriveCurrentLimitAmps = 38;
         public static final int kDriveCurrentThresholdAmps = 45;
         public static final double kDriveCurrentThresholdSecs = 0.3;
-        public static final boolean kDriveStatorCurrentLimitEnable = true;
+        public static final boolean kDriveStatorCurrentLimitEnable = false;
         public static final int kDriveStatorCurrentLimitAmps = 100;
 
         /*
