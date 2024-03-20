@@ -225,7 +225,7 @@ public class Constants {
         public static final int kMotorID = ID.Talon.indexer;
         public static final boolean kIsInverted = false;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
-        public static final double kSpeed = 0.9;
+        public static final double kSpeed = 1.0;
         public static final int kBeamBreakID = ID.DIO.indexer_beambreak;
     }
     
@@ -348,7 +348,8 @@ public class Constants {
         public static final int kLeftServoID = ID.PWM.climber_leftServo;
         public static final int kRightServoID = ID.PWM.climber_rightServo;
         public static final int kRatchetServoID = ID.PWM.climber_ratchetServo;
-        public static final double kGearRatio = 26.67; // 12:1 gearbox, 18t:40t -- this is between rotor and sensor
+        // public static final double kGearRatio = 26.67; // 12:1 gearbox, 18t:40t -- this is between rotor and sensor
+        public static final double kGearRatio = 44.445; // 20:1 gearbox (0.05), 18t:40t -- this is between rotor and sensor
         public static final double kSensorGearRatio = 1.0; // no gearing between sensor and spool -- this is between sensor and spool
         //PID Control
         public static final double kS = 0.22; // add kS to overcome static friction: adjust first to start moving

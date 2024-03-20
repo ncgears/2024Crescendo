@@ -302,7 +302,10 @@ public class RobotContainer {
 
     // POSE TRACKING
     oj.leftTrigger().or(dj.leftTrigger())
-      .onTrue(new InstantCommand(() -> pose.trackingStart()))
+      .onTrue(
+        new InstantCommand(() -> pose.trackingStart())
+        .alongWith(arm.runOnce(arm::armIntake))
+      )
       .onFalse(new InstantCommand(() -> pose.trackingStop()));
     // POSE TRACKING
     oj.y()
