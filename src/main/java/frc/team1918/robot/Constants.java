@@ -358,9 +358,9 @@ public class Constants {
         public static final double kP = 32.0; // add kP per rotation of error: error of 1 rotation results in 12v output (this might be low for aimer)
         public static final double kI = 0.01; // no integral
         public static final double kD = 0.0; // 0.1 = velocity error of 1rps results in 0.1v output
-        public static final double kMotionMagicCruise = 20; // Motor Max / Gear Ratio
-        public static final double kMotionMagicAccel = 40; // Acceleration: Cruise / Accel = time to cruise
-        public static final double kMotionMagicJerk = 800; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
+        public static final double kMotionMagicCruise = 30; // Motor Max / Gear Ratio
+        public static final double kMotionMagicAccel = 60; // Acceleration: Cruise / Accel = time to cruise
+        public static final double kMotionMagicJerk = 1000; //0=disabled; 10-20x accel for smooth; lower for smoother motion at the cost of time: accel / jerk = jerk time
         //Current Limiting
         public static final boolean kCurrentLimitEnable = false; // TODO: Test current limits
         public static final double kCurrentLimitAmps = 30.0;
