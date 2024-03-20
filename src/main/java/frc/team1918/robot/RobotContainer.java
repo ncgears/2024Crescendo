@@ -364,12 +364,13 @@ public class RobotContainer {
       );
     oj.povUp().or(dj.povUp())
       .onTrue(
-        climber.runOnce(climber::ratchetLock)
-        .andThen(arm.runOnce(arm::armTrapBalance))
+        arm.runOnce(arm::armTrapBalance)
         .andThen(new WaitCommand(0.5))
         .andThen(climber.runOnce(climber::climberTrapClimb))
         .andThen(new WaitCommand(0.5))
         .andThen(arm.runOnce(arm::armTrap))
+        .andThen(new WaitCommand(3))
+        .andThen(climber.runOnce(climber::ratchetLock))
       );
       // .onFalse(
       //   arm.runOnce(arm::armTrapClimb)
