@@ -43,8 +43,8 @@ public class ShooterSubsystem extends SubsystemBase {
 	private static ShooterSubsystem instance;
   //private and public variables defined here
   public double target_speed = 85.0;
-  // private final MotionMagicVelocityVoltage m_mmVelocityVoltage = new MotionMagicVelocityVoltage(0);
-  private final VelocityVoltage m_mmVelocityVoltage = new VelocityVoltage(0);
+  private final MotionMagicVelocityVoltage m_mmVelocityVoltage = new MotionMagicVelocityVoltage(0);
+  // private final VelocityVoltage m_mmVelocityVoltage = new VelocityVoltage(0);
   private NeutralOut m_brake = new NeutralOut();
   private TalonFX m_motor1, m_motor2;
   private DoubleSubscriber new_speed_sub;

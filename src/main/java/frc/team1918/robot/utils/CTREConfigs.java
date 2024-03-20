@@ -229,7 +229,7 @@ public final class CTREConfigs {
 
         //Climber
         //CANcoder
-        climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+        climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         climberCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
         climberCCConfig.MagnetSensor.MagnetOffset = Constants.Climber.kMagnetOffset;
 
