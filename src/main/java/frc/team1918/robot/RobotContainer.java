@@ -355,16 +355,17 @@ public class RobotContainer {
     oj.povLeft().or(dj.povLeft())
       .onTrue(
         climber.runOnce(climber::ratchetFree)
-          .andThen(arm.runOnce(arm::armTrapClimb))
-          .andThen(aimer.runOnce(aimer::aimerTrapClimb))
-          .andThen(climber.runOnce(climber::climberMidCapture))
+        .andThen(arm.runOnce(arm::armTrapClimb))
+        .andThen(aimer.runOnce(aimer::aimerTrapClimb))
+        .andThen(climber.runOnce(climber::climberMidCapture))
       )
       .onFalse(
         climber.runOnce(climber::climberLatchClear)
       );
     oj.povUp().or(dj.povUp())
       .onTrue(
-        arm.runOnce(arm::armTrapBalance)
+        climber.runOnce(climber::ratchetLock)
+        .andThen(arm.runOnce(arm::armTrapBalance))
         .andThen(new WaitCommand(0.5))
         .andThen(climber.runOnce(climber::climberTrapClimb))
         .andThen(new WaitCommand(0.5))
@@ -374,8 +375,8 @@ public class RobotContainer {
       //   arm.runOnce(arm::armTrapClimb)
       //   .andThen(climber.runOnce(climber::climberLatchClear))
       // );
-    // oj.povDown().onTrue(climber.runOnce(climber::ratchetLock));
-    // oj.povUp().onTrue(climber.runOnce(climber::ratchetFree));
+    oj.povDown().onTrue(climber.runOnce(climber::ratchetFree));
+    oj.povRight().onTrue(climber.runOnce(climber::ratchetLock));
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
       .onTrue(new InstantCommand(pose::setTrackingAmpDump))
