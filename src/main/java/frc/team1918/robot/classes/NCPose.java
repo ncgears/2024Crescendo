@@ -75,7 +75,7 @@ public class NCPose {
 	private static final double m_fieldLength = Constants.Vision.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
         SOURCE(0,0,0,120),  //determine positions
-		AMPDUMP(0,7.7,5.5,0),
+		AMPDUMP(0,7.7,11.0,0),
         AMP(1.8415,8.2042,0.889,-90),
         SPEAKER(0.23,5.547868,2.0447,180),
         STAGE_NORTH(0,0,0,-60), //determine positions

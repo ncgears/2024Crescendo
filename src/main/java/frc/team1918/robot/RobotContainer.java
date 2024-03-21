@@ -351,7 +351,7 @@ public class RobotContainer {
     oj.a().or(dj.a())
       .onTrue(climber.runOnce(climber::ratchetFree).andThen(new WaitCommand(0.75)).andThen(climber.runOnce(climber::climberTopCapture)))
       .onFalse(climber.runOnce(climber::ratchetLock).andThen(climber.runOnce(climber::climberTopClimb)));
-    // // TRAP CLIMB
+    // TRAP CLIMB
     oj.povLeft().or(dj.povLeft())
       .onTrue(
         climber.runOnce(climber::ratchetFree)
@@ -380,8 +380,14 @@ public class RobotContainer {
     oj.povRight().onTrue(climber.runOnce(climber::ratchetLock));
     // AMP DUMP TRACKING
     oj.b().or(dj.b())
-      .onTrue(new InstantCommand(pose::setTrackingAmpDump))
-      .onFalse(new InstantCommand(pose::setTrackingSpeaker));
+      .onTrue(
+        new InstantCommand(() -> shooter.setTarget(70))
+        .andThen(new InstantCommand(pose::setTrackingAmpDump))
+      )
+      .onFalse(
+        new InstantCommand(() -> shooter.setTarget(85))
+        .andThen(new InstantCommand(pose::setTrackingSpeaker))
+      );
     // ARM UP
     (oj.rightBumper().or(dj.rightBumper())).and(pose.isTracking.negate().or(pose.isTargetSpeaker.negate()))
       .onTrue(arm.runOnce(arm::armAmp))
