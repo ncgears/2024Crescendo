@@ -160,7 +160,7 @@ public class Constants {
         public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
         public static final class Front { //forward facing camera
             public static final String kCameraName = "llcam1";
-            public static final boolean kUseForPose = true;
+            public static final boolean kUseForPose = false;
             public static final Transform3d kRobotToCam = new Transform3d(
                 new Translation3d(-0.34,-0.195,0.23), //x,y,z location of camera on robot in meters
                 new Rotation3d(0,Math.toRadians(33),0) //yaw,pitch/roll of camera on robot in radians
