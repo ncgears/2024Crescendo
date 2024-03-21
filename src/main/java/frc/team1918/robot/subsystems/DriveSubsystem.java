@@ -275,7 +275,11 @@ public class DriveSubsystem extends SubsystemBase {
 		if(Constants.Vision.kUseAutoSuppress) {
 			ChassisSpeeds speeds = getSpeeds();
 			//if the speed is over threshold, suppress vision measurements from being added to pose
-			m_suppressVision = (speeds.vxMetersPerSecond+speeds.vyMetersPerSecond >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
+			m_suppressVision = (
+				Math.sqrt(
+					Math.pow(speeds.vxMetersPerSecond,2) + 
+					Math.pow(speeds.vyMetersPerSecond,2)
+				) >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
 		}
 	}
 	public boolean isVisionSuppressed() { return m_suppressVision; }
