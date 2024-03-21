@@ -207,7 +207,7 @@ public class NCPose {
 				var estPose = est.estimatedPose.toPose2d();
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "front");
-				RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+				if(Constants.Vision.Front.kUseForPose) RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
 			}
 		);
 		var visionEstBack = RobotContainer.vision.getEstimatedGlobalPose("back");
@@ -216,7 +216,7 @@ public class NCPose {
 				var estPose = est.estimatedPose.toPose2d();
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
-				RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+				if(Constants.Vision.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
 			}
 		);
 	}
