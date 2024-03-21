@@ -142,11 +142,11 @@ public class ShooterSubsystem extends SubsystemBase {
     m_motor2.optimizeBusUtilization();
     */
 
-    /**
+    /** */
     //Sets the save location for signal logger and starts it, needed for sysid
-    SignalLogger.setPath("/home/lvuser/logs/");
-    SignalLogger.start();
-    */
+    // SignalLogger.setPath("/home/lvuser/logs/");
+    // SignalLogger.start();
+    /** */
 
     init();
     createDashboards();
