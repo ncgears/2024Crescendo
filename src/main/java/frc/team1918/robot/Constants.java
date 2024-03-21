@@ -392,7 +392,7 @@ public class Constants {
         public static final boolean debugDashboard = true; //enable debugging dashboard
         public static final NeutralModeValue kNeutralMode = NeutralModeValue.Coast; 
         public static final boolean isInverted = false;
-        public static final double kGearRatio = 1.0; //0.66667; //36:24 pulley //Adjust for gearing on output of Falcon
+        public static final double kGearRatio = 0.66667; //36:24 pulley //Adjust for gearing on output of Falcon
         public static final double kMaxRPS = Global.kFalconMaxRPS * kGearRatio; //The Maximum free speed of the shooter
         public static final double kSpeedToleranceOptimal = 2.0; //How close in RPS is considered at speed
         public static final double kSpeedToleranceAcceptable = 5.0; //How close in RPS is considered close enough to shoot
