@@ -78,7 +78,7 @@ public class NCPose {
         SOURCE(0,0,0,120),  //determine positions
 		AMPDUMP(0,7.7,11.0,0),
         AMP(1.8415,8.2042,0.889,-90),
-        SPEAKER(0.23,5.547868,2.0447,180),
+        SPEAKER(0.13,5.547868,2.0447,180),
         STAGE_NORTH(0,0,0,-60), //determine positions
         STAGE_SOUTH(0,0,0,60), //determine positions
         STAGE_CENTER(0,0,0,180); //determine positions
