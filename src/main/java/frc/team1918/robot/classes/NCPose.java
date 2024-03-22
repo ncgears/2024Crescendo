@@ -206,9 +206,11 @@ public class NCPose {
 		visionEstFront.ifPresent(
 			est -> {
 				var estPose = est.estimatedPose.toPose2d();
+				//workaround for remove camera to robot center
+				estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "front");
-				if(Constants.Vision.Front.kUseForPose) RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+				if(Constants.Vision.Front.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
 			}
 		);
 		var visionEstBack = RobotContainer.vision.getEstimatedGlobalPose("back");
@@ -216,10 +218,10 @@ public class NCPose {
 			est -> {
 				var estPose = est.estimatedPose.toPose2d();
 				//workaround for remove camera to robot center
-				estPose.transformBy(new Transform2d(new Translation2d(0.34,-0.19), new Rotation2d())); 
+				estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
-				if(Constants.Vision.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
+				if(Constants.Vision.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
 			}
 		);
 	}
