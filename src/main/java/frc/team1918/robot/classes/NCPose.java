@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -214,6 +215,8 @@ public class NCPose {
 		visionEstBack.ifPresent(
 			est -> {
 				var estPose = est.estimatedPose.toPose2d();
+				//workaround for remove camera to robot center
+				estPose.transformBy(new Transform2d(new Translation2d(0.34,-0.19), new Rotation2d())); 
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
 				if(Constants.Vision.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(est.estimatedPose.toPose2d(), est.timestampSeconds, estStdDevs);
