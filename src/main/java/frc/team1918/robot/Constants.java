@@ -370,8 +370,8 @@ public class Constants {
         public static final double kCurrentLimitThresholdSecs = 0.3;
         public class Positions {
             public static final double kArmLimit = 1.5239258; //max height of climber when arm swings over
-            public static final double kTop = 3.2697754; //max height
-            public static final double kFwdLimit = 3.2697754; //absolute limit
+            public static final double kTop = 3.287; //max height
+            public static final double kFwdLimit = 3.288; //absolute limit
             public static final double kBottom = 0.0; //all the way down
             public static final double kTopHookCapture = 1.401123; //robot climber to capture top hook
             public static final double kTopHookClimb = 0.0; //robot off the ground using top hook
