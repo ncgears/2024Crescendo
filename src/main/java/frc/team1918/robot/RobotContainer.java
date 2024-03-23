@@ -351,7 +351,7 @@ public class RobotContainer {
     oj.a().or(dj.a())
       .onTrue(
         climber.runOnce(climber::ratchetFree)
-        .andThen(new WaitCommand(0.75))
+        .andThen(new WaitCommand(0.3))
         .andThen(climber.runOnce(climber::climberTopCapture))
       )
       .onFalse(
@@ -362,7 +362,7 @@ public class RobotContainer {
     oj.povLeft().or(dj.povLeft())
       .onTrue(
         climber.runOnce(climber::ratchetFree)
-        .andThen(new WaitCommand(0.5))
+        .andThen(new WaitCommand(0.3))
         .andThen(arm.runOnce(arm::armTrapClimb))
         .andThen(aimer.runOnce(aimer::aimerTrapClimb))
         .andThen(climber.runOnce(climber::climberMidCapture))

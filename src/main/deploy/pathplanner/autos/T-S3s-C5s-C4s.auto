@@ -70,6 +70,12 @@
           "data": {
             "name": "autonStop"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Ss-ToMid"
+          }
         }
       ]
     }
