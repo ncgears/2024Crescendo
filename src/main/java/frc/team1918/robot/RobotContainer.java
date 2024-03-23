@@ -554,6 +554,7 @@ public class RobotContainer {
       )
     );
     NamedCommands.registerCommand("trackedShot", new SequentialCommandGroup(
+      new InstantCommand(() -> shooter.setTarget(90)),
       new InstantCommand(() -> pose.trackingStart()),
       new WaitCommand(0.5),
       indexer.runOnce(indexer::indexerUp),
@@ -573,7 +574,6 @@ public class RobotContainer {
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
       new InstantCommand(() -> shooter.setTarget(90)),
       drive.runOnce(drive::unlockHeading),
-      climber.runOnce(climber::ratchetLock),
       shooter.runOnce(shooter::startShooter),
       new WaitCommand(0.5),
       indexer.runOnce(indexer::indexerUp),
