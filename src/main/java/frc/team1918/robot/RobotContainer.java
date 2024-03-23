@@ -330,6 +330,14 @@ public class RobotContainer {
         aimer.runOnce(aimer::aimerStopAndStow)
         .andThen(shooter.runOnce(shooter::stopShooter))
       );
+    // AIMER STATIC INCREASE
+    oj.ellipses()
+      .onTrue(
+        new InstantCommand(() -> pose.bumpDown())
+      )
+      .onFalse(
+        new InstantCommand(() -> pose.bumpDown())
+      );
     // FIRE!
     (oj.rightTrigger().or(dj.rightTrigger())).and(shooter.isAcceptable.or(arm.atAmp).or(arm.atTrap))
       .onTrue(intake.runOnce(intake::intakeFeed).andThen(indexer.runOnce(indexer::indexerUp)))
@@ -565,6 +573,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("autonStart", new SequentialCommandGroup(
       new InstantCommand(() -> shooter.setTarget(90)),
       drive.runOnce(drive::unlockHeading),
+      climber.runOnce(climber::ratchetLock),
       shooter.runOnce(shooter::startShooter),
       new WaitCommand(0.5),
       indexer.runOnce(indexer::indexerUp),

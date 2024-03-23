@@ -78,7 +78,7 @@ public class NCPose {
         SOURCE(0,0,0,120),  //determine positions
 		AMPDUMP(0,7.7,11.0,0),
         AMP(1.8415,8.2042,0.889,-90),
-        SPEAKER(0.13,5.547868,2.0447,180),
+        SPEAKER(0.13,5.547868,2.0697,180),
         STAGE_NORTH(0,0,0,-60), //determine positions
         STAGE_SOUTH(0,0,0,60), //determine positions
         STAGE_CENTER(0,0,0,180); //determine positions
@@ -110,6 +110,7 @@ public class NCPose {
     private State m_trackingState = State.STOP; //current Tracking state
 	private Targets m_trackingTarget = Targets.SPEAKER; //current Tracking target
 	private Pose3d m_shooterPose = new Pose3d();
+	private boolean m_adjustUp = false;
 	public final Trigger isTargetSpeaker = new Trigger(() -> { return (m_trackingTarget==Targets.SPEAKER); });
 	public final Trigger isTargetAmp = new Trigger(() -> { return (m_trackingTarget==Targets.AMP); });
 	public final Trigger isTargetAmpDump = new Trigger(() -> { return (m_trackingTarget==Targets.AMPDUMP); });
@@ -272,9 +273,14 @@ public class NCPose {
 		Transform3d shooterToTarget = getShooterToTarget(target);
 		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
 		// distance += (distance > Constants.Aimer.kDistanceMinimumForOffset) ? Constants.Aimer.kDistanceOffset : 0;
+		distance -= (m_adjustUp) ? 0.5 : 0.0;
 		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
 		return Rotation2d.fromRadians(angle);
 	}
+
+	public void bumpUp() { m_adjustUp = true; }
+	public void bumpDown() { m_adjustUp = false; }
+
 
 	/**
 	 * getGravityAdjustmentOfTarget calculates a distance based gravity adjustment to the angle of the target to compensate
