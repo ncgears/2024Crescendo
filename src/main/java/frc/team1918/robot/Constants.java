@@ -227,7 +227,7 @@ public class Constants {
         public static final int kMotorID = ID.Talon.indexer;
         public static final boolean kIsInverted = false;
         public static final NeutralMode kNeutralMode = NeutralMode.Brake;
-        public static final double kSpeed = 1.0;
+        public static final double kSpeed = 0.9;
         public static final int kBeamBreakID = ID.DIO.indexer_beambreak;
     }
     
