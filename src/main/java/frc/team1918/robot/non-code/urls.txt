@@ -1,3 +1,9 @@
+### Networking Configuration
+Radio - 10.19.18.1 ##Programmed by Kiosk
+RoboRio - 10.19.18.2/24 (255.255.255.0) ##DHCP by default, Configured in web dashboard networking tab as Static
+Driver Station - 10.19.18.5/8 (255.0.0.0) ##DHCP by default, if /24, default gateway MUST be 10.19.18.4
+Cameras/Devices - 10.19.18.11-19/24
+DHCP Range - 10.19.18.20-199/24
 
 ## Roborio
 http://roborio-1918-frc.local
