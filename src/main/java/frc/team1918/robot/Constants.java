@@ -611,13 +611,14 @@ public class Constants {
         public static final boolean useFieldCentric = true; //use field-centric drive. This should always be true except for testing?
         public static final boolean useDefensiveLock = false; //use defensiveLock strategy when braking putting swerve into X pattern
         public static final boolean useBrakeWhenStopped = false; //set the brake mode when drive speed is 0
-        //NCServe Speed Chart with 4" Colson Wheels and Falcon500 (6380 RPM Free Speed)
-        //16:44 = 13.5fps or 4.11mps
-        //16:40 = 14.85fps or 4.53mps
-        //16:36 = 16.5fps or 5.03mps
-        //16:34 = 17.47fps or 5.32mps
-        //16:32 = 18.56fps or 5.66mps
-        public static final double kMaxMetersPerSecond = 5.66; //limit full stick speed meters to 13.5fps
+        //NCServe Speed Chart with 4" Colson Wheels and Kraken (6000 RPM Free Speed, 5800 RPM with FOC)
+        //16:36 = 15.51ft/s or 4.73m/s
+        //16:34 = 16.43ft/s or 5.01m/s
+        //16:32 = 17.45ft/s or 5.32m/s
+        //16:36 = 13.91ft/s or 4.24m/s FOC
+        //16:34 = 14.73ft/s or 4.49m/s FOC
+        //16:32 = 15.65ft/s or 4.77m/s FOC
+        public static final double kMaxMetersPerSecond = 4.77; //limit full stick speed meters per second
         public static final double kMaxRotationRadiansPerSecond = 2 * Math.PI; //3.4; //Multiplier for omega of turning the robot
         ////Drive Tuning
         public static final boolean DT_DRIVE_DISABLED = false; //Set to true to disable the drive motors (for lab)
