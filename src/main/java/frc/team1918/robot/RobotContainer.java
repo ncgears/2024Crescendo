@@ -120,11 +120,9 @@ public class RobotContainer {
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
 
     private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
-      enabledAlert.set(false);
       return new Trigger(DriverStation::isDisabled);
     }
     private static Trigger enabled() {
-      enabledAlert.set(true);
       return new Trigger(DriverStation::isEnabled);
     }
 
