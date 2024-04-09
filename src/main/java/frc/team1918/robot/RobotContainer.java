@@ -128,6 +128,7 @@ public class RobotContainer {
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    //define the axis using the factory to define deadbands, squaring, inversion, etc.
     final InputAxis m_fwdXAxis = new InputAxis("Forward",dj::getLeftY)
       .withDeadband(Constants.OI.kMinDeadband)
       .withSquaring(true);
@@ -244,7 +245,7 @@ public class RobotContainer {
           .andThen(new WaitCommand(0.15))
           .andThen(lighting.setColorCommand(Colors.NCGREEN))
           .andThen(new WaitCommand(0.25))
-        ).until(disabled().negate())
+        ).until(RobotModeTriggers.disabled().negate())
       )
     );
     // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
