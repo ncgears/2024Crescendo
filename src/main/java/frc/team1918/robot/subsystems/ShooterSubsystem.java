@@ -233,16 +233,40 @@ public class ShooterSubsystem extends SubsystemBase {
 
   private boolean atSetpoint() {
     if(Robot.isSimulation()) return true;
-    double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
-    double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
-    return (Math.abs(error1) <= ShooterConstants.kSpeedToleranceOptimal) && (Math.abs(error2) <= ShooterConstants.kSpeedToleranceOptimal);
+    return (
+      MathUtil.isNear(
+        m_motor1.getClosedLoopReference().getValue(), 
+        m_motor1.getVelocity().getValue(), 
+        ShooterConstants.kSpeedToleranceOptimal
+      )
+      && MathUtil.isNear(
+        m_motor2.getClosedLoopReference().getValue(),
+        m_motor2.getVelocity().getValue(),
+        ShooterConstants.kSpeedToleranceOptimal
+      )
+    );
+    // double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
+    // double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
+    // return (Math.abs(error1) <= ShooterConstants.kSpeedToleranceOptimal) && (Math.abs(error2) <= ShooterConstants.kSpeedToleranceOptimal);
   }
 
   private boolean atShootable() {
     if(Robot.isSimulation()) return true;
-    double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
-    double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
-    return (Math.abs(error1) <= ShooterConstants.kSpeedToleranceAcceptable) && (Math.abs(error2) <= ShooterConstants.kSpeedToleranceAcceptable);
+    return (
+      MathUtil.isNear(
+        m_motor1.getClosedLoopReference().getValue(), 
+        m_motor1.getVelocity().getValue(), 
+        ShooterConstants.kSpeedToleranceAcceptable
+      )
+      && MathUtil.isNear(
+        m_motor2.getClosedLoopReference().getValue(),
+        m_motor2.getVelocity().getValue(),
+        ShooterConstants.kSpeedToleranceAcceptable
+      )
+    );
+    // double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
+    // double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
+    // return (Math.abs(error1) <= ShooterConstants.kSpeedToleranceAcceptable) && (Math.abs(error2) <= ShooterConstants.kSpeedToleranceAcceptable);
   }
 
   /**
