@@ -67,11 +67,11 @@ public class ShooterConstants {
         new Rotation3d(Math.PI,0,0) //yaw,pitch,roll of shooter on robot in radians
     );
     public static final class Top {
-        public static final int kMotorID = ID.Falcon.shootertop;
+        public static final int kMotorID = ID.TalonFX.shootertop;
         public static final boolean kIsInverted = false;
     }
     public static final class Bottom {
-        public static final int kMotorID = ID.Falcon.shooterbottom;
+        public static final int kMotorID = ID.TalonFX.shooterbottom;
         public static final boolean kIsInverted = true;
     }
 }

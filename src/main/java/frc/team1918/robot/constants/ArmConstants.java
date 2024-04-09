@@ -33,7 +33,7 @@ public class ArmConstants {
     public static final int kCANcoderID = ID.CANcoder.arm;
     public static final boolean kUseCANcoder = true;
     public static final double kMagnetOffset = -0.098876953125; //Adjust magnet to sensor offset for CANcoder
-    public static final int kMotorID = ID.Falcon.arm;
+    public static final int kMotorID = ID.TalonFX.arm;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
     public static final double kStowPosition = 0;

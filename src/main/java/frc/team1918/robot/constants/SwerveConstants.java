@@ -92,7 +92,7 @@ public class SwerveConstants {
      */
     public static final class FL {
         public static final boolean isDisabled = false;
-        public static final int DRIVE_MC_ID = ID.Falcon.swerve_fl_drive; //Falcon500 Motor Controller ID
+        public static final int DRIVE_MC_ID = ID.TalonFX.swerve_fl_drive; //Falcon500 Motor Controller ID
         public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
         public static final boolean DRIVE_isInverted = false;
         public static final int TURN_MC_ID = ID.Talon.swerve_fl_turn; //TalonSRX Motor Controller ID
@@ -110,7 +110,7 @@ public class SwerveConstants {
      */
     public static final class FR {
         public static final boolean isDisabled = false; 
-        public static final int DRIVE_MC_ID = ID.Falcon.swerve_fr_drive; //Falcon500 Motor Controller ID
+        public static final int DRIVE_MC_ID = ID.TalonFX.swerve_fr_drive; //Falcon500 Motor Controller ID
         public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
         public static final boolean DRIVE_isInverted = true;
         public static final int TURN_MC_ID = ID.Talon.swerve_fr_turn; //TalonSRX Motor Controller ID
@@ -128,7 +128,7 @@ public class SwerveConstants {
      */
     public static final class BL {
         public static final boolean isDisabled = false;
-        public static final int DRIVE_MC_ID = ID.Falcon.swerve_bl_drive; //Falcon500 Motor Controller ID
+        public static final int DRIVE_MC_ID = ID.TalonFX.swerve_bl_drive; //Falcon500 Motor Controller ID
         public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM; //actual diameter of larger wheel in mm
         public static final boolean DRIVE_isInverted = false;
         public static final int TURN_MC_ID = ID.Talon.swerve_bl_turn; //TalonSRX Motor Controller ID
@@ -146,7 +146,7 @@ public class SwerveConstants {
      */
     public static final class BR { //Rear Right
         public static final boolean isDisabled = false;
-        public static final int DRIVE_MC_ID = ID.Falcon.swerve_br_drive; //Falcon500 Motor Controller ID
+        public static final int DRIVE_MC_ID = ID.TalonFX.swerve_br_drive; //Falcon500 Motor Controller ID
         public static final double DRIVE_wheelDiamMM = kDefaultModuleWheelDiamMM;  //actual diameter of larger wheel in mm
         public static final boolean DRIVE_isInverted = true;
         public static final int TURN_MC_ID = ID.Talon.swerve_br_turn; //TalonSRX Motor Controller ID

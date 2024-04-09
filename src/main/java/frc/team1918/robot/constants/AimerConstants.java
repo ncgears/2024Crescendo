@@ -33,7 +33,7 @@ public class AimerConstants {
     public static final int kCANcoderID = ID.CANcoder.aimer;
     public static final boolean kUseCANcoder = true;
     public static final double kMagnetOffset = -0.158; //0.1623535; //Adjust magnet to sensor offset for CANcoder
-    public static final int kMotorID = ID.Falcon.aimer;
+    public static final int kMotorID = ID.TalonFX.aimer;
     public static final boolean kIsInverted = true;
     public static final NeutralModeValue kNeutralMode = NeutralModeValue.Brake;
     public static final double kStowPosition = 0.0;

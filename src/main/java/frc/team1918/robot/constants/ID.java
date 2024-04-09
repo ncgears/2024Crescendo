@@ -65,9 +65,9 @@ public class ID {
         public static int indexer = 11;
     }
     /**
-     * IDs of Falcons
+     * IDs of Krakens/Falcons
      */
-    public static final class Falcon {
+    public static final class TalonFX {
         public static int swerve_fl_drive = 5;
         public static int swerve_fr_drive = 8;
         public static int swerve_br_drive = 7;
@@ -77,11 +77,6 @@ public class ID {
         public static int aimer = 14;
         public static int arm = 15;
         public static int climber = 16;
-    }
-    /**
-     * IDs of Krakens
-     */
-    public static final class Kraken {
     }
     /**
      * IDs of CANdles
