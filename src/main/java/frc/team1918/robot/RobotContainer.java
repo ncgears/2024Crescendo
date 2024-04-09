@@ -119,13 +119,6 @@ public class RobotContainer {
     //Sendables definitions
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
 
-    private static Trigger disabled() { //register a trigger for the disabled event, which is used to reset the robot
-      return new Trigger(DriverStation::isDisabled);
-    }
-    private static Trigger enabled() {
-      return new Trigger(DriverStation::isEnabled);
-    }
-
     //init joysticks
     private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
     private final CommandStadiaController oj = new CommandStadiaController(Constants.OI.OI_JOY_OPER);
@@ -235,7 +228,7 @@ public class RobotContainer {
     */
 
     // bind to the disabled() trigger which happens any time the robot is disabled
-    disabled().onTrue(
+    RobotModeTriggers.disabled().onTrue(
       new InstantCommand(this::resetRobot).ignoringDisable(true)
       .alongWith(
         new RepeatCommand(  //Lighting Disco Party!
@@ -254,7 +247,8 @@ public class RobotContainer {
         ).until(disabled().negate())
       )
     );
-    enabled().onTrue(
+    // bind to the autonomous() and teleop() trigger which happens any time the robot is enabled in either of those modes
+    RobotModeTriggers.autonomous().or(RobotModeTriggers.teleop()).onTrue(
       new InstantCommand(m_orchestra::stop).ignoringDisable(true)
       .andThen(lighting.setColorCommand(Colors.OFF))
       .andThen(climber.runOnce(climber::ratchetLock)).andThen(new WaitCommand(0.5)).andThen(climber.runOnce(climber::ratchetFree))
