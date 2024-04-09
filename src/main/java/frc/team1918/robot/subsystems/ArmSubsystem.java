@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -136,6 +137,7 @@ public class ArmSubsystem extends SubsystemBase {
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
   public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= ArmConstants.kPositionThreshold); }
+  // public boolean atSetpoint() { return MathUtil.isNear(m_motor1.getClosedLoopReference().getValue(), m_motor1.getPosition().getValue(), ArmConstants.kPositionThreshold); }
   public boolean atIntake() { return m_targetPosition==Position.INTAKE && atSetpoint(); }
   public boolean atAmp() { return m_targetPosition==Position.AMP && atSetpoint(); }
   public boolean atTrap() { return m_targetPosition==Position.TRAP && atSetpoint(); }
