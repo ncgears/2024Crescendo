@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
@@ -34,17 +34,17 @@ public class ClimberSubsystem extends SubsystemBase {
 	private static ClimberSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP(Constants.Dashboard.Colors.GREEN),
-    DOWN(Constants.Dashboard.Colors.RED),
-    HOLD(Constants.Dashboard.Colors.ORANGE),
-    STOP(Constants.Dashboard.Colors.BLACK);
+    UP(DashboardConstants.Colors.GREEN),
+    DOWN(DashboardConstants.Colors.RED),
+    HOLD(DashboardConstants.Colors.ORANGE),
+    STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
   public enum LatchPosition {
-    OUT(1,0,Constants.Dashboard.Colors.GREEN), 
-    IN(0,1,Constants.Dashboard.Colors.RED); 
+    OUT(1,0,DashboardConstants.Colors.GREEN), 
+    IN(0,1,DashboardConstants.Colors.RED); 
     private final int left,right;
     private final String color;
     LatchPosition(int left, int right, String color) { this.left=left; this.right=right; this.color=color; }
@@ -53,14 +53,14 @@ public class ClimberSubsystem extends SubsystemBase {
     public String getColor() { return this.color; }
   }
   public enum Position {
-    TOP(Constants.Climber.Positions.kTop),
-    BOTTOM(Constants.Climber.Positions.kBottom),
-    TOPCAPTURE(Constants.Climber.Positions.kTopHookCapture),
-    TOPCLIMB(Constants.Climber.Positions.kTopHookClimb),
-    MIDCLEAR(Constants.Climber.Positions.kMidHookClear),
-    TRAPCLIMB(Constants.Climber.Positions.kArmLimit),
-    LATCHCLIMB(Constants.Climber.Positions.kLatchClimb),
-    LATCHCLEAR(Constants.Climber.Positions.kLatchClear);
+    TOP(ClimberConstants.Positions.kTop),
+    BOTTOM(ClimberConstants.Positions.kBottom),
+    TOPCAPTURE(ClimberConstants.Positions.kTopHookCapture),
+    TOPCLIMB(ClimberConstants.Positions.kTopHookClimb),
+    MIDCLEAR(ClimberConstants.Positions.kMidHookClear),
+    TRAPCLIMB(ClimberConstants.Positions.kArmLimit),
+    LATCHCLIMB(ClimberConstants.Positions.kLatchClimb),
+    LATCHCLEAR(ClimberConstants.Positions.kLatchClear);
     private final double position;
     Position(double position) { this.position = position; }
     public double getAngularPositionRotations() { return this.position; }
@@ -75,9 +75,9 @@ public class ClimberSubsystem extends SubsystemBase {
   private Position m_targetPosition = Position.BOTTOM;
   private LatchPosition m_curLatchPosition = LatchPosition.OUT;
   private boolean m_ratchetLocked = false;
-  private Servo m_leftServo = new Servo(Constants.Climber.kLeftServoID);
-  private Servo m_rightServo = new Servo(Constants.Climber.kRightServoID);
-  private Servo m_ratchetServo = new Servo(Constants.Climber.kRatchetServoID);
+  private Servo m_leftServo = new Servo(ClimberConstants.kLeftServoID);
+  private Servo m_rightServo = new Servo(ClimberConstants.kRightServoID);
+  private Servo m_ratchetServo = new Servo(ClimberConstants.kRatchetServoID);
   
   /**
 	 * Returns the instance of the ClimberSubsystem subsystem.
@@ -92,11 +92,11 @@ public class ClimberSubsystem extends SubsystemBase {
   
   public ClimberSubsystem() {
     //initialize values for private and public variables, etc.
-    m_encoder = new CANcoder(Constants.Climber.kCANcoderID, Constants.Climber.canBus);
+    m_encoder = new CANcoder(ClimberConstants.kCANcoderID, ClimberConstants.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.climberCCConfig));
 
-    m_motor1 = new TalonFX(Constants.Climber.kMotorID, Constants.Climber.canBus);
-    m_motor1.setInverted(Constants.Climber.kIsInverted);
+    m_motor1 = new TalonFX(ClimberConstants.kMotorID, ClimberConstants.canBus);
+    m_motor1.setInverted(ClimberConstants.kIsInverted);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.climberFXConfig));
 
     init();
@@ -159,7 +159,7 @@ public class ClimberSubsystem extends SubsystemBase {
     latchList.addNumber("Left Angle", () -> { return m_curLatchPosition.getLeft(); });
     latchList.addNumber("Right Angle", () -> { return m_curLatchPosition.getRight(); });
 
-    if(Constants.Climber.debugDashboard) {
+    if(ClimberConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 			ShuffleboardLayout dbgClimberList = debugTab.getLayout("Climber", BuiltInLayouts.kList)
 				.withSize(4,10)

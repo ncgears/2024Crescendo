@@ -2,7 +2,7 @@ package frc.team1918.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
 import frc.team1918.robot.RobotContainer;
@@ -49,10 +49,10 @@ public class DriveSubsystem extends SubsystemBase {
 	public Field2d field = new Field2d();
 
 	//initialize 4 swerve modules
-	private static SwerveModule m_frontLeft = new SwerveModule("FL", Constants.Swerve.FL.constants); // Front Left
-	private static SwerveModule m_frontRight = new SwerveModule("FR", Constants.Swerve.FR.constants); // Front Right
-	private static SwerveModule m_backLeft = new SwerveModule("RL", Constants.Swerve.BL.constants); // Rear Left
-	private static SwerveModule m_backRight = new SwerveModule("RR", Constants.Swerve.BR.constants); // Rear Right
+	private static SwerveModule m_frontLeft = new SwerveModule("FL", SwerveConstants.FL.constants); // Front Left
+	private static SwerveModule m_frontRight = new SwerveModule("FR", SwerveConstants.FR.constants); // Front Right
+	private static SwerveModule m_backLeft = new SwerveModule("RL", SwerveConstants.BL.constants); // Rear Left
+	private static SwerveModule m_backRight = new SwerveModule("RR", SwerveConstants.BR.constants); // Rear Right
 	private SwerveModule[] modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
 
 	private int m_simgyro = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
@@ -77,10 +77,10 @@ public class DriveSubsystem extends SubsystemBase {
 		this::getSpeeds,// ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
 		this::autonDriveRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
 		new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-			new PIDConstants(Constants.Auton.kPTranslationController, 0.0, 0.0), // Translation PID constants
-			new PIDConstants(Constants.Auton.kPThetaController, 0.0, 0.0), // Rotation PID constants
-			Constants.Auton.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
-			Units.inchesToMeters(Math.max(Constants.Global.kWheelbaseLength / 2, Constants.Global.kWheelbaseWidth / 2)), // Drive base radius in meters. Distance from robot center to furthest module. 
+			new PIDConstants(AutonConstants.kPTranslationController, 0.0, 0.0), // Translation PID constants
+			new PIDConstants(AutonConstants.kPThetaController, 0.0, 0.0), // Rotation PID constants
+			AutonConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
+			Units.inchesToMeters(Math.max(GlobalConstants.kWheelbaseLength / 2, GlobalConstants.kWheelbaseWidth / 2)), // Drive base radius in meters. Distance from robot center to furthest module. 
 			new ReplanningConfig() // Default path replanning config. See the API for the options here
 		),
 		() -> { return RobotContainer.isAllianceRed(); },
@@ -94,7 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 	
 	public Optional<Rotation2d> getAutoTrackedTarget() {
-		if(Constants.Auton.kUseTracking && RobotContainer.pose.getTracking()) {
+		if(AutonConstants.kUseTracking && RobotContainer.pose.getTracking()) {
 			Rotation2d hdg = Rotation2d.fromDegrees(RobotContainer.pose.getBearingOfTarget(Targets.SPEAKER));
 			Helpers.Debug.debug("Tracking: auton heading "+hdg.getDegrees());
 			return Optional.of(hdg);
@@ -144,7 +144,7 @@ public class DriveSubsystem extends SubsystemBase {
 		// 	.withSize(12,7)
 		// 	.withPosition(8,0)
 		// 	.withWidget("Field")
-		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
 
 		ShuffleboardTab swerveTab = Shuffleboard.getTab("Swerve");
 		swerveTab.add("Swerve Drive", this)
@@ -179,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
 		// 	.withSize(6,4)
 		// 	.withPosition(0,6)
 		// 	.withWidget("Field")
-		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+		// 	.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Global.kBumperWidth),"robot_length",Units.inchesToMeters(Global.kBumperLength)));
 
 		ShuffleboardLayout thetaList = swerveTab.getLayout("theta Controller", BuiltInLayouts.kList)
 			.withSize(4,4)
@@ -196,7 +196,7 @@ public class DriveSubsystem extends SubsystemBase {
 			.withSize(8,4)
 			.withPosition(0,4)
 			.withWidget("Field")
-			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(Constants.Global.kBumperWidth),"robot_length",Units.inchesToMeters(Constants.Global.kBumperLength)));
+			.withProperties(Map.of("field_game","Crescendo","robot_width",Units.inchesToMeters(GlobalConstants.kBumperWidth),"robot_length",Units.inchesToMeters(GlobalConstants.kBumperLength)));
 		ShuffleboardLayout systemThetaList = systemTab.getLayout("theta Controller", BuiltInLayouts.kList)
 			.withSize(4,4)
 			.withPosition(16,6)
@@ -207,10 +207,10 @@ public class DriveSubsystem extends SubsystemBase {
 		systemThetaList.addNumber("Current Heading", () -> Helpers.General.roundDouble(getHeading().getDegrees(),4));
 		systemThetaList.addNumber("Heading Error", () -> Helpers.General.roundDouble(getHeadingError(),4));
 
-		if(Constants.Swerve.debugDashboard) {
+		if(SwerveConstants.debugDashboard) {
 		}
 
-		if(Constants.Vision.debugDashboard) {
+		if(VisionConstants.debugDashboard) {
 			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
 			debugTab.addBoolean("Suppressed", this::isVisionSuppressed)
 			  .withSize(2, 2)
@@ -272,14 +272,14 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public void autoSuppressVision() {
-		if(Constants.Vision.kUseAutoSuppress) {
+		if(VisionConstants.kUseAutoSuppress) {
 			ChassisSpeeds speeds = getSpeeds();
 			//if the speed is over threshold, suppress vision measurements from being added to pose
 			m_suppressVision = (
 				Math.sqrt(
 					Math.pow(speeds.vxMetersPerSecond,2) + 
 					Math.pow(speeds.vyMetersPerSecond,2)
-				) >= Constants.Vision.kAutosuppressSpeedMetersPerSecond);
+				) >= VisionConstants.kAutosuppressSpeedMetersPerSecond);
 		}
 	}
 	public boolean isVisionSuppressed() { return m_suppressVision; }
@@ -287,8 +287,8 @@ public class DriveSubsystem extends SubsystemBase {
 	public boolean getHeadingLocked() { return heading_locked; }
 	public String getHeadingLockedColor() {
 		return (heading_locked) ?
-			(isTrackingTarget()) ? Constants.Dashboard.Colors.ORANGE : Constants.Dashboard.Colors.GREEN
-			: Constants.Dashboard.Colors.RED;
+			(isTrackingTarget()) ? DashboardConstants.Colors.ORANGE : DashboardConstants.Colors.GREEN
+			: DashboardConstants.Colors.RED;
 	}
 	public double getTargetHeading() { return (isTrackingTarget()) ? getTrackingTargetHeading() : target_heading; }
 	public boolean isTrackingTarget() { return RobotContainer.pose.getTracking(); }
@@ -304,8 +304,8 @@ public class DriveSubsystem extends SubsystemBase {
 			driveMotor.setSupplyVoltage(RobotController.getBatteryVoltage());
 			module.SimDriveMotor.setInputVoltage(addFriction(driveMotor.getMotorVoltage(), 0.25));
 			module.SimDriveMotor.update(ts - sim_last_time);
-			driveMotor.setRawRotorPosition(module.SimDriveMotor.getAngularPositionRotations() * Constants.Swerve.kRotationsPerWheelRotation);
-			driveMotor.setRotorVelocity(module.SimDriveMotor.getAngularVelocityRPM() / 60 * Constants.Swerve.kRotationsPerWheelRotation);
+			driveMotor.setRawRotorPosition(module.SimDriveMotor.getAngularPositionRotations() * SwerveConstants.kRotationsPerWheelRotation);
+			driveMotor.setRotorVelocity(module.SimDriveMotor.getAngularVelocityRPM() / 60 * SwerveConstants.kRotationsPerWheelRotation);
 			sim_last_time = ts;
 		}
 	}
@@ -337,9 +337,9 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	public void drivePercentage(double xPercent, double yPercent, double rotPercent, boolean fieldRelative) {
 		double invert = (RobotContainer.isAllianceRed()) ? -1 : 1; //invert if red
-		double xSpeed = invert * -xPercent * Constants.DriveTrain.kMaxMetersPerSecond; //positive is away
-		double ySpeed = invert * yPercent * Constants.DriveTrain.kMaxMetersPerSecond; //positive is left
-		double rot = rotPercent * Constants.DriveTrain.kMaxRotationRadiansPerSecond;
+		double xSpeed = invert * -xPercent * DriveTrainConstants.kMaxMetersPerSecond; //positive is away
+		double ySpeed = invert * yPercent * DriveTrainConstants.kMaxMetersPerSecond; //positive is left
+		double rot = rotPercent * DriveTrainConstants.kMaxRotationRadiansPerSecond;
 		drive(xSpeed, ySpeed, rot, fieldRelative);
 	}
 
@@ -365,22 +365,22 @@ public class DriveSubsystem extends SubsystemBase {
 	 */
 	@SuppressWarnings("unused")
 	public void driveRelative(ChassisSpeeds speeds) {
-		if (Constants.DriveTrain.useBrakeWhenStopped && (speeds.vxMetersPerSecond == 0 && speeds.vyMetersPerSecond == 0 && speeds.omegaRadiansPerSecond == 0)) {
+		if (DriveTrainConstants.useBrakeWhenStopped && (speeds.vxMetersPerSecond == 0 && speeds.vyMetersPerSecond == 0 && speeds.omegaRadiansPerSecond == 0)) {
 			brake(false);
 		}
-		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
-		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
-		if(!Constants.Swerve.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
-		if(!Constants.Swerve.FR.isDisabled) m_frontRight.setDesiredState(swerveModuleStates[1]);
-		if(!Constants.Swerve.BL.isDisabled) m_backLeft.setDesiredState(swerveModuleStates[2]);
-		if(!Constants.Swerve.BR.isDisabled) m_backRight.setDesiredState(swerveModuleStates[3]);
+		SwerveModuleState[] swerveModuleStates = SwerveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
+		if(!SwerveConstants.FL.isDisabled) m_frontLeft.setDesiredState(swerveModuleStates[0]);
+		if(!SwerveConstants.FR.isDisabled) m_frontRight.setDesiredState(swerveModuleStates[1]);
+		if(!SwerveConstants.BL.isDisabled) m_backLeft.setDesiredState(swerveModuleStates[2]);
+		if(!SwerveConstants.BR.isDisabled) m_backRight.setDesiredState(swerveModuleStates[3]);
 	}
 
 	public void autonDriveRelative(ChassisSpeeds speeds) {
 		speeds = new ChassisSpeeds(speeds.vxMetersPerSecond, -speeds.vyMetersPerSecond, -speeds.omegaRadiansPerSecond); //correct path planner inversions
 		// Helpers.Debug.debug("Auton Driving: X: "+ speeds.vxMetersPerSecond + " Y: "+ speeds.vyMetersPerSecond + " Omega: " + speeds.omegaRadiansPerSecond);
-		SwerveModuleState[] swerveModuleStates = Constants.Swerve.kDriveKinematics.toSwerveModuleStates(speeds);
-		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
+		SwerveModuleState[] swerveModuleStates = SwerveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+		SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
 		m_frontLeft.setDesiredState(swerveModuleStates[0]);
 		m_frontRight.setDesiredState(swerveModuleStates[1]);
 		m_backLeft.setDesiredState(swerveModuleStates[2]);
@@ -416,7 +416,7 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	public ChassisSpeeds getSpeeds() {
-		return Constants.Swerve.kDriveKinematics.toChassisSpeeds(getModuleStates());
+		return SwerveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
 	}
 
 	public SwerveModuleState[] getModuleStates() {
@@ -438,7 +438,7 @@ public class DriveSubsystem extends SubsystemBase {
 	 * @param desiredStates The desired SwerveModule states.
 	 */
 	public void setModuleStates(SwerveModuleState[] desiredStates) {
-		SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.Swerve.kMaxSpeedMetersPerSecond);
+		SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
 		m_frontLeft.setDesiredState(desiredStates[0]);
 		m_frontRight.setDesiredState(desiredStates[1]);
 		m_backLeft.setDesiredState(desiredStates[2]);
@@ -469,7 +469,7 @@ public class DriveSubsystem extends SubsystemBase {
 	public boolean swervesAtHome() {
 		boolean home = true;
 		for (SwerveModule module: modules) {
-			home &= module.getTurnError() <= Constants.Swerve.kDefaultModuleTurnAllowableError;
+			home &= module.getTurnError() <= SwerveConstants.kDefaultModuleTurnAllowableError;
 		}
 		return home;
 	}

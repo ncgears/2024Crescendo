@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
@@ -46,7 +46,7 @@ public class Gyro implements Sendable {
     }
 
 	public void buildDashboards() {
-		if(Constants.Gyro.debugDashboard) {
+		if(GyroConstants.debugDashboard) {
 			ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Gyro");
 			debugTab.add("Value", this)
 				.withSize(5, 4)
@@ -95,7 +95,7 @@ public class Gyro implements Sendable {
 	public Rotation2d getYaw() {
 		double yaw = m_gyro.getYaw() - m_yawOffset; //subtract the offset
 		yaw += (yaw < 0) ? 360.0 : 0; //make it positive
-		yaw *= (Constants.Gyro.kGyroReversed) ? -1.0 : 1.0; //invert to CCW Positive
+		yaw *= (GyroConstants.kGyroReversed) ? -1.0 : 1.0; //invert to CCW Positive
 		return Rotation2d.fromDegrees(yaw);
 	}
 

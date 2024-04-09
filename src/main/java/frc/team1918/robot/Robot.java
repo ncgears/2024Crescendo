@@ -10,6 +10,7 @@ package frc.team1918.robot;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import java.util.Optional;
+import frc.team1918.robot.constants.*; 
 
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.simulation.SimDeviceDataJNI;
@@ -167,7 +168,7 @@ public class Robot extends TimedRobot {
     if (!m_yawOffsetHasBeenSet && resetGyro != null) { resetGyro.schedule(); m_yawOffsetHasBeenSet=true; }
 
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    if (m_autonomousCommand != null && !Constants.Auton.isDisabled) m_autonomousCommand.schedule();
+    if (m_autonomousCommand != null && !AutonConstants.isDisabled) m_autonomousCommand.schedule();
 
     //start the fsm
     // fsm.start();

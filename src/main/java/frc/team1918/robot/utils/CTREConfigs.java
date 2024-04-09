@@ -23,9 +23,9 @@ import com.ctre.phoenix6.signals.InvertedValue;
 // import com.ctre.phoenix6.signals.ReverseLimitTypeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 
-// import frc.robot.Constants.SwerveK;
+// import frc.robot.SwerveK;
 
 // import static frc.robot.Constants.ElevatorK.*;
 
@@ -52,58 +52,58 @@ public final class CTREConfigs {
     public CTREConfigs() {
         /* Swerve Drive Motor Configuration */
         Slot0Configs driveSlot0Configs = new Slot0Configs()
-            .withKP(Constants.Swerve.kDriveKP)
-            .withKI(Constants.Swerve.kDriveKI)
-            .withKD(Constants.Swerve.kDriveKD);
+            .withKP(SwerveConstants.kDriveKP)
+            .withKI(SwerveConstants.kDriveKI)
+            .withKD(SwerveConstants.kDriveKD);
         // figure out kV (again)
-        // driveSlot0Configs.kV = Constants.SwerveK.kDriveKF;
+        // driveSlot0Configs.kV = SwerveK.kDriveKF;
         swerveDriveFXConfig.Slot0 = driveSlot0Configs;
-        swerveDriveFXConfig.MotorOutput.NeutralMode = Constants.Swerve.kDriveNeutralMode;
-        swerveDriveFXConfig.Feedback.SensorToMechanismRatio = Constants.Swerve.kRotationsPerWheelRotation;
+        swerveDriveFXConfig.MotorOutput.NeutralMode = SwerveConstants.kDriveNeutralMode;
+        swerveDriveFXConfig.Feedback.SensorToMechanismRatio = SwerveConstants.kRotationsPerWheelRotation;
         swerveDriveFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
         //current limits
         CurrentLimitsConfigs driveCurrentLimitsConfigs = new CurrentLimitsConfigs()
-            .withStatorCurrentLimit(Constants.Swerve.kDriveStatorCurrentLimitAmps)
-            .withStatorCurrentLimitEnable(Constants.Swerve.kDriveStatorCurrentLimitEnable)
-            .withSupplyCurrentLimit(Constants.Swerve.kDriveCurrentLimitAmps)
-            .withSupplyCurrentThreshold(Constants.Swerve.kDriveCurrentThresholdAmps)
-            .withSupplyTimeThreshold(Constants.Swerve.kDriveCurrentThresholdSecs)
-            .withSupplyCurrentLimitEnable(Constants.Swerve.kDriveCurrentLimitEnabled);
+            .withStatorCurrentLimit(SwerveConstants.kDriveStatorCurrentLimitAmps)
+            .withStatorCurrentLimitEnable(SwerveConstants.kDriveStatorCurrentLimitEnable)
+            .withSupplyCurrentLimit(SwerveConstants.kDriveCurrentLimitAmps)
+            .withSupplyCurrentThreshold(SwerveConstants.kDriveCurrentThresholdAmps)
+            .withSupplyTimeThreshold(SwerveConstants.kDriveCurrentThresholdSecs)
+            .withSupplyCurrentLimitEnable(SwerveConstants.kDriveCurrentLimitEnabled);
         swerveDriveFXConfig.CurrentLimits = driveCurrentLimitsConfigs;
-        swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Swerve.kOpenLoopRamp;
-        swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Swerve.kClosedLoopRamp;
+        swerveDriveFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = SwerveConstants.kOpenLoopRamp;
+        swerveDriveFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = SwerveConstants.kClosedLoopRamp;
 
         //Shooter Configuration
         Slot0Configs shooterSlot0Configs = new Slot0Configs()
-            .withKP(Constants.Shooter.kP)
-            .withKI(Constants.Shooter.kI)
-            .withKD(Constants.Shooter.kD)
-            .withKV(Constants.Shooter.kV);
+            .withKP(ShooterConstants.kP)
+            .withKI(ShooterConstants.kI)
+            .withKD(ShooterConstants.kD)
+            .withKV(ShooterConstants.kV);
         shooterFXConfig.Slot0 = shooterSlot0Configs;
         //Current Limits
         CurrentLimitsConfigs shooterCurrentLimitsConfigs = new CurrentLimitsConfigs()
-            .withSupplyCurrentLimit(Constants.Shooter.kCurrentLimitAmps)
-            .withSupplyCurrentThreshold(Constants.Shooter.kCurrentLimitThresholdAmps)
-            .withSupplyTimeThreshold(Constants.Shooter.kCurrentLimitThresholdSecs)
-            .withSupplyCurrentLimitEnable(Constants.Shooter.kCurrentLimitEnable);
+            .withSupplyCurrentLimit(ShooterConstants.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(ShooterConstants.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(ShooterConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(ShooterConstants.kCurrentLimitEnable);
         shooterFXConfig.CurrentLimits = shooterCurrentLimitsConfigs;
-        // shooterFXConfig.Voltage.PeakForwardVoltage = Constants.Shooter.kPeakFwdVoltage;
-        // shooterFXConfig.Voltage.PeakReverseVoltage = Constants.Shooter.kPeakRevVoltage;
+        // shooterFXConfig.Voltage.PeakForwardVoltage = Shooter.kPeakFwdVoltage;
+        // shooterFXConfig.Voltage.PeakReverseVoltage = Shooter.kPeakRevVoltage;
         //Ramping (spinup/spindown)
-        // shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Shooter.kOpenLoopRamp;
-        // shooterFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Shooter.kClosedLoopRamp;
+        // shooterFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Shooter.kOpenLoopRamp;
+        // shooterFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Shooter.kClosedLoopRamp;
         //Motion Magic
         MotionMagicConfigs shooterMotionMagicConfigs = new MotionMagicConfigs()
-            .withMotionMagicCruiseVelocity(Constants.Shooter.kMotionMagicCruise)
-            .withMotionMagicAcceleration(Constants.Shooter.kMotionMagicAccel)
-            .withMotionMagicJerk(Constants.Shooter.kMotionMagicJerk);
+            .withMotionMagicCruiseVelocity(ShooterConstants.kMotionMagicCruise)
+            .withMotionMagicAcceleration(ShooterConstants.kMotionMagicAccel)
+            .withMotionMagicJerk(ShooterConstants.kMotionMagicJerk);
         shooterFXConfig.MotionMagic = shooterMotionMagicConfigs;
         //Neutral and Direction
-        shooterFXConfig.MotorOutput.NeutralMode = Constants.Shooter.kNeutralMode;
-        shooterFXConfig.MotorOutput.Inverted = (Constants.Shooter.isInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        shooterFXConfig.MotorOutput.NeutralMode = ShooterConstants.kNeutralMode;
+        shooterFXConfig.MotorOutput.Inverted = (ShooterConstants.isInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Rotational rate modifiers
-        shooterFXConfig.Feedback.SensorToMechanismRatio = Constants.Shooter.kGearRatio;
+        shooterFXConfig.Feedback.SensorToMechanismRatio = ShooterConstants.kGearRatio;
         //Audio
         shooterFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
@@ -111,40 +111,40 @@ public final class CTREConfigs {
         //CANcoder
         aimerCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         aimerCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-        aimerCCConfig.MagnetSensor.MagnetOffset = Constants.Aimer.kMagnetOffset;
+        aimerCCConfig.MagnetSensor.MagnetOffset = AimerConstants.kMagnetOffset;
         
         Slot0Configs aimerSlot0Configs = new Slot0Configs()
-            .withKP(Constants.Aimer.kP)
-            .withKI(Constants.Aimer.kI)
-            .withKD(Constants.Aimer.kD)
-            .withKS(Constants.Aimer.kS)
-            .withKV(Constants.Aimer.kV)
-            .withKA(Constants.Aimer.kA);
+            .withKP(AimerConstants.kP)
+            .withKI(AimerConstants.kI)
+            .withKD(AimerConstants.kD)
+            .withKS(AimerConstants.kS)
+            .withKV(AimerConstants.kV)
+            .withKA(AimerConstants.kA);
         aimerFXConfig.Slot0 = aimerSlot0Configs;
         //Current Limits
         CurrentLimitsConfigs aimerCurrentLimitsConfigs = new CurrentLimitsConfigs()
-            .withSupplyCurrentLimit(Constants.Aimer.kCurrentLimitAmps)
-            .withSupplyCurrentThreshold(Constants.Aimer.kCurrentLimitThresholdAmps)
-            .withSupplyTimeThreshold(Constants.Aimer.kCurrentLimitThresholdSecs)
-            .withSupplyCurrentLimitEnable(Constants.Aimer.kCurrentLimitEnable);
+            .withSupplyCurrentLimit(AimerConstants.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(AimerConstants.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(AimerConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(AimerConstants.kCurrentLimitEnable);
         aimerFXConfig.CurrentLimits = aimerCurrentLimitsConfigs;
-        // aimerFXConfig.Voltage.PeakForwardVoltage = Constants.Aimer.kPeakFwdVoltage;
-        // aimerFXConfig.Voltage.PeakReverseVoltage = Constants.Aimer.kPeakRevVoltage;
+        // aimerFXConfig.Voltage.PeakForwardVoltage = Aimer.kPeakFwdVoltage;
+        // aimerFXConfig.Voltage.PeakReverseVoltage = Aimer.kPeakRevVoltage;
         //Ramping (spinup/spindown) //not needed or wanted for MM
-        // aimerFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Constants.Aimer.kOpenLoopRamp;
-        // aimerFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Constants.Aimer.kClosedLoopRamp;
+        // aimerFXConfig.OpenLoopRamps.DutyCycleOpenLoopRampPeriod = Aimer.kOpenLoopRamp;
+        // aimerFXConfig.ClosedLoopRamps.DutyCycleClosedLoopRampPeriod = Aimer.kClosedLoopRamp;
         //Motion Magic
         MotionMagicConfigs aimerMotionMagicConfigs = new MotionMagicConfigs()
-            .withMotionMagicCruiseVelocity(Constants.Aimer.kMotionMagicCruise)
-            .withMotionMagicAcceleration(Constants.Aimer.kMotionMagicAccel)
-            .withMotionMagicJerk(Constants.Aimer.kMotionMagicJerk);
+            .withMotionMagicCruiseVelocity(AimerConstants.kMotionMagicCruise)
+            .withMotionMagicAcceleration(AimerConstants.kMotionMagicAccel)
+            .withMotionMagicJerk(AimerConstants.kMotionMagicJerk);
         aimerFXConfig.MotionMagic = aimerMotionMagicConfigs;
         //Mechanical Limits
         SoftwareLimitSwitchConfigs aimerSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
-            .withReverseSoftLimitEnable(Constants.Aimer.kSoftReverseLimitEnable)
-            .withReverseSoftLimitThreshold(Constants.Aimer.kSoftReverseLimit)
-            .withForwardSoftLimitEnable(Constants.Aimer.kSoftForwardLimitEnable)
-            .withForwardSoftLimitThreshold(Constants.Aimer.kSoftForwardLimit);
+            .withReverseSoftLimitEnable(AimerConstants.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(AimerConstants.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(AimerConstants.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(AimerConstants.kSoftForwardLimit);
         aimerFXConfig.SoftwareLimitSwitch = aimerSoftwareLimitSwitchConfigs;
         // HardwareLimitSwitchConfigs aimerHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)
@@ -155,17 +155,17 @@ public final class CTREConfigs {
         //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
         // aimerFXConfig.HardwareLimitSwitch = aimerHardwareLimitsConfigs;
         //Encoder
-        if(Constants.Aimer.kUseCANcoder) {
-            aimerFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Aimer.kCANcoderID;
+        if(AimerConstants.kUseCANcoder) {
+            aimerFXConfig.Feedback.FeedbackRemoteSensorID = AimerConstants.kCANcoderID;
             aimerFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
-            aimerFXConfig.Feedback.RotorToSensorRatio = Constants.Aimer.kGearRatio;
+            aimerFXConfig.Feedback.RotorToSensorRatio = AimerConstants.kGearRatio;
             aimerFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
         } else {
-            aimerFXConfig.Feedback.SensorToMechanismRatio = Constants.Aimer.kGearRatio;
+            aimerFXConfig.Feedback.SensorToMechanismRatio = AimerConstants.kGearRatio;
         }
         //Neutral and Direction
-        aimerFXConfig.MotorOutput.NeutralMode = Constants.Aimer.kNeutralMode;
-        aimerFXConfig.MotorOutput.Inverted = (Constants.Aimer.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        aimerFXConfig.MotorOutput.NeutralMode = AimerConstants.kNeutralMode;
+        aimerFXConfig.MotorOutput.Inverted = (AimerConstants.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Audio
         aimerFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
@@ -173,35 +173,35 @@ public final class CTREConfigs {
         //CANcoder
         armCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         armCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.Clockwise_Positive;
-        armCCConfig.MagnetSensor.MagnetOffset = Constants.Arm.kMagnetOffset;
+        armCCConfig.MagnetSensor.MagnetOffset = ArmConstants.kMagnetOffset;
 
         Slot0Configs armSlot0Configs = new Slot0Configs()
-            .withKP(Constants.Arm.kP)
-            .withKI(Constants.Arm.kI)
-            .withKD(Constants.Arm.kD)
-            .withKS(Constants.Arm.kS)
-            .withKV(Constants.Arm.kV)
-            .withKA(Constants.Arm.kA);
+            .withKP(ArmConstants.kP)
+            .withKI(ArmConstants.kI)
+            .withKD(ArmConstants.kD)
+            .withKS(ArmConstants.kS)
+            .withKV(ArmConstants.kV)
+            .withKA(ArmConstants.kA);
         armFXConfig.Slot0 = armSlot0Configs;
         //Current Limits
         CurrentLimitsConfigs armCurrentLimitsConfigs = new CurrentLimitsConfigs()
-            .withSupplyCurrentLimit(Constants.Arm.kCurrentLimitAmps)
-            .withSupplyCurrentThreshold(Constants.Arm.kCurrentLimitThresholdAmps)
-            .withSupplyTimeThreshold(Constants.Arm.kCurrentLimitThresholdSecs)
-            .withSupplyCurrentLimitEnable(Constants.Arm.kCurrentLimitEnable);
+            .withSupplyCurrentLimit(ArmConstants.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(ArmConstants.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(ArmConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(ArmConstants.kCurrentLimitEnable);
         armFXConfig.CurrentLimits = armCurrentLimitsConfigs;
         //Motion Magic
         MotionMagicConfigs armMotionMagicConfigs = new MotionMagicConfigs()
-            .withMotionMagicCruiseVelocity(Constants.Arm.kMotionMagicCruise)
-            .withMotionMagicAcceleration(Constants.Arm.kMotionMagicAccel)
-            .withMotionMagicJerk(Constants.Arm.kMotionMagicJerk);
+            .withMotionMagicCruiseVelocity(ArmConstants.kMotionMagicCruise)
+            .withMotionMagicAcceleration(ArmConstants.kMotionMagicAccel)
+            .withMotionMagicJerk(ArmConstants.kMotionMagicJerk);
         armFXConfig.MotionMagic = armMotionMagicConfigs;
         //Mechanical Limits
         SoftwareLimitSwitchConfigs armSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
-            .withReverseSoftLimitEnable(Constants.Arm.kSoftReverseLimitEnable)
-            .withReverseSoftLimitThreshold(Constants.Arm.kSoftReverseLimit)
-            .withForwardSoftLimitEnable(Constants.Arm.kSoftForwardLimitEnable)
-            .withForwardSoftLimitThreshold(Constants.Arm.kSoftForwardLimit);
+            .withReverseSoftLimitEnable(ArmConstants.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(ArmConstants.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(ArmConstants.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(ArmConstants.kSoftForwardLimit);
         armFXConfig.SoftwareLimitSwitch = armSoftwareLimitSwitchConfigs;
         // HardwareLimitSwitchConfigs armHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)
@@ -212,17 +212,17 @@ public final class CTREConfigs {
         //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
         // armFXConfig.HardwareLimitSwitch = armHardwareLimitsConfigs;
         //Encoder
-        if(Constants.Arm.kUseCANcoder) {
-            armFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Arm.kCANcoderID;
+        if(ArmConstants.kUseCANcoder) {
+            armFXConfig.Feedback.FeedbackRemoteSensorID = ArmConstants.kCANcoderID;
             armFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.SyncCANcoder;
-            armFXConfig.Feedback.RotorToSensorRatio = Constants.Arm.kGearRatio;
+            armFXConfig.Feedback.RotorToSensorRatio = ArmConstants.kGearRatio;
             armFXConfig.Feedback.SensorToMechanismRatio = 1.0; //CANcoder is the same as mechanism
         } else {
-            armFXConfig.Feedback.SensorToMechanismRatio = Constants.Arm.kGearRatio;
+            armFXConfig.Feedback.SensorToMechanismRatio = ArmConstants.kGearRatio;
         }
         //Neutral and Direction
-        armFXConfig.MotorOutput.NeutralMode = Constants.Arm.kNeutralMode;
-        armFXConfig.MotorOutput.Inverted = (Constants.Arm.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        armFXConfig.MotorOutput.NeutralMode = ArmConstants.kNeutralMode;
+        armFXConfig.MotorOutput.Inverted = (ArmConstants.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Audio
         armFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 
@@ -231,35 +231,35 @@ public final class CTREConfigs {
         //CANcoder
         climberCCConfig.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Signed_PlusMinusHalf;
         climberCCConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
-        climberCCConfig.MagnetSensor.MagnetOffset = Constants.Climber.kMagnetOffset;
+        climberCCConfig.MagnetSensor.MagnetOffset = ClimberConstants.kMagnetOffset;
 
         Slot0Configs climberSlot0Configs = new Slot0Configs()
-            .withKP(Constants.Climber.kP)
-            .withKI(Constants.Climber.kI)
-            .withKD(Constants.Climber.kD)
-            .withKS(Constants.Climber.kS)
-            .withKV(Constants.Climber.kV)
-            .withKA(Constants.Climber.kA);
+            .withKP(ClimberConstants.kP)
+            .withKI(ClimberConstants.kI)
+            .withKD(ClimberConstants.kD)
+            .withKS(ClimberConstants.kS)
+            .withKV(ClimberConstants.kV)
+            .withKA(ClimberConstants.kA);
         climberFXConfig.Slot0 = climberSlot0Configs;
         //Current Limits
         CurrentLimitsConfigs climberCurrentLimitsConfigs = new CurrentLimitsConfigs()
-            .withSupplyCurrentLimit(Constants.Climber.kCurrentLimitAmps)
-            .withSupplyCurrentThreshold(Constants.Climber.kCurrentLimitThresholdAmps)
-            .withSupplyTimeThreshold(Constants.Climber.kCurrentLimitThresholdSecs)
-            .withSupplyCurrentLimitEnable(Constants.Climber.kCurrentLimitEnable);
+            .withSupplyCurrentLimit(ClimberConstants.kCurrentLimitAmps)
+            .withSupplyCurrentThreshold(ClimberConstants.kCurrentLimitThresholdAmps)
+            .withSupplyTimeThreshold(ClimberConstants.kCurrentLimitThresholdSecs)
+            .withSupplyCurrentLimitEnable(ClimberConstants.kCurrentLimitEnable);
         climberFXConfig.CurrentLimits = climberCurrentLimitsConfigs;
         //Motion Magic
         MotionMagicConfigs climberMotionMagicConfigs = new MotionMagicConfigs()
-            .withMotionMagicCruiseVelocity(Constants.Climber.kMotionMagicCruise)
-            .withMotionMagicAcceleration(Constants.Climber.kMotionMagicAccel)
-            .withMotionMagicJerk(Constants.Climber.kMotionMagicJerk);
+            .withMotionMagicCruiseVelocity(ClimberConstants.kMotionMagicCruise)
+            .withMotionMagicAcceleration(ClimberConstants.kMotionMagicAccel)
+            .withMotionMagicJerk(ClimberConstants.kMotionMagicJerk);
         climberFXConfig.MotionMagic = climberMotionMagicConfigs;
         //Mechanical Limits
         SoftwareLimitSwitchConfigs climberSoftwareLimitSwitchConfigs = new SoftwareLimitSwitchConfigs()
-            .withReverseSoftLimitEnable(Constants.Climber.kSoftReverseLimitEnable)
-            .withReverseSoftLimitThreshold(Constants.Climber.kSoftReverseLimit)
-            .withForwardSoftLimitEnable(Constants.Climber.kSoftForwardLimitEnable)
-            .withForwardSoftLimitThreshold(Constants.Climber.kSoftForwardLimit);
+            .withReverseSoftLimitEnable(ClimberConstants.kSoftReverseLimitEnable)
+            .withReverseSoftLimitThreshold(ClimberConstants.kSoftReverseLimit)
+            .withForwardSoftLimitEnable(ClimberConstants.kSoftForwardLimitEnable)
+            .withForwardSoftLimitThreshold(ClimberConstants.kSoftForwardLimit);
         climberFXConfig.SoftwareLimitSwitch = climberSoftwareLimitSwitchConfigs;
         // HardwareLimitSwitchConfigs climberHardwareLimitsConfigs = new HardwareLimitSwitchConfigs()
         //     .withReverseLimitEnable(false)
@@ -270,17 +270,17 @@ public final class CTREConfigs {
         //     .withForwardLimitType(ForwardLimitTypeValue.NormallyOpen); //Add autoset position on forward limit to appropriate number also.
         // climberFXConfig.HardwareLimitSwitch = climberHardwareLimitsConfigs;
         //Encoder
-        if(Constants.Aimer.kUseCANcoder) {
-            climberFXConfig.Feedback.FeedbackRemoteSensorID = Constants.Climber.kCANcoderID;
+        if(AimerConstants.kUseCANcoder) {
+            climberFXConfig.Feedback.FeedbackRemoteSensorID = ClimberConstants.kCANcoderID;
             climberFXConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
-            climberFXConfig.Feedback.RotorToSensorRatio = Constants.Climber.kGearRatio;
-            climberFXConfig.Feedback.SensorToMechanismRatio = Constants.Climber.kSensorGearRatio; //CANcoder is the same as mechanism
+            climberFXConfig.Feedback.RotorToSensorRatio = ClimberConstants.kGearRatio;
+            climberFXConfig.Feedback.SensorToMechanismRatio = ClimberConstants.kSensorGearRatio; //CANcoder is the same as mechanism
         } else {
-            climberFXConfig.Feedback.SensorToMechanismRatio = Constants.Climber.kGearRatio;
+            climberFXConfig.Feedback.SensorToMechanismRatio = ClimberConstants.kGearRatio;
         }
         //Neutral and Direction
-        climberFXConfig.MotorOutput.NeutralMode = Constants.Climber.kNeutralMode;
-        climberFXConfig.MotorOutput.Inverted = (Constants.Climber.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
+        climberFXConfig.MotorOutput.NeutralMode = ClimberConstants.kNeutralMode;
+        climberFXConfig.MotorOutput.Inverted = (ClimberConstants.kIsInverted) ? InvertedValue.Clockwise_Positive : InvertedValue.CounterClockwise_Positive;
         //Audio
         climberFXConfig.Audio = new AudioConfigs().withAllowMusicDurDisable(true);
 

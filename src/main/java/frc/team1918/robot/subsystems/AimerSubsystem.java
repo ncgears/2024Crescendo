@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
@@ -28,10 +28,10 @@ public class AimerSubsystem extends SubsystemBase {
 	private static AimerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    READY(Constants.Dashboard.Colors.GREEN),
-    TRACKING(Constants.Dashboard.Colors.ORANGE),
-    ERROR(Constants.Dashboard.Colors.RED),
-    STOP(Constants.Dashboard.Colors.BLACK);
+    READY(DashboardConstants.Colors.GREEN),
+    TRACKING(DashboardConstants.Colors.ORANGE),
+    ERROR(DashboardConstants.Colors.RED),
+    STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
@@ -63,11 +63,11 @@ public class AimerSubsystem extends SubsystemBase {
 
   public AimerSubsystem() {
     //initialize values for private and public variables, etc.
-    m_encoder = new CANcoder(Constants.Aimer.kCANcoderID, Constants.Aimer.canBus);
+    m_encoder = new CANcoder(AimerConstants.kCANcoderID, AimerConstants.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.aimerCCConfig));
 
-    m_motor1 = new TalonFX(Constants.Aimer.kMotorID, Constants.Aimer.canBus);
-    m_motor1.setInverted(Constants.Aimer.kIsInverted);
+    m_motor1 = new TalonFX(AimerConstants.kMotorID, AimerConstants.canBus);
+    m_motor1.setInverted(AimerConstants.kIsInverted);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.aimerFXConfig));
     // Helpers.Debug.debug("Could not initialize aimer motor, error: " + status1.toString());
 
@@ -111,7 +111,7 @@ public class AimerSubsystem extends SubsystemBase {
     aimerList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     aimerList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
 
-		if(Constants.Aimer.debugDashboard) {
+		if(AimerConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       debugTab.addNumber("Aimer Target", this::getNewPosition)
         .withSize(4,2)
@@ -138,11 +138,11 @@ public class AimerSubsystem extends SubsystemBase {
   }
 
   /** Sets the position of the aimer, but is restricted to the safe range defined by
-   * Constants.Aimer.Positions.kRevLimit and kFwdLimit
+   * Aimer.Positions.kRevLimit and kFwdLimit
    * @param position Position to set aimer in rotations
    */
   public void setPositionRotations(double position) {
-    m_targetPosition = MathUtil.clamp(position, Constants.Aimer.Positions.kRevLimit, Constants.Aimer.Positions.kFwdLimit);
+    m_targetPosition = MathUtil.clamp(position, AimerConstants.Positions.kRevLimit, AimerConstants.Positions.kFwdLimit);
   }
 
   public void updateState() {
@@ -161,7 +161,7 @@ public class AimerSubsystem extends SubsystemBase {
 
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); } //m_targetPosition; }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
-  public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= Constants.Aimer.kPositionThreshold); }
+  public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= AimerConstants.kPositionThreshold); }
 
   public double getPosition() {
     return m_motor1.getPosition().getValue();
@@ -174,21 +174,21 @@ public class AimerSubsystem extends SubsystemBase {
   public void aimerAimShort() {
     m_suppressTracking = true;
     m_curState = State.STOP;
-    setPositionRotations(Constants.Aimer.Positions.kShotShort);
+    setPositionRotations(AimerConstants.Positions.kShotShort);
     Helpers.Debug.debug("Aimer: Shot Shot");
   }
 
   public void aimerAimLong() {
     m_suppressTracking = true;
     m_curState = State.STOP;
-    setPositionRotations(Constants.Aimer.Positions.kShotLong);
+    setPositionRotations(AimerConstants.Positions.kShotLong);
     Helpers.Debug.debug("Aimer: Long Shot");
   }
 
   public void aimerTrapClimb() {
     m_suppressTracking = true;
     m_curState = State.STOP;
-    setPosition(Constants.Aimer.Positions.kTrapClimb);
+    setPosition(AimerConstants.Positions.kTrapClimb);
     Helpers.Debug.debug("Aimer: Trap Climb");
   }
 
@@ -196,7 +196,7 @@ public class AimerSubsystem extends SubsystemBase {
     m_suppressTracking = true;
     m_curState = State.STOP;
     Helpers.Debug.debug("Aimer: Stop and Stow");
-    setPosition(Constants.Aimer.kStowPosition);
+    setPosition(AimerConstants.kStowPosition);
   }
 
   public void aimerStartTracking() {

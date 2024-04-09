@@ -6,7 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.RobotContainer;
 import frc.team1918.lib.control.PIDController;
 import frc.team1918.lib.control.SwerveTrajectory;
@@ -44,9 +44,9 @@ public class drive_followTrajectory extends Command {
     // m_offset = (m_drive.getHeading()).minus(m_trajectory.getInitialPose().getRotation()); //may also add vision offset?
     // dont think we need this, since getHeading already accounts for the offset.
 
-    m_xController = new PIDController(Constants.Auton.kPTranslationController, 0, 0);
-    m_yController = new PIDController(Constants.Auton.kPTranslationController, 0, 0);
-    m_thetaController = new PIDController(Constants.Auton.kPThetaController, 0, 0);
+    m_xController = new PIDController(AutonConstants.kPTranslationController, 0, 0);
+    m_yController = new PIDController(AutonConstants.kPTranslationController, 0, 0);
+    m_thetaController = new PIDController(AutonConstants.kPThetaController, 0, 0);
     m_thetaController.setContinuous(true);
     m_thetaController.setInputRange(Math.PI * 2);
 

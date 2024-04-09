@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.Robot;
 // import frc.team1918.robot.utils.TunableNumber;
@@ -50,10 +50,10 @@ public class ShooterSubsystem extends SubsystemBase {
   private DoubleSubscriber new_speed_sub;
   private double new_speed = 90.0;
   private enum State {
-    READY(Constants.Dashboard.Colors.GREEN),
-    START(Constants.Dashboard.Colors.ORANGE),
-    ERROR(Constants.Dashboard.Colors.RED),
-    STOP(Constants.Dashboard.Colors.BLACK);
+    READY(DashboardConstants.Colors.GREEN),
+    START(DashboardConstants.Colors.ORANGE),
+    ERROR(DashboardConstants.Colors.RED),
+    STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
@@ -100,7 +100,7 @@ public class ShooterSubsystem extends SubsystemBase {
   public ShooterSubsystem() {
     setName("Shooter");
     //initialize values for private and public variables, etc.
-    m_motor1 = new TalonFX(Constants.Shooter.Top.kMotorID, Constants.Shooter.canBus);
+    m_motor1 = new TalonFX(ShooterConstants.Top.kMotorID, ShooterConstants.canBus);
     StatusCode status1 = StatusCode.StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
       status1 = m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.shooterFXConfig);
@@ -109,7 +109,7 @@ public class ShooterSubsystem extends SubsystemBase {
     if(!status1.isOK()) {
       Helpers.Debug.debug("Could not initialize shooter motor1, error: " + status1.toString());
     }
-    m_motor2 = new TalonFX(Constants.Shooter.Bottom.kMotorID, Constants.Shooter.canBus);
+    m_motor2 = new TalonFX(ShooterConstants.Bottom.kMotorID, ShooterConstants.canBus);
     StatusCode status2 = StatusCode.StatusCodeNotInitialized;
     for (int i = 0; i < 5; ++i) {
       status2 = m_motor2.getConfigurator().apply(RobotContainer.ctreConfigs.shooterFXConfig);
@@ -118,7 +118,7 @@ public class ShooterSubsystem extends SubsystemBase {
     if(!status2.isOK()) {
       Helpers.Debug.debug("Could not initialize shooter motor2, error: " + status2.toString());
     }
-    m_motor2.setInverted(Constants.Shooter.Bottom.kIsInverted);
+    m_motor2.setInverted(ShooterConstants.Bottom.kIsInverted);
     // Dont use a follower for disconnected mechanical systems
     // m_motor2.setControl(new Follower(m_motor1.getDeviceID(), true)); //Setup motor2 inverted from motor1 as a follower
 
@@ -172,7 +172,7 @@ public class ShooterSubsystem extends SubsystemBase {
       .withPosition(14, 7)
       .withWidget("Single Color View");
 
-    if(Constants.Shooter.debugDashboard) {
+    if(ShooterConstants.debugDashboard) {
       ShuffleboardTab systemTab = Shuffleboard.getTab("System");
       ShuffleboardLayout shooterList = systemTab.getLayout("Shooter", BuiltInLayouts.kList)
 				.withSize(4,5)
@@ -209,7 +209,7 @@ public class ShooterSubsystem extends SubsystemBase {
         .withSize(4,2)
         .withPosition(8,0)
         .withWidget("Number Slider")
-        .withProperties(Map.of("min_value",-Constants.Shooter.kMaxRPS,"max_value",Constants.Shooter.kMaxRPS,"divisions",10));
+        .withProperties(Map.of("min_value",-ShooterConstants.kMaxRPS,"max_value",ShooterConstants.kMaxRPS,"divisions",10));
       debugTab.add("Apply Shooter Speed", new InstantCommand(() -> setTarget(getNewSpeed())).ignoringDisable(true))
         .withSize(4, 2)
         .withPosition(8, 2)
@@ -221,7 +221,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
   public State getState() { return m_curState; }
   public String getStateName() { return m_curState.toString(); }
-  public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / Constants.Shooter.kMaxRPS,2); }
+  public double getNewSpeedPercent() { return Helpers.General.roundDouble(new_speed / ShooterConstants.kMaxRPS,2); }
   public double getNewSpeed() { return Helpers.General.roundDouble(new_speed,2); }
   public double getTargetSpeed() { return target_speed; }
   public String getColor() { return m_curState.getColor(); }
@@ -235,14 +235,14 @@ public class ShooterSubsystem extends SubsystemBase {
     if(Robot.isSimulation()) return true;
     double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
     double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
-    return (Math.abs(error1) <= Constants.Shooter.kSpeedToleranceOptimal) && (Math.abs(error2) <= Constants.Shooter.kSpeedToleranceOptimal);
+    return (Math.abs(error1) <= ShooterConstants.kSpeedToleranceOptimal) && (Math.abs(error2) <= ShooterConstants.kSpeedToleranceOptimal);
   }
 
   private boolean atShootable() {
     if(Robot.isSimulation()) return true;
     double error1 = m_motor1.getClosedLoopReference().getValue() - m_motor1.getVelocity().getValue();
     double error2 = m_motor2.getClosedLoopReference().getValue() - m_motor2.getVelocity().getValue();
-    return (Math.abs(error1) <= Constants.Shooter.kSpeedToleranceAcceptable) && (Math.abs(error2) <= Constants.Shooter.kSpeedToleranceAcceptable);
+    return (Math.abs(error1) <= ShooterConstants.kSpeedToleranceAcceptable) && (Math.abs(error2) <= ShooterConstants.kSpeedToleranceAcceptable);
   }
 
   /**
@@ -257,7 +257,7 @@ public class ShooterSubsystem extends SubsystemBase {
    * @param speed The speed of the shooter in percentage (-1.0 to 1.0)
    */
   public void setSpeedPercent(double speed) {
-    double rps = speed * Constants.Shooter.kMaxRPS;
+    double rps = speed * ShooterConstants.kMaxRPS;
     setSpeed(rps);
   }
 
@@ -266,8 +266,8 @@ public class ShooterSubsystem extends SubsystemBase {
    * @param speed The speed of the shooter in rotations per second
    */
   public void setSpeed(double speed) {
-    // speed = Math.min(Constants.Shooter.kMaxRPS,Math.max(-Constants.Shooter.kMaxRPS,speed));
-    speed = MathUtil.clamp(speed, -Constants.Shooter.kMaxRPS, Constants.Shooter.kMaxRPS);
+    // speed = Math.min(Shooter.kMaxRPS,Math.max(-Shooter.kMaxRPS,speed));
+    speed = MathUtil.clamp(speed, -ShooterConstants.kMaxRPS, ShooterConstants.kMaxRPS);
     target_speed = speed;
     if(speed == 0.0) {
       m_curState = State.STOP;

@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
@@ -26,20 +26,20 @@ public class ArmSubsystem extends SubsystemBase {
 	private static ArmSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP(Constants.Dashboard.Colors.GREEN),
-    DOWN(Constants.Dashboard.Colors.RED),
-    HOLD(Constants.Dashboard.Colors.ORANGE),
-    STOP(Constants.Dashboard.Colors.BLACK);
+    UP(DashboardConstants.Colors.GREEN),
+    DOWN(DashboardConstants.Colors.RED),
+    HOLD(DashboardConstants.Colors.ORANGE),
+    STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
   }
   public enum Position {
-    INTAKE(Constants.Arm.Positions.kIntake),
-    AMP(Constants.Arm.Positions.kAmp),
-    TRAP(Constants.Arm.Positions.kTrap),
-    TRAPBAL(Constants.Arm.Positions.kTrapBalance),
-    TRAPCLIMB(Constants.Arm.Positions.kTrapClimb);
+    INTAKE(ArmConstants.Positions.kIntake),
+    AMP(ArmConstants.Positions.kAmp),
+    TRAP(ArmConstants.Positions.kTrap),
+    TRAPBAL(ArmConstants.Positions.kTrapBalance),
+    TRAPCLIMB(ArmConstants.Positions.kTrapClimb);
     private final double position;
     Position(double position) { this.position = position; }
     public double getAngularPositionRotations() { return this.position; }
@@ -70,11 +70,11 @@ public class ArmSubsystem extends SubsystemBase {
   
   public ArmSubsystem() {
     //initialize values for private and public variables, etc.
-    m_encoder = new CANcoder(Constants.Arm.kCANcoderID, Constants.Arm.canBus);
+    m_encoder = new CANcoder(ArmConstants.kCANcoderID, ArmConstants.canBus);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_encoder.getConfigurator().apply(RobotContainer.ctreConfigs.armCCConfig));
 
-    m_motor1 = new TalonFX(Constants.Arm.kMotorID, Constants.Arm.canBus);
-    m_motor1.setInverted(Constants.Arm.kIsInverted);
+    m_motor1 = new TalonFX(ArmConstants.kMotorID, ArmConstants.canBus);
+    m_motor1.setInverted(ArmConstants.kIsInverted);
     RobotContainer.ctreConfigs.retryConfigApply(()->m_motor1.getConfigurator().apply(RobotContainer.ctreConfigs.armFXConfig));
 
     init();
@@ -125,7 +125,7 @@ public class ArmSubsystem extends SubsystemBase {
     armList.addNumber("Absolute", () -> Helpers.General.roundDouble(getPositionAbsolute(),7));
     armList.addNumber("Error", () -> Helpers.General.roundDouble(getPositionError(),7));
 
-    if(Constants.Arm.debugDashboard) {
+    if(ArmConstants.debugDashboard) {
     }
   }
 
@@ -135,7 +135,7 @@ public class ArmSubsystem extends SubsystemBase {
   public String getTargetPositionName() { return m_targetPosition.toString(); }
   public double getTargetPosition() { return m_motor1.getClosedLoopReference().getValue(); }
   public double getPositionError() { return m_motor1.getClosedLoopError().getValue(); }
-  public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= Constants.Arm.kPositionThreshold); }
+  public boolean atSetpoint() { return (Math.abs(m_motor1.getClosedLoopError().getValue()) <= ArmConstants.kPositionThreshold); }
   public boolean atIntake() { return m_targetPosition==Position.INTAKE && atSetpoint(); }
   public boolean atAmp() { return m_targetPosition==Position.AMP && atSetpoint(); }
   public boolean atTrap() { return m_targetPosition==Position.TRAP && atSetpoint(); }

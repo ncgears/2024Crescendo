@@ -17,7 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -31,14 +31,14 @@ public class SwerveModule {
     private final int TURN_IZONE;
     private final int TURN_ALLOWED_ERROR;
     private String moduleName;
-    private double driveWheelDiamMM = Constants.Swerve.kDefaultModuleWheelDiamMM;
+    private double driveWheelDiamMM = SwerveConstants.kDefaultModuleWheelDiamMM;
     private NeutralOut m_brake = new NeutralOut();
     private SwerveModuleState state;
 
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
-        Constants.Swerve.kDriveKS, 
-        Constants.Swerve.kDriveKV, 
-        Constants.Swerve.kDriveKA);
+        SwerveConstants.kDriveKS, 
+        SwerveConstants.kDriveKV, 
+        SwerveConstants.kDriveKA);
 
  	/**
 	 * 1918 Swerve Module v2024.1 - This swerve module uses a Falcon 500 (TalonFX) for drive and Talon SRX for turn (bag motor with gearbox).
@@ -48,7 +48,7 @@ public class SwerveModule {
 	 */
     public SwerveModule(String name, SwerveModuleConstants moduleConstants){
         moduleName = name;
-        drive = new TalonFX(moduleConstants.idDriveMotor, Constants.Swerve.canBus);
+        drive = new TalonFX(moduleConstants.idDriveMotor, SwerveConstants.canBus);
         turn = new WPI_TalonSRX(moduleConstants.idTurnMotor);
         TURN_P = moduleConstants.turnP;
         TURN_I = moduleConstants.turnI;
@@ -56,34 +56,34 @@ public class SwerveModule {
         TURN_IZONE = moduleConstants.turnIZone;
         TURN_ALLOWED_ERROR = moduleConstants.turnMaxAllowedError;
         driveWheelDiamMM = moduleConstants.driveWheelDiamMM;
-        SimDriveMotor = new DCMotorSim(DCMotor.getFalcon500(1), Constants.Swerve.kRotationsPerWheelRotation, moduleConstants.DriveInertia);
-        SimSteerMotor = new DCMotorSim(DCMotor.getFalcon500(1), Constants.Swerve.kRotationsPerWheelRotation, moduleConstants.DriveInertia);
+        SimDriveMotor = new DCMotorSim(DCMotor.getFalcon500(1), SwerveConstants.kRotationsPerWheelRotation, moduleConstants.DriveInertia);
+        SimSteerMotor = new DCMotorSim(DCMotor.getFalcon500(1), SwerveConstants.kRotationsPerWheelRotation, moduleConstants.DriveInertia);
 
         turn.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
         turn.set(ControlMode.PercentOutput, 0); //Set controller to disabled
         turn.setNeutralMode(NeutralMode.Brake); //Set controller to brake mode
         turn.configSelectedFeedbackSensor(  FeedbackDevice.Analog, //  FeedbackDevice.CTRE_MagEncoder_Absolute, // Local Feedback Source
-                                            Constants.Global.kPidIndex,				// PID Slot for Source [0, 1]
-                                            Constants.Global.kTimeoutMs);				// Configuration Timeout
-        turn.configFeedbackNotContinuous(Constants.Global.SWERVE_SENSOR_NONCONTINUOUS, 0); //Disable continuous feedback tracking (so 0 and 1024 are effectively one and the same)
+                                            GlobalConstants.kPidIndex,				// PID Slot for Source [0, 1]
+                                            GlobalConstants.kTimeoutMs);				// Configuration Timeout
+        turn.configFeedbackNotContinuous(GlobalConstants.SWERVE_SENSOR_NONCONTINUOUS, 0); //Disable continuous feedback tracking (so 0 and 1024 are effectively one and the same)
 
         // turn.setSelectedSensorPosition(0); //reset the talon encoder counter to 0 so we dont carry over a large error from a previous testing
         // turn.set(ControlMode.Position, 1024); //set this to some fixed value for testing
         turn.setSensorPhase(moduleConstants.turnSensorPhase); //set the sensor phase based on the constants setting for this module
         turn.setInverted(moduleConstants.turnIsInverted); //set the motor direction based on the constants setting for this module
-        turn.config_kP(Constants.Global.kPidProfileSlotIndex, TURN_P); //set the kP for PID Tuning
-        turn.config_kI(Constants.Global.kPidProfileSlotIndex, TURN_I);
-        turn.config_kD(Constants.Global.kPidProfileSlotIndex, TURN_D);
-        turn.config_IntegralZone(Constants.Global.kPidProfileSlotIndex, TURN_IZONE);
+        turn.config_kP(GlobalConstants.kPidProfileSlotIndex, TURN_P); //set the kP for PID Tuning
+        turn.config_kI(GlobalConstants.kPidProfileSlotIndex, TURN_I);
+        turn.config_kD(GlobalConstants.kPidProfileSlotIndex, TURN_D);
+        turn.config_IntegralZone(GlobalConstants.kPidProfileSlotIndex, TURN_IZONE);
         turn.overrideLimitSwitchesEnable(false);
-        turn.configAllowableClosedloopError(Constants.Global.kPidProfileSlotIndex, TURN_ALLOWED_ERROR); 
-        if(Constants.Swerve.homeOnInit) turn.set(ControlMode.Position, 0);
+        turn.configAllowableClosedloopError(GlobalConstants.kPidProfileSlotIndex, TURN_ALLOWED_ERROR); 
+        if(SwerveConstants.homeOnInit) turn.set(ControlMode.Position, 0);
         // SupplyCurrentLimitConfiguration(enabled,peak,trigger threshold current,trigger threshold time(s))
         // turn.configSupplyCurrentLimit(new SupplyCurrentLimitConfiguration(
-        //     Constants.Swerve.isTurnCurrentLimitEnabled,
-        //     Constants.Swerve.kTurnCurrentLimitAmps,
-        //     Constants.Swerve.kTurnCurrentThresholdAmps,
-        //     Constants.Swerve.kTurnCurrentThresholdSecs));
+        //     Swerve.isTurnCurrentLimitEnabled,
+        //     Swerve.kTurnCurrentLimitAmps,
+        //     Swerve.kTurnCurrentThresholdAmps,
+        //     Swerve.kTurnCurrentThresholdSecs));
 
         StatusCode status = StatusCode.StatusCodeNotInitialized;
         for (int i = 0; i < 5; ++i) {
@@ -132,13 +132,13 @@ public class SwerveModule {
      * @param desiredState Desired state with speed and angle.
      */
     public void setDesiredState(SwerveModuleState desiredState) {
-        state = (Constants.Swerve.useTurnOptimization) ? optimize(desiredState) : desiredState;
+        state = (SwerveConstants.useTurnOptimization) ? optimize(desiredState) : desiredState;
 
-        double percentOutput = state.speedMetersPerSecond / Constants.Swerve.kMaxSpeedMetersPerSecond; //Create a percentage from the theoretical max
+        double percentOutput = state.speedMetersPerSecond / SwerveConstants.kMaxSpeedMetersPerSecond; //Create a percentage from the theoretical max
         setDrivePower(percentOutput);
         // setDrivePower(feedforward.calculate(state.speedMetersPerSecond));
 
-        int turn_ticks = Helpers.General.radiansToTicks(state.angle.getRadians() + Constants.Swerve.kHomeOffsetRadians);
+        int turn_ticks = Helpers.General.radiansToTicks(state.angle.getRadians() + SwerveConstants.kHomeOffsetRadians);
         turn.set(ControlMode.Position, turn_ticks);
     }
 

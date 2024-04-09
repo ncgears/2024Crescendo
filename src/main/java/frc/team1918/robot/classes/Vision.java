@@ -18,7 +18,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Robot;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -79,12 +79,12 @@ public class Vision {
 	}
 
   public Vision() {
-    front_camera = new PhotonCamera(Constants.Vision.Front.kCameraName);
-    photonEstimatorFront = new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, front_camera, Constants.Vision.Front.kRobotToCam);
+    front_camera = new PhotonCamera(VisionConstants.Front.kCameraName);
+    photonEstimatorFront = new PhotonPoseEstimator(VisionConstants.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, front_camera, VisionConstants.Front.kRobotToCam);
     photonEstimatorFront.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
-    back_camera = new PhotonCamera(Constants.Vision.Back.kCameraName);
-    photonEstimatorBack = new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, back_camera, Constants.Vision.Back.kRobotToCam);
+    back_camera = new PhotonCamera(VisionConstants.Back.kCameraName);
+    photonEstimatorBack = new PhotonPoseEstimator(VisionConstants.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, back_camera, VisionConstants.Back.kRobotToCam);
     photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
     // Simulation
@@ -92,7 +92,7 @@ public class Vision {
         // Create the vision system simulation which handles cameras and targets on the field.
         visionSim = new VisionSystemSim("main");
         // Add all the AprilTags inside the tag layout as visible targets to this simulated field.
-        visionSim.addAprilTags(Constants.Vision.kTagLayout);
+        visionSim.addAprilTags(VisionConstants.kTagLayout);
         // Create simulated camera properties. These can be set to mimic your actual camera.
         var cameraProp = new SimCameraProperties();
         cameraProp.setCalibration(960, 720, Rotation2d.fromDegrees(90));
@@ -105,8 +105,8 @@ public class Vision {
         PhotonCameraSim front_cameraSim = new PhotonCameraSim(front_camera, cameraProp);
         PhotonCameraSim back_cameraSim = new PhotonCameraSim(back_camera, cameraProp);
         // Add the simulated camera to view the targets on this simulated field.
-        visionSim.addCamera(front_cameraSim, Constants.Vision.Front.kRobotToCam);
-        visionSim.addCamera(back_cameraSim,Constants.Vision.Back.kRobotToCam);
+        visionSim.addCamera(front_cameraSim, VisionConstants.Front.kRobotToCam);
+        visionSim.addCamera(back_cameraSim,VisionConstants.Back.kRobotToCam);
 
         // front_cameraSim.enableDrawWireframe(true);
         // back_cameraSim.enableDrawWireframe(true);
@@ -120,7 +120,7 @@ public class Vision {
     //   .withSize(5, 4)
     //   .withWidget("Single Color View")
     //   .withPosition(19, 0);  
-		if(Constants.Vision.debugDashboard) {
+		if(VisionConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Vision");
       debugTab.addBoolean("hasTargets", () -> getLatestResult("back").hasTargets())
         .withSize(2, 2)
@@ -182,7 +182,7 @@ public class Vision {
    * @param estimatedPose The estimated pose to guess standard deviations for.
    */
   public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose, String camera) {
-      var estStdDevs = Constants.Vision.kSingleTagStdDevs;
+      var estStdDevs = VisionConstants.kSingleTagStdDevs;
       var targets = getLatestResult(camera).getTargets();
       int numTags = 0;
       double avgDist = 0;
@@ -196,7 +196,7 @@ public class Vision {
       if (numTags == 0) return estStdDevs;
       avgDist /= numTags;
       // Decrease std devs if multiple targets are visible
-      if (numTags > 1) estStdDevs = Constants.Vision.kMultiTagStdDevs;
+      if (numTags > 1) estStdDevs = VisionConstants.kMultiTagStdDevs;
       // Increase std devs based on (average) distance
       if (numTags == 1 && avgDist > 4)
           estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);

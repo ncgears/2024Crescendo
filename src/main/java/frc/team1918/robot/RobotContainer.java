@@ -7,6 +7,8 @@
 
 package frc.team1918.robot;
 
+import frc.team1918.robot.constants.*; 
+
 //Global imports
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -120,8 +122,8 @@ public class RobotContainer {
     private SendableChooser<Command> m_auto_chooser = new SendableChooser<>();
 
     //init joysticks
-    private final CommandStadiaController dj = new CommandStadiaController(Constants.OI.OI_JOY_DRIVER);
-    private final CommandStadiaController oj = new CommandStadiaController(Constants.OI.OI_JOY_OPER);
+    private final CommandStadiaController dj = new CommandStadiaController(OIConstants.OI_JOY_DRIVER);
+    private final CommandStadiaController oj = new CommandStadiaController(OIConstants.OI_JOY_OPER);
     private final CommandStadiaController pj = new CommandStadiaController(5); //Programmer Controller
 
    /**
@@ -130,15 +132,15 @@ public class RobotContainer {
   public RobotContainer() {
     //define the axis using the factory to define deadbands, squaring, inversion, etc.
     final InputAxis m_fwdXAxis = new InputAxis("Forward",dj::getLeftY)
-      .withDeadband(Constants.OI.kMinDeadband)
+      .withDeadband(OIConstants.kMinDeadband)
       .withSquaring(true);
     final InputAxis m_fwdYAxis = new InputAxis("Strafe",dj::getLeftX)
-      .withDeadband(Constants.OI.kMinDeadband)
+      .withDeadband(OIConstants.kMinDeadband)
       .withSquaring(true);
     final InputAxis m_rotAxis = new InputAxis("Rotate",dj::getRightX)
-      .withDeadband(Constants.OI.kMinDeadband);
+      .withDeadband(OIConstants.kMinDeadband);
     final InputAxis m_climbAxis = new InputAxis("Climb", oj::getRightY)
-      .withDeadband(Constants.OI.kMinDeadband)
+      .withDeadband(OIConstants.kMinDeadband)
       .withSquaring(true)
       .withInvert(true);
 
@@ -150,7 +152,7 @@ public class RobotContainer {
     // Enable closed loop control of compressor and enable it
     // if(Constants.Air.isDisabled) m_air.disable();
 
-    if(Constants.Audio.isEnabled) {
+    if(AudioConstants.isEnabled) {
 	    ArrayList<TalonFX> instrumentsAll = new ArrayList<>();
 		  for (TalonFX motor: drive.getMotors()) {
 			  instrumentsAll.add(motor);
@@ -164,14 +166,14 @@ public class RobotContainer {
     }
 
     // Enable the camera server and start capture
-    if(Constants.Global.CAMERA_ENABLED) {
+    if(GlobalConstants.CAMERA_ENABLED) {
       // UsbCamera cam = CameraServer.startAutomaticCapture();
       // cam.setResolution(320, 240);
       // cam.setFPS(25);
     }
 
     // Set the default command that is run for the robot. Normally, this is the drive command
-    if(!Constants.DriveTrain.isDisabled) {
+    if(!DriveTrainConstants.isDisabled) {
       drive.setDefaultCommand(
         new drive_defaultDrive(drive, m_fwdXAxis, m_fwdYAxis, m_rotAxis)
       );
@@ -187,7 +189,7 @@ public class RobotContainer {
     //   );
     // }
 
-    if(!Constants.Climber.isDisabled) {
+    if(!ClimberConstants.isDisabled) {
       climber.setDefaultCommand(climber.climberMoveC(m_climbAxis));
       // climber.setDefaultCommand(
       //   climber.run(() -> climber.climberMove(Helpers.OI.ncdeadband(-oj.getRightY(),false)))
@@ -256,7 +258,7 @@ public class RobotContainer {
     );
 
     /** DRIVER JOYSTICK (dj) */
-    if(Constants.Audio.isEnabled) {
+    if(AudioConstants.isEnabled) {
       /** Manage Music - Song list
         *  Brawl-Theme.chrp
         *  Megalovania.chrp
@@ -498,8 +500,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("poseTrackingStop", new InstantCommand(() -> pose.trackingStop()));
     NamedCommands.registerCommand("indexerUp", indexer.runOnce(indexer::indexerUp));
     NamedCommands.registerCommand("indexerStop", indexer.runOnce(indexer::indexerStop));
-    NamedCommands.registerCommand("aimerAimShort", new InstantCommand(() -> aimer.setPositionRotations(Constants.Aimer.Positions.kShotShort)));
-    NamedCommands.registerCommand("aimerAimLong", new InstantCommand(() -> aimer.setPositionRotations(Constants.Aimer.Positions.kShotLong)));
+    NamedCommands.registerCommand("aimerAimShort", new InstantCommand(() -> aimer.setPositionRotations(AimerConstants.Positions.kShotShort)));
+    NamedCommands.registerCommand("aimerAimLong", new InstantCommand(() -> aimer.setPositionRotations(AimerConstants.Positions.kShotLong)));
     NamedCommands.registerCommand("driveA2", new ParallelDeadlineGroup(
         new WaitCommand(1.60), //how long to drive
         new RepeatCommand(
@@ -587,7 +589,7 @@ public class RobotContainer {
 
   public void buildAutonChooser() {
     //This builds the auton chooser, giving driver friendly names to the commands from above
-    if(Constants.Auton.isDisabled) {
+    if(AutonConstants.isDisabled) {
       m_auto_chooser.setDefaultOption("None (Auto Disabled)", Commands.none());
     } else {
       // m_auto_chooser.setDefaultOption("Do Nothing", new cg_autonDoNothing(drive));

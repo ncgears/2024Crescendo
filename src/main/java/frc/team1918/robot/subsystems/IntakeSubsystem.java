@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
@@ -25,10 +25,10 @@ public class IntakeSubsystem extends SubsystemBase {
 	private static IntakeSubsystem instance;
   //private and public variables defined here
   public enum Direction {
-    IN(Constants.Dashboard.Colors.GREEN),
-    FEED(Constants.Dashboard.Colors.ORANGE),
-    OUT(Constants.Dashboard.Colors.RED),
-    STOP(Constants.Dashboard.Colors.BLACK);
+    IN(DashboardConstants.Colors.GREEN),
+    FEED(DashboardConstants.Colors.ORANGE),
+    OUT(DashboardConstants.Colors.RED),
+    STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     Direction(String color) { this.color = color; }
     public String getColor() { return this.color; }
@@ -51,11 +51,11 @@ public class IntakeSubsystem extends SubsystemBase {
   
   public IntakeSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new WPI_TalonSRX(Constants.Intake.kMotorID);
+    m_motor1 = new WPI_TalonSRX(IntakeConstants.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    m_motor1.setNeutralMode(Constants.Intake.kNeutralMode); //Set controller to brake mode  
-    m_motor1.setInverted(Constants.Intake.kIsInverted);
+    m_motor1.setNeutralMode(IntakeConstants.kNeutralMode); //Set controller to brake mode  
+    m_motor1.setInverted(IntakeConstants.kIsInverted);
 
     init();
     createDashboards();
@@ -89,7 +89,7 @@ public class IntakeSubsystem extends SubsystemBase {
 				.withWidget("Single Color View");
 			intakeList.addString("Direction", this::getDirectionName);
 
-      if(Constants.Intake.debugDashboard) {
+      if(IntakeConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
 			ShuffleboardLayout dbgIntakeList = debugTab.getLayout("Intake", BuiltInLayouts.kList)
 				.withSize(4,6)
@@ -130,19 +130,19 @@ public class IntakeSubsystem extends SubsystemBase {
   public void intakeIn() {
     m_curDirection = Direction.IN;
     Helpers.Debug.debug("Intake: In");
-    setSpeedPercent(Constants.Intake.kSpeed);
+    setSpeedPercent(IntakeConstants.kSpeed);
   }
 
   public void intakeFeed() {
     m_curDirection = Direction.FEED;
     Helpers.Debug.debug("Intake: Feed");
-    setSpeedPercent(Constants.Intake.kSpeed/2);
+    setSpeedPercent(IntakeConstants.kSpeed/2);
   }
 
   public void intakeOut() {
     m_curDirection = Direction.OUT;
     Helpers.Debug.debug("Intake: Out");
-    setSpeedPercent(-Constants.Intake.kSpeed);
+    setSpeedPercent(-IntakeConstants.kSpeed);
   }
 
   public void intakeStop() {

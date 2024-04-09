@@ -1,12 +1,13 @@
 package frc.team1918.robot;
 
 import edu.wpi.first.math.MathUtil;
-import frc.team1918.robot.Constants.OI.RampingStrength;
+import frc.team1918.robot.constants.*; 
+
 
 public class Helpers {
     //Helpers for Debugging
     public static final class Debug {
-        private static boolean debugEnabled = Constants.Global.DEBUG_ENABLED_DEFAULT;
+        private static boolean debugEnabled = GlobalConstants.DEBUG_ENABLED_DEFAULT;
         /**
          * This function takes a string and outputs it to the console when the debugging is enabled
          * @param message String to print to console
@@ -28,12 +29,6 @@ public class Helpers {
     }
     //OI Helpers
     public static final class OI {
-        // kMaxDeadband=0.95; kMinDeadband=0.1; kRampingStrength={NONE,LOW,MEDIUM,HIGH}
-        public final static double ncdeadband(double value, boolean suppressRamping) {
-            if(Math.abs(value) >= Constants.OI.kMaxDeadband) return 1.0 * Math.signum(value); //account for dirty joysticks that dont reach 1.0
-            if(suppressRamping || Constants.OI.kRampingStrength == RampingStrength.NONE) return MathUtil.applyDeadband(value, Constants.OI.kMinDeadband); //apply minimum deadband
-            return MathUtil.clamp(Math.pow(Math.abs(value),Constants.OI.kRampingStrength.exponent()) * Math.signum(value),-1.0,1.0); //non-linear input ramping (x^y)
-        }
     }
 
     //General Helpers
@@ -50,7 +45,7 @@ public class Helpers {
          * @return (double) value in radians
          */
         public final static double ticksToRadians(int ticks) {
-            return (ticks * Math.PI / (Constants.Swerve.kTurnEncoderFullRotation / 2));
+            return (ticks * Math.PI / (SwerveConstants.kTurnEncoderFullRotation / 2));
         }
 
         /**
@@ -60,7 +55,7 @@ public class Helpers {
          */
         public final static int radiansToTicks(double rads) {
 
-			return (int) (rads / Math.PI * (Constants.Swerve.kTurnEncoderFullRotation / 2));
+			return (int) (rads / Math.PI * (SwerveConstants.kTurnEncoderFullRotation / 2));
         }
     }
 }

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 
 /**
@@ -18,8 +18,8 @@ import frc.team1918.robot.Helpers;
 @SuppressWarnings("unused")
 public class Lighting {
 	private static Lighting instance;
-  private final CANdle m_candle1 = new CANdle(Constants.Lighting.kCandle1ID, Constants.Lighting.canBus);
-  private final CANdle m_candle2 = new CANdle(Constants.Lighting.kCandle2ID, Constants.Lighting.canBus);
+  private final CANdle m_candle1 = new CANdle(LightingConstants.kCandle1ID, LightingConstants.canBus);
+  private final CANdle m_candle2 = new CANdle(LightingConstants.kCandle2ID, LightingConstants.canBus);
   private Colors m_currentColor, m_oldColor = Colors.OFF;
   private boolean m_blinking, m_oldBlinking = false;
   private int m_intensity, m_oldIntensity = 100;
@@ -84,7 +84,7 @@ public class Lighting {
       .withSize(8, 2)
       .withWidget("Single Color View")
       .withPosition(0, 7);  
-		if(Constants.Lighting.debugDashboard) {
+		if(LightingConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("DBG:Lighting");
       debugTab.addString("LED Color", this::getColor)
         .withSize(6, 4)

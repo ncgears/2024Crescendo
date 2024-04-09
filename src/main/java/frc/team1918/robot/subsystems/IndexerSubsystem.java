@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 
 /**
@@ -25,9 +25,9 @@ public class IndexerSubsystem extends SubsystemBase {
 	private static IndexerSubsystem instance;
   //private and public variables defined here
   public enum State {
-    UP(Constants.Dashboard.Colors.GREEN),
-    DOWN(Constants.Dashboard.Colors.RED),
-    STOP(Constants.Dashboard.Colors.BLACK);
+    UP(DashboardConstants.Colors.GREEN),
+    DOWN(DashboardConstants.Colors.RED),
+    STOP(DashboardConstants.Colors.BLACK);
     private final String color;
     State(String color) { this.color = color; }
     public String getColor() { return this.color; }
@@ -35,7 +35,7 @@ public class IndexerSubsystem extends SubsystemBase {
   private WPI_TalonSRX m_motor1;
   private State m_curState = State.STOP;
   private boolean m_hasnote = false;
-  private DigitalInput m_beambreak = new DigitalInput(Constants.Indexer.kBeamBreakID);
+  private DigitalInput m_beambreak = new DigitalInput(IndexerConstants.kBeamBreakID);
   private String m_overrideColor = null;
   
   /**
@@ -51,11 +51,11 @@ public class IndexerSubsystem extends SubsystemBase {
   
   public IndexerSubsystem() {
     //initialize values for private and public variables, etc.
-    m_motor1 = new WPI_TalonSRX(Constants.Indexer.kMotorID);
+    m_motor1 = new WPI_TalonSRX(IndexerConstants.kMotorID);
     m_motor1.configFactoryDefault(); //Reset controller to factory defaults to avoid wierd stuff from carrying over
     m_motor1.set(ControlMode.PercentOutput, 0); //Set controller to disabled
-    m_motor1.setNeutralMode(Constants.Indexer.kNeutralMode); //Set controller to brake mode  
-    m_motor1.setInverted(Constants.Indexer.kIsInverted);
+    m_motor1.setNeutralMode(IndexerConstants.kNeutralMode); //Set controller to brake mode  
+    m_motor1.setInverted(IndexerConstants.kIsInverted);
     init();
     createDashboards();
   }
@@ -102,7 +102,7 @@ public class IndexerSubsystem extends SubsystemBase {
     indexerList.addString("State", this::getStateName);
     indexerList.addBoolean("Has Note", this::hasNote);
 
-    if(Constants.Indexer.debugDashboard) {
+    if(IndexerConstants.debugDashboard) {
       ShuffleboardTab debugTab = Shuffleboard.getTab("Debug");
       ShuffleboardLayout dbgIndexerList = debugTab.getLayout("Indexer", BuiltInLayouts.kList)
         .withSize(4,4)
@@ -136,13 +136,13 @@ public class IndexerSubsystem extends SubsystemBase {
   public void indexerUp() {
     m_curState = State.UP;
     Helpers.Debug.debug("Indexer: Up");
-    setSpeedPercent(Constants.Indexer.kSpeed);
+    setSpeedPercent(IndexerConstants.kSpeed);
   }
 
   public void indexerDown() {
     m_curState = State.DOWN;
     Helpers.Debug.debug("Indexer: Down");
-    setSpeedPercent(-Constants.Indexer.kSpeed);
+    setSpeedPercent(-IndexerConstants.kSpeed);
   }
 
   public void indexerStop() {

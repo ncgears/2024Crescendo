@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.team1918.robot.Constants;
+import frc.team1918.robot.constants.*; 
 import frc.team1918.robot.Helpers;
 import frc.team1918.robot.RobotContainer;
 
@@ -73,7 +73,7 @@ public class NCPose {
 	/**
 	 * Targets represents different locations on the field that we might be interested in tracking
 	 */
-	private static final double m_fieldLength = Constants.Vision.kTagLayout.getFieldLength();
+	private static final double m_fieldLength = VisionConstants.kTagLayout.getFieldLength();
     public enum Targets { //based on blue origin 0,0 (blue driver station, right corner)
         SOURCE(0,0,0,120),  //determine positions
 		AMPDUMP(0,7.7,11.0,0),
@@ -99,10 +99,10 @@ public class NCPose {
     }
 	/** State represents different tracking system states */
     public enum State {
-        READY(Constants.Dashboard.Colors.GREEN),
-        TRACKING(Constants.Dashboard.Colors.ORANGE),
-        ERROR(Constants.Dashboard.Colors.RED),
-        STOP(Constants.Dashboard.Colors.BLACK);
+        READY(DashboardConstants.Colors.GREEN),
+        TRACKING(DashboardConstants.Colors.ORANGE),
+        ERROR(DashboardConstants.Colors.RED),
+        STOP(DashboardConstants.Colors.BLACK);
         private final String color;
         State(String color) { this.color = color; }
         public String getColor() { return this.color; }
@@ -121,7 +121,7 @@ public class NCPose {
     public NCPose() {
 		//Initialize the pose estimator
 		poseEstimator = new SwerveDrivePoseEstimator(
-			Constants.Swerve.kDriveKinematics,
+			SwerveConstants.kDriveKinematics,
 			RobotContainer.gyro.getYaw(),
 			RobotContainer.drive.getSwerveModulePositions(),
 			new Pose2d(),
@@ -211,7 +211,7 @@ public class NCPose {
 				estPose = estPose.transformBy(new Transform2d(new Translation2d(-0.44,0.0), new Rotation2d())); 
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "front");
-				if(Constants.Vision.Front.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+				if(VisionConstants.Front.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
 			}
 		);
 		var visionEstBack = RobotContainer.vision.getEstimatedGlobalPose("back");
@@ -222,7 +222,7 @@ public class NCPose {
 				estPose = estPose.transformBy(new Transform2d(new Translation2d(0.44,0.0), new Rotation2d())); 
 				// Change our trust in the measurement based on the tags we can see
 				var estStdDevs = RobotContainer.vision.getEstimationStdDevs(estPose, "back");
-				if(Constants.Vision.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
+				if(VisionConstants.Back.kUseForPose) RobotContainer.pose.addVisionMeasurement(estPose, est.timestampSeconds, estStdDevs);
 			}
 		);
 	}
@@ -241,7 +241,7 @@ public class NCPose {
 
 	public Pose3d updateShooterPose() {
 		m_shooterPose = new Pose3d(poseEstimator.getEstimatedPosition())
-			.transformBy(Constants.Shooter.kRobotToShooter);
+			.transformBy(ShooterConstants.kRobotToShooter);
 		return m_shooterPose;
 	}
 
@@ -272,7 +272,7 @@ public class NCPose {
 	public Rotation2d getAngleOfTarget(Targets target) {
 		Transform3d shooterToTarget = getShooterToTarget(target);
 		double distance = Math.sqrt(Math.pow(shooterToTarget.getX(),2)+Math.pow(shooterToTarget.getY(),2));
-		// distance += (distance > Constants.Aimer.kDistanceMinimumForOffset) ? Constants.Aimer.kDistanceOffset : 0;
+		// distance += (distance > Aimer.kDistanceMinimumForOffset) ? Aimer.kDistanceOffset : 0;
 		distance -= (m_adjustUp) ? 0.5 : 0.0;
 		double angle = (Math.atan2(Math.abs(shooterToTarget.getZ()),distance));
 		return Rotation2d.fromRadians(angle);
@@ -290,11 +290,11 @@ public class NCPose {
 	 */
 	public Rotation2d getGravityAdjustmentOfTarget(Targets target) {
 		double distance = getDistanceOfTarget(target);
-		// distance -= (distance > Constants.Aimer.kGravityDistanceOffset) ? Constants.Aimer.kGravityDistanceOffset : 0;
-		if(distance > Constants.Aimer.kGravityDistanceOffset) {
-			distance -= Constants.Aimer.kGravityDistanceOffset;
+		// distance -= (distance > Aimer.kGravityDistanceOffset) ? Aimer.kGravityDistanceOffset : 0;
+		if(distance > AimerConstants.kGravityDistanceOffset) {
+			distance -= AimerConstants.kGravityDistanceOffset;
 		}
-		double adjustment = distance * Constants.Aimer.kGravityMultiplier;
+		double adjustment = distance * AimerConstants.kGravityMultiplier;
 		return Rotation2d.fromRadians(adjustment);
 
 	}
